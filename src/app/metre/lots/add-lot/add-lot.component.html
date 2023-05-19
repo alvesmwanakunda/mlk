@@ -1,0 +1,25 @@
+<h1 mat-dialog-title class="title-h" style="padding-top: 35px;margin-bottom: 20px;">{{data.name}}</h1>
+<div class="container">
+
+  <div mat-dialog-content>
+    <div style="margin-bottom: 15px;">
+      <label class="label-lot">Nom</label>
+      <input type="text" placeholder="Entrer le nom de l'élément" class="form-control input-lot">
+    </div><!--div-->
+    <div style="margin-bottom: 20px;">
+      <label class="label-lot">Description</label>
+      <textarea placeholder="Entrer la description" class="form-control input-lot">
+      </textarea>
+    </div><!--div-->
+    <div align="right">
+       <button class="btn btn-danger btn-lot" style="margin-right:10px;" (click)="onNoClick()">ANNULER</button>
+       <button class="btn btn-success btn-lot">VALIDER</button>
+    </div>
+
+  </div>
+  <div mat-dialog-actions>
+
+  </div>
+
+</div><!--container-->
+

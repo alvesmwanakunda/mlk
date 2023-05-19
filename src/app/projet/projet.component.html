@@ -1,0 +1,129 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="content-top">
+    <div class="row">
+
+       <div class="col">
+           <div class="row">
+            <div class="col-4">
+              <select class="form-select input-search" aria-label="Default select example">
+                <option selected>Type Service</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+              </select>
+            </div>
+            <div class="col">
+              <input type="text" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher par nom de projet, localisation...">
+            </div>
+           </div><!--row-->
+       </div><!--col-->
+
+       <div class="col" align="right">
+        <button class="btn" type="button" style="margin-right: 10px;"><i class="fa-solid fa-share btn-icon-projet"></i></button>
+        <button type="button" class="btn" style="margin-right: 10px;"><i class="fas fa-th-large btn-icon-projet"></i></button>
+        <button type="button" class="btn btn-projet" [routerLink]="['/add/projet']"><i class="fa-solid fa-plus"></i> Nouveau Projet</button>
+       </div><!--col-->
+    </div><!--row-->
+  </div><!--content-->
+
+  <div class="list-projet">
+    <div class="row">
+
+      <div class="col-3">
+
+        <div class="card card-projet">
+          <img src="assets/images/projet.png" class="card-img-top card-img-projet" alt="...">
+          <div class="img-user-projet">
+            <img src="assets/images/userp.png">
+          </div>
+
+          <div class="card-body" style="padding-top: 40px;">
+            <p class="user-title">Nom du Représentant</p>
+            <div align="center" style="margin-bottom:40px;"><hr class="projet"></div>
+
+            <p class="title-projet" style="margin-bottom:20px;">Transformation des châssis Bureaux Bâtiments D8F4, H1, H2 et H3 du Marché International de Rungis</p>
+
+            <div class="progress progress-projet" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="margin-bottom:10px;">
+              <div class="progress-bar" style="width: 25%"></div>
+            </div>
+            <p class="pr-projet">80% restants</p>
+
+            <div class="row" style="margin-bottom:15px;">
+                <div class="col">
+                  <div class="card" style="height: 78px;">
+                    <div class="card-body">
+                      <p align="center"><i class="fa-regular fa-calendar-days" style="font-size: 29px;"></i></p>
+                      <p class="pr-title">25 Mars 2023</p>
+                    </div>
+                  </div>
+                </div><!--col-->
+                <div class="col">
+                  <div class="card" style="height: 78px;">
+                    <div class="card-body">
+                      <p align="center"><i class="fa-regular fa-calendar-days"  style="font-size: 29px;"></i></p>
+                      <p class="pr-title">25 Sept 2023</p>
+                    </div>
+                  </div>
+                </div><!--col-->
+            </div><!--row-->
+
+            <div class="row">
+              <div class="col">
+                <div class="card" style="height: 78px;">
+                  <div class="card-body">
+                    <p align="center"><i class="fa-regular fa-calendar-days" style="font-size: 29px;"></i></p>
+                    <p class="pr-title">25 Mars 2023</p>
+                  </div>
+                </div>
+              </div><!--col-->
+              <div class="col">
+                <div class="card" style="height: 78px;">
+                  <div class="card-body">
+                    <p align="center"><i class="fa-regular fa-calendar-days"  style="font-size: 29px;"></i></p>
+                    <p class="pr-title">25 Sept 2023</p>
+                  </div>
+                </div>
+              </div><!--col-->
+          </div><!--row-->
+          </div><!--card-body-->
+        </div>
+
+      </div><!--col-->
+
+      <div class="col">
+
+        <nav>
+          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link tabprojet active" id="nav-file-tab" data-bs-toggle="tab" data-bs-target="#nav-file" type="button" role="tab" aria-controls="nav-file" aria-selected="true">Fiche</button>
+            <button class="nav-link tabprojet" id="nav-int-tab" data-bs-toggle="tab" data-bs-target="#nav-int" type="button" role="tab" aria-controls="nav-int" aria-selected="false">Intervenant</button>
+            <!--<button class="nav-link tabprojet" id="nav-bat-tab" data-bs-toggle="tab" data-bs-target="#nav-bat" type="button" role="tab" aria-controls="nav-bat" aria-selected="false">Batiment</button>-->
+            <button class="nav-link tabprojet" id="nav-piece-tab" data-bs-toggle="tab" data-bs-target="#nav-piece" type="button" role="tab" aria-controls="nav-piece" aria-selected="false">Pièce Marché</button>
+            <button class="nav-link tabprojet" id="nav-etude-tab" data-bs-toggle="tab" data-bs-target="#nav-etude" type="button" role="tab" aria-controls="nav-etude" aria-selected="false">Etude</button>
+            <button class="nav-link tabprojet" id="nav-metre-tab" data-bs-toggle="tab" data-bs-target="#nav-metre" type="button" role="tab" aria-controls="nav-metre" aria-selected="false" [routerLink]="['/metre']">Métrés</button>
+            <!--<button class="nav-link tabprojet" id="nav-pre-tab" data-bs-toggle="tab" data-bs-target="#nav-pre" type="button" role="tab" aria-controls="nav-pre" aria-selected="false">Préparation</button>
+            <button class="nav-link tabprojet" id="nav-tra-tab" data-bs-toggle="tab" data-bs-target="#nav-tra" type="button" role="tab" aria-controls="nav-tra" aria-selected="false">Travaux</button>-->
+          </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show active" id="nav-file" role="tabpanel" aria-labelledby="nav-file-tab" tabindex="0">
+            <app-fiche></app-fiche>
+          </div>
+          <div class="tab-pane fade" id="nav-int" role="tabpanel" aria-labelledby="nav-int-tab" tabindex="0">
+            <app-intervenant></app-intervenant>
+          </div>
+          <div class="tab-pane fade" id="nav-piece" role="tabpanel" aria-labelledby="nav-piece-tab" tabindex="0">
+            <app-piece></app-piece>
+          </div>
+          <div class="tab-pane fade" id="nav-etude" role="tabpanel" aria-labelledby="nav-etude-tab" tabindex="0">
+            <app-etude></app-etude>
+          </div>
+        </div>
+
+      </div><!--col-->
+
+    </div><!--row-->
+  </div>
+
+
+</div><!--container-->

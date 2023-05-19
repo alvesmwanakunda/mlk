@@ -1,0 +1,168 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="content-top">
+    <div class="row">
+      <div class="col">
+        <p class="title-projet-page">Création Entreprise <button class="btn" type="button"><i class="fa-solid fa-arrow-left" style="color:#28628B;"></i></button></p>
+      </div>
+      <div class="col">
+         <div align="right">
+          <i class="fa-solid fa-city" style="font-size: 30px;color: #666C7E;"></i>
+         </div>
+      </div>
+    </div><!--row-->
+    <div class="row">
+      <div class="col">
+        <hr class="entreprise">
+      </div>
+    </div><!--row-->
+    <div class="row">
+      <div class="col">
+
+        <mat-stepper orientation="vertical">
+          <mat-step>
+            <ng-template matStepLabel>Informations Primaires de l’entreprise</ng-template>
+            <ng-template matStepContent>
+              <div class="row">
+                <div class="col">
+
+                  <div style="margin-bottom: 15px;">
+                    <label class="label-entreprise">Nom Entreprise</label>
+                    <input type="text" class="form-control input-entreprise">
+                  </div><!--div-->
+                  <div style="margin-bottom: 15px;">
+                    <label class="label-entreprise">Nº SIREN</label>
+                    <input type="text" class="form-control input-entreprise">
+                  </div><!--div-->
+                  <div style="margin-bottom: 15px;">
+                    <label class="label-entreprise">Forme Juridique</label>
+                    <input type="text" class="form-control input-entreprise">
+                  </div><!--div-->
+
+                </div><!--col-->
+                <div class="col">
+
+                  <div style="margin-bottom: 15px;">
+                    <label class="label-entreprise">Nom Commercial</label>
+                    <input type="text" class="form-control input-entreprise">
+                  </div><!--div-->
+                  <div style="margin-bottom: 15px;">
+                    <label class="label-entreprise">Nº SIRET</label>
+                    <input type="text" class="form-control input-entreprise">
+                  </div><!--div-->
+                  <div style="margin-bottom: 15px;">
+                    <label class="label-entreprise">Nº TVA</label>
+                    <input type="text" class="form-control input-entreprise">
+                  </div><!--div-->
+               </div>
+              </div>
+              <div style="margin-bottom: 15px;">
+                <label class="label-entreprise">Activité Principale</label>
+                <input type="text" class="form-control input-entreprise">
+              </div><!--div-->
+              <div align="right">
+                <button mat-button matStepperNext class="btn-entreprise">Suivant <i class="fa-solid fa-chevron-right"></i></button>
+              </div>
+            </ng-template>
+          </mat-step>
+          <mat-step>
+            <ng-template matStepLabel>Coordonnées de l'entreprise</ng-template>
+            <ng-template matStepContent>
+              <div class="row">
+                <div class="col">
+
+                  <div style="margin-bottom: 15px;">
+                    <label class="label-entreprise">Pays de l'entreprise</label>
+                    <input type="text" class="form-control input-entreprise">
+                  </div><!--div-->
+                  <div style="margin-bottom: 15px;">
+                    <label class="label-entreprise">Ville de l'entreprise</label>
+                    <input type="text" class="form-control input-entreprise">
+                  </div><!--div-->
+                  <div style="margin-bottom: 15px;">
+                    <label class="label-entreprise">Code Postal</label>
+                    <input type="text" class="form-control input-entreprise">
+                  </div><!--div-->
+
+                  <div style="margin-bottom: 15px;">
+                    <label class="label-entreprise">Email de l'entreprise</label>
+                    <input type="text" class="form-control input-entreprise">
+                  </div><!--div-->
+
+                </div><!--col-->
+                <div class="col">
+
+                  <div style="margin-bottom: 15px;">
+                    <label class="label-entreprise">Adresse de l'entreprise</label>
+                    <input type="text" class="form-control input-entreprise">
+                  </div><!--div-->
+                  <div style="margin-bottom: 15px;">
+                    <label class="label-entreprise">Rue de l'entreprise</label>
+                    <input type="text" class="form-control input-entreprise">
+                  </div><!--div-->
+                  <div style="margin-bottom: 15px;">
+                    <label class="label-entreprise">Site Web</label>
+                    <input type="text" class="form-control input-entreprise">
+                  </div><!--div-->
+                  <div class="row" style="margin-bottom: 15px;">
+                    <div class="col-4">
+                      <label class="label-entreprise">Indicatif</label>
+                      <input type="text" class="form-control input-entreprise">
+                    </div>
+                    <div class="col">
+                      <label class="label-entreprise">Nº Tel</label>
+                       <input type="text" class="form-control input-entreprise">
+                    </div>
+                  </div><!--div-->
+               </div>
+              </div>
+              <div align="right">
+                <button mat-button matStepperPrevious class="btn-entreprise-back" style="margin-right: 10px;"><i class="fa-solid fa-chevron-left"></i> PRECEDENT</button>
+                <button mat-button matStepperNext class="btn-entreprise">SUIVANT <i class="fa-solid fa-chevron-right"></i></button>
+              </div>
+            </ng-template>
+          </mat-step>
+          <mat-step>
+            <ng-template matStepLabel>Information Supplémentaires de l'entreprise</ng-template>
+            <div class="row" style="padding-top: 13px;">
+              <div class="col-md-3">
+                <div class="card card-dot-blue" style="margin-bottom: 10px;">
+                  <div class="card-body">
+                    <img src="assets/images/galerie.png">
+                  </div>
+                </div><!--card-->
+                <div align="right">
+                  <button type="button" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> charger</button>
+                </div>
+              </div><!--col-->
+              <div class="col-md-9"></div>
+            </div><!--row-->
+            <div>
+              <div style="margin-bottom: 15px;">
+                <label class="label-entreprise">Corps d'activité</label>
+                <input type="text" class="form-control input-entreprise">
+              </div><!--div-->
+              <div style="margin-bottom: 15px;">
+                <label class="label-entreprise">Corps Etat</label>
+                <input type="text" class="form-control input-entreprise">
+              </div><!--div-->
+              <div style="margin-bottom: 15px;">
+                <label class="label-entreprise">Fournisseur</label>
+                <select class="form-select input-entreprise" aria-label="Default select example">
+                  <option selected>Oui</option>
+                  <option value="1">Non</option>
+                </select>
+              </div><!--div-->
+            </div>
+
+            <div align="right">
+              <button mat-button matStepperPrevious class="btn-entreprise-back" style="margin-right: 10px;"><i class="fa-solid fa-chevron-left"></i> PRECEDENT</button>
+              <button mat-button  class="btn-entreprise">VALIDER</button>
+            </div>
+          </mat-step>
+        </mat-stepper>
+
+      </div><!--col-->
+    </div><!--row-->
+  </div>
+</div>

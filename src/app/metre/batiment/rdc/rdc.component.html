@@ -1,0 +1,93 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="content-top">
+    <div class="row" style="margin-bottom: 30px;">
+
+       <div class="col">
+           <div class="row">
+            <div class="col">
+              <p class="title-projet-page">Nom du Projet<span style="font-weight: 600;"> - Métrés - Batiment</span></p>
+            </div>
+           </div><!--row-->
+       </div><!--col-->
+    </div><!--row-->
+
+    <div>
+      <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <button class="nav-link tabprojet active" id="nav-file-tab" data-bs-toggle="tab" data-bs-target="#nav-file" type="button" role="tab" aria-controls="nav-file" aria-selected="true">RDC</button>
+          <button class="nav-link tabprojet" id="nav-int-tab" data-bs-toggle="tab" data-bs-target="#nav-int" type="button" role="tab" aria-controls="nav-int" aria-selected="false">R+1</button>
+        </div>
+      </nav>
+      <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-file" role="tabpanel" aria-labelledby="nav-file-tab" tabindex="0">
+          <div class="container">
+
+            <div class="content-top-child">
+              <div class="row">
+                <div class="col-md-7">
+                  <p class="lot-title">Détails par Module de Type <i class="fa-solid fa-circle-plus"></i></p>
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr class="title-tab">
+                        <th scope="col" style="font-weight:normal;">Type</th>
+                        <th scope="col" style="font-weight:normal;">Description</th>
+                        <th scope="col" style="font-weight:normal;">Longueur</th>
+                        <th scope="col" style="font-weight:normal;">Largeur</th>
+                        <th scope="col" style="font-weight:normal;">surface</th>
+                        <th scope="col" style="font-weight:normal;">Périmètre</th>
+                        <th scope="col" style="font-weight:normal;">Nbr Module</th>
+                        <th scope="col" style="font-weight:normal;">S total Module</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="title-tab" style="cursor:pointer;">
+                        <td>Type 1</td>
+                        <td>PM15</td>
+                        <td>2,44</td>
+                        <td>6,3</td>
+                        <td>15,372</td>
+                        <td>17,48</td>
+                        <td>11</td>
+                        <td>169,092</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </div><!--col-->
+                <div class="col-md-5">
+                  <p class="lot-title">Composition <i class="fa-solid fa-circle-plus"></i></p>
+
+                  <mat-accordion>
+                    <mat-expansion-panel>
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          This is the expansion title
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+                      <p>This is the primary content of the panel.</p>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          Self aware panel
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+                      <p>I'm visible because I am open</p>
+                    </mat-expansion-panel>
+                  </mat-accordion>
+
+
+                </div><!--col-->
+              </div>
+            </div>
+
+          </div>
+        </div><!--tab1-->
+        <div class="tab-pane fade" id="nav-int" role="tabpanel" aria-labelledby="nav-int-tab" tabindex="0">
+        </div>
+      </div>
+    </div>
+  </div><!--content-->
+</div>
+

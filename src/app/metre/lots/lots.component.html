@@ -1,0 +1,55 @@
+<div class="container">
+  <div class="content-top-child">
+
+    <div class="d-flex flex-row-reverse bd-highlight" style="margin-bottom: 25px;">
+      <div class="p-2 bd-highlight">
+        <button type="button" class="btn btn-projet" (click)="openDialog()"><i class="fa-solid fa-plus"></i> Nouveau Lôt</button>
+      </div>
+      <div class="p-2 bd-highlight" style="width: 45%;"><input type="text" class="form-control input-search" id="exampleFormControlInput1" placeholder="Taper le nom d'un lôt"></div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+       <div class="card card-interv">
+         <div class="card-body" style="text-align: center;">
+           <img src="assets/images/lot1.png" alt="...">
+         </div>
+         <div class="card-footer card-footer-metre" (click)="getLot(1)">
+           Descriptif Plomberie
+         </div>
+       </div><!--card-->
+      </div>
+      <div class="col">
+        <div class="card card-interv">
+          <div class="card-body" style="text-align: center;">
+            <img src="assets/images/lot2.png" alt="...">
+          </div>
+          <div class="card-footer card-footer-metre" (click)="getLot(2)">
+            Descriptif Electricité
+          </div>
+        </div><!--card-->
+      </div>
+      <div class="col">
+        <div class="card card-interv">
+          <div class="card-body" style="text-align: center;">
+            <img src="assets/images/lot3.png" alt="...">
+          </div>
+          <div class="card-footer card-footer-metre" (click)="getLot(3)">
+            Sécurité Incendie
+          </div>
+        </div><!--card-->
+      </div>
+      <div class="col">
+        <div class="card card-interv">
+          <div class="card-body" style="text-align: center;">
+            <img src="assets/images/lot4.png" alt="...">
+          </div>
+          <div class="card-footer card-footer-metre" (click)="getLot(4)">
+            Menuiserie Bois
+          </div>
+        </div><!--card-->
+      </div>
+   </div><!--row-->
+  </div>
+
+</div>

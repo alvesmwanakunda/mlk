@@ -1,0 +1,51 @@
+<div id="container">
+
+  <div id="left">
+    <div>
+      <img src="assets/images/logo.png" class="img-log">
+    </div><!--logo-->
+    <div>
+      <img src="assets/images/image1.png" class="img-center">
+    </div><!--image-->
+    <div>
+      <p class="plt">PLATEFORME WEB</p>
+      <p class="gtp">Gestion parc modulaire</p>
+    </div><!--text-->
+  </div><!--left-->
+
+  <div id="right">
+
+    <div align="right">
+       <button type="button" class="btn btn-singup">S'inscrire</button>
+    </div><!--right-->
+
+    <div class="form-div">
+
+      <h3 class="title-page">Bienvenue !</h3>
+      <form>
+        <div>
+
+          <label class="label-style">E-mail</label>
+          <div class="input-group mb-3 bloc-input">
+            <span class="input-group-text input-group-lgs border-right-0" id="basic-addon1"><i class="fas fa-user"></i></span>
+            <input type="email" class="form-control py-2 border-left-0 input-lgs" placeholder="al@gmail.com" aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+
+          <label class="label-style">Mot de passe</label>
+          <div class="input-group mb-3 bloc-input">
+            <span class="input-group-text input-group-lgs border-right-0" id="basic-addon2"><i class="fas fa-lock"></i></span>
+            <input type="password" class="form-control py-2 border-left-0 input-lgs"  aria-label="Password" aria-describedby="basic-addon2">
+          </div>
+
+          <div align="center">
+            <button type="button" class="btn btn-sing" [routerLink]="['/dashboard']">Se connecter</button>
+          </div>
+
+        </div><!--div-->
+      </form><!--form-->
+
+    </div><!--form-->
+
+  </div><!--left-->
+
+</div><!--container-->

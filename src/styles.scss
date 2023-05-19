@@ -1,1 +1,702 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: #ECF0F4 !important; }
+
+/* login and signup page */
+
+#container {
+  width: 100%;
+  height: 100%;
+  background-color: #F3F3F3;
+}
+
+#left {
+  float: left;
+  width: 60%;
+  padding: 30px 50px 20px;
+}
+
+#right {
+  float: right;
+  width: 40%;
+  height: 100%;
+  background: #28628B;
+  padding: 20px 20px 20px;
+}
+/* end login and signup page */
+
+/* button custom */
+
+.btn-singup{
+  border: 2.069px solid #FFFEFE !important;
+  border-radius: 13.7933px !important;
+  color: #ffffff !important;
+  height: 30.75px;
+  width: 110.14px !important;
+  font-family: 'Roboto' !important;
+  font-style: normal;
+  font-weight: 700 !important;
+  font-size: 12.414px !important;
+}
+
+.btn-sing{
+    border: 2.069px solid #FFFEFE !important;
+    border-radius: 13.7933px !important;
+    color: #ffffff !important;
+    height: 40px;
+    width: 160px !important;
+    font-family: "Roboto" !important;
+    font-style: normal;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+}
+
+.btn-projet{
+  border-radius: 0 !important;
+  color: #ffffff !important;
+  background-color: #28628B !important;
+  font-family: 'Roboto' !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  text-align: center !important;
+}
+
+.btn-entreprise{
+  border-radius: 0 !important;
+  color: #ffffff !important;
+  background-color: #28628B !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  text-align: center !important;
+}
+.btn-entreprise-back{
+  border-radius: 0 !important;
+  color: #666B78 !important;
+  background-color:#ECF0F4 !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  text-align: center !important;
+  border: 0.74264px solid #8E8E8E !important;
+}
+
+
+.btn-piece{
+  border-radius: 0 !important;
+  color: #000000 !important;
+  background-color: #ffffff !important;
+  border: 1px solid #28628B !important;
+  font-family: 'Roboto' !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  text-align: center !important;
+}
+
+.btn-etude{
+  border-radius: 0 !important;
+  color: #28628B !important;
+  background-color: #ffffff !important;
+  border: 1px solid #28628B !important;
+  font-family: 'Roboto' !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  font-size: 12px !important;
+  text-align: center !important;
+}
+
+.btn-metre {
+  border-radius: 20px !important;
+  color: #ffffff !important;
+  background-color: #28628B !important;
+  font-family: "Roboto" !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  text-align: center !important;
+}
+
+.btn-lot{
+  border-radius: 0 !important;
+  color: #ffffff !important;
+  font-family: 'Roboto' !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  text-align: center !important;
+}
+
+.btn-icon-projet{
+  color: #28628B !important;
+  font-size: 14px !important;
+}
+
+/* end button custom */
+
+/* label form login and signup */
+
+.label-style{
+  font-family: 'Roboto' !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  line-height: 19px !important;
+  color: #FFFFFF !important;
+  margin-bottom: 10px;
+}
+
+.label-lot{
+  font-family: 'Roboto' !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
+  line-height: 19px !important;
+  color: #28628B !important;
+  margin-bottom: 10px;
+}
+
+.label-entreprise{
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-size: 13px !important;
+  color: #28628B !important;
+  margin-bottom: 10px;
+}
+
+.label-batiment{
+  font-family: 'Roboto' !important;
+  font-style: normal !important;
+  font-size: 12px !important;
+  line-height: 19px !important;
+  color: #666B78 !important;
+}
+
+/* end label form login and signup */
+
+/* input login and signup */
+
+.input-lgs{
+    border-radius: 0 !important;
+    background-color: rgba(0, 0, 0, 0.41) !important;
+    border: 0px !important;
+    color: #FFFFFF !important;
+}
+
+.input-group-lgs{
+  background-color: rgba(0, 0, 0, 0.41) !important;
+  border:0 !important;
+  border-radius: 0 !important;
+  color: #FFFFFF !important;
+}
+
+.input-search{
+  border-radius: 0 !important;
+  border: 1px solid #28628B !important;
+  color: #8E8E8E !important;
+  font-size: 11px !important;
+}
+
+.input-lot{
+  border-radius: 0 !important;
+  border: 1px solid #8E8E8E !important;
+  font-size: 11px !important;
+}
+
+.input-entreprise{
+  border-radius: 0 !important;
+  border: 0.349546px solid #666B78 !important;
+  background-color:#ECF0F4 !important;
+  //font-size: 11px !important;
+}
+
+.input-batiment{
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid #A0A2AB !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  font-size: 12px !important;
+}
+
+.input-batiment:focus {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+/* end input login and signup */
+
+/* navbar */
+
+.nv-size{
+    border: 0.5px solid #D8D8D8 !important;
+    height: 75px !important;
+}
+.nv-icon{
+  width: 20px !important;
+  height: 20px !important;
+}
+.nv-toggle{
+    background-color: transparent !important;
+    border-color: #fff !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none !important;
+}
+
+.navbar-nav .show > .nav-link, .navbar-nav .nav-link.active {
+  color: #28628B !important;
+}
+
+.ml-auto-nav {
+  margin-left: auto;
+}
+
+.alert-bell{
+  color: #D64054 !important;
+  font-size: 23px !important;
+}
+
+/* content */
+.content-top{
+ padding-top: 130px !important;
+ margin-bottom: 30px;
+}
+
+.content-top-child{
+  padding-top: 50px !important;
+  padding-bottom: 50px !important;
+  margin-bottom: 30px;
+ }
+
+.content-title{
+  font-family: 'Roboto' !important;
+  font-style: normal !important;
+  font-weight: 300 !important;
+  line-height: 16px !important;
+  color: #000000 !important;
+}
+.content-card{
+ background-color: #ECF0F4 !important;
+}
+
+.number-card{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 26.0328px;
+  line-height: 31px;
+  color: #28628B;
+}
+
+.title-card{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 9.37179px;
+  line-height: 11px;
+  color: #666B78;
+}
+
+.type-projet{
+  margin-bottom: 40px;
+}
+
+.list-projet{
+  margin-bottom: 10px;
+}
+
+.list-search-projet{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14.0125px;
+  line-height: 16px;
+  color: #000000;
+  padding-top: 8px;
+}
+
+.bloc-new-projet{
+  margin-bottom: 20px;
+}
+
+.bloc-projets{
+  margin-bottom: 10px;
+}
+
+.card-projet{
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+
+.card-entrd{
+  border: 0.5px solid #28628B !important;
+  background-color:  #28628B !important;
+}
+
+
+.card-interv{
+  border: 0.241592px solid #434A5E !important;
+  border-radius: 0 !important;
+}
+
+.card-contact{
+  //border: 0.241592px solid #fff !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+
+.card-etude{
+  border: 1px solid #B1C7D7 !important;
+  border-radius: 0 !important;
+  box-shadow: 0px 4px 4px #B1C7D7 !important;
+}
+
+.card-img-projet{
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+.title-projet-page{
+  font-family: 'Roboto';
+  font-style: normal;
+  line-height: 11px;
+  color: #666B78;
+}
+
+.title-projet{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 9.37179px;
+  line-height: 11px;
+  color: #666B78;
+  text-align: center
+}
+
+.etat-projet{
+  position: absolute;
+  bottom: 174px;
+  background-color: #28628B;
+  width: 55px;
+  height: 20px;
+  text-align: center
+}
+
+.etat-entreprise{
+    position: absolute;
+    bottom: 96px;
+    background-color: #28628B;
+    width: 55px;
+    height: 20px;
+    font-size: 10px;
+    font-weight: normal;
+    text-align: center;
+    right: 0;
+}
+
+.label-projet{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 11px;
+    color: #FFFEFE;
+}
+
+.progress-projet{
+  border-radius: 0 !important;
+  height: 7px !important;
+  --bs-progress-bar-bg: #28628B !important;
+  background-color: #C4C4C4 !important;
+}
+
+.btn-detail-projet{
+    color: #EB5F84 !important;
+    font-size: 12px !important;
+    border: 0.231405px solid #979797 !important;
+    height: 29px !important;
+    width: 98px !important;
+}
+
+.btn-update-projet{
+  color: #000000 !important;
+  font-size: 12px !important;
+  border: 0.231405px solid #979797 !important;
+  height: 29px !important;
+  width: 98px !important;
+}
+
+.img-user-projet{
+    top: 80px;
+    bottom: 0px;
+    margin: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.user-title{
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 12px;
+  text-align: center;
+  color: #28628B;
+}
+
+.user-int{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 12px;
+  text-align: center;
+  color: #000000;
+}
+
+.box-title{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 12px;
+  color: #666B78;
+}
+
+hr.projet {
+  border: 2px solid #28628B;
+  opacity: 1 !important;
+  width: 155px !important;
+}
+
+hr.fiche {
+  border: 1px solid #28628B;
+  opacity: 1 !important;
+}
+
+hr.entreprise{
+  border: 1px solid #6A6F7F;
+  opacity: 1 !important;
+}
+
+.pr-projet{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 12px;
+  color: #8A8A8A;
+  text-align: center
+}
+
+.pr-title{
+  font-style: normal;
+  font-weight: 500;
+  font-size: 9px;
+  line-height: 6px;
+  color: #434A5E;
+  text-align: center
+}
+
+.pr-title-entrep{
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  color: #434A5E;
+  text-align: center
+}
+
+.nav-link.tabprojet{
+  color: #737477 !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  font-size: 13px !important;
+  line-height: 12px !important;
+}
+
+.nav-link.active.tabprojet{
+  color: #28628B !important
+}
+
+.nav-tabs .nav-link {
+  background: #D8D8D8 !important;
+  border-top-left-radius:0 !important;
+  border-top-right-radius: 0 !important;
+  height: 45px !important;
+}
+
+.nav-tabs .nav-link.active{
+  background-color: #ffffff !important
+}
+
+.tab-content > .active {
+  background-color: #fff !important;
+}
+
+.dot-green {
+  height: 25px;
+  width: 25px;
+  background-color: #5EBC5E;
+  border-radius: 50%;
+  display: inline-block;
+  text-align: center;
+  padding: 3px;
+}
+
+.dot-blue {
+  height: 25px;
+  width: 25px;
+  background-color: #28628B;
+  border-radius: 50%;
+  display: inline-block;
+  text-align: center;
+  padding: 3px;
+}
+
+.dot-red {
+  height: 25px;
+  width: 25px;
+  background-color: #B53629;
+  border-radius: 50%;
+  display: inline-block;
+  text-align: center;
+  padding: 3px;
+}
+
+.card-dot-green{
+  border: 0.5px solid #5EBC5E !important;
+  border-radius: 0 !important;
+  text-align: center !important;
+}
+
+.card-dot-blue{
+  border: 0.5px solid #28628B !important;
+  border-radius: 0 !important;
+  text-align: center !important;
+}
+
+.card-dot-red{
+  border: 0.5px solid #B53629 !important;
+  border-radius: 0 !important;
+  text-align: center !important;
+}
+
+.dot-title{
+    font-size: 13px;
+    font-weight: 500;
+    margin-left: 40px !important;
+}
+
+.dot-box-title{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 12px;
+  color: #28628B;
+  text-align: right
+}
+
+.dot-card1-user{
+    color: #0D1929;
+    font-size: 10px;
+    position: relative;
+    left: 62px;
+    bottom: 31px;
+}
+
+.dot-card-time{
+    color: #0D1929;
+    font-size: 10px;
+    text-align: right;
+    position: relative;
+    top: 34px;
+}
+
+.dot-box-file{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 9px;
+  line-height: 12px;
+  color: #28628B;
+}
+
+.card-footer-metre{
+    text-align: center !important;
+    color: #fff !important;
+    font-weight: 800 !important;
+    font-size: 12px !important;
+    background: #28628B !important;
+    border: 0.719351px solid #C4C4C4 !important;
+    border-radius: 0 !important;
+}
+
+.lot-title{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 12px;
+  color: #28628B;
+}
+
+.title-tab{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: normal !important;
+  font-size: 11px;
+  line-height: 10px;
+  color: #0D1929;
+}
+
+.title-col{
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 7px;
+  color: #434A5E;
+}
+
+.infos-col{
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 7px;
+  color: #434A5E;
+}
+
+.infos-resp{
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 12px;
+  text-align: center;
+  color: #434A5E;
+}
+
+.detail-ent-detail{
+  font-style: normal;
+  font-weight: normal;
+  font-size: 11px;
+  line-height: 11px;
+  color: #FFFFFF
+}
+
+.mat-stepper-vertical {
+  background-color: #ECF0F4 !important;
+}
+
+
+
+
+
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';

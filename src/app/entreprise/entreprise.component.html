@@ -1,0 +1,105 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="content-top">
+
+    <div class="row" style="margin-bottom: 30px;">
+
+      <div class="col">
+          <div class="row">
+           <div class="col-2">
+            <p class="title-projet-page" style="padding-top: 10px;">Entreprises</p>
+           </div>
+           <div class="col">
+             <input type="text" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher par nom,localisation,type...">
+           </div>
+          </div><!--row-->
+      </div><!--col-->
+
+      <div class="col" align="right">
+       <button type="button" class="btn" style="margin-right: 10px;"><i class="fas fa-th-large btn-icon-projet"></i></button>
+       <button type="button" class="btn btn-projet" [routerLink]="['/add/entreprise']"><i class="fa-solid fa-plus"></i> Nouveau Entreprise</button>
+      </div><!--col-->
+   </div><!--row-->
+
+   <div class="bloc-projets">
+    <div class="row">
+      <div class="col">
+        <div class="card card-projet">
+          <img src="assets/images/projet.png" class="card-img-top card-img-projet" alt="...">
+          <div class="etat-entreprise">
+            <span class="label-projet">4 projets</span>
+          </div>
+          <div class="card-body">
+            <p class="title-projet">Nom Entreprise</p>
+            <p align="center">
+              <button type="button" class="btn btn-outline-secondary btn-detail-projet" [routerLink]="['/detail/entreprise']">Détail</button>
+            </p>
+          </div>
+        </div>
+      </div><!--col-->
+      <div class="col">
+        <div class="card card-projet">
+          <img src="assets/images/projet.png" class="card-img-top card-img-projet" alt="...">
+          <div class="etat-entreprise">
+            <span class="label-projet">1 projet</span>
+          </div>
+          <div class="card-body">
+            <p class="title-projet">Nom Entreprise</p>
+            <p align="center">
+              <button type="button" class="btn btn-outline-secondary btn-detail-projet" [routerLink]="['/detail/entreprise']">Détail</button>
+            </p>
+          </div>
+        </div>
+      </div><!--col-->
+      <div class="col">
+        <div class="card card-projet">
+          <div class="card card-projet">
+            <img src="assets/images/projet.png" class="card-img-top card-img-projet" alt="...">
+            <div class="etat-entreprise">
+              <span class="label-projet">2 projets</span>
+            </div>
+            <div class="card-body">
+              <p class="title-projet">Nom Entreprise</p>
+              <p align="center">
+                <button type="button" class="btn btn-outline-secondary btn-detail-projet" [routerLink]="['/detail/entreprise']">Détail</button>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div><!--col-->
+      <div class="col">
+        <div class="card card-projet">
+          <div class="card card-projet">
+            <img src="assets/images/projet.png" class="card-img-top card-img-projet" alt="...">
+            <div class="etat-entreprise">
+              <span class="label-projet">3 projets</span>
+            </div>
+            <div class="card-body">
+              <p class="title-projet">Nom Entreprise</p>
+              <p align="center">
+                <button type="button" class="btn btn-outline-secondary btn-detail-projet" [routerLink]="['/detail/entreprise']">Détail</button>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div><!--col-->
+      <div class="col">
+        <div class="card card-projet">
+          <img src="assets/images/projet.png" class="card-img-top card-img-projet" alt="...">
+          <div class="etat-entreprise">
+            <span class="label-projet">2 projets</span>
+          </div>
+          <div class="card-body">
+            <p class="title-projet">Nom Entreprise</p>
+            <p align="center">
+              <button type="button" class="btn btn-outline-secondary btn-detail-projet" [routerLink]="['/detail/entreprise']">Détail</button>
+            </p>
+          </div>
+        </div>
+      </div><!--col-->
+    </div><!--row-->
+  </div><!--projets-->
+
+
+  </div><!--content-top-->
+</div>

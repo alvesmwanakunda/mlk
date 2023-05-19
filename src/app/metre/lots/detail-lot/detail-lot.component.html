@@ -1,0 +1,106 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="content-top">
+    <div class="row" style="margin-bottom: 30px;">
+
+       <div class="col">
+           <div class="row">
+            <div class="col">
+              <p class="title-projet-page">Nom du Projet<span style="font-weight: 600;"> - Métrés - Lôt - {{title}}</span></p>
+            </div>
+           </div><!--row-->
+       </div><!--col-->
+
+       <div class="col" align="right">
+        <button type="button" class="btn btn-metre"><i class="fa-solid fa-eye"></i> Visionneuse</button>
+       </div><!--col-->
+    </div><!--row-->
+
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <p class="lot-title" style="padding-top: 10px;">{{title}}</p>
+              </div>
+              <div class="col">
+                <div class="d-flex flex-row-reverse bd-highlight" style="margin-bottom: 25px;">
+                  <div class="p-2 bd-highlight">
+                    <button type="button" class="btn btn-projet" (click)="openDialog()"><i class="fa-solid fa-plus"></i> Nouveau Lôt</button>
+                  </div>
+                  <div class="p-2 bd-highlight" style="width: 45%;"><input type="text" class="form-control input-search" id="exampleFormControlInput1" placeholder="Taper le nom d'un lôt"></div>
+                </div>
+              </div>
+            </div><!--row-->
+            <div>
+
+              <table class="table table-bordered" *ngIf="id==1">
+                <thead>
+                  <tr>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Action</th>
+                    <th scope="col">Fiche</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td scope="row" style="color:#666B78 !important;">WC Siège à l'anglaise</td>
+                    <td>----</td>
+                    <td><button type="button" class="btn" style="color: #28628B;font-size: 13px;">Modifier</button></td>
+                    <td><button type="button" class="btn"><i class="fa-solid fa-eye"></i></button></td>
+                  </tr>
+                  <tr>
+                    <td scope="row"  style="color:#666B78 !important;">Urinoir avec séparation d'urinoir</td>
+                    <td>---</td>
+                    <td><button type="button" class="btn" style="color: #28628B;font-size: 13px;">Modifier</button></td>
+                    <td><button type="button" class="btn"><i class="fa-solid fa-eye"></i></button></td>
+                  </tr>
+                  <tr>
+                    <td scope="row"  style="color:#666B78 !important;">Siphon de sol en PEHD</td>
+                    <td>---</td>
+                    <td><button type="button" class="btn" style="color: #28628B;font-size: 13px;">Modifier</button></td>
+                    <td><button type="button" class="btn"><i class="fa-solid fa-eye"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table class="table table-bordered" *ngIf="id==2">
+                <thead>
+                  <tr>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Action</th>
+                    <th scope="col">Fiche</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td scope="row" style="color:#666B78 !important;">Doubles prises 230V/16A</td>
+                    <td>----</td>
+                    <td><button type="button" class="btn" style="color: #28628B;font-size: 13px;">Modifier</button></td>
+                    <td><button type="button" class="btn"><i class="fa-solid fa-eye"></i></button></td>
+                  </tr>
+                  <tr>
+                    <td scope="row"  style="color:#666B78 !important;">Prise RJ45</td>
+                    <td>---</td>
+                    <td><button type="button" class="btn" style="color: #28628B;font-size: 13px;">Modifier</button></td>
+                    <td><button type="button" class="btn"><i class="fa-solid fa-eye"></i></button></td>
+                  </tr>
+                  <tr>
+                    <td scope="row"  style="color:#666B78 !important;">Prise Télévision</td>
+                    <td>---</td>
+                    <td><button type="button" class="btn" style="color: #28628B;font-size: 13px;">Modifier</button></td>
+                    <td><button type="button" class="btn"><i class="fa-solid fa-eye"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!--content-top-->
+</div>

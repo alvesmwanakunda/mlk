@@ -1,0 +1,104 @@
+<div class="container">
+  <div class="content-top-child">
+    <div class="row">
+      <div class="col-md-7">
+        <p class="lot-title">Liste des Batiments</p>
+        <table class="table table-bordered">
+          <thead>
+            <tr class="title-tab">
+              <th scope="col" style="font-weight:normal;">Nom</th>
+              <th scope="col" style="font-weight:normal;">Nbre</th>
+              <th scope="col" style="font-weight:normal;">Hauteur</th>
+              <th scope="col" style="font-weight:normal;">Longueur</th>
+              <th scope="col" style="font-weight:normal;">Largeur</th>
+              <th scope="col" style="font-weight:normal;">surface</th>
+              <th scope="col" style="font-weight:normal;">Périmètre</th>
+              <th scope="col" style="font-weight:normal;">Zone</th>
+              <th scope="col" style="font-weight:normal;">Action</th>
+              <th scope="col" style="font-weight:normal;">Fiche</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="title-tab" (click)="getBatiment()" style="cursor:pointer;">
+              <td>A</td>
+              <td>3</td>
+              <td>10,4</td>
+              <td>36</td>
+              <td>20</td>
+              <td>720</td>
+              <td>112</td>
+              <td>1</td>
+              <td style="color: #28628B">Détails</td>
+              <td><i class="fa-solid fa-eye" style="font-size: 13px;"></i></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div><!--col-->
+      <div class="col-md-5">
+        <p class="lot-title">Création Batiment</p>
+        <div>
+
+          <div style="margin-bottom: 20px;">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="card card-dot-blue" style="margin-bottom: 10px;">
+                  <div class="card-body">
+                    <img src="assets/images/galerie.png">
+                  </div>
+                </div><!--card-->
+                <div align="right">
+                  <button type="button" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> charger</button>
+                </div>
+              </div><!--col-->
+              <div class="col-md-8"></div>
+            </div>
+
+          </div>
+
+          <div style="margin-bottom: 15px;">
+            <input type="text" class="form-control input-batiment" placeholder="Nom">
+          </div><!--div-->
+
+          <div style="margin-bottom: 15px;">
+            <select class="form-select input-batiment" aria-label="Default select example">
+              <option selected>Choisir les niveaux</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+          </div><!--div-->
+
+          <div style="margin-bottom: 15px;">
+            <input type="text" class="form-control input-batiment" placeholder="Longueur">
+          </div><!--div-->
+
+          <div style="margin-bottom: 15px;">
+            <input type="text" class="form-control input-batiment" placeholder="Largeur">
+          </div><!--div-->
+
+          <div style="margin-bottom: 15px;">
+            <input type="text" class="form-control input-batiment" placeholder="Hauteur">
+          </div><!--div-->
+
+          <div style="margin-bottom: 15px;">
+            <input type="text" class="form-control input-batiment" placeholder="Surface">
+          </div><!--div-->
+
+          <div style="margin-bottom: 15px;">
+            <input type="text" class="form-control input-batiment" placeholder="Périmètre">
+          </div><!--div-->
+
+          <div style="margin-bottom: 15px;">
+            <input type="text" class="form-control input-batiment" placeholder="Zone">
+          </div><!--div-->
+          <div align="right">
+            <button type="button" class="btn btn-projet">ENREGISTRER</button>
+
+          </div>
+
+        </div>
+      </div><!--col-->
+    </div>
+  </div>
+</div>
