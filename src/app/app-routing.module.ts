@@ -55,6 +55,10 @@ const routes: Routes = [
   {
     path:'add/projet',
     loadChildren:()=>import('./projet/add-projet/add-projet.module').then(m=>m.AddProjetModule)
+  },
+  {
+    path:'appartement',
+    loadChildren:()=>import('./metre/batiment/appartement/appartement.module').then(m=>m.AppartementModule)
   }
 ];
 

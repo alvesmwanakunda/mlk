@@ -1,0 +1,555 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="content-top">
+    <div class="row" style="margin-bottom: 30px;">
+
+       <div class="col">
+           <div class="row">
+            <div class="col">
+              <p class="title-projet-page">Nom du Projet  <button class="btn" type="button" [routerLink]="['/metre']"> - Métrés - Batiment - Appartement 1(RDC) </button></p>
+            </div>
+           </div><!--row-->
+       </div><!--col-->
+    </div><!--row-->
+
+    <div>
+      <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <button class="nav-link tabprojet active" id="nav-file-tab" data-bs-toggle="tab" data-bs-target="#nav-file" type="button" role="tab" aria-controls="nav-file" aria-selected="true">Fourniture de modules</button>
+          <button class="nav-link tabprojet" id="nav-int-tab" data-bs-toggle="tab" data-bs-target="#nav-int" type="button" role="tab" aria-controls="nav-int" aria-selected="false">Plomberie</button>
+          <button class="nav-link tabprojet" id="nav-elec-tab" data-bs-toggle="tab" data-bs-target="#nav-elec" type="button" role="tab" aria-controls="nav-elec" aria-selected="false">Electricité</button>
+          <button class="nav-link tabprojet" id="nav-clo-tab" data-bs-toggle="tab" data-bs-target="#nav-clo" type="button" role="tab" aria-controls="nav-clo" aria-selected="false">Cloisons</button>
+          <button class="nav-link tabprojet" id="nav-alum-tab" data-bs-toggle="tab" data-bs-target="#nav-alum" type="button" role="tab" aria-controls="nav-alum" aria-selected="false">Menuiserie Aluminium</button>
+          <button class="nav-link tabprojet" id="nav-bois-tab" data-bs-toggle="tab" data-bs-target="#nav-bois" type="button" role="tab" aria-controls="nav-bois" aria-selected="false">Menuiserie Bois</button>
+          <button class="nav-link tabprojet" id="nav-autres-tab" data-bs-toggle="tab" data-bs-target="#nav-autres" type="button" role="tab" aria-controls="nav-autres" aria-selected="false">Autres</button>
+
+        </div>
+      </nav>
+      <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-file" role="tabpanel" aria-labelledby="nav-file-tab" tabindex="0">
+          <div class="container">
+            <div class="content-top-child">
+
+              <div class="row">
+                 <div class="col-4">
+                  <p class="lot-title">Appartement 1(RDC)</p>
+                  <div>
+                    <img src="assets/images/plan.png">
+                  </div>
+
+                 </div>
+                 <div class="col">
+                  <p class="lot-title">Fourniture de modules y compris installation cable électrique et tuyauterie <i class="fa-solid fa-circle-plus"></i></p>
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr class="title-tab">
+                        <th scope="col" style="font-weight:normal;">Longueur</th>
+                        <th scope="col" style="font-weight:normal;">Largeur</th>
+                        <th scope="col" style="font-weight:normal;">surface</th>
+                        <th scope="col" style="font-weight:normal;">Nbr Module</th>
+                        <th scope="col" style="font-weight:normal;">Types Modules</th>
+                        <th scope="col" style="font-weight:normal;">Unité</th>
+                        <th scope="col" style="font-weight:normal;">Prix U.(Euro)</th>
+                        <th scope="col" style="font-weight:normal;">Prix Total(Euro)</th>
+                        <th scope="col" style="font-weight:normal;">Observation</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="title-tab" style="cursor:pointer;">
+                        <td>8,04</td>
+                        <td>15,59</td>
+                        <td>141,44</td>
+                        <td>6</td>
+                        <td>PM24</td>
+                        <td>u</td>
+                        <td>20 000</td>
+                        <td>120 000</td>
+                        <td>120 000</td>
+                      </tr>
+                      <tr class="title-tab" style="cursor:pointer;">
+                        <td>8,04</td>
+                        <td>15,59</td>
+                        <td>141,44</td>
+                        <td>6</td>
+                        <td>PM18</td>
+                        <td>u</td>
+                        <td>20 000</td>
+                        <td>120 000</td>
+                        <td>120 000</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                 </div>
+              </div><!--row-->
+
+            </div>
+          </div>
+        </div><!--tab1-->
+        <div class="tab-pane fade" id="nav-int" role="tabpanel" aria-labelledby="nav-int-tab" tabindex="0">
+          <div class="container">
+            <div class="content-top-child">
+              <div class="row">
+                <div class="col-4">
+                 <p class="lot-title">Appartement 1(RDC)</p>
+                 <div class="row">
+                  <div class="col">
+                    <p class="app-t1">Largeur</p>
+                    <p class="app-t2">8,04</p>
+                  </div>
+                  <div class="col">
+                    <p class="app-t1">Longueur</p>
+                    <p class="app-t2">8,04</p>
+                  </div>
+                  <div class="col">
+                    <p class="app-t1">Surface</p>
+                    <p class="app-t2">8,04</p>
+                  </div>
+                  <div class="col">
+                    <p class="app-t1">Nbr Module</p>
+                    <p class="app-t2">6</p>
+                  </div>
+                  <div class="col">
+                    <p class="app-t1">Type Modules</p>
+                    <p class="app-t2">PM24</p>
+                  </div>
+                 </div>
+                 <div>
+                   <img src="assets/images/plan.png">
+                 </div>
+
+                </div>
+                <div class="col">
+
+                 <div class="row">
+                  <div class="col">
+                    <p class="lot-title">Plomberie <i class="fa-solid fa-circle-plus"></i></p>
+                  </div>
+                  <div class="col">
+                    <p style="text-align: right;">Prix Tolal <span class="lot-title">20 000 Fcfa (33,39$)</span></p>
+                  </div>
+                 </div>
+                 <table class="table table-bordered">
+                   <thead>
+                     <tr class="title-tab">
+                       <th scope="col" style="font-weight:normal;">Type de Pièces</th>
+                       <th scope="col" style="font-weight:normal;">Appareillage</th>
+                       <th scope="col" style="font-weight:normal;">Unité</th>
+                       <th scope="col" style="font-weight:normal;">Nombre</th>
+                       <th scope="col" style="font-weight:normal;">Prix U.(Euro)</th>
+                       <th scope="col" style="font-weight:normal;">Prix Total(Euro)</th>
+                       <th scope="col" style="font-weight:normal;">Observation</th>
+                       <th scope="col" style="font-weight:normal;">Fiche</th>
+
+                     </tr>
+                   </thead>
+                   <tbody>
+                     <tr class="title-tab" style="cursor:pointer;">
+                       <td>Cuisine</td>
+                       <td>Evier double</td>
+                       <td>u</td>
+                       <td>1</td>
+                       <td>2500</td>
+                       <td>2500</td>
+                       <td></td>
+                       <td><i class="fa-solid fa-eyes"></i></td>
+                     </tr>
+                     <tr class="title-tab" style="cursor:pointer;">
+                      <td>SDB</td>
+                      <td>WC siège</td>
+                      <td>u</td>
+                      <td>1</td>
+                      <td>0</td>
+                      <td>0</td>
+                      <td></td>
+                      <td><i class="fa-solid fa-eyes"></i></td>
+                     </tr>
+                   </tbody>
+                 </table>
+                </div>
+              </div><!--row-->
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="nav-elec" role="tabpanel" aria-labelledby="nav-elec-tab" tabindex="0">
+          <div class="container">
+            <div class="content-top-child">
+              <div class="row">
+                <div class="col-4">
+                 <p class="lot-title">Appartement 1(RDC)</p>
+                 <div class="row">
+                  <div class="col">
+                    <p class="app-t1">Largeur</p>
+                    <p class="app-t2">8,04</p>
+                  </div>
+                  <div class="col">
+                    <p class="app-t1">Longueur</p>
+                    <p class="app-t2">8,04</p>
+                  </div>
+                  <div class="col">
+                    <p class="app-t1">Surface</p>
+                    <p class="app-t2">8,04</p>
+                  </div>
+                  <div class="col">
+                    <p class="app-t1">Nbr Module</p>
+                    <p class="app-t2">6</p>
+                  </div>
+                  <div class="col">
+                    <p class="app-t1">Type Modules</p>
+                    <p class="app-t2">PM24</p>
+                  </div>
+                 </div>
+                 <div>
+                   <img src="assets/images/plan.png">
+                 </div>
+
+                </div>
+                <div class="col">
+
+                 <div class="row">
+                  <div class="col">
+                    <p class="lot-title">Electricité <i class="fa-solid fa-circle-plus"></i></p>
+                  </div>
+                  <div class="col">
+                    <p style="text-align: right;">Prix Tolal <span class="lot-title">20 000 Fcfa (33,39$)</span></p>
+                  </div>
+                 </div>
+                 <table class="table table-bordered">
+                   <thead>
+                     <tr class="title-tab">
+                       <th scope="col" style="font-weight:normal;">Type de Pièces</th>
+                       <th scope="col" style="font-weight:normal;">Appareillage</th>
+                       <th scope="col" style="font-weight:normal;">Unité</th>
+                       <th scope="col" style="font-weight:normal;">Nombre</th>
+                       <th scope="col" style="font-weight:normal;">Prix U.(Euro)</th>
+                       <th scope="col" style="font-weight:normal;">Prix Total(Euro)</th>
+                       <th scope="col" style="font-weight:normal;">Observation</th>
+                       <th scope="col" style="font-weight:normal;">Fiche</th>
+
+                     </tr>
+                   </thead>
+                   <tbody>
+                     <tr class="title-tab" style="cursor:pointer;">
+                       <td>Cuisine</td>
+                       <td>Evier double</td>
+                       <td>u</td>
+                       <td>1</td>
+                       <td>2500</td>
+                       <td>2500</td>
+                       <td></td>
+                       <td><i class="fa-solid fa-eyes"></i></td>
+                     </tr>
+                     <tr class="title-tab" style="cursor:pointer;">
+                      <td>SDB</td>
+                      <td>WC siège</td>
+                      <td>u</td>
+                      <td>1</td>
+                      <td>0</td>
+                      <td>0</td>
+                      <td></td>
+                      <td><i class="fa-solid fa-eyes"></i></td>
+                     </tr>
+                   </tbody>
+                 </table>
+                </div>
+              </div><!--row-->
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="nav-clo" role="tabpanel" aria-labelledby="nav-clo-tab" tabindex="0">
+          <div class="container">
+            <div class="content-top-child">
+              <div class="row">
+                <div class="col-4">
+                 <p class="lot-title">Appartement 1(RDC)</p>
+                 <div class="row">
+                  <div class="col">
+                    <p class="app-t1">Largeur</p>
+                    <p class="app-t2">8,04</p>
+                  </div>
+                  <div class="col">
+                    <p class="app-t1">Longueur</p>
+                    <p class="app-t2">8,04</p>
+                  </div>
+                  <div class="col">
+                    <p class="app-t1">Surface</p>
+                    <p class="app-t2">8,04</p>
+                  </div>
+                  <div class="col">
+                    <p class="app-t1">Nbr Module</p>
+                    <p class="app-t2">6</p>
+                  </div>
+                  <div class="col">
+                    <p class="app-t1">Type Modules</p>
+                    <p class="app-t2">PM24</p>
+                  </div>
+                 </div>
+                 <div>
+                   <img src="assets/images/plan.png">
+                 </div>
+
+                </div>
+                <div class="col">
+
+                 <div class="row">
+                  <div class="col">
+                    <p class="lot-title">Cloisons<i class="fa-solid fa-circle-plus"></i></p>
+                  </div>
+                  <div class="col">
+                    <p style="text-align: right;">Prix Tolal <span class="lot-title">500 000 Fcfa (900$)</span></p>
+                  </div>
+                 </div>
+                 <mat-accordion>
+                  <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        Murs interieur de 12cm
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div style="padding-top: 20px;">
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr class="title-tab">
+                            <th scope="col" style="font-weight:normal;">Quantité(ml)</th>
+                            <th scope="col" style="font-weight:normal;">Prix Unitaire(Euro)</th>
+                            <th scope="col" style="font-weight:normal;">Prix Total (Euro)</th>
+                            <th scope="col" style="font-weight:normal;">Observation</th>
+                            <th scope="col" style="font-weight:normal;">Fiche</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr class="title-tab" style="cursor:pointer;">
+                            <td>21</td>
+                            <td></td>
+                            <td>0</td>
+                            <td></td>
+                            <td><i class="fa-solid fa-eyes"></i></td>
+                          </tr>
+
+                        </tbody>
+                      </table>
+                    </div>
+
+                  </mat-expansion-panel>
+                  <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        Murs interieur de 24cm
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div style="padding-top: 20px;">
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr class="title-tab">
+                            <th scope="col" style="font-weight:normal;">Quantité(ml)</th>
+                            <th scope="col" style="font-weight:normal;">Prix Unitaire(Euro)</th>
+                            <th scope="col" style="font-weight:normal;">Prix Total (Euro)</th>
+                            <th scope="col" style="font-weight:normal;">Observation</th>
+                            <th scope="col" style="font-weight:normal;">Fiche</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr class="title-tab" style="cursor:pointer;">
+                            <td>21</td>
+                            <td></td>
+                            <td>0</td>
+                            <td></td>
+                            <td><i class="fa-solid fa-eyes"></i></td>
+                          </tr>
+
+                        </tbody>
+                      </table>
+                    </div>
+
+                  </mat-expansion-panel>
+                </mat-accordion>
+
+                </div>
+              </div><!--row-->
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="nav-alum" role="tabpanel" aria-labelledby="nav-alum-tab" tabindex="0">
+          <div class="container">
+            <div class="content-top-child">
+              <div class="row">
+                <div class="col-4">
+                 <p class="lot-title">Appartement 1(RDC)</p>
+                 <div class="row">
+                  <div class="col">
+                    <p class="app-t1">Largeur</p>
+                    <p class="app-t2">8,04</p>
+                  </div>
+                  <div class="col">
+                    <p class="app-t1">Longueur</p>
+                    <p class="app-t2">8,04</p>
+                  </div>
+                  <div class="col">
+                    <p class="app-t1">Surface</p>
+                    <p class="app-t2">8,04</p>
+                  </div>
+                  <div class="col">
+                    <p class="app-t1">Nbr Module</p>
+                    <p class="app-t2">6</p>
+                  </div>
+                  <div class="col">
+                    <p class="app-t1">Type Modules</p>
+                    <p class="app-t2">PM24</p>
+                  </div>
+                 </div>
+                 <div>
+                   <img src="assets/images/plan.png">
+                 </div>
+
+                </div>
+                <div class="col">
+
+                 <div class="row">
+                  <div class="col">
+                    <p class="lot-title">Menuiserie Alu<i class="fa-solid fa-circle-plus"></i></p>
+                  </div>
+                  <div class="col">
+                    <p style="text-align: right;">Prix Tolal <span class="lot-title">500 000 Fcfa (900$)</span></p>
+                  </div>
+                 </div>
+                 <table class="table table-bordered">
+                   <thead>
+                     <tr class="title-tab">
+                       <th scope="col" style="font-weight:normal;">Type de Pièces</th>
+                       <th scope="col" style="font-weight:normal;">Designation</th>
+                       <th scope="col" style="font-weight:normal;">Dimensions</th>
+                       <th scope="col" style="font-weight:normal;">Quantité</th>
+                       <th scope="col" style="font-weight:normal;">Prix U.(Euro)</th>
+                       <th scope="col" style="font-weight:normal;">Prix Total(Euro)</th>
+                       <th scope="col" style="font-weight:normal;">Observation</th>
+                       <th scope="col" style="font-weight:normal;">Fiche</th>
+
+                     </tr>
+                   </thead>
+                   <tbody>
+                     <tr class="title-tab" style="cursor:pointer;">
+                       <td>Cuisine</td>
+                       <td>CH1</td>
+                       <td>0,60 x 0,60</td>
+                       <td>1</td>
+                       <td>2500</td>
+                       <td>2500</td>
+                       <td></td>
+                       <td><i class="fa-solid fa-eyes"></i></td>
+                     </tr>
+                     <tr class="title-tab" style="cursor:pointer;">
+                      <td>Séjour</td>
+                      <td>CH2</td>
+                      <td>0,90 x 0,60</td>
+                      <td>1</td>
+                      <td>0</td>
+                      <td>0</td>
+                      <td></td>
+                      <td><i class="fa-solid fa-eyes"></i></td>
+                     </tr>
+                   </tbody>
+                 </table>
+                </div>
+              </div><!--row-->
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="nav-bois" role="tabpanel" aria-labelledby="nav-bois-tab" tabindex="0">
+          <div class="container">
+            <div class="content-top-child">
+
+              <div class="row">
+                <div class="col-4">
+                 <p class="lot-title">Appartement 1(RDC)</p>
+                 <div class="row">
+                  <div class="col">
+                    <p class="app-t1">Largeur</p>
+                    <p class="app-t2">8,04</p>
+                  </div>
+                  <div class="col">
+                    <p class="app-t1">Longueur</p>
+                    <p class="app-t2">8,04</p>
+                  </div>
+                  <div class="col">
+                    <p class="app-t1">Surface</p>
+                    <p class="app-t2">8,04</p>
+                  </div>
+                  <div class="col">
+                    <p class="app-t1">Nbr Module</p>
+                    <p class="app-t2">6</p>
+                  </div>
+                  <div class="col">
+                    <p class="app-t1">Type Modules</p>
+                    <p class="app-t2">PM24</p>
+                  </div>
+                 </div>
+                 <div>
+                   <img src="assets/images/plan.png">
+                 </div>
+
+                </div>
+                <div class="col">
+
+                 <div class="row">
+                  <div class="col">
+                    <p class="lot-title">Menuiserie Bois<i class="fa-solid fa-circle-plus"></i></p>
+                  </div>
+                  <div class="col">
+                    <p style="text-align: right;">Prix Tolal <span class="lot-title">500 000 Fcfa (300$)</span></p>
+                  </div>
+                 </div>
+                 <table class="table table-bordered">
+                   <thead>
+                     <tr class="title-tab">
+                       <th scope="col" style="font-weight:normal;">Type de Pièces</th>
+                       <th scope="col" style="font-weight:normal;">Designation</th>
+                       <th scope="col" style="font-weight:normal;">Dimensions</th>
+                       <th scope="col" style="font-weight:normal;">Quantité</th>
+                       <th scope="col" style="font-weight:normal;">Prix U.(Euro)</th>
+                       <th scope="col" style="font-weight:normal;">Prix Total(Euro)</th>
+                       <th scope="col" style="font-weight:normal;">Observation</th>
+                       <th scope="col" style="font-weight:normal;">Fiche</th>
+
+                     </tr>
+                   </thead>
+                   <tbody>
+                     <tr class="title-tab" style="cursor:pointer;">
+                       <td>Cuisine</td>
+                       <td>CH1</td>
+                       <td>0,60 x 0,60</td>
+                       <td>1</td>
+                       <td>2500</td>
+                       <td>2500</td>
+                       <td></td>
+                       <td><i class="fa-solid fa-eyes"></i></td>
+                     </tr>
+                     <tr class="title-tab" style="cursor:pointer;">
+                      <td>Séjour</td>
+                      <td>CH2</td>
+                      <td>0,90 x 0,60</td>
+                      <td>1</td>
+                      <td>0</td>
+                      <td>0</td>
+                      <td></td>
+                      <td><i class="fa-solid fa-eyes"></i></td>
+                     </tr>
+                   </tbody>
+                 </table>
+                </div>
+              </div><!--row-->
+
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="nav-autres" role="tabpanel" aria-labelledby="nav-autres-tab" tabindex="0">
+          <div class="container">
+            <div class="content-top-child">
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

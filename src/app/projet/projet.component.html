@@ -51,39 +51,43 @@
 
             <div class="row" style="margin-bottom:15px;">
                 <div class="col">
-                  <div class="card" style="height: 78px;">
+                  <div class="card" style="height: 78px;margin-bottom:10px">
                     <div class="card-body">
-                      <p align="center"><i class="fa-regular fa-calendar-days" style="font-size: 29px;"></i></p>
+                      <p align="center"><i class="fa-regular fa-calendar-days" style="font-size: 25px;color:#28628B"></i></p>
                       <p class="pr-title">25 Mars 2023</p>
                     </div>
                   </div>
+                  <p class="pr-title-etat">Date Fin Travaux</p>
                 </div><!--col-->
                 <div class="col">
-                  <div class="card" style="height: 78px;">
+                  <div class="card" style="height: 78px;margin-bottom:10px">
                     <div class="card-body">
-                      <p align="center"><i class="fa-regular fa-calendar-days"  style="font-size: 29px;"></i></p>
+                      <p align="center"><i class="fa-regular fa-calendar-days"  style="font-size: 25px;color:#28628B"></i></p>
                       <p class="pr-title">25 Sept 2023</p>
                     </div>
                   </div>
+                  <p class="pr-title-etat">Date de début</p>
                 </div><!--col-->
             </div><!--row-->
 
             <div class="row">
               <div class="col">
-                <div class="card" style="height: 78px;">
+                <div class="card" style="height: 78px;margin-bottom:10px">
                   <div class="card-body">
-                    <p align="center"><i class="fa-regular fa-calendar-days" style="font-size: 29px;"></i></p>
-                    <p class="pr-title">25 Mars 2023</p>
+                    <p align="center"><i class="fa-solid fa-bars-progress" style="font-size: 25px;color:#28628B"></i></p>
+                    <p class="pr-title">Affaire</p>
                   </div>
                 </div>
+                <p class="pr-title-etat">Statut</p>
               </div><!--col-->
               <div class="col">
-                <div class="card" style="height: 78px;">
+                <div class="card" style="height: 78px;margin-bottom:10px">
                   <div class="card-body">
-                    <p align="center"><i class="fa-regular fa-calendar-days"  style="font-size: 29px;"></i></p>
-                    <p class="pr-title">25 Sept 2023</p>
+                    <p align="center"><i class="fa-solid fa-location-dot"  style="font-size: 25px;color:#28628B"></i></p>
+                    <p class="pr-title">94550</p>
                   </div>
                 </div>
+                <p class="pr-title-etat">Lieu</p>
               </div><!--col-->
           </div><!--row-->
           </div><!--card-body-->
@@ -98,9 +102,9 @@
             <button class="nav-link tabprojet active" id="nav-file-tab" data-bs-toggle="tab" data-bs-target="#nav-file" type="button" role="tab" aria-controls="nav-file" aria-selected="true">Fiche</button>
             <button class="nav-link tabprojet" id="nav-int-tab" data-bs-toggle="tab" data-bs-target="#nav-int" type="button" role="tab" aria-controls="nav-int" aria-selected="false">Intervenant</button>
             <!--<button class="nav-link tabprojet" id="nav-bat-tab" data-bs-toggle="tab" data-bs-target="#nav-bat" type="button" role="tab" aria-controls="nav-bat" aria-selected="false">Batiment</button>-->
-            <button class="nav-link tabprojet" id="nav-piece-tab" data-bs-toggle="tab" data-bs-target="#nav-piece" type="button" role="tab" aria-controls="nav-piece" aria-selected="false">Pièce Marché</button>
-            <button class="nav-link tabprojet" id="nav-etude-tab" data-bs-toggle="tab" data-bs-target="#nav-etude" type="button" role="tab" aria-controls="nav-etude" aria-selected="false">Etude</button>
-            <button class="nav-link tabprojet" id="nav-metre-tab" data-bs-toggle="tab" data-bs-target="#nav-metre" type="button" role="tab" aria-controls="nav-metre" aria-selected="false" [routerLink]="['/metre']">Métrés</button>
+            <button class="nav-link tabprojet" id="nav-piece-tab" data-bs-toggle="tab" data-bs-target="#nav-piece" type="button" role="tab" aria-controls="nav-piece" aria-selected="false">Documents</button>
+            <!--<button class="nav-link tabprojet" id="nav-etude-tab" data-bs-toggle="tab" data-bs-target="#nav-etude" type="button" role="tab" aria-controls="nav-etude" aria-selected="false">Etude</button>-->
+            <button class="nav-link tabprojet" id="nav-metre-tab" data-bs-toggle="tab" data-bs-target="#nav-metre" type="button" role="tab" aria-controls="nav-metre" aria-selected="false" [routerLink]="['/metre']">Etude</button>
             <!--<button class="nav-link tabprojet" id="nav-pre-tab" data-bs-toggle="tab" data-bs-target="#nav-pre" type="button" role="tab" aria-controls="nav-pre" aria-selected="false">Préparation</button>
             <button class="nav-link tabprojet" id="nav-tra-tab" data-bs-toggle="tab" data-bs-target="#nav-tra" type="button" role="tab" aria-controls="nav-tra" aria-selected="false">Travaux</button>-->
           </div>

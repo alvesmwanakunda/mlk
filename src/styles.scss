@@ -502,6 +502,14 @@ hr.entreprise{
   text-align: center
 }
 
+.pr-title-etat{
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  color: #434A5E;
+  text-align: center
+}
+
 .pr-title-entrep{
   font-style: normal;
   font-weight: normal;
@@ -598,7 +606,8 @@ hr.entreprise{
   font-size: 12px;
   line-height: 12px;
   color: #28628B;
-  text-align: right
+  text-align: right;
+  cursor: pointer;
 }
 
 .dot-card1-user{
@@ -692,6 +701,58 @@ hr.entreprise{
 
 .mat-stepper-vertical {
   background-color: #ECF0F4 !important;
+}
+
+.mat-expansion-panel-header {
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: normal !important;
+  color: #ffffff !important;
+  background-color: #28628B !important
+}
+
+.mat-expansion-panel-header-title {
+  color: rgb(255 255 255 / 100%) !important;
+}
+
+.mat-expansion-panel-header-description, .mat-expansion-indicator::after {
+  color: rgb(255 255 255 / 80%) !important;
+}
+
+.mat-expansion-panel {
+  box-sizing: content-box;
+  display: block;
+  margin: 0;
+  border-radius: 0px !important;
+  overflow: hidden;
+  transition: margin 225ms cubic-bezier(0.4, 0, 0.2, 1),box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.mat-accordion .mat-expansion-panel:first-of-type {
+  border-top-right-radius: 0px !important;
+  border-top-left-radius: 0px !important;
+}
+
+.mat-expansion-panel-body {
+  padding: 0 24px 16px;
+  border: 1px solid #28628B !important;
+}
+
+.app-t1{
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-size: 6.76px;
+  color: #434A5E;
+  text-align: center
+}
+
+.app-t2{
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-size: 9px;
+  color: #434A5E;
+  text-align: center
 }
 
 
