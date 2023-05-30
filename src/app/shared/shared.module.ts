@@ -23,6 +23,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatListModule} from '@angular/material/list';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatChipsModule} from '@angular/material/chips';
+
 
 
 
@@ -52,6 +54,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MatRadioModule,
     MatListModule,
     MatExpansionModule,
+    MatChipsModule
   ],
   exports:[
     MatCardModule,
@@ -76,6 +79,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MatRadioModule,
     MatListModule,
     MatExpansionModule,
+    MatChipsModule
   ]
 })
 export class SharedModule { }

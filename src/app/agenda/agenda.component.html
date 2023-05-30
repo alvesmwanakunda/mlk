@@ -1,0 +1,58 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="content-top">
+
+    <div class="row" style="margin-bottom: 30px;">
+      <div class="col">
+            <p class="title-projet-page">Agenda</p>
+      </div><!--col-->
+      <div class="col" align="right">
+
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-outline-primary" (click)="setView(CalendarView.Month)"
+          [class.active]="view === CalendarView.Month">Mois</button>
+          <button type="button" class="btn btn-outline-primary" (click)="setView(CalendarView.Week)"
+          [class.active]="view === CalendarView.Week">Week</button>
+          <button type="button" class="btn btn-outline-primary" (click)="setView(CalendarView.Day)"
+          [class.active]="view === CalendarView.Day">Jour</button>
+        </div>
+
+      </div>
+   </div><!--row-->
+
+   <div class="row">
+     <div class="col">
+
+      <h2 class="agenda-title">{{ viewDate | calendarDate:(view + 'ViewTitle'):'fr' }}</h2>
+
+      <div [ngSwitch]="view">
+        <mwl-calendar-month-view
+        *ngSwitchCase="CalendarView.Month"
+        [viewDate]="viewDate"
+        [events]="events"
+        locale="fr"
+        >
+        </mwl-calendar-month-view>
+
+        <mwl-calendar-week-view
+        *ngSwitchCase="CalendarView.Week"
+        [viewDate]="viewDate"
+        [events]="events"
+        locale="fr"
+        >
+        </mwl-calendar-week-view>
+
+        <mwl-calendar-day-view
+        *ngSwitchCase="CalendarView.Day"
+        [viewDate]="viewDate"
+        [events]="events"
+        locale="fr"
+        >
+        </mwl-calendar-day-view>
+      </div>
+
+     </div>
+   </div><!--row-->
+
+  </div>
+</div>

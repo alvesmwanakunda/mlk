@@ -41,6 +41,10 @@ const routes: Routes = [
     loadChildren:()=>import('./box/box.module').then(m=>m.BoxModule)
   },
   {
+    path:"agenda",
+    loadChildren:()=>import('./agenda/agenda.module').then(m=>m.AgendaModule)
+  },
+  {
     path:'entreprises',
     loadChildren:()=>import('./entreprise/entreprise.module').then(m=>m.EntrepriseModule)
   },
@@ -59,6 +63,10 @@ const routes: Routes = [
   {
     path:'appartement',
     loadChildren:()=>import('./metre/batiment/appartement/appartement.module').then(m=>m.AppartementModule)
+  },
+  {
+    path:'devis',
+    loadChildren:()=>import('./projet/devis/devis.module').then(m=>m.DevisModule)
   }
 ];
 

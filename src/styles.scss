@@ -605,7 +605,7 @@ hr.entreprise{
   font-weight: 400;
   font-size: 12px;
   line-height: 12px;
-  color: #28628B;
+  color: #28628B !important;
   text-align: right;
   cursor: pointer;
 }
@@ -755,9 +755,54 @@ hr.entreprise{
   text-align: center
 }
 
+.agenda-title{
+  color: #28628B;
+  text-align: center
+}
+
+.btn-outline-primary {
+  --bs-btn-color: #28628B !important;
+  --bs-btn-border-color: #28628B !important;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #28628B !important;
+  --bs-btn-hover-border-color: #28628B !important;
+  --bs-btn-focus-shadow-rgb: 13, 110, 253;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #28628B !important;
+  --bs-btn-active-border-color: #28628B !important;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #28628B !important;
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-disabled-border-color: #28628B !important;
+  --bs-gradient: none;
+}
+
+.number-devis{
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  color: #000000;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
+
+.title-tab-devis{
+  font-size: 12px !important;
+  font-weight: normal !important;
+}
+
+.mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) .mdc-evolution-chip__text-label {
+  color: var(--mdc-chip-label-text-color, currentColor);
+  font-size: 12px !important;
+}
+
 
 
 
 
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
+

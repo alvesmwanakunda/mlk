@@ -131,7 +131,14 @@
           <div class="card-body">
             <div class="row">
               <div class="col"><p class="box-title">Statistiques</p></div>
-              <div class="col"> <p class="dot-box-title">Sélectionner</p></div>
+              <div class="col" align="right" style="position: absolute;top: 5px;">
+                <button mat-button [matMenuTriggerFor]="menu" class="dot-box-title">Sélectionner</button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item>Électricité</button>
+                  <button mat-menu-item>Plomberie</button>
+                  <button mat-menu-item>Autre</button>
+                </mat-menu>
+              </div>
            </div><!--row-->
 
            <div class="row">
