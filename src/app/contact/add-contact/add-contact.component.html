@@ -1,0 +1,94 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="content-top">
+    <div class="row">
+      <div class="col">
+        <p class="title-projet-page">Création Contact <button class="btn" type="button" [routerLink]="['/contact']"><i class="fa-solid fa-arrow-left" style="color:#28628B;"></i></button></p>
+      </div>
+      <div class="col">
+         <div align="right">
+          <i class="fa-solid fa-users" style="font-size: 30px;color: #666C7E;"></i>
+         </div>
+      </div>
+    </div><!--row-->
+    <div class="row">
+      <div class="col">
+        <hr class="entreprise">
+      </div>
+    </div><!--row-->
+    <div class="row">
+      <div class="col">
+        <form [formGroup]="contactFormGroup">
+          <div class="row">
+            <div class="col">
+              <div style="margin-bottom: 15px;">
+                <label class="label-entreprise">Nom <small class="error_field">*</small></label>
+                <input type="text" formControlName="nom"  class="form-control input-entreprise" required>
+                <div *ngIf="contactFormGroup.get('nom').hasError(champ_validation.nom[0].type) && (contactFormGroup.get('nom').dirty || contactFormGroup.get('nom').touched)">
+                  <p class="error_field">{{champ_validation.nom[0].message}}</p>
+                </div>
+              </div><!--div-->
+              <div style="margin-bottom: 15px;">
+                <label class="label-entreprise">E-mail</label>
+                <input type="text" formControlName="email"  class="form-control input-entreprise" required>
+              </div><!--div-->
+
+            </div><!--col-->
+            <div class="col">
+              <div style="margin-bottom: 15px;">
+                <label class="label-entreprise">Prénom</label>
+                <input type="text" formControlName="prenom"  class="form-control input-entreprise" required>
+              </div><!--div-->
+              <div class="row" style="margin-bottom: 15px;">
+                <div class="col-4">
+                  <label class="label-entreprise">Indicatif</label>
+                  <input type="text" formControlName="indicatif" [matAutocomplete]="autoCode" class="form-control input-entreprise">
+                  <mat-autocomplete #autoCode="matAutocomplete">
+                    <mat-option *ngFor="let code of codeFiltres | async" [value]="code?.dial_code">
+                      {{code?.dial_code}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </div>
+                <div class="col">
+                  <label class="label-entreprise">Nº Tel</label>
+                  <input type="text" formControlName="phone" class="form-control input-entreprise">
+                </div>
+              </div><!--div-->
+
+            </div><!--col-->
+          </div><!--col-->
+          <div style="margin-bottom: 15px;">
+            <label class="label-entreprise">Poste</label>
+            <input type="text" formControlName="poste"  class="form-control input-entreprise" required>
+          </div><!--div-->
+          <div class="row">
+            <div class="col">
+              <div style="margin-bottom: 15px;">
+                <label class="label-entreprise">Entreprises</label>
+                <br/>
+                <mat-form-field class="example-full-width">
+                  <mat-select formControlName="entreprise"  multiple >
+                    <mat-option *ngFor="let en of entreprises" [value]="en._id">{{en.nom}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div><!--div-->
+            </div>
+            <div class="col">
+              <div style="margin-bottom: 15px;">
+                <label class="label-entreprise">Projets</label>
+                <br/>
+                <mat-form-field class="example-full-width">
+                  <mat-select formControlName="projet"  multiple >
+                    <mat-option *ngFor="let p of projets" [value]="p._id">{{p.nom}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div><!--div-->
+            </div>
+          </div>
+        </form>
+        <div align="right">
+          <button mat-button  class="btn-entreprise" (click)="addContact()" [disabled]="contactFormGroup.invalid">VALIDER</button>
+        </div>
+      </div><!--row-->
+    </div>
+</div>

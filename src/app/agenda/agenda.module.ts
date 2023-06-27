@@ -6,7 +6,10 @@ import { NavbarModule } from '../navbar/navbar.module';
 import { SharedModule } from '../shared/shared.module';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-
+import { AddAgendaModule } from './add-agenda/add-agenda.module';
+import { AgendaService } from '../shared/services/agenda.service';
+import { UpdateAgendaModule } from './update-agenda/update-agenda.module';
+import { DeleteAgendaModule } from './delete-agenda/delete-agenda.module';
 
 
 @NgModule({
@@ -16,10 +19,14 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     AgendaRoutingModule,
     NavbarModule,
     SharedModule,
+    AddAgendaModule,
+    UpdateAgendaModule,
+    DeleteAgendaModule,
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory
     })
-  ]
+  ],
+  providers:[AgendaService]
 })
 export class AgendaModule { }

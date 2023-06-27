@@ -20,147 +20,189 @@
       <div class="col">
 
         <mat-stepper orientation="vertical">
-          <mat-step>
-            <ng-template matStepLabel>Informations Primaires de l’entreprise</ng-template>
-            <ng-template matStepContent>
-              <div class="row">
-                <div class="col">
+          <mat-step [stepControl]="firstFormGroup" errorMessage="Le nom d'entreprise est obligatoire.">
+            <form [formGroup]="firstFormGroup">
+              <ng-template matStepLabel>Informations Primaires de l’entreprise</ng-template>
+              <ng-template matStepContent>
+                <div class="row">
+                  <div class="col">
 
-                  <div style="margin-bottom: 15px;">
-                    <label class="label-entreprise">Nom Entreprise</label>
-                    <input type="text" class="form-control input-entreprise">
-                  </div><!--div-->
-                  <div style="margin-bottom: 15px;">
-                    <label class="label-entreprise">Nº SIREN</label>
-                    <input type="text" class="form-control input-entreprise">
-                  </div><!--div-->
-                  <div style="margin-bottom: 15px;">
-                    <label class="label-entreprise">Forme Juridique</label>
-                    <input type="text" class="form-control input-entreprise">
-                  </div><!--div-->
+                    <div style="margin-bottom: 15px;">
+                      <label class="label-entreprise">Nom Entreprise <small class="error_field">*</small></label>
+                      <input type="text" formControlName="nom" class="form-control input-entreprise" required>
+                      <div *ngIf="firstFormGroup.get('nom').hasError(champ_validation.nom[0].type) && (firstFormGroup.get('nom').dirty || firstFormGroup.get('nom').touched)">
+                        <p class="error_field">{{champ_validation.nom[0].message}}</p>
+                      </div>
+                    </div><!--div-->
 
-                </div><!--col-->
-                <div class="col">
+                    <div style="margin-bottom: 15px;">
+                      <label class="label-entreprise">Nº SIREN</label>
+                      <input type="text" formControlName="siren" class="form-control input-entreprise">
+                    </div><!--div-->
+                    <div style="margin-bottom: 15px;">
+                      <label class="label-entreprise">Forme Juridique</label>
+                      <input type="text" formControlName="juridique" class="form-control input-entreprise">
+                    </div><!--div-->
 
-                  <div style="margin-bottom: 15px;">
-                    <label class="label-entreprise">Nom Commercial</label>
-                    <input type="text" class="form-control input-entreprise">
-                  </div><!--div-->
-                  <div style="margin-bottom: 15px;">
-                    <label class="label-entreprise">Nº SIRET</label>
-                    <input type="text" class="form-control input-entreprise">
-                  </div><!--div-->
-                  <div style="margin-bottom: 15px;">
-                    <label class="label-entreprise">Nº TVA</label>
-                    <input type="text" class="form-control input-entreprise">
-                  </div><!--div-->
-               </div>
-              </div>
-              <div style="margin-bottom: 15px;">
-                <label class="label-entreprise">Activité Principale</label>
-                <input type="text" class="form-control input-entreprise">
-              </div><!--div-->
-              <div align="right">
-                <button mat-button matStepperNext class="btn-entreprise">Suivant <i class="fa-solid fa-chevron-right"></i></button>
-              </div>
-            </ng-template>
-          </mat-step>
-          <mat-step>
-            <ng-template matStepLabel>Coordonnées de l'entreprise</ng-template>
-            <ng-template matStepContent>
-              <div class="row">
-                <div class="col">
+                  </div><!--col-->
+                  <div class="col">
 
-                  <div style="margin-bottom: 15px;">
-                    <label class="label-entreprise">Pays de l'entreprise</label>
-                    <input type="text" class="form-control input-entreprise">
-                  </div><!--div-->
-                  <div style="margin-bottom: 15px;">
-                    <label class="label-entreprise">Ville de l'entreprise</label>
-                    <input type="text" class="form-control input-entreprise">
-                  </div><!--div-->
-                  <div style="margin-bottom: 15px;">
-                    <label class="label-entreprise">Code Postal</label>
-                    <input type="text" class="form-control input-entreprise">
-                  </div><!--div-->
-
-                  <div style="margin-bottom: 15px;">
-                    <label class="label-entreprise">Email de l'entreprise</label>
-                    <input type="text" class="form-control input-entreprise">
-                  </div><!--div-->
-
-                </div><!--col-->
-                <div class="col">
-
-                  <div style="margin-bottom: 15px;">
-                    <label class="label-entreprise">Adresse de l'entreprise</label>
-                    <input type="text" class="form-control input-entreprise">
-                  </div><!--div-->
-                  <div style="margin-bottom: 15px;">
-                    <label class="label-entreprise">Rue de l'entreprise</label>
-                    <input type="text" class="form-control input-entreprise">
-                  </div><!--div-->
-                  <div style="margin-bottom: 15px;">
-                    <label class="label-entreprise">Site Web</label>
-                    <input type="text" class="form-control input-entreprise">
-                  </div><!--div-->
-                  <div class="row" style="margin-bottom: 15px;">
-                    <div class="col-4">
-                      <label class="label-entreprise">Indicatif</label>
-                      <input type="text" class="form-control input-entreprise">
-                    </div>
-                    <div class="col">
-                      <label class="label-entreprise">Nº Tel</label>
-                       <input type="text" class="form-control input-entreprise">
-                    </div>
-                  </div><!--div-->
-               </div>
-              </div>
-              <div align="right">
-                <button mat-button matStepperPrevious class="btn-entreprise-back" style="margin-right: 10px;"><i class="fa-solid fa-chevron-left"></i> PRECEDENT</button>
-                <button mat-button matStepperNext class="btn-entreprise">SUIVANT <i class="fa-solid fa-chevron-right"></i></button>
-              </div>
-            </ng-template>
-          </mat-step>
-          <mat-step>
-            <ng-template matStepLabel>Information Supplémentaires de l'entreprise</ng-template>
-            <div class="row" style="padding-top: 13px;">
-              <div class="col-md-3">
-                <div class="card card-dot-blue" style="margin-bottom: 10px;">
-                  <div class="card-body">
-                    <img src="assets/images/galerie.png">
-                  </div>
-                </div><!--card-->
-                <div align="right">
-                  <button type="button" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> charger</button>
+                    <div style="margin-bottom: 15px;">
+                      <label class="label-entreprise">Nom Commercial</label>
+                      <input type="text" formControlName="commercial" class="form-control input-entreprise">
+                    </div><!--div-->
+                    <div style="margin-bottom: 15px;">
+                      <label class="label-entreprise">Nº SIRET</label>
+                      <input type="text" formControlName="siret" class="form-control input-entreprise">
+                    </div><!--div-->
+                    <div style="margin-bottom: 15px;">
+                      <label class="label-entreprise">Nº TVA</label>
+                      <input type="text" formControlName="tva" class="form-control input-entreprise">
+                    </div><!--div-->
                 </div>
-              </div><!--col-->
-              <div class="col-md-9"></div>
-            </div><!--row-->
-            <div>
-              <div style="margin-bottom: 15px;">
-                <label class="label-entreprise">Corps d'activité</label>
-                <input type="text" class="form-control input-entreprise">
-              </div><!--div-->
-              <div style="margin-bottom: 15px;">
-                <label class="label-entreprise">Corps Etat</label>
-                <input type="text" class="form-control input-entreprise">
-              </div><!--div-->
-              <div style="margin-bottom: 15px;">
-                <label class="label-entreprise">Fournisseur</label>
-                <select class="form-select input-entreprise" aria-label="Default select example">
-                  <option selected>Oui</option>
-                  <option value="1">Non</option>
-                </select>
-              </div><!--div-->
-            </div>
+                </div>
+                <div style="margin-bottom: 15px;">
+                  <label class="label-entreprise">Activité Principale</label>
+                  <input type="text" formControlName="activite" class="form-control input-entreprise">
+                </div><!--div-->
+                <div align="right">
+                  <button mat-button matStepperNext class="btn-entreprise">Suivant <i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+              </ng-template>
+            </form>
+          </mat-step>
+          <mat-step [stepControl]="secondFormGroup" errorMessage="L'email d'entreprise et téléphone sont obligatoire.">
+            <form [formGroup]="secondFormGroup">
+              <ng-template matStepLabel>Coordonnées de l'entreprise</ng-template>
+              <ng-template matStepContent>
+                <div class="row">
+                  <div class="col">
 
+                    <div style="margin-bottom: 15px;">
+                      <label class="label-entreprise">Pays de l'entreprise</label>
+                      <input type="text" formControlName="pays" [matAutocomplete]="auto" class="form-control input-entreprise">
+                      <mat-autocomplete #auto="matAutocomplete">
+                        <mat-option *ngFor="let pays of paysFiltres | async" [value]="pays.name">
+                          {{pays?.emoji}} {{pays?.name}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </div><!--div-->
+                    <div style="margin-bottom: 15px;">
+                      <label class="label-entreprise">Ville de l'entreprise</label>
+                      <input type="text" formControlName="ville" class="form-control input-entreprise">
+                    </div><!--div-->
+                    <div style="margin-bottom: 15px;">
+                      <label class="label-entreprise">Code Postal</label>
+                      <input type="text" formControlName="postal" class="form-control input-entreprise">
+                    </div><!--div-->
+
+                    <div style="margin-bottom: 15px;">
+                      <label class="label-entreprise">Email de l'entreprise <small class="error_field">*</small></label>
+                      <input type="text" formControlName="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control input-entreprise" required>
+                      <div *ngIf="secondFormGroup.get('email').hasError(champ_validation.email[0].type) && (secondFormGroup.get('email').dirty || secondFormGroup.get('email').touched)">
+                        <p class="error_field">{{champ_validation.email[0].message}}</p>
+                      </div>
+                      <div *ngIf="secondFormGroup.get('email').hasError(champ_validation.email[1].type) && (secondFormGroup.get('email').dirty || secondFormGroup.get('email').touched)">
+                        <p class="error_field">{{champ_validation.email[1].message}}</p>
+                      </div>
+                    </div><!--div-->
+
+                  </div><!--col-->
+                  <div class="col">
+
+                    <div style="margin-bottom: 15px;">
+                      <label class="label-entreprise">Adresse de l'entreprise</label>
+                      <input type="text" formControlName="adresse" class="form-control input-entreprise">
+                    </div><!--div-->
+                    <div style="margin-bottom: 15px;">
+                      <label class="label-entreprise">Rue de l'entreprise</label>
+                      <input type="text" formControlName="rue" class="form-control input-entreprise">
+                    </div><!--div-->
+                    <div style="margin-bottom: 15px;">
+                      <label class="label-entreprise">Site Web</label>
+                      <input type="text" formControlName="site" class="form-control input-entreprise">
+                    </div><!--div-->
+                    <div class="row" style="margin-bottom: 15px;">
+                      <div class="col-4">
+                        <label class="label-entreprise">Indicatif <small class="error_field">*</small></label>
+                        <input type="text" formControlName="indicatif" [matAutocomplete]="autoCode" class="form-control input-entreprise">
+                        <mat-autocomplete #autoCode="matAutocomplete">
+                          <mat-option *ngFor="let code of codeFiltres | async" [value]="code?.dial_code">
+                            {{code?.dial_code}}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </div>
+                      <div class="col">
+                        <label class="label-entreprise">Nº Tel <small class="error_field">*</small></label>
+                        <input type="text" formControlName="telephone" class="form-control input-entreprise">
+                        <div *ngIf="secondFormGroup.get('telephone').hasError(champ_validation.telephone[0].type) && (secondFormGroup.get('telephone').dirty || secondFormGroup.get('telephone').touched)">
+                          <p class="error_field">{{champ_validation.telephone[0].message}}</p>
+                        </div>
+                      </div>
+                    </div><!--div-->
+                  </div>
+                </div>
+                <div style="margin-bottom: 15px;">
+                  <label class="label-entreprise">Responsable <small class="error_field">*</small></label>
+                  <input type="text" formControlName="representant" class="form-control input-entreprise">
+                  <div *ngIf="secondFormGroup.get('representant').hasError(champ_validation.representant[0].type) && (secondFormGroup.get('representant').dirty || secondFormGroup.get('representant').touched)">
+                    <p class="error_field">{{champ_validation.representant[0].message}}</p>
+                  </div>
+                </div>
+                <div align="right">
+                  <button mat-button matStepperPrevious class="btn-entreprise-back" style="margin-right: 10px;"><i class="fa-solid fa-chevron-left"></i> PRECEDENT</button>
+                  <button mat-button matStepperNext class="btn-entreprise">SUIVANT <i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+              </ng-template>
+            </form>
+          </mat-step>
+          <mat-step [stepControl]="threeFormGroup">
+            <form [formGroup]="threeFormGroup">
+              <ng-template matStepLabel>Information Supplémentaires de l'entreprise</ng-template>
+              <div class="row" style="padding-top: 13px;">
+                <div class="col-md-3">
+                  <div class="card card-dot-blue" style="margin-bottom: 10px;" *ngIf="!selectedImage">
+                    <div class="card-body">
+                      <img src="assets/images/galerie.png">
+                    </div>
+                  </div><!--card-->
+                  <div *ngIf="selectedImage"  style="margin-bottom: 10px;">
+                    <img [src]="selectedImage" class="card-img-projet">
+                  </div>
+                  <div align="right">
+                    <input type="file" class="file-input" accept='image/*' (change)="onFileSelected($event)" #fileUpload>
+                    <button type="button" (click)="fileUpload.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> charger</button>
+                  </div>
+                </div><!--col-->
+                <div class="col-md-9"></div>
+              </div><!--row-->
+              <div>
+                <div style="margin-bottom: 15px;">
+                  <label class="label-entreprise">Corps d'activité</label>
+                  <input type="text" formControlName="corps_act" class="form-control input-entreprise">
+                </div><!--div-->
+                <div style="margin-bottom: 15px;">
+                  <label class="label-entreprise">Corps Etat</label>
+                  <input type="text" formControlName="corps_etat" class="form-control input-entreprise">
+                </div><!--div-->
+                <div style="margin-bottom: 15px;">
+                  <label class="label-entreprise">Fournisseur</label>
+                  <select class="form-select input-entreprise" formControlName="fournisseur" aria-label="Default select example">
+                    <option value="Oui">Oui</option>
+                    <option value="Non">Non</option>
+                  </select>
+                </div><!--div-->
+              </div>
+            </form>
             <div align="right">
               <button mat-button matStepperPrevious class="btn-entreprise-back" style="margin-right: 10px;"><i class="fa-solid fa-chevron-left"></i> PRECEDENT</button>
-              <button mat-button  class="btn-entreprise">VALIDER</button>
+              <button mat-button  class="btn-entreprise" (click)="addEntreprise()" [disabled]="firstFormGroup.invalid || secondFormGroup.invalid">VALIDER</button>
             </div>
           </mat-step>
         </mat-stepper>
+        <div *ngIf="onLoadForm">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
 
       </div><!--col-->
     </div><!--row-->

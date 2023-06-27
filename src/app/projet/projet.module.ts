@@ -8,6 +8,8 @@ import { FicheModule } from './fiche/fiche.module';
 import { IntervenantModule } from './intervenant/intervenant.module';
 import { PieceModule } from './piece/piece.module';
 import { EtudeModule } from './etude/etude.module';
+import { ProjetsService } from '../shared/services/projets.service';
+import { DeleteProjetModule } from './delete-projet/delete-projet.module';
 
 
 @NgModule({
@@ -20,7 +22,9 @@ import { EtudeModule } from './etude/etude.module';
     FicheModule,
     IntervenantModule,
     PieceModule,
-    EtudeModule
-  ]
+    EtudeModule,
+    DeleteProjetModule
+  ],
+  providers:[ProjetsService]
 })
 export class ProjetModule { }

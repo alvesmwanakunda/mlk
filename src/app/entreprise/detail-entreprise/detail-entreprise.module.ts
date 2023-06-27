@@ -8,6 +8,9 @@ import { NavbarModule } from 'src/app/navbar/navbar.module';
 import { FicheModule } from '../../projet/fiche/fiche.module';
 import { IntervenantModule } from '../../projet/intervenant/intervenant.module';
 import { PieceModule } from '../../projet/piece/piece.module';
+import { EntreprisesService } from 'src/app/shared/services/entreprises.service';
+import { DeleteEntrepriseModule } from '../delete-entreprise/delete-entreprise.module';
+import { ProjetEntrepriseModule } from '../projet-entreprise/projet-entreprise.module';
 
 
 @NgModule({
@@ -19,7 +22,10 @@ import { PieceModule } from '../../projet/piece/piece.module';
     NavbarModule,
     FicheModule,
     IntervenantModule,
-    PieceModule
-  ]
+    PieceModule,
+    DeleteEntrepriseModule,
+    ProjetEntrepriseModule
+  ],
+  providers:[EntreprisesService]
 })
 export class DetailEntrepriseModule { }

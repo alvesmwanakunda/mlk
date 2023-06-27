@@ -7,17 +7,28 @@
             <p class="title-projet-page">Agenda</p>
       </div><!--col-->
       <div class="col" align="right">
-
-        <div class="btn-group" role="group" aria-label="Basic example">
-          <button type="button" class="btn btn-outline-primary" (click)="setView(CalendarView.Month)"
-          [class.active]="view === CalendarView.Month">Mois</button>
-          <button type="button" class="btn btn-outline-primary" (click)="setView(CalendarView.Week)"
-          [class.active]="view === CalendarView.Week">Week</button>
-          <button type="button" class="btn btn-outline-primary" (click)="setView(CalendarView.Day)"
-          [class.active]="view === CalendarView.Day">Jour</button>
-        </div>
-
+        <button type="button" class="btn btn-projet" (click)="openDialogAgenda()"><i class="fa-solid fa-plus"></i> Nouvel événement</button>
       </div>
+   </div><!--row-->
+
+   <div class="row"  style="margin-bottom: 30px;">
+    <div class="col">
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-outline-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">Précédent</button>
+        <button type="button" class="btn btn-outline-primary" mwlCalendarToday [(viewDate)]="viewDate">Aujourd'hui</button>
+        <button type="button" class="btn btn-outline-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">Suivant</button>
+      </div>
+    </div>
+    <div class="col" align="right">
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-outline-primary" (click)="setView(CalendarView.Month)"
+        [class.active]="view === CalendarView.Month">Mois</button>
+        <button type="button" class="btn btn-outline-primary" (click)="setView(CalendarView.Week)"
+        [class.active]="view === CalendarView.Week">Week</button>
+        <button type="button" class="btn btn-outline-primary" (click)="setView(CalendarView.Day)"
+        [class.active]="view === CalendarView.Day">Jour</button>
+      </div>
+    </div><!--col-->
    </div><!--row-->
 
    <div class="row">
@@ -30,6 +41,11 @@
         *ngSwitchCase="CalendarView.Month"
         [viewDate]="viewDate"
         [events]="events"
+        [refresh]="refresh"
+        [activeDayIsOpen]="activeDayIsOpen"
+        (dayClicked)="dayClicked($event.day)"
+        (eventClicked)="openDialogUpadte($event.event)"
+        (eventTimesChanged)="eventTimesChanged($event)"
         locale="fr"
         >
         </mwl-calendar-month-view>
@@ -38,6 +54,9 @@
         *ngSwitchCase="CalendarView.Week"
         [viewDate]="viewDate"
         [events]="events"
+        [refresh]="refresh"
+        (eventClicked)="openDialogUpadte($event.event)"
+        (eventTimesChanged)="eventTimesChanged($event)"
         locale="fr"
         >
         </mwl-calendar-week-view>
@@ -46,6 +65,9 @@
         *ngSwitchCase="CalendarView.Day"
         [viewDate]="viewDate"
         [events]="events"
+        [refresh]="refresh"
+        (eventClicked)="openDialogUpadte($event.event)"
+        (eventTimesChanged)="eventTimesChanged($event)"
         locale="fr"
         >
         </mwl-calendar-day-view>

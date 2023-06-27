@@ -17,8 +17,13 @@ const routes: Routes = [
     loadChildren:()=>import('./dashboard/dashboard.module').then(m=>m.DashboardModule)
   },
   {
-    path:"projet",
+    path:"projet/:id",
     loadChildren:()=>import('./projet/projet.module').then(m=>m.ProjetModule)
+  },
+  {
+    path:"update/projet/:id",
+    loadChildren:()=>import('./projet/update-projet/update-projet.module').then(m=>m.UpdateProjetModule)
+
   },
   {
     path:"metre",
@@ -37,6 +42,14 @@ const routes: Routes = [
     loadChildren:()=>import('./contact/contact.module').then(m=>m.ContactModule)
   },
   {
+    path:"add/contact",
+    loadChildren:()=>import('./contact/add-contact/add-contact.module').then(m=>m.AddContactModule)
+  },
+  {
+    path:"update/contact/:id",
+    loadChildren:()=>import('./contact/update-contact/update-contact.module').then(m=>m.UpdateContactModule)
+  },
+  {
     path:"box",
     loadChildren:()=>import('./box/box.module').then(m=>m.BoxModule)
   },
@@ -49,12 +62,16 @@ const routes: Routes = [
     loadChildren:()=>import('./entreprise/entreprise.module').then(m=>m.EntrepriseModule)
   },
   {
-    path:'detail/entreprise',
+    path:'detail/entreprise/:id',
     loadChildren:()=>import('./entreprise/detail-entreprise/detail-entreprise.module').then(m=>m.DetailEntrepriseModule)
   },
   {
     path:'add/entreprise',
     loadChildren:()=>import('./entreprise/add-entreprise/add-entreprise.module').then(m=>m.AddEntrepriseModule)
+  },
+  {
+    path:'entreprise/:id',
+    loadChildren:()=>import('./entreprise/update-entreprise/update-entreprise.module').then(m=>m.UpdateEntrepriseModule)
   },
   {
     path:'add/projet',

@@ -1,4 +1,5 @@
 import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,11 +10,19 @@ import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  toggleNavbar = true;
 
-  constructor(){}
+  toggleNavbar = true;
+  user:any;
+
+  constructor(private authService:AuthService){
+    this.user = JSON.parse(localStorage.getItem('user'));
+  }
 
   ngOnInit(){
+  }
+
+  logout(){
+    this.authService.logout();
   }
 
 }

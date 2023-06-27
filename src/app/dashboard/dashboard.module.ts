@@ -4,6 +4,8 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
 import { SharedModule } from '../shared/shared.module';
 import { NavbarModule } from '../navbar/navbar.module';
+import { ProjetsService } from '../shared/services/projets.service';
+
 
 
 @NgModule({
@@ -13,6 +15,7 @@ import { NavbarModule } from '../navbar/navbar.module';
     DashboardRoutingModule,
     SharedModule,
     NavbarModule
-  ]
+  ],
+  providers:[ProjetsService]
 })
 export class DashboardModule { }

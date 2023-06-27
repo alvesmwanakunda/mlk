@@ -2,26 +2,13 @@
 <div class="container">
   <div class="content-top">
     <div class="row">
-
        <div class="col">
-           <div class="row">
-            <div class="col-4">
-              <select class="form-select input-search" aria-label="Default select example">
-                <option selected>Type Service</option>
-                <option value="1">Installation</option>
-                <option value="2">Désinstallation</option>
-                <option value="3">Remise aux normes</option>
-              </select>
-            </div>
-            <div class="col">
-              <input type="text" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher par nom de projet, localisation...">
-            </div>
-           </div><!--row-->
+        <p class="title-projet-page" style="padding-top: 10px;">Projet : {{projet?.nom}}</p>
        </div><!--col-->
 
        <div class="col" align="right">
-        <button class="btn" type="button" style="margin-right: 10px;"><i class="fa-solid fa-share btn-icon-projet"></i></button>
-        <button type="button" class="btn" style="margin-right: 10px;"><i class="fas fa-th-large btn-icon-projet"></i></button>
+        <button type="button" class="btn btn-projet-action" style="margin-right: 5px;" matTooltip="Modifier" (click)="updateProjet(projet._id)"><i class="fa-regular fa-pen-to-square btn-icon-projet-update"></i></button>
+        <button type="button" class="btn btn-projet-action" style="margin-right: 5px;" matTooltip="Supprimer" (click)="openDialogDelete(projet._id)"><i class="fa-solid fa-trash btn-icon-projet-delete"></i></button>
         <button type="button" class="btn btn-projet" [routerLink]="['/add/projet']"><i class="fa-solid fa-plus"></i> Nouveau Projet</button>
        </div><!--col-->
     </div><!--row-->
@@ -33,28 +20,28 @@
       <div class="col-3">
 
         <div class="card card-projet">
-          <img src="assets/images/projet.png" class="card-img-top card-img-projet" alt="...">
-          <div class="img-user-projet">
-            <img src="assets/images/userp.png">
-          </div>
+          <img src="data:image/png;base64,{{projet?.photo}}" *ngIf="projet?.photo" class="card-img-top card-img-projet" alt="...">
+          <img src="assets/images/pr.png" *ngIf="!projet?.photo" class="card-img-projet" alt="...">
 
           <div class="card-body" style="padding-top: 40px;">
-            <p class="user-title">Nom du Représentant</p>
+            <p class="user-title">{{projet?.responsable}}</p>
             <div align="center" style="margin-bottom:40px;"><hr class="projet"></div>
 
-            <p class="title-projet" style="margin-bottom:20px;">Transformation des châssis Bureaux Bâtiments D8F4, H1, H2 et H3 du Marché International de Rungis</p>
+            <p class="title-projet" style="margin-bottom:20px;">{{projet?.nom}}</p>
 
             <div class="progress progress-projet" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="margin-bottom:10px;">
-              <div class="progress-bar" style="width: 25%"></div>
+              <div class="progress-bar" [ngStyle]="{'width': (projet?.etat=='En attente') ? '0%' : (projet?.etat=='En cours') ? '50%' : (projet?.etat=='Clôturé') ? '100%' : '0%'}"></div>
             </div>
-            <p class="pr-projet">80% restants</p>
+            <p class="pr-projet" *ngIf="projet?.etat=='En attente'">0%</p>
+            <p class="pr-projet" *ngIf="projet?.etat=='En cours'">50%</p>
+            <p class="pr-projet" *ngIf="projet?.etat=='Clôturé'">100%</p>
 
             <div class="row" style="margin-bottom:15px;">
                 <div class="col">
                   <div class="card" style="height: 78px;margin-bottom:10px">
                     <div class="card-body">
                       <p align="center"><i class="fa-regular fa-calendar-days" style="font-size: 25px;color:#28628B"></i></p>
-                      <p class="pr-title">25 Mars 2023</p>
+                      <p class="pr-title">{{projet?.date_limite |date :'dd MMMM yyyy'}}</p>
                     </div>
                   </div>
                   <p class="pr-title-etat">Date Fin Travaux</p>
@@ -63,7 +50,7 @@
                   <div class="card" style="height: 78px;margin-bottom:10px">
                     <div class="card-body">
                       <p align="center"><i class="fa-regular fa-calendar-days"  style="font-size: 25px;color:#28628B"></i></p>
-                      <p class="pr-title">25 Sept 2023</p>
+                      <p class="pr-title">{{projet?.createdDate |date :'dd MMMM yyyy'}}</p>
                     </div>
                   </div>
                   <p class="pr-title-etat">Date de début</p>
@@ -75,16 +62,16 @@
                 <div class="card" style="height: 78px;margin-bottom:10px">
                   <div class="card-body">
                     <p align="center"><i class="fa-solid fa-bars-progress" style="font-size: 25px;color:#28628B"></i></p>
-                    <p class="pr-title">Affaire</p>
+                    <p class="pr-title">{{projet?.etat}}</p>
                   </div>
                 </div>
                 <p class="pr-title-etat">Statut</p>
               </div><!--col-->
               <div class="col">
-                <div class="card" style="height: 78px;margin-bottom:10px">
+                <div class="card" style="margin-bottom:10px">
                   <div class="card-body">
                     <p align="center"><i class="fa-solid fa-location-dot"  style="font-size: 25px;color:#28628B"></i></p>
-                    <p class="pr-title">94550</p>
+                    <p class="pr-title">{{projet?.rue}},{{projet?.postal}} {{projet?.ville}}</p>
                   </div>
                 </div>
                 <p class="pr-title-etat">Lieu</p>
@@ -114,7 +101,7 @@
             <app-fiche></app-fiche>
           </div>
           <div class="tab-pane fade" id="nav-int" role="tabpanel" aria-labelledby="nav-int-tab" tabindex="0">
-            <app-intervenant></app-intervenant>
+            <app-intervenant type="projet"></app-intervenant>
           </div>
           <div class="tab-pane fade" id="nav-piece" role="tabpanel" aria-labelledby="nav-piece-tab" tabindex="0">
             <app-piece></app-piece>

@@ -1,0 +1,23 @@
+export interface Projets {
+  _id:string;
+  nom:string;
+  entreprise:string;
+  user:string;
+  service:string;
+  etat:string;
+  responsable:string;
+  adresse:string;
+  ville:string;
+  rue:string;
+  postal:string;
+  photo:string;
+  pays:string;
+  numero_offre:string;
+  site_offre:string;
+  budget:string;
+  devise:string;
+  date_limite:Date;
+  code_projet:string;
+  code_client:string;
+  createdDate:Date;
+}

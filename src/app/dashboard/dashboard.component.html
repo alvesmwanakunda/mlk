@@ -56,129 +56,111 @@
         <p class="list-search-projet">Liste des Projets</p>
       </div><!--col-->
       <div class="col-2">
-        <select class="form-select input-search" aria-label="Default select example">
+        <select class="form-select input-search" aria-label="Default select example"  (keyup)="applyFilter($event)">
           <option selected>Type Service</option>
-          <option value="1">Installation</option>
-          <option value="2">Désinstallation</option>
-          <option value="3">Remise aux normes</option>
+          <option value="Installation">Installation</option>
+          <option value="Désinstallation">Désinstallation</option>
+          <option value="Remise aux normes">Remise aux normes</option>
         </select>
       </div><!--col-->
       <div class="col-2">
-        <select class="form-select input-search" aria-label="Default select example">
+        <select class="form-select input-search" aria-label="Default select example"  (keyup)="applyFilter($event)">
           <option selected>Etat</option>
-          <option value="1">En cour</option>
-          <option value="2">Clôturé</option>
-          <option value="3">En attente</option>
+          <option value="En attente">En attente</option>
+          <option value="En cours">En cours</option>
+          <option value="Clôturé">Clôturé</option>
         </select>
       </div><!--col-->
       <div class="col-2">
-        <input type="date" class="form-control input-search" id="exampleFormControlInput1" placeholder="Date">
+        <input type="date" class="form-control input-search" id="exampleFormControlInput1" placeholder="Date"  (keyup)="applyFilter($event)">
       </div><!--col-->
       <div class="col">
-        <input type="text" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher par nom de projet, localisation...">
+        <input type="text" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher par nom de projet"  (keyup)="applyFilter($event)">
       </div><!--col-->
     </div><!--row-->
   </div><!--search projets-->
 
   <div class="bloc-new-projet">
     <div align="right">
-      <button type="button" class="btn"><i class="fas fa-th-large btn-icon-projet"></i></button>
+      <button type="button" class="btn" style="margin-right: 10px;" matTooltip="Tableau" *ngIf="!isListe" (click)="getList()"><i class="fa-solid fa-table btn-icon-projet"></i></button>
+      <button type="button" class="btn" style="margin-right: 10px;" matTooltip="Liste" *ngIf="isListe" (click)="getList()"><i class="fa-solid fa-grip btn-icon-projet"></i></button>
       <button type="button" class="btn btn-projet" [routerLink]="['/add/projet']"><i class="fa-solid fa-plus"></i> Nouveau Projet</button>
    </div>
   </div><!--new-projet-->
 
-  <div class="bloc-projets">
-    <div class="row">
-      <div class="col">
+  <div class="bloc-projets" *ngIf="!projets.length">
+    <p class="notdata">Aucune donnée(s)</p>
+  </div>
+
+  <div class="bloc-projets" *ngIf="projets.length">
+
+    <div class="row" *ngIf="!isListe">
+      <div class="col-3" *ngFor="let projet of projets" style="margin-bottom: 15px;">
         <div class="card card-projet">
-          <img src="assets/images/projet.png" class="card-img-top card-img-projet" alt="...">
+          <img src="data:image/png;base64,{{projet?.photo}}" *ngIf="projet?.photo" class="card-img-projet" alt="...">
+          <img src="assets/images/pr.png" *ngIf="!projet?.photo" class="card-img-projet" alt="...">
           <div class="etat-projet">
-            <span class="label-projet">Devis</span>
+            <span class="label-projet">{{projet?.devise}}</span>
           </div>
           <div class="progress progress-projet" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-            <div class="progress-bar" style="width: 25%"></div>
+            <div class="progress-bar" [ngStyle]="{'width': (projet?.etat=='En attente') ? '0%' : (projet?.etat=='En cours') ? '50%' : (projet?.etat=='Clôturé') ? '100%' : '0%'}"></div>
           </div>
           <div class="card-body">
-            <p class="title-projet">Nom du Projet</p>
+            <p class="title-projet">{{projet?.nom}}</p>
             <p align="center">
-              <button type="button" class="btn btn-outline-secondary btn-detail-projet" [routerLink]="['/projet']">Détail</button>
-            </p>
-          </div>
-        </div>
-      </div><!--col-->
-      <div class="col">
-        <div class="card card-projet">
-          <img src="assets/images/projet.png" class="card-img-top card-img-projet" alt="...">
-          <div class="etat-projet">
-            <span class="label-projet">Devis</span>
-          </div>
-          <div class="progress progress-projet" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-            <div class="progress-bar" style="width: 25%"></div>
-          </div>
-          <div class="card-body">
-            <p class="title-projet">Nom du Projet</p>
-            <p align="center">
-              <button type="button" class="btn btn-outline-secondary btn-detail-projet" [routerLink]="['/projet']">Détail</button>
-            </p>
-          </div>
-        </div>
-      </div><!--col-->
-      <div class="col">
-        <div class="card card-projet">
-          <div class="card card-projet">
-            <img src="assets/images/projet.png" class="card-img-top card-img-projet" alt="...">
-            <div class="etat-projet">
-              <span class="label-projet">Devis</span>
-            </div>
-            <div class="progress progress-projet" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-              <div class="progress-bar" style="width: 25%"></div>
-            </div>
-            <div class="card-body">
-              <p class="title-projet">Nom du Projet</p>
-              <p align="center">
-                <button type="button" class="btn btn-outline-secondary btn-detail-projet" [routerLink]="['/projet']">Détail</button>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div><!--col-->
-      <div class="col">
-        <div class="card card-projet">
-          <div class="card card-projet">
-            <img src="assets/images/projet.png" class="card-img-top card-img-projet" alt="...">
-            <div class="etat-projet">
-              <span class="label-projet">Devis</span>
-            </div>
-            <div class="progress progress-projet" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-              <div class="progress-bar" style="width: 25%"></div>
-            </div>
-            <div class="card-body">
-              <p class="title-projet">Nom du Projet</p>
-              <p align="center">
-                <button type="button" class="btn btn-outline-secondary btn-detail-projet" [routerLink]="['/projet']">Détail</button>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div><!--col-->
-      <div class="col">
-        <div class="card card-projet">
-          <img src="assets/images/projet.png" class="card-img-top card-img-projet" alt="...">
-          <div class="etat-projet">
-            <span class="label-projet">Devis</span>
-          </div>
-          <div class="progress progress-projet" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-            <div class="progress-bar" style="width: 25%"></div>
-          </div>
-          <div class="card-body">
-            <p class="title-projet">Nom du Projet</p>
-            <p align="center">
-              <button type="button" class="btn btn-outline-secondary btn-detail-projet" [routerLink]="['/projet']">Détail</button>
+              <button type="button" class="btn btn-outline-secondary btn-detail-projet" (click)="getProjet(projet._id)">Détail</button>
             </p>
           </div>
         </div>
       </div><!--col-->
     </div><!--row-->
+
+    <div  *ngIf="isListe">
+
+      <table mat-table [dataSource]="dataSource">
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="nom">
+          <th mat-header-cell *matHeaderCellDef> Projet </th>
+          <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;"> {{element?.nom}} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="entreprise">
+          <th mat-header-cell *matHeaderCellDef> Entreprise </th>
+          <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.entreprise}}</td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="etat">
+          <th mat-header-cell *matHeaderCellDef> Statut </th>
+          <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">  {{element?.etat}}  </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="limite">
+          <th mat-header-cell *matHeaderCellDef>Date limite</th>
+          <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"> {{element?.limite |date: 'dd/MM/YYYY'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>Détail</th>
+          <td mat-cell *matCellDef="let element">  <button type="button" class="btn btn-outline-secondary btn-detail-projet" (click)="getProjet(element?.id)">Détail</button> </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[10, 20]"
+                    showFirstLastButtons
+                    aria-label="Select page of periodic elements">
+      </mat-paginator>
+
+
+    </div>
+
   </div><!--projets-->
 
 

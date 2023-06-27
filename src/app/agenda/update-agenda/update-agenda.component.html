@@ -1,0 +1,35 @@
+<mat-dialog-content class="mat-typography">
+  <div class="text-center" style="padding-top: 25px;"><p class="title-projet-page">Nouvel événement</p></div>
+  <div class="row"><div class="col"><hr class="entreprise"></div></div><!--row-->
+  <div *ngIf="agenda">
+    <form [formGroup]="agendaFormGroup">
+
+      <div style="margin-bottom: 8px;">
+        <label class="label-entreprise">Titre</label>
+        <input type="text" formControlName="title"  [(ngModel)]="agenda.title" class="form-control input-entreprise">
+      </div><!--div-->
+
+      <div class="row" style="margin-bottom: 8px;">
+        <div class="col">
+          <label class="label-entreprise">Début</label>
+          <input type="datetime-local" formControlName="start"  [(ngModel)]="agenda.start"  class="form-control input-entreprise">
+          <p>{{start}}</p>
+        </div>
+        <div class="col">
+          <label class="label-entreprise">Fin</label>
+          <input type="datetime-local" formControlName="end"  [(ngModel)]="agenda.end"  class="form-control input-entreprise">
+          <p>{{end}}</p>
+        </div>
+      </div><!--div-->
+      <div style="margin-bottom: 8px;">
+        <label class="label-entreprise">Couleur</label>
+        <input type="color" formControlName="color"  [(ngModel)]="agenda.color"  class="form-control input-entreprise">
+      </div><!--div-->
+
+    </form>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+   <button mat-button mat-dialog-close style="margin-right: 10px;">Fermer</button>
+   <button mat-button cdkFocusInitial style=" background: #0829cf !important;color:#fff" (click)="updateAgenda()">Valider</button>
+</mat-dialog-actions>

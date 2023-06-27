@@ -24,6 +24,8 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatListModule} from '@angular/material/list';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatChipsModule} from '@angular/material/chips';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+
 
 
 
@@ -54,7 +56,8 @@ import {MatChipsModule} from '@angular/material/chips';
     MatRadioModule,
     MatListModule,
     MatExpansionModule,
-    MatChipsModule
+    MatChipsModule,
+    MatAutocompleteModule
   ],
   exports:[
     MatCardModule,
@@ -79,7 +82,8 @@ import {MatChipsModule} from '@angular/material/chips';
     MatRadioModule,
     MatListModule,
     MatExpansionModule,
-    MatChipsModule
+    MatChipsModule,
+    MatAutocompleteModule
   ]
 })
 export class SharedModule { }

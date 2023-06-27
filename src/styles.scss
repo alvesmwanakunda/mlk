@@ -63,6 +63,17 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
   text-align: center !important;
 }
 
+.btn-projet-action{
+  border-radius: 0 !important;
+  color: #0a0a0a !important;
+  background-color: #ffffff !important;
+  font-family: 'Roboto' !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  text-align: center !important;
+}
+
 .btn-entreprise{
   border-radius: 0 !important;
   color: #ffffff !important;
@@ -129,6 +140,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
 
 .btn-icon-projet{
   color: #28628B !important;
+  font-size: 14px !important;
+}
+
+.btn-icon-projet-delete{
+  color: #dc0a46 !important;
+  font-size: 14px !important;
+}
+
+.btn-icon-projet-update{
+  color: #27c607 !important;
   font-size: 14px !important;
 }
 
@@ -333,6 +354,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
   border-radius: 0 !important;
 }
 
+.card-projet-ent{
+  border: 0.5px solid #959799 !important;
+  border-radius: 0 !important;
+}
+
 .card-entrd{
   border: 0.5px solid #28628B !important;
   background-color:  #28628B !important;
@@ -359,8 +385,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
 .card-img-projet{
   border-top-left-radius: 0 !important;
   border-top-right-radius: 0 !important;
+  width: 261px !important;
+  height: 196px !important;
 }
 
+.card-img-projet-ent {
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  width: 251px !important;
+  height: 160px !important;
+}
 .title-projet-page{
   font-family: 'Roboto';
   font-style: normal;
@@ -372,10 +406,20 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 400;
-  font-size: 9.37179px;
+  font-size: 14px;
   line-height: 11px;
   color: #666B78;
   text-align: center
+}
+
+.title-projet-ent {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  /* line-height: 11px; */
+  color: #666B78;
+  text-align: center;
 }
 
 .etat-projet{
@@ -427,6 +471,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
   border: 0.231405px solid #979797 !important;
   height: 29px !important;
   width: 98px !important;
+}
+
+.btn-compte{
+  color: #000000 !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  border: 0.231405px solid #979797 !important;
 }
 
 .img-user-projet{
@@ -497,7 +548,7 @@ hr.entreprise{
   font-style: normal;
   font-weight: 500;
   font-size: 9px;
-  line-height: 6px;
+  line-height: 10px;
   color: #434A5E;
   text-align: center
 }
@@ -677,7 +728,6 @@ hr.entreprise{
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
-  line-height: 7px;
   color: #434A5E;
 }
 
@@ -798,6 +848,65 @@ hr.entreprise{
   font-size: 12px !important;
 }
 
+::ng-deep.mat-menu-panel {
+  max-width: none !important;
+}
+
+.user-info{
+  width: 340px;
+  background-color: #F7F8F9;
+  background-clip: border-box;
+  border: 1px solid rgb(225 225 225 / 13%);;
+  border-radius: 0.25rem;
+  margin: 10px;
+  border-top-left-radius: 25px;
+  color: #000;
+  border-top-right-radius: 25px;
+}
+
+.mat-mdc-menu-panel.mat-mdc-menu-panel.my-class {
+  min-width: 0px !important;
+  max-width: none !important;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  background: #ffffff !important;
+  border-radius: 25px !important;
+}
+
+.user-phone{
+    font-size: 13px;
+    position: relative;
+    bottom: 22px;
+    color: #3a3939;
+}
+
+.notdata{
+    text-align: center;
+    font-size: 24px;
+    font-weight: 500;
+    color: #e13167;
+}
+
+.error_field{
+  color: red;
+}
+
+.file-input {
+  display: none;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: transparent !important;
+  border-radius: 0 !important;
+  border: 0.349546px solid #666B78 !important;
+  //height: 44px !important;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
 
 
 
@@ -805,4 +914,6 @@ hr.entreprise{
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
 @import "../node_modules/angular-calendar/css/angular-calendar.css";
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
 

@@ -22,27 +22,36 @@
     <div class="form-div">
 
       <h3 class="title-page">Bienvenue !</h3>
-      <form>
+      <form [formGroup]="loginForm" novalidate>
+        <div *ngIf="testValidation">
+           <p class="text-danger text-center">Veuillez remplir tous les champs</p>
+        </div>
         <div>
-
           <label class="label-style">E-mail</label>
           <div class="input-group mb-3 bloc-input">
             <span class="input-group-text input-group-lgs border-right-0" id="basic-addon1"><i class="fas fa-user"></i></span>
-            <input type="email" class="form-control py-2 border-left-0 input-lgs" placeholder="al@gmail.com" aria-label="Username" aria-describedby="basic-addon1">
+            <input type="email" formControlName="email" class="form-control py-2 border-left-0 input-lgs" placeholder="al@gmail.com" aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+          <div *ngIf="loginFormErrors.email.notfound">
+            <p style="color:#BA0237">Adresse email ou le mot de passe invalide.</p>
           </div>
 
           <label class="label-style">Mot de passe</label>
           <div class="input-group mb-3 bloc-input">
             <span class="input-group-text input-group-lgs border-right-0" id="basic-addon2"><i class="fas fa-lock"></i></span>
-            <input type="password" class="form-control py-2 border-left-0 input-lgs"  aria-label="Password" aria-describedby="basic-addon2">
+            <input type="password" formControlName="password" class="form-control py-2 border-left-0 input-lgs"  aria-label="Password" aria-describedby="basic-addon2">
           </div>
 
           <div align="center">
-            <button type="button" class="btn btn-sing" [routerLink]="['/dashboard']">Se connecter</button>
+            <button [disabled]="onLoadForm" type="submit" (click)="onLogin()" class="btn btn-sing">Se connecter</button>
           </div>
 
         </div><!--div-->
       </form><!--form-->
+
+      <!--<div *ngIf="onLoadForm">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </div>-->
 
     </div><!--form-->
 

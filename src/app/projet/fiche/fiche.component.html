@@ -8,15 +8,15 @@
         <div class="row">
           <div class="col">
             <p class="title-col">Date Contrat</p>
-            <p class="infos-col">14 Février 2020</p>
+            <p class="infos-col">{{projet?.createdDate |date :'dd MMMM yyyy'}}</p>
           </div>
           <div class="col">
             <p class="title-col">Code Projet</p>
-            <p class="infos-col">KAP-123JKIU56</p>
+            <p class="infos-col">{{projet?.code_projet}}</p>
           </div>
           <div class="col">
             <p class="title-col">Code Commande Client</p>
-            <p class="infos-col">12MBVN</p>
+            <p class="infos-col">{{projet?.code_client}}</p>
           </div>
         </div><!--row-->
       </div><!--10-->
@@ -31,7 +31,7 @@
           </div>
           <div class="col">
             <p class="title-col">Type Service</p>
-            <p class="infos-col">Fourniture / Pose</p>
+            <p class="infos-col">{{projet?.service}}</p>
           </div>
           <div class="col">
             <p class="title-col">Réseau</p>
@@ -46,11 +46,11 @@
         <div class="row">
           <div class="col">
             <p class="title-col">Pays</p>
-            <p class="infos-col">France</p>
+            <p class="infos-col">{{projet?.pays}}</p>
           </div>
           <div class="col">
             <p class="title-col">Budget Prévisionnel</p>
-            <p class="infos-col">316 596, 00 €</p>
+            <p class="infos-col">{{projet?.budget}} {{projet?.devise}}</p>
           </div>
         </div><!--row-->
       </div><!--10-->
@@ -157,7 +157,7 @@
     </div><!--row-->
 
     <div align="right">
-      <p><img src="assets/images/userp.png" style="margin-right: 10px;"> <span class="infos-resp">Nom du responsable du projet</span></p>
+      <p><img src="assets/images/userp.png" style="margin-right: 10px;"> <span class="infos-resp">{{projet?.responsable}}</span></p>
     </div>
   </div><!--content-top-->
 

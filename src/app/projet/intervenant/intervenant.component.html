@@ -3,125 +3,49 @@
 
     <div class="d-flex flex-row-reverse bd-highlight" style="margin-bottom: 30px;">
       <div class="p-2 bd-highlight">
-        <button type="button" class="btn btn-projet"><i class="fa-solid fa-plus"></i> Nouveau Intervenant</button>
+        <button type="button" class="btn btn-projet" routerLink="/add/contact"><i class="fa-solid fa-plus"></i> Nouveau Intervenant</button>
       </div>
-      <div class="p-2 bd-highlight">
+      <!--<div class="p-2 bd-highlight">
         <button type="button" class="btn"><i class="fas fa-th-large btn-icon-projet"></i></button>
-      </div>
-      <div class="p-2 bd-highlight" style="width: 45%;"><input type="text" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher par nom, num, tel, email, profession..."></div>
+      </div>-->
+      <div class="p-2 bd-highlight" style="width: 45%;"><input type="text" (keyup)="applyFilter($event)" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher par nom, num, tel, email, profession..."></div>
     </div>
 
-    <div>
+    <div class="bloc-projets" *ngIf="!contacts.length">
+      <p class="notdata">Aucune donnée(s)</p>
+    </div>
+
+    <div  *ngIf="contacts.length">
       <div class="row">
-         <div class="col">
+        <div class="col-4"  *ngFor="let contact of contacts" style="margin-bottom: 15px;">
           <div class="card card-interv">
-              <img src="assets/images/int.png" class="card-img-top card-img-projet" alt="...">
+              <!--<img src="assets/images/int.png" class="card-img-top card-img-projet" alt="...">-->
               <div class="card-body">
-                <p class="user-int">Christy Lachant</p>
+                <p class="user-int">{{contact?.nom}} {{contact?.prenom}}</p>
                 <div align="center" style="margin-bottom:40px;"><hr class="projet"></div>
-
-                <div class="row">
-                   <div class="col">
-                    <p class="title-col"><i class="fa-solid fa-user-tie" style="font-size: 14px;"></i> Ingénieur BTP</p>
-                   </div>
-                   <div class="col">
-                    <p class="title-col"><i class="fa-solid fa-mobile-screen" style="font-size: 14px;"></i> +33 77 007 000</p>
-                   </div>
-                </div><!--row-->
-                <div class="row" style="margin-bottom: 15px;">
-                  <div class="col">
-                   <p class="title-col"><i class="fa-solid fa-city" style="font-size: 14px;"></i> MLKA</p>
-                  </div>
-                  <div class="col">
-                   <p class="title-col"><i class="fa-solid fa-envelope" style="font-size: 14px;"></i> lach@mlk.fr</p>
-                  </div>
-               </div><!--row-->
+                <div>
+                 <p class="title-col"><i class="fa-solid fa-user-tie" style="font-size: 14px;"></i> {{contact?.poste}}</p>
+                </div>
+                <div>
+                 <p class="title-col"><i class="fa-solid fa-mobile-screen" style="font-size: 14px;"></i> ({{contact?.indicatif}}){{contact?.phone}}</p>
+                </div>
+                <div class="col">
+                 <p class="title-col">
+                   <i class="fa-solid fa-city" style="font-size: 14px;"></i>
+                   <span *ngFor="let en of contact.entreprise">
+                     {{en.nom}},
+                   </span>
+                 </p>
+                </div>
+                <div class="col">
+                 <p class="title-col"><i class="fa-solid fa-envelope" style="font-size: 14px;"></i> {{contact?.email}}</p>
+                </div>
                <div>
-                <p align="center">
-                  <button type="button" class="btn btn-outline-secondary btn-update-projet">Modifier</button>
-                </p>
-                <p align="center">
-                  <button type="button" class="btn btn-outline-secondary btn-detail-projet">Supprimer</button>
-                </p>
                </div>
-
 
               </div>
           </div><!--card-->
          </div><!--col-->
-         <div class="col">
-          <div class="card card-interv">
-            <img src="assets/images/int.png" class="card-img-top card-img-projet" alt="...">
-            <div class="card-body">
-              <p class="user-int">Christy Lachant</p>
-              <div align="center" style="margin-bottom:40px;"><hr class="projet"></div>
-
-              <div class="row">
-                 <div class="col">
-                  <p class="title-col"><i class="fa-solid fa-user-tie" style="font-size: 14px;"></i> Ingénieur BTP</p>
-                 </div>
-                 <div class="col">
-                  <p class="title-col"><i class="fa-solid fa-mobile-screen" style="font-size: 14px;"></i> +33 77 007 000</p>
-                 </div>
-              </div><!--row-->
-              <div class="row" style="margin-bottom: 15px;">
-                <div class="col">
-                 <p class="title-col"><i class="fa-solid fa-city" style="font-size: 14px;"></i> MLKA</p>
-                </div>
-                <div class="col">
-                 <p class="title-col"><i class="fa-solid fa-envelope" style="font-size: 14px;"></i> lach@mlk.fr</p>
-                </div>
-             </div><!--row-->
-             <div>
-              <p align="center">
-                <button type="button" class="btn btn-outline-secondary btn-update-projet">Modifier</button>
-              </p>
-              <p align="center">
-                <button type="button" class="btn btn-outline-secondary btn-detail-projet">Supprimer</button>
-              </p>
-             </div>
-
-
-            </div>
-          </div><!--card-->
-         </div>
-         <div class="col">
-          <div class="card card-interv">
-            <img src="assets/images/int.png" class="card-img-top card-img-projet" alt="...">
-            <div class="card-body">
-              <p class="user-int">Christy Lachant</p>
-              <div align="center" style="margin-bottom:40px;"><hr class="projet"></div>
-
-              <div class="row">
-                 <div class="col">
-                  <p class="title-col"><i class="fa-solid fa-user-tie" style="font-size: 14px;"></i> Ingénieur BTP</p>
-                 </div>
-                 <div class="col">
-                  <p class="title-col"><i class="fa-solid fa-mobile-screen" style="font-size: 14px;"></i> +33 77 007 000</p>
-                 </div>
-              </div><!--row-->
-              <div class="row" style="margin-bottom: 15px;">
-                <div class="col">
-                 <p class="title-col"><i class="fa-solid fa-city" style="font-size: 14px;"></i> MLKA</p>
-                </div>
-                <div class="col">
-                 <p class="title-col"><i class="fa-solid fa-envelope" style="font-size: 14px;"></i> lach@mlk.fr</p>
-                </div>
-             </div><!--row-->
-             <div>
-              <p align="center">
-                <button type="button" class="btn btn-outline-secondary btn-update-projet">Modifier</button>
-              </p>
-              <p align="center">
-                <button type="button" class="btn btn-outline-secondary btn-detail-projet">Supprimer</button>
-              </p>
-             </div>
-
-
-            </div>
-          </div><!--card-->
-         </div>
-
       </div><!--row-->
     </div>
 
