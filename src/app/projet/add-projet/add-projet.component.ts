@@ -28,9 +28,11 @@ export class AddProjetComponent implements OnInit {
   form3:any;
   message:any;
   countries: any=[];
+  devis:any=[];
   entreprises:any=[]
   selectedImage: string;
-  paysFiltres:Observable<any[]>
+  paysFiltres:Observable<any[]>;
+  devisFiltres:Observable<any[]>
 
 
   constructor(
@@ -69,18 +71,6 @@ export class AddProjetComponent implements OnInit {
         message:"Ce champ est obligatoire"
       }
     ],
-    etat:[
-      {
-        type:"required",
-        message:"Ce champ est obligatoire"
-      }
-    ],
-    responsable:[
-      {
-        type:"required",
-        message:"Ce champ est obligatoire"
-      }
-    ],
   }
 
   ngOnInit(){
@@ -91,8 +81,8 @@ export class AddProjetComponent implements OnInit {
       nom:['',Validators.required],
       entreprise:['',Validators.required],
       service:['',Validators.required],
-      etat:['',Validators.required],
-      responsable:['',Validators.required],
+      responsable:['',null],
+      plan:['',null]
     });
     this.secondFormGroup=this._formBuilder.group({
       pays:[''],
@@ -113,12 +103,24 @@ export class AddProjetComponent implements OnInit {
       startWith(''),
       map((val) => this.filterPays(val))
     );
+
+    this.devisFiltres = this.threeFormGroup.get('devise').valueChanges.pipe(
+      startWith(''),
+      map((val)=> this.filterDevis(val))
+    )
+
     this.getContry();
+    this.getDevis();
   }
 
   filterPays(value:string){
     const filtre = value.toLowerCase();
     return this.countries.filter(option=> option.name.toLocaleLowerCase().includes(filtre));
+  }
+
+  filterDevis(value:string){
+    const filtre = value.toLowerCase();
+    return this.devis.filter(option=> option.nom.toLocaleLowerCase().includes(filtre));
   }
 
   onFileSelected(event){
@@ -148,6 +150,17 @@ export class AddProjetComponent implements OnInit {
       }
     )
   }
+  getDevis(){
+    this.countryService.getDevises().subscribe(
+      (data)=>{
+       this.devis = data;
+      },
+      (error)=>{
+        console.log(error);
+      }
+    )
+  }
+
   getAllEntreprises(){
     this.entrepriseService.getAllEntreprise().subscribe((res:any)=>{
         this.entreprises = res.message;

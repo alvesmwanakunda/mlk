@@ -385,8 +385,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
 .card-img-projet{
   border-top-left-radius: 0 !important;
   border-top-right-radius: 0 !important;
-  width: 261px !important;
-  height: 196px !important;
+  width: 100% !important;
+  height: 147px !important;
 }
 
 .card-img-projet-ent {
@@ -401,6 +401,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
   line-height: 11px;
   color: #666B78;
 }
+
+.title-projet-page-detail{
+  font-family: 'Roboto';
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 28px;
+  color: rgb(60,64,67);
+}
+
+
 
 .title-projet{
   font-family: 'Roboto';
@@ -905,6 +915,22 @@ hr.entreprise{
 
 .example-full-width {
   width: 100%;
+}
+
+.cal-week-view .cal-event {
+  background-color: #d1e8ff;
+  border-color: #1e90ff;
+  color: #ffffff !important;
+}
+
+.card-color {
+    //background-color: red;
+    //padding-left: 19px;
+    padding-left: 20px;
+    border-radius: 5px;
+    margin-right: 12px;
+    position: relative;
+    bottom: 3px;
 }
 
 

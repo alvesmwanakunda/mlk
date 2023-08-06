@@ -12,4 +12,8 @@ export class CountriesService {
   getCountries():Observable<any>{
     return this.http.get<any>('assets/countries.json')
   }
+
+  getDevises():Observable<any>{
+    return this.http.get<any>('assets/devis.json')
+  }
 }

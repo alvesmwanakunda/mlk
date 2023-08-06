@@ -9,7 +9,7 @@
        <div class="col" align="right">
         <button type="button" class="btn btn-projet-action" style="margin-right: 5px;" matTooltip="Modifier" (click)="updateProjet(projet._id)"><i class="fa-regular fa-pen-to-square btn-icon-projet-update"></i></button>
         <button type="button" class="btn btn-projet-action" style="margin-right: 5px;" matTooltip="Supprimer" (click)="openDialogDelete(projet._id)"><i class="fa-solid fa-trash btn-icon-projet-delete"></i></button>
-        <button type="button" class="btn btn-projet" [routerLink]="['/add/projet']"><i class="fa-solid fa-plus"></i> Nouveau Projet</button>
+        <!--<button type="button" class="btn btn-projet" [routerLink]="['/add/projet']"><i class="fa-solid fa-plus"></i> Nouveau Projet</button>-->
        </div><!--col-->
     </div><!--row-->
   </div><!--content-->
@@ -62,7 +62,7 @@
                 <div class="card" style="height: 78px;margin-bottom:10px">
                   <div class="card-body">
                     <p align="center"><i class="fa-solid fa-bars-progress" style="font-size: 25px;color:#28628B"></i></p>
-                    <p class="pr-title">{{projet?.etat}}</p>
+                    <p class="pr-title" *ngIf="projet?.etat!='undefined'">{{projet?.etat}}</p>
                   </div>
                 </div>
                 <p class="pr-title-etat">Statut</p>

@@ -3,6 +3,7 @@ import { CalendarView, CalendarEvent, CalendarEventTimesChangedEvent, CalendarEv
 import { AddAgendaComponent } from './add-agenda/add-agenda.component';
 import { UpdateAgendaComponent } from './update-agenda/update-agenda.component';
 import { DeleteAgendaComponent } from './delete-agenda/delete-agenda.component';
+import { DetailAgendaComponent } from './detail-agenda/detail-agenda.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AgendaService } from '../shared/services/agenda.service';
 import { Subject } from 'rxjs';
@@ -25,16 +26,17 @@ import {
 })
 export class AgendaComponent implements OnInit {
 
-  view: CalendarView = CalendarView.Month;
+  //view: CalendarView = CalendarView.Month;
+  view: CalendarView = CalendarView.Week;
   CalendarView = CalendarView;
   viewDate: Date = new Date();
   events: CalendarEvent[]=[];
-  activeDayIsOpen: boolean = true;
+  activeDayIsOpen: boolean = false;
   modalData:{
     action:string;
     event:CalendarEvent;
   };
-  actions: CalendarEventAction[]=[
+  /*actions: CalendarEventAction[]=[
     {
       label:'<i class="fas fa-fw fa-pencil-alt"></i>',
       a11yLabel: 'Modifier',
@@ -49,7 +51,7 @@ export class AgendaComponent implements OnInit {
         this.openDialogDelete(event);
       }
     }
-  ]
+  ]*/
   refresh = new Subject<void>();
   agenda:any;
 
@@ -101,8 +103,8 @@ export class AgendaComponent implements OnInit {
           start:new Date(data.start),
           end:new Date(data.end),
           title:data.title,
-          color:{primary:data.color, secondary:'#FDF1BA'},
-          actions: this.actions,
+          color:{primary:data.color, secondary:'#4285F4'},
+          //actions: this.actions,
         }));
       }
     },(error) => {
@@ -129,7 +131,7 @@ export class AgendaComponent implements OnInit {
   openDialogUpadte(event:CalendarEvent){
     console.log("Evenements", event);
     this.agenda =event;
-    const dialogRef = this.dialog.open(UpdateAgendaComponent,{data:{id:this.agenda._id},width:'50%',height:'67%'});
+    const dialogRef = this.dialog.open(UpdateAgendaComponent,{data:{id:this.agenda._id},width:'50%',height:'70%'});
     dialogRef.afterClosed().subscribe((result:any)=>{
        if(result){
         this.getAllAgenda();
@@ -142,6 +144,20 @@ export class AgendaComponent implements OnInit {
     const dialogRef = this.dialog.open(DeleteAgendaComponent,{data:{id:this.agenda._id},width:'30%'});
     dialogRef.afterClosed().subscribe((result:any)=>{
        if(result){
+        this.getAllAgenda();
+       }
+    })
+  }
+
+  openDialogDetail(event:CalendarEvent){
+    this.agenda =event;
+    const dialogRef = this.dialog.open(DetailAgendaComponent,{data:{id:this.agenda._id},width:'40%'});
+    dialogRef.afterClosed().subscribe((result:any)=>{
+      console.log("Ici");
+       if(result){
+        this.getAllAgenda();
+       }
+       else{
         this.getAllAgenda();
        }
     })

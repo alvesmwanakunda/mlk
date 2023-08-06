@@ -10,6 +10,7 @@ import { AddAgendaModule } from './add-agenda/add-agenda.module';
 import { AgendaService } from '../shared/services/agenda.service';
 import { UpdateAgendaModule } from './update-agenda/update-agenda.module';
 import { DeleteAgendaModule } from './delete-agenda/delete-agenda.module';
+import { DetailAgendaModule } from './detail-agenda/detail-agenda.module';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { DeleteAgendaModule } from './delete-agenda/delete-agenda.module';
     AddAgendaModule,
     UpdateAgendaModule,
     DeleteAgendaModule,
+    DetailAgendaModule,
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory

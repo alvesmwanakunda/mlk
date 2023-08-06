@@ -14,21 +14,21 @@
    <div class="row"  style="margin-bottom: 30px;">
     <div class="col">
       <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-outline-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">Précédent</button>
-        <button type="button" class="btn btn-outline-primary" mwlCalendarToday [(viewDate)]="viewDate">Aujourd'hui</button>
-        <button type="button" class="btn btn-outline-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">Suivant</button>
+        <button type="button" style="font-size: 12px;" class="btn btn-outline-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">Précédent</button>
+        <button type="button" style="font-size: 12px;" class="btn btn-outline-primary" mwlCalendarToday [(viewDate)]="viewDate">Aujourd'hui</button>
+        <button type="button" style="font-size: 12px;" class="btn btn-outline-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">Suivant</button>
       </div>
     </div>
     <div class="col" align="right">
-      <div class="btn-group" role="group" aria-label="Basic example">
+      <!--<div class="btn-group" role="group" aria-label="Basic example">
         <button type="button" class="btn btn-outline-primary" (click)="setView(CalendarView.Month)"
         [class.active]="view === CalendarView.Month">Mois</button>
         <button type="button" class="btn btn-outline-primary" (click)="setView(CalendarView.Week)"
         [class.active]="view === CalendarView.Week">Week</button>
         <button type="button" class="btn btn-outline-primary" (click)="setView(CalendarView.Day)"
         [class.active]="view === CalendarView.Day">Jour</button>
-      </div>
-    </div><!--col-->
+      </div>-->
+    </div>
    </div><!--row-->
 
    <div class="row">
@@ -37,7 +37,7 @@
       <h2 class="agenda-title">{{ viewDate | calendarDate:(view + 'ViewTitle'):'fr' }}</h2>
 
       <div [ngSwitch]="view">
-        <mwl-calendar-month-view
+        <!--<mwl-calendar-month-view
         *ngSwitchCase="CalendarView.Month"
         [viewDate]="viewDate"
         [events]="events"
@@ -48,20 +48,20 @@
         (eventTimesChanged)="eventTimesChanged($event)"
         locale="fr"
         >
-        </mwl-calendar-month-view>
+        </mwl-calendar-month-view>-->
 
         <mwl-calendar-week-view
         *ngSwitchCase="CalendarView.Week"
         [viewDate]="viewDate"
         [events]="events"
         [refresh]="refresh"
-        (eventClicked)="openDialogUpadte($event.event)"
+        (eventClicked)="openDialogDetail($event.event)"
         (eventTimesChanged)="eventTimesChanged($event)"
         locale="fr"
         >
         </mwl-calendar-week-view>
 
-        <mwl-calendar-day-view
+        <!--<mwl-calendar-day-view
         *ngSwitchCase="CalendarView.Day"
         [viewDate]="viewDate"
         [events]="events"
@@ -70,7 +70,7 @@
         (eventTimesChanged)="eventTimesChanged($event)"
         locale="fr"
         >
-        </mwl-calendar-day-view>
+        </mwl-calendar-day-view>-->
       </div>
 
      </div>

@@ -1,6 +1,7 @@
 import { Component,OnInit,ViewEncapsulation,Input } from '@angular/core';
 import { ContactsService } from 'src/app/shared/services/contacts.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ProjetsService } from 'src/app/shared/services/projets.service';
 
 
 @Component({
@@ -16,11 +17,13 @@ export class IntervenantComponent implements OnInit {
 
   contacts:any=[];
   id:any;
+  project:any;
 
   constructor(
     private contactService :ContactsService,
     public router :Router,
-    public route:ActivatedRoute
+    public route:ActivatedRoute,
+    private projetService:ProjetsService
   ){
     this.route.params.subscribe((data:any)=>{
       this.id = data.id
@@ -29,17 +32,29 @@ export class IntervenantComponent implements OnInit {
 
   ngOnInit(){
 
-    console.log("Type", this.type);
-    if(this.type=="projet"){
-      this.getAllContactProjet();
-    }else{
-      this.getAllContactEntreprise();
-    }
+    this.getProjet();
   }
 
-  getAllContactEntreprise(){
-    this.contactService.getContactAllEntreprise(this.id).subscribe((data:any)=>{
+  getProjet(){
+    this.projetService.getProjet(this.id).subscribe((data:any)=>{
+
+       this.project=data.message;
+       this.getAllContactEntreprise(this.project.entreprise);
+      /* if(this.type=="projet"){
+        this.getAllContactProjet(this.project._id);
+      }else{
+        this.getAllContactEntreprise(this.project.entreprise);
+      }*/
+
+    },(error)=>{
+      console.log("Erreur lors de la récupération des données", error);
+    })
+  }
+
+  getAllContactEntreprise(idEntreprise){
+    this.contactService.getContactAllEntreprise(idEntreprise).subscribe((data:any)=>{
       this.contacts = data.message;
+      console.log("Projet E", data);
    },
    (error) => {
      console.log("Erreur lors de la récupération des données", error);
@@ -47,9 +62,10 @@ export class IntervenantComponent implements OnInit {
    );
   }
 
-  getAllContactProjet(){
-    this.contactService.getContactAllProjet(this.id).subscribe((data:any)=>{
+  getAllContactProjet(idProjet){
+    this.contactService.getContactAllProjet(idProjet).subscribe((data:any)=>{
       this.contacts = data.message;
+      console.log("Projet P", data);
    },
    (error) => {
      console.log("Erreur lors de la récupération des données", error);
@@ -60,18 +76,26 @@ export class IntervenantComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
       if (filterValue === '') {
-        if(this.type=="projet"){
-          this.getAllContactProjet();
+        /*if(this.type=="projet"){
+          this.getAllContactProjet(this.project._id);
         }else{
-          this.getAllContactEntreprise();
-        }
+          this.getAllContactEntreprise(this.project.entreprise);
+        }*/
+        this.getAllContactEntreprise(this.project.entreprise);
       }else{
-        this.contacts = this.contacts.filter(projet => {
+        this.contacts = this.contacts.filter(contact => {
           return (
-            projet.nom.toLowerCase().includes(filterValue)
+              contact.nom.toLowerCase().includes(filterValue) ||
+              contact.prenom.toLowerCase().includes(filterValue) ||
+              contact.email.toLowerCase().includes(filterValue) ||
+              contact.phone.includes(filterValue)
           );
         });
       }
+  }
+
+  addContact(){
+    this.router.navigate(['add/contact']);
   }
 
 }

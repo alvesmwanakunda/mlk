@@ -64,10 +64,13 @@ export class ContactComponent implements OnInit,AfterViewInit {
       if (filterValue === '') {
         this.getAllContact();
       }else{
-        this.contacts = this.contacts.filter(projet => {
-          return (
-            projet.nom.toLowerCase().includes(filterValue)
-          );
+        this.contacts = this.contacts.filter(contact => {
+            return (
+              contact.nom.toLowerCase().includes(filterValue) ||
+              contact.prenom.toLowerCase().includes(filterValue) ||
+              contact.email.toLowerCase().includes(filterValue) ||
+              contact.phone.includes(filterValue) // Je suppose que phone est une chaîne de caractères
+            );
         });
       }
 

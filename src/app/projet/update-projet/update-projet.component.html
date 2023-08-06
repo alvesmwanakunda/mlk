@@ -35,15 +35,12 @@
                       </div>
                     </div><!--div-->
                     <div style="margin-bottom: 15px;">
-                      <label class="label-entreprise">Statut de projet <small class="error_field">*</small></label>
-                      <select formControlName="etat"  [(ngModel)]="projet.etat" class="form-select input-entreprise" aria-label="Default select example" required>
+                      <label class="label-entreprise">Statut de projet </label>
+                      <select formControlName="etat"  [(ngModel)]="projet.etat" class="form-select input-entreprise" aria-label="Default select example">
                         <option value="En attente">En attente</option>
                         <option value="En cours">En cours</option>
                         <option value="Clôturé">Clôturé</option>
                       </select>
-                      <div *ngIf="firstFormGroup.get('etat').hasError(champ_validation.etat[0].type) && (firstFormGroup.get('etat').dirty || firstFormGroup.get('etat').touched)">
-                        <p class="error_field">{{champ_validation.etat[0].message}}</p>
-                      </div>
                     </div><!--div-->
                   </div><!--col-->
                   <div class="col">
@@ -71,11 +68,12 @@
                  </div>
                 </div>
                 <div style="margin-bottom: 15px;">
-                  <label class="label-entreprise">Nom du responsable du projet <small class="error_field">*</small></label>
+                  <label class="label-entreprise">Nom du responsable</label>
                   <input type="text" formControlName="responsable"  [(ngModel)]="projet.responsable" class="form-control input-entreprise">
-                  <div *ngIf="firstFormGroup.get('responsable').hasError(champ_validation.responsable[0].type) && (firstFormGroup.get('responsable').dirty || firstFormGroup.get('responsable').touched)">
-                    <p class="error_field">{{champ_validation.responsable[0].message}}</p>
-                  </div>
+                </div><!--div-->
+                <div style="margin-bottom: 15px;">
+                  <label class="label-entreprise">Url du plan</label>
+                  <input type="text" formControlName="plan"  [(ngModel)]="projet.plan" class="form-control input-entreprise">
                 </div><!--div-->
                 <div align="right">
                   <button mat-button matStepperNext class="btn-entreprise">Suivant <i class="fa-solid fa-chevron-right"></i></button>
@@ -91,7 +89,7 @@
                   <div class="col">
 
                     <div style="margin-bottom: 15px;">
-                      <label class="label-entreprise">Pays du projet</label>
+                      <label class="label-entreprise">Pays</label>
                       <input type="text" formControlName="pays"  [(ngModel)]="projet.pays" [matAutocomplete]="auto" class="form-control input-entreprise">
                       <mat-autocomplete #auto="matAutocomplete">
                         <mat-option *ngFor="let pays of paysFiltres | async" [value]="pays.name">
@@ -104,7 +102,7 @@
                       <input type="text" formControlName="ville"  [(ngModel)]="projet.ville" class="form-control input-entreprise">
                     </div><!--div-->
                     <div style="margin-bottom: 15px;">
-                      <label class="label-entreprise">Code Postal du projet</label>
+                      <label class="label-entreprise">Code Postal</label>
                       <input type="text" formControlName="postal"  [(ngModel)]="projet.postal" class="form-control input-entreprise">
                     </div><!--div-->
 
@@ -112,11 +110,11 @@
                   <div class="col">
 
                     <div style="margin-bottom: 15px;">
-                      <label class="label-entreprise">Adresse du projet</label>
+                      <label class="label-entreprise">Numéro</label>
                       <input type="text" formControlName="adresse"  [(ngModel)]="projet.adresse" class="form-control input-entreprise">
                     </div><!--div-->
                     <div style="margin-bottom: 15px;">
-                      <label class="label-entreprise">Rue du projet</label>
+                      <label class="label-entreprise">Rue</label>
                       <input type="text" formControlName="rue"  [(ngModel)]="projet.rue" class="form-control input-entreprise">
                     </div><!--div-->
                  </div>
@@ -158,7 +156,12 @@
               </div><!--div-->
               <div style="margin-bottom: 15px;">
                 <label class="label-entreprise">Devise du projet</label>
-                <input type="text" formControlName="devise"  [(ngModel)]="projet.devise" class="form-control input-entreprise">
+                <input type="text" formControlName="devise" [(ngModel)]="projet.devise" [matAutocomplete]="auto" class="form-control input-entreprise">
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let dev of devisFiltres | async" [value]="dev.symbole">
+                    {{dev.nom}}
+                  </mat-option>
+                </mat-autocomplete>
               </div><!--div-->
               <div style="margin-bottom: 15px;">
                 <label class="label-entreprise">Site d'offre</label>

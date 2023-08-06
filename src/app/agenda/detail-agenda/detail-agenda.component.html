@@ -1,0 +1,23 @@
+<mat-dialog-content class="mat-typography">
+  <div style="padding-top: 8px;">
+    <div align="right">
+      <button mat-icon-button (click)="openDialogUpadte()"><mat-icon>edit</mat-icon></button>
+      <button mat-icon-button (click)="openDialogDelete()"><mat-icon>delete</mat-icon></button>
+    </div>
+  </div>
+  <div class="row" style="margin-bottom: 18px;">
+    <div class="col">
+      <p><span class="card-color" [ngStyle]="{'background-color':agenda?.color}"></span> <span  class="title-projet-page-detail">{{agenda.title}}</span></p>
+    </div>
+  </div>
+
+  <div>
+    <p><span style="margin-right: 12px"><i class='fas fa-clock'></i></span> <span style="font-size:13px;">{{agenda.start | date:'EEEE, d MMMM'}} ({{agenda.start | date:'HH:mm'}})</span></p>
+  </div>
+  <div style="position: relative;bottom: 10px;">
+    <p><span style="margin-right: 29px"></span> <span style="font-size:13px;">{{agenda.end | date:'EEEE, d MMMM'}} ({{agenda.end | date:'HH:mm'}})</span></p>
+  </div>
+
+
+
+</mat-dialog-content>

@@ -35,6 +35,10 @@
                       </div>
                     </div><!--div-->
                     <div style="margin-bottom: 15px;">
+                      <label class="label-entreprise">Nom du responsable</label>
+                      <input type="text" formControlName="responsable" class="form-control input-entreprise">
+                    </div><!--div-->
+                    <!--<div style="margin-bottom: 15px;">
                       <label class="label-entreprise">Statut de projet <small class="error_field">*</small></label>
                       <select formControlName="etat" class="form-select input-entreprise" aria-label="Default select example" required>
                         <option value="En attente">En attente</option>
@@ -44,18 +48,26 @@
                       <div *ngIf="firstFormGroup.get('etat').hasError(champ_validation.etat[0].type) && (firstFormGroup.get('etat').dirty || firstFormGroup.get('etat').touched)">
                         <p class="error_field">{{champ_validation.etat[0].message}}</p>
                       </div>
-                    </div><!--div-->
+                    </div>-->
                   </div><!--col-->
                   <div class="col">
 
                     <div style="margin-bottom: 15px;">
                       <label class="label-entreprise">Entreprise <small class="error_field">*</small></label>
-                      <select  formControlName="entreprise" class="form-select input-entreprise" aria-label="Default select example" required>
-                        <option *ngFor="let entre of entreprises " [value]="entre._id">{{entre?.nom}}</option>
-                      </select>
+                      <div class="row">
+                         <div class="col-8">
+                          <select  formControlName="entreprise" class="form-select input-entreprise" aria-label="Default select example" required>
+                            <option *ngFor="let entre of entreprises " [value]="entre._id">{{entre?.nom}}</option>
+                          </select>
+                         </div><!--col-8-->
+                         <div class="col-4">
+                          <button mat-button mat-button class="btn-entreprise" style="font-size:11px;" routerLink="/add/entreprise">Ajouter entreprise</button>
+                         </div><!--col-4-->
+                      </div>
                       <div *ngIf="firstFormGroup.get('entreprise').hasError(champ_validation.entreprise[0].type) && (firstFormGroup.get('entreprise').dirty || firstFormGroup.get('entreprise').touched)">
                         <p class="error_field">{{champ_validation.entreprise[0].message}}</p>
                       </div>
+
                     </div><!--div-->
                     <div style="margin-bottom: 15px;">
                       <label class="label-entreprise">Type Service <small class="error_field">*</small></label>
@@ -71,11 +83,8 @@
                  </div>
                 </div>
                 <div style="margin-bottom: 15px;">
-                  <label class="label-entreprise">Nom du responsable du projet <small class="error_field">*</small></label>
-                  <input type="text" formControlName="responsable" class="form-control input-entreprise">
-                  <div *ngIf="firstFormGroup.get('responsable').hasError(champ_validation.responsable[0].type) && (firstFormGroup.get('responsable').dirty || firstFormGroup.get('responsable').touched)">
-                    <p class="error_field">{{champ_validation.responsable[0].message}}</p>
-                  </div>
+                  <label class="label-entreprise">Url du plan</label>
+                  <input type="text" formControlName="plan" class="form-control input-entreprise">
                 </div><!--div-->
                 <div align="right">
                   <button mat-button matStepperNext class="btn-entreprise">Suivant <i class="fa-solid fa-chevron-right"></i></button>
@@ -91,7 +100,7 @@
                   <div class="col">
 
                     <div style="margin-bottom: 15px;">
-                      <label class="label-entreprise">Pays du projet</label>
+                      <label class="label-entreprise">Pays</label>
                       <input type="text" formControlName="pays" [matAutocomplete]="auto" class="form-control input-entreprise">
                       <mat-autocomplete #auto="matAutocomplete">
                         <mat-option *ngFor="let pays of paysFiltres | async" [value]="pays.name">
@@ -104,7 +113,7 @@
                       <input type="text" formControlName="ville" class="form-control input-entreprise">
                     </div><!--div-->
                     <div style="margin-bottom: 15px;">
-                      <label class="label-entreprise">Code Postal du projet</label>
+                      <label class="label-entreprise">Code Postal</label>
                       <input type="text" formControlName="postal" class="form-control input-entreprise">
                     </div><!--div-->
 
@@ -112,11 +121,11 @@
                   <div class="col">
 
                     <div style="margin-bottom: 15px;">
-                      <label class="label-entreprise">Adresse du projet</label>
+                      <label class="label-entreprise">Numéro</label>
                       <input type="text" formControlName="adresse" class="form-control input-entreprise">
                     </div><!--div-->
                     <div style="margin-bottom: 15px;">
-                      <label class="label-entreprise">Rue du projet</label>
+                      <label class="label-entreprise">Rue</label>
                       <input type="text" formControlName="rue" class="form-control input-entreprise">
                     </div><!--div-->
                  </div>
@@ -156,7 +165,12 @@
               </div><!--div-->
               <div style="margin-bottom: 15px;">
                 <label class="label-entreprise">Devise du projet</label>
-                <input type="text" formControlName="devise" class="form-control input-entreprise">
+                <input type="text" formControlName="devise" [matAutocomplete]="auto" class="form-control input-entreprise">
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let dev of devisFiltres | async" [value]="dev.symbole">
+                    {{dev.nom}}
+                  </mat-option>
+                </mat-autocomplete>
               </div><!--div-->
               <div style="margin-bottom: 15px;">
                 <label class="label-entreprise">Site d'offre</label>

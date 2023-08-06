@@ -16,6 +16,7 @@ export class AddAgendaComponent implements OnInit {
   agendaFormGroup:FormGroup;
   agenda:Agendas;
   message:any;
+  color="#4285F4"
 
   constructor(
     private  _formBuilder:FormBuilder,
