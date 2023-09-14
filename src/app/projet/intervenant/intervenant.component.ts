@@ -16,36 +16,31 @@ export class IntervenantComponent implements OnInit {
   @Input() type:any
 
   contacts:any=[];
-  id:any;
+  //id:any;
   project:any;
+  @Input() idProjet?:any;
+  @Input() idEntreprise?:any;
 
   constructor(
     private contactService :ContactsService,
     public router :Router,
     public route:ActivatedRoute,
     private projetService:ProjetsService
-  ){
-    this.route.params.subscribe((data:any)=>{
-      this.id = data.id
-     })
-  }
+  ){}
 
   ngOnInit(){
 
-    this.getProjet();
+    if(this.idProjet){
+      this.getProjet(this.idProjet);
+    }else{
+        this.getAllContactEntreprise(this.idEntreprise)
+    }
   }
 
-  getProjet(){
-    this.projetService.getProjet(this.id).subscribe((data:any)=>{
-
+  getProjet(idProjet){
+    this.projetService.getProjet(idProjet).subscribe((data:any)=>{
        this.project=data.message;
-       this.getAllContactEntreprise(this.project.entreprise);
-      /* if(this.type=="projet"){
-        this.getAllContactProjet(this.project._id);
-      }else{
-        this.getAllContactEntreprise(this.project.entreprise);
-      }*/
-
+       this.getAllContactEntreprise(this.project?.entreprise);
     },(error)=>{
       console.log("Erreur lors de la récupération des données", error);
     })

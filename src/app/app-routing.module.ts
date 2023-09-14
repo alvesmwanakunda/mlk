@@ -16,6 +16,14 @@ const routes: Routes = [
     path:"dashboard",
     loadChildren:()=>import('./dashboard/dashboard.module').then(m=>m.DashboardModule)
   },
+  /*{
+     path:"box/projet/:id",
+     loadChildren:()=>import('./projet/box-projet/box-projet.module').then(m=>m.BoxProjetModule)
+  },*/
+  /*{
+    path:"box/projet/detail/:id/:idProjet",
+    loadChildren: () => import("./projet/box-projet/detail-folder/detail-folder.module").then((m)=> m.DetailFolderModule)
+  },*/
   {
     path:"projet/:id",
     loadChildren:()=>import('./projet/projet.module').then(m=>m.ProjetModule)
@@ -52,6 +60,10 @@ const routes: Routes = [
   {
     path:"box",
     loadChildren:()=>import('./box/box.module').then(m=>m.BoxModule)
+  },
+  {
+     path:"box/:id",
+     loadChildren: () => import("./box/detailbox/detailbox.module").then((m)=> m.DetailboxModule)
   },
   {
     path:"agenda",

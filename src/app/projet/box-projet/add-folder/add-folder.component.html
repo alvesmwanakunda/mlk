@@ -1,0 +1,17 @@
+<mat-dialog-content class="mat-typography">
+  <div class="text-center" style="padding-top: 25px;"><p class="title-projet-page">Nouveau dossiser</p></div>
+  <div class="row"><div class="col"><hr class="entreprise"></div></div><!--row-->
+  <div>
+    <form [formGroup]="boxFormGroup">
+
+      <div style="margin-bottom: 8px;">
+        <label class="label-entreprise">Dossier</label>
+        <input type="text" formControlName="nom"  class="form-control input-entreprise">
+      </div><!--div-->
+    </form>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+   <button mat-button mat-dialog-close style="margin-right: 10px;">Fermer</button>
+   <button mat-button cdkFocusInitial style=" background: #0829cf !important;color:#fff" (click)="addBox()">Valider</button>
+</mat-dialog-actions>

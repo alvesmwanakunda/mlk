@@ -29,7 +29,8 @@ registerLocaleData(localeFr,'fr');
     NgbModule,
     HttpClientModule,
     NgSelectModule,
-    FormsModule
+    FormsModule,
+
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

@@ -101,13 +101,12 @@
             <app-fiche></app-fiche>
           </div>
           <div class="tab-pane fade" id="nav-int" role="tabpanel" aria-labelledby="nav-int-tab" tabindex="0">
-            <app-intervenant type="projet"></app-intervenant>
+            <app-intervenant [idProjet]="idProjet"></app-intervenant>
           </div>
           <div class="tab-pane fade" id="nav-piece" role="tabpanel" aria-labelledby="nav-piece-tab" tabindex="0">
-            <app-piece></app-piece>
+            <app-box-projet [idProjet]="idProjet"></app-box-projet>
           </div>
           <div class="tab-pane fade" id="nav-etude" role="tabpanel" aria-labelledby="nav-etude-tab" tabindex="0">
-            <app-etude></app-etude>
           </div>
         </div>
 

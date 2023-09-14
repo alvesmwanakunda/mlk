@@ -1,0 +1,116 @@
+iframe {
+  height: 82vh !important;       /* Viewport-relative units */
+  width: 80%;
+  border: none;
+}
+
+iframe[src*="https://docs.google.com/gview"] {
+  /* Changer le fond de l'iframe */
+  background: #ffffff; /* Remplacez par la couleur de fond souhaitée */
+}
+
+.image-preview {
+  max-width: 70%;
+  max-height: 75%;
+}
+
+.mat-mdc-dialog-content {
+  max-height: 100vh !important;
+  height: 90vh !important;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.pdf-viewer {
+  height: 100vh;
+  width: 80vw;
+  display: block;
+  margin: 0 auto;
+}
+
+.border-pdf{
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 504px;
+  //z-index: 1;
+}
+
+.mlk-toolbar{
+  max-height: 48px !important;
+  border-width: 0 !important;
+  border-radius: 2px !important;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.24), 0 0 2px 0 rgba(0,0,0,.12) !important;
+}
+
+:host ::ng-deep .pdfViewer .page .canvasWrapper {
+  border: 1px solid #ccc;
+}
+
+:host ::ng-deep .pdfViewer .page{
+    background-clip: content-box !important;
+    background-color: #fff !important;
+    direction: ltr !important;
+    margin: 1px auto -8px !important;
+    overflow: visible !important;
+    position: relative !important;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.toolbar-showing{
+  font-size: 14px;
+  font-weight: normal;
+  color: rgba(0,0,0,.54);
+}
+
+.toolbar-icon{
+  color: rgba(0,0,0,.54);
+}
+
+.toolbar-input{
+  border: 1px solid rgba(0,0,0,.07);
+  background-color: #fff;
+  color: inherit;
+  font-size: 14px;
+  padding: 5px;
+  height: 24px;
+  line-height: 24px;
+  text-align: right;
+  width: 33px;
+  margin-right: 4px;
+  outline-width: 1px;
+  outline-color: grey;
+}
+
+.toolbar-space{
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 14px;
+}
+
+.toolbar-percent{
+  cursor: default;
+  width: 79px;
+  height: 24px;
+  font-size: 14px;
+  border: 1px solid rgba(0,0,0,.07);
+  text-align: center;
+  line-height: 24px;
+  margin-left: 4px;
+  margin-right: 4px;
+  font-weight: normal;
+  color: rgba(0,0,0,.54);
+}
+
+
+
+
+
+
+

@@ -25,13 +25,22 @@ import {MatListModule} from '@angular/material/list';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {ClipboardModule} from '@angular/cdk/clipboard';
+import { FileSizeConvertPipe } from './pipes/file-size-convert.pipe';
+import { DataAsAgoPipe } from './pipes/data-as-ago.pipe';
+
+
 
 
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    FileSizeConvertPipe,
+    DataAsAgoPipe
+  ],
   imports: [
     CommonModule,
     MatCardModule,
@@ -57,7 +66,9 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     MatListModule,
     MatExpansionModule,
     MatChipsModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatToolbarModule,
+    ClipboardModule
   ],
   exports:[
     MatCardModule,
@@ -83,7 +94,11 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     MatListModule,
     MatExpansionModule,
     MatChipsModule,
-    MatAutocompleteModule
-  ]
+    MatAutocompleteModule,
+    MatToolbarModule,
+    ClipboardModule,
+    FileSizeConvertPipe,
+    DataAsAgoPipe
+  ],
 })
 export class SharedModule { }

@@ -10,79 +10,91 @@
             <p class="title-projet-page" style="padding-top: 10px;">Box</p>
            </div>
            <div class="col">
-             <input type="text" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher par nom de dossier ou fichier">
+             <input (keyup)="applyFilter($event)" type="text" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher par nom de dossier ou fichier">
            </div>
           </div><!--row-->
       </div><!--col-->
 
       <div class="col" align="right">
-       <button type="button" class="btn btn-piece"  style="margin-right: 10px;"><i class="fa-solid fa-plus"></i> Nouveau Dossier</button>
-       <button type="button" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> Charger</button>
+       <button type="button" class="btn btn-piece"  style="margin-right: 10px;" (click)="openDialogDossier()"><i class="fa-solid fa-plus"></i> Nouveau Dossier</button>
+       <app-add-file></app-add-file>
+       <!--<input type="file" class="file-input" accept='image/png,image/jpeg,image/jpg,image/gif,.pdf,.docx,.xlsx,.pptx' (change)="onFileSelected($event)" #fileUpload>
+       <button type="button"  (click)="fileUpload.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> Charger</button>-->
       </div><!--col-->
    </div><!--row-->
 
-   <div class="card card-contact">
-      <div class="card-body">
+   <table mat-table [dataSource]="dataSource">
 
-        <div class="row" style="margin-bottom: 15px;">
-          <div class="col-6"><p class="box-title">Nom</p></div>
-          <div class="col"><p class="box-title">Modifié</p></div>
-          <div class="col"><p class="box-title">Partagé avec</p></div>
-          <div class="col"><p class="box-title">Taille</p></div>
-        </div><!--row-->
+    <!-- Position Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef class="box-header"> Nom </th>
+      <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;" (click)="openDialogFile(element.id, element.extension)">
+        <p class="box-title" matTooltip="{{element?.nom}}">
+          <img src="assets/images/dossier.png" *ngIf="!element.extension" style="margin-right: 10px;margin-top: -4px;">
+          <img src="assets/images/pdf.png" *ngIf="element.extension=='pdf'" style="margin-right: 10px;margin-top: -4px;">
+          <img src="assets/images/doc.png" *ngIf="element.extension=='docx'" style="margin-right: 10px;margin-top: -4px;">
+          <img src="assets/images/xls.png" *ngIf="element.extension=='xlsx' || element.extension=='xls'" style="margin-right: 10px;margin-top: -4px;">
+          <img src="assets/images/pptx.png"  *ngIf="element.extension=='pptx'" style="margin-right: 10px;margin-top: -4px;">
+          <img src="assets/images/image.png"  *ngIf="element.extension=='png' || element.extension=='jpeg' || element.extension=='jpg' || element.extension=='gif'" style="margin-right: 10px;margin-top: -4px;">
+          <span>{{element?.nom}}</span>
+        </p>
+      </td>
+    </ng-container>
 
-        <div class="row" style="margin-bottom: 10px">
-          <div class="col-6"><p class="box-title"><img src="assets/images/dossier.png" style="margin-right: 10px;margin-top: -4px;"><span>Dossier 1</span></p></div>
-          <div class="col"><p class="box-title">17 Avril 2023</p></div>
-          <div class="col">
-              <p class="box-title">
-              <img src="assets/images/p1.png">
-              <img src="assets/images/p2.png">
-              <img src="assets/images/p3.png">
-            </p>
-        </div>
-          <div class="col"><p class="box-title">2G</p></div>
-        </div><!--row-->
-        <div class="row" style="margin-bottom: 10px">
-          <div class="col-6"><p class="box-title"><img src="assets/images/dossier.png" style="margin-right: 10px;margin-top: -4px;"><span>Dossier 2</span></p></div>
-          <div class="col"><p class="box-title">17 Avril 2023</p></div>
-          <div class="col">
-              <p class="box-title">
-              <img src="assets/images/p1.png">
-              <img src="assets/images/p2.png">
-              <img src="assets/images/p3.png">
-            </p>
-        </div>
-          <div class="col"><p class="box-title">2G</p></div>
-        </div><!--row-->
-        <div class="row" style="margin-bottom: 10px">
-          <div class="col-6"><p class="box-title"><img src="assets/images/pdf.png" style="margin-right: 10px;margin-top: -4px;"><span>Fichier 1</span></p></div>
-          <div class="col"><p class="box-title">17 Avril 2023</p></div>
-          <div class="col">
-              <p class="box-title">
-              <img src="assets/images/p1.png">
-              <img src="assets/images/p2.png">
-              <img src="assets/images/p3.png">
-            </p>
-        </div>
-          <div class="col"><p class="box-title">12MB</p></div>
-        </div><!--row-->
-        <div class="row">
-          <div class="col-6"><p class="box-title"><img src="assets/images/doc.png" style="margin-right: 10px;margin-top: -4px;"><span>Fichier 2</span></p></div>
-          <div class="col"><p class="box-title">17 Avril 2023</p></div>
-          <div class="col">
-              <p class="box-title">
-              <img src="assets/images/p1.png">
-              <img src="assets/images/p2.png">
-              <img src="assets/images/p3.png">
-            </p>
-        </div>
-          <div class="col"><p class="box-title">12MB</p></div>
-        </div><!--row-->
+    <!-- Name Column -->
+    <ng-container matColumnDef="size">
+      <th mat-header-cell *matHeaderCellDef class="box-header"> Taille </th>
+      <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"><span *ngIf="element.size">{{element?.size|fileSizeConvert}}</span></td>
+    </ng-container>
 
-      </div><!--card-body-->
-   </div>
+    <!-- Weight Column -->
+    <ng-container matColumnDef="modified">
+      <th mat-header-cell *matHeaderCellDef class="box-header"> Modifié </th>
+      <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">  {{element?.dateLastUpdate|dataAsAgo}}  </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="modifiedby">
+      <th mat-header-cell *matHeaderCellDef class="box-header">Modifié par</th>
+      <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"> {{element?.creator?.nom}} {{element?.creator?.prenom}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item *ngIf="element.extension" (click)="openDialogFileUpdate(element.id)">
+            <mat-icon style="font-size: 18px;">edit</mat-icon>
+            <span style="font-size: 14px;">Editer</span>
+          </button>
+          <button mat-menu-item *ngIf="!element.extension" (click)="openDialogDossierUpdate(element.id)">
+            <mat-icon style="font-size: 18px;">edit</mat-icon>
+            <span style="font-size: 14px;">Editer</span>
+          </button>
+          <button mat-menu-item *ngIf="element.extension" (click)="openDialogFileDelete(element.id)">
+            <mat-icon style="font-size: 18px;">delete</mat-icon>
+            <span style="font-size: 14px;">Supprimer</span>
+          </button>
+          <button mat-menu-item *ngIf="!element.extension" (click)="openDialogDossierDelete(element.id)">
+            <mat-icon style="font-size: 18px;">delete</mat-icon>
+            <span style="font-size: 14px;">Supprimer</span>
+          </button>
+
+        </mat-menu>
+      </td>
+    </ng-container>
 
 
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[10, 20]"
+                showFirstLastButtons
+                aria-label="Select page of periodic elements">
+  </mat-paginator>
   </div>
 </div>
