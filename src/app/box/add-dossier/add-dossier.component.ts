@@ -26,7 +26,7 @@ export class AddDossierComponent implements OnInit {
     private boxService : BoxService,
     @Inject(MAT_DIALOG_DATA) public data:any,
   ){
-    this.idFolder = this.data.id;
+    this.idFolder = this.data?.id;
   }
 
   ngOnInit(){
