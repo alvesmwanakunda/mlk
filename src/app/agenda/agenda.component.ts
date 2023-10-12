@@ -54,12 +54,14 @@ export class AgendaComponent implements OnInit {
   ]*/
   refresh = new Subject<void>();
   agenda:any;
+  user:any;
 
 
   constructor(
     public dialog: MatDialog,
     private agendaService:AgendaService
   ){
+    this.user = JSON.parse(localStorage.getItem('user'));
   }
 
   ngOnInit() {

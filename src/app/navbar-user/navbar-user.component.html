@@ -1,0 +1,59 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top nv-size">
+  <div class="container-fluid">
+  <a class="navbar-brand" [routerLink]="['/dashboard']"><img src="assets/images/logom.png"></a>
+  <button class="navbar-toggler nv-toggle" type="button" (click)="toggleNavbar = !toggleNavbar" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon nv-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarColor01" [ngbCollapse]="toggleNavbar">
+    <ul class="navbar-nav">
+      <li class="nav-item px-2">
+        <a class="nav-link" [routerLink]="['/entreprise/dashboard']" [routerLinkActive]="['active']">Accueil <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item px-2">
+        <a class="nav-link" [routerLink]="['/contact']" [routerLinkActive]="['active']">Contact</a>
+      </li>
+      <li class="nav-item px-2">
+        <a class="nav-link" [routerLink]="['/agenda']" [routerLinkActive]="['active']">Agenda</a>
+      </li>
+    </ul>
+
+    <ul class="navbar-nav ml-auto-nav">
+      <li class="nav-item px-2">
+        <a class="nav-link" [matMenuTriggerFor]="menu_user" style="cursor: pointer;"><img src="assets/images/user1.png"></a>
+      </li>
+     <mat-menu #menu_user="matMenu" class="my-class">
+
+      <div class="user-info">
+        <div style="padding: 1.25rem;">
+          <div class="row">
+            <div class="col-md-4">
+              <img src="assets/images/user2.png">
+            </div>
+            <div class="col-md-8">
+               <div style="position: relative;top: 10px;">
+                 <p style="font-size: 15px;">{{user?.user?.prenom}} {{user?.user?.nom}} </p>
+                 <span class="user-phone">{{user?.user.email}}</span>
+               </div>
+               <div>
+                <button type="button" class="btn btn-outline-secondary btn-compte" [routerLink]="['/profil']">Gérer votre compte MLKA</button>
+               </div>
+            </div>
+          </div>
+        </div><!--style-->
+      </div>
+      <button mat-menu-item (click)="getEntreprise()">
+        <mat-icon fontIcon="business"></mat-icon>
+        <span style="font-size: 14px;">Mon entreprise</span>
+      </button>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon fontIcon="logout"></mat-icon>
+        <span style="font-size: 14px;">Se déconnecter</span>
+      </button>
+    </mat-menu>
+
+    </ul>
+  </div>
+  </div>
+</nav>
+<!-- Navbar -->

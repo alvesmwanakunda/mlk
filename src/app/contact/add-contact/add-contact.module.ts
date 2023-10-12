@@ -9,6 +9,7 @@ import { CountriesService } from 'src/app/shared/services/countries.service';
 import { ProjetsService } from 'src/app/shared/services/projets.service';
 import { EntreprisesService } from 'src/app/shared/services/entreprises.service';
 import { ContactsService } from 'src/app/shared/services/contacts.service';
+import { NavbarUserModule } from 'src/app/navbar-user/navbar-user.module';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { ContactsService } from 'src/app/shared/services/contacts.service';
     SharedModule,
     NavbarModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NavbarUserModule
   ],
   providers:[CountriesService,ProjetsService,EntreprisesService,ContactsService]
 })

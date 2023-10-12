@@ -13,6 +13,7 @@ export class ProjetEntrepriseComponent implements OnInit {
 
   projets:any=[];
   id:any;
+  user:any;
 
   constructor(
     private projetService :ProjetsService,
@@ -21,7 +22,8 @@ export class ProjetEntrepriseComponent implements OnInit {
   ){
     this.route.params.subscribe((data:any)=>{
       this.id = data.id
-     })
+     });
+     this.user = JSON.parse(localStorage.getItem('user'));
   }
 
   ngOnInit(){
@@ -53,7 +55,19 @@ export class ProjetEntrepriseComponent implements OnInit {
   }
 
   getProjet(idProjet){
-    this.router.navigate(['projet',idProjet]);
+    if(this.user?.user?.role=='admin'){
+      this.router.navigate(['projet',idProjet]);
+    }else{
+      this.router.navigate(['entreprise/projet',idProjet]);
+    }
+  }
+
+  addProjet(){
+    if(this.user?.user?.role=='admin'){
+      this.router.navigate(['add/projet']);
+    }else{
+      this.router.navigate(['add/entreprise/projet']);
+    }
   }
 
 

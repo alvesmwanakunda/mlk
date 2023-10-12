@@ -30,7 +30,8 @@ export class UpdateEntrepriseComponent implements OnInit {
   file:File;
   fileName:any;
   codeFiltres:Observable<any[]>;
-  paysFiltres:Observable<any[]>
+  paysFiltres:Observable<any[]>;
+  user:any;
 
   constructor(
     private entrepriseService:EntreprisesService,
@@ -49,7 +50,8 @@ export class UpdateEntrepriseComponent implements OnInit {
       email:{},
       telephone:{},
       indicatif:{},
-    }
+    };
+    this.user = JSON.parse(localStorage.getItem('user'));
   }
   champ_validation={
     nom:[

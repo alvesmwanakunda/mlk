@@ -16,7 +16,7 @@
   <div id="right">
 
     <div align="right">
-       <button type="button" class="btn btn-singup">S'inscrire</button>
+       <button type="button" class="btn btn-singup" [routerLink]="'/signup'">S'inscrire</button>
     </div><!--right-->
 
     <div class="form-div">
@@ -40,6 +40,10 @@
           <div class="input-group mb-3 bloc-input">
             <span class="input-group-text input-group-lgs border-right-0" id="basic-addon2"><i class="fas fa-lock"></i></span>
             <input type="password" formControlName="password" class="form-control py-2 border-left-0 input-lgs"  aria-label="Password" aria-describedby="basic-addon2">
+          </div>
+
+          <div>
+            <button mat-button class="label-style" [routerLink]="'/reset'">Mot de passe oubliée ?</button>
           </div>
 
           <div align="center">

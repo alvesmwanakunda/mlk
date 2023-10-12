@@ -13,8 +13,40 @@ const routes: Routes = [
     data:{preload:true}
   },
   {
+    path:"reset",
+    loadChildren:()=>import('./login/reset-password/reset-password.module').then(m => m.ResetPasswordModule),
+  },
+  {
+    path:"reset-password",
+    loadChildren:()=>import('./login/password/password.module').then(m=>m.PasswordModule),
+  },
+  {
+   path:"signup",
+   loadChildren:()=>import('./signup/signup.module').then(m=>m.SignupModule),
+  },
+  {
+    path:"profil",
+    loadChildren:()=>import('./profil/profil.module').then(m=>m.ProfilModule)
+  },
+  {
     path:"dashboard",
     loadChildren:()=>import('./dashboard/dashboard.module').then(m=>m.DashboardModule)
+  },
+  {
+    path:"entreprise/dashboard",
+    loadChildren:()=>import('./dashboard-user/dashboard-user.module').then(m=>m.DashboardUserModule)
+  },
+  {
+    path:"add/entreprise/projet",
+    loadChildren:()=>import('./projet-user/projet-user.module').then(m=>m.ProjetUserModule)
+  },
+  {
+    path:'update/entreprise/projet/:id',
+    loadChildren:()=>import('./projet-user/update-user-projet/update-user-projet.module').then(m=>m.UpdateUserProjetModule)
+  },
+  {
+    path:'entreprise/projet/:id',
+    loadChildren:()=>import('./projet-user/detail-user-projet/detail-user-projet.module').then(m=>m.DetailUserProjetModule)
   },
   /*{
      path:"box/projet/:id",

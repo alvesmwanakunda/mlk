@@ -13,6 +13,10 @@ export class ProjetsService {
     return this.httpClient.post(`${environment.BASE_API_URL}/projet`,projet);
   }
 
+  public addProjetEntreprise(projet,idEntreprise){
+    return this.httpClient.post(`${environment.BASE_API_URL}/projet/entreprise/${idEntreprise}`,projet);
+  }
+
   public getProjet(idProjet){
     return this.httpClient.get(`${environment.BASE_API_URL}/projet/${idProjet}`)
   }
@@ -27,6 +31,10 @@ export class ProjetsService {
 
   public updateProjet(idProjet, projet){
     return this.httpClient.put(`${environment.BASE_API_URL}/projet/${idProjet}`,projet)
+  }
+
+  public updateProjetEntreprise(idProjet, projet){
+    return this.httpClient.put(`${environment.BASE_API_URL}/projet/entreprise/${idProjet}`,projet)
   }
 
   public deleteProjet(idProjet){

@@ -27,6 +27,7 @@ export class UpdateContactComponent implements OnInit {
   contact:Contacts;
   message:any;
   idContact:any;
+  user:any;
 
   constructor(
     private _formBuilder:FormBuilder,
@@ -45,6 +46,7 @@ export class UpdateContactComponent implements OnInit {
     this.contactFormError={
       nom:{},
     };
+    this.user = JSON.parse(localStorage.getItem('user'));
   }
   champ_validation={
     nom:[

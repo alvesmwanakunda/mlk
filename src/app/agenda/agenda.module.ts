@@ -11,6 +11,7 @@ import { AgendaService } from '../shared/services/agenda.service';
 import { UpdateAgendaModule } from './update-agenda/update-agenda.module';
 import { DeleteAgendaModule } from './delete-agenda/delete-agenda.module';
 import { DetailAgendaModule } from './detail-agenda/detail-agenda.module';
+import { NavbarUserModule } from '../navbar-user/navbar-user.module';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { DetailAgendaModule } from './detail-agenda/detail-agenda.module';
     UpdateAgendaModule,
     DeleteAgendaModule,
     DetailAgendaModule,
+    NavbarUserModule,
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory

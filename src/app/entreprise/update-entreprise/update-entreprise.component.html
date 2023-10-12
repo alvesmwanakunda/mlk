@@ -1,4 +1,5 @@
-<app-navbar></app-navbar>
+<app-navbar *ngIf="this.user?.user?.role=='admin'"></app-navbar>
+<app-navbar-user *ngIf="this.user?.user?.role=='user'"></app-navbar-user>
 <div class="container">
   <div class="content-top">
     <div class="row">

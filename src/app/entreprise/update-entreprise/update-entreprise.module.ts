@@ -8,6 +8,7 @@ import { UpdateEntrepriseComponent } from './update-entreprise.component';
 import { EntreprisesService } from '../../shared/services/entreprises.service';
 import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import { CountriesService } from 'src/app/shared/services/countries.service';
+import { NavbarUserModule } from 'src/app/navbar-user/navbar-user.module';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { CountriesService } from 'src/app/shared/services/countries.service';
     SharedModule,
     NavbarModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NavbarUserModule
   ],
   providers:[
     EntreprisesService,

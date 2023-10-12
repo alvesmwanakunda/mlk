@@ -14,6 +14,7 @@ export class DetailEntrepriseComponent implements OnInit {
 
   entreprise:Entreprises;
   idEntreprise:any;
+  user:any;
 
   constructor(
     private entrepriseService:EntreprisesService,
@@ -24,12 +25,14 @@ export class DetailEntrepriseComponent implements OnInit {
      this.route.params.subscribe((data:any)=>{
       this.idEntreprise = data.id
      })
+     this.user = JSON.parse(localStorage.getItem('user'));
   }
   ngOnInit(){
    this.getEntreprise();
   }
 
   getEntreprise(){
+
     this.entrepriseService.getEntreprise(this.idEntreprise).subscribe((data:any)=>{
       console.log("ENTREPRISE",data);
       this.entreprise=data.message;

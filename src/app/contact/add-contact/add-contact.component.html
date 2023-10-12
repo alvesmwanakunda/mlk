@@ -1,4 +1,5 @@
-<app-navbar></app-navbar>
+<app-navbar *ngIf="user?.user?.role=='admin'"></app-navbar>
+<app-navbar-user *ngIf="user?.user?.role=='user'"></app-navbar-user>
 <div class="container">
   <div class="content-top">
     <div class="row">
@@ -61,7 +62,7 @@
             <label class="label-entreprise">Poste</label>
             <input type="text" formControlName="poste"  class="form-control input-entreprise" required>
           </div><!--div-->
-          <div class="row">
+          <div class="row" *ngIf="user?.user?.role!='user'">
             <div class="col">
               <div style="margin-bottom: 15px;">
                 <label class="label-entreprise">Entreprises</label>

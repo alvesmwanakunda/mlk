@@ -21,22 +21,33 @@ export class ContactComponent implements OnInit,AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   contacts:any=[];
   isListe:boolean=false;
+  user:any;
 
   constructor(
     private contactService :ContactsService,
     public router:Router,
     private matPaginatorIntl:MatPaginatorIntl,
     public dialog: MatDialog
-  ){}
+  ){
+    this.user = JSON.parse(localStorage.getItem('user'));
+  }
 
   ngOnInit(){
     this.matPaginatorIntl.itemsPerPageLabel="Contact par page";
   }
 
   ngAfterViewInit() {
-    this.getAllContact();
+    this.allContact();
     this.dataSource.paginator=this.paginator;
 
+  }
+
+  allContact(){
+    if(this.user.user.role=="admin"){
+      this.getAllContact();
+    }else{
+      this.getAllContactByEntreprise();
+    }
   }
 
   getAllContact(){
@@ -56,6 +67,27 @@ export class ContactComponent implements OnInit,AfterViewInit {
       console.log("Erreur lors de la récupération des données", error);
     }
     );
+  }
+
+  getAllContactByEntreprise(){
+
+    this.contactService.getContactAllEntreprise(this.user?.user?.entreprise).subscribe((data:any)=>{
+      this.contacts = data.message;
+      this.dataSource.data = data.message.map((data)=>({
+       id:data._id,
+       nom:data.nom,
+       prenom:data.prenom,
+       email:data.email,
+       indicatif:data.indicatif,
+       phone:data.phone,
+       poste:data.poste,
+      })) as Contacts[]
+   },
+   (error) => {
+     console.log("Erreur lors de la récupération des données", error);
+   }
+   );
+
   }
 
   applyFilter(event: Event) {

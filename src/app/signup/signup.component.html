@@ -1,0 +1,199 @@
+<div>
+
+  <div id="left-signup">
+    <div>
+      <img src="assets/images/logo.png" class="img-log-signup">
+    </div><!--logo-->
+    <h3 class="title-page-reset">Créer un compte MLKA</h3>
+    <div align="center">
+      <button type="button" class="btn btn-sing-1" [routerLink]="'/'" style="margin-right: 15px;">Se connecter</button>
+    </div>
+
+  </div><!--left-->
+
+  <div id="right-signup">
+
+    <div class="form-div">
+
+      <form [formGroup]="signupForm" novalidate>
+
+        <div style="margin-bottom: 40px;" *ngIf="!isEntr">
+          <p class="text-barre"><span>Les informations de l'entreprise</span></p>
+        </div>
+
+        <mat-card *ngIf="!isEntr">
+          <mat-card-content>
+            <div class="row" style="margin-bottom: 15px;">
+              <div class="col">
+                <label class="label-entreprise">Entrepirse<small class="error_field">*</small></label>
+                <input type="text" formControlName="nomen" class="form-control input-entreprise" required>
+                <div *ngIf="signupForm.get('nomen').hasError(account_validation.nomen[0].type) && ((signupForm.get('nomen').dirty || signupForm.get('nomen').touched) ||  (submitted))">
+                  <p class="error_field">{{account_validation.nomen[0].message}}</p>
+                </div>
+              </div><!--col-->
+            </div><!--row-->
+            <div class="row" style="margin-bottom: 15px;">
+              <div class="col">
+                <label class="label-entreprise">Activité entreprise<small class="error_field">*</small></label>
+                <select formControlName="activite" class="form-control input-entreprise" required>
+                     <option value="Commerciale">Commerciale</option>
+                     <option value="Industrielle">Industrielle</option>
+                     <option value="Artisanale">Artisanale</option>
+                     <option value="Agricole">Agricole</option>
+                     <option value="Libérale">Libérale</option>
+                     <option value="Autres">Autres</option>
+                </select>
+                <div *ngIf="signupForm.get('activite').hasError(account_validation.activite[0].type) && ((signupForm.get('activite').dirty || signupForm.get('activite').touched) || (submitted))">
+                  <p class="error_field">{{account_validation.activite[0].message}}</p>
+                </div>
+              </div><!--col-->
+            </div><!--row-->
+            <div class="row" style="margin-bottom: 15px;">
+            <div class="col">
+              <label class="label-entreprise">Email<small class="error_field">*</small></label>
+              <input type="email" formControlName="emailen" class="form-control input-entreprise" required>
+              <div *ngIf="signupForm.get('emailen').hasError(account_validation.emailen[0].type) && ((signupForm.get('emailen').dirty || signupForm.get('emailen').touched) ||  (submitted))">
+                <p class="error_field">{{account_validation.emailen[0].message}}</p>
+              </div>
+              <div *ngIf="signupForm.get('emailen').hasError(account_validation.emailen[1].type) && ((signupForm.get('emailen').dirty || signupForm.get('emailen').touched) ||  (submitted))">
+                <p class="error_field">{{account_validation.emailen[1].message}}</p>
+              </div>
+            </div><!--col-->
+            </div><!--row-->
+            <div class="row" style="margin-bottom: 15px;">
+              <div class="col">
+                <label class="label-entreprise">Représentant<small class="error_field">*</small></label>
+                <input type="text" formControlName="representant" class="form-control input-entreprise" required>
+                <div *ngIf="signupForm.get('representant').hasError(account_validation.representant[0].type) && ((signupForm.get('representant').dirty || signupForm.get('representant').touched) || (submitted))">
+                  <p class="error_field">{{account_validation.representant[0].message}}</p>
+                </div>
+              </div><!--col-->
+            </div><!--row-->
+            <div class="row">
+            <div class="col-4">
+              <label class="label-entreprise">Indicatif<small class="error_field">*</small></label>
+              <input type="text"  formControlName="indicatif" [matAutocomplete]="autoCode" class="form-control input-entreprise" required>
+              <mat-autocomplete #autoCode="matAutocomplete">
+                <mat-option *ngFor="let code of codeFiltres | async" [value]="code?.dial_code">
+                  {{code?.dial_code}}
+                </mat-option>
+              </mat-autocomplete>
+              <div *ngIf="signupForm.get('indicatif').hasError(account_validation.indicatif[0].type) && ((signupForm.get('indicatif').dirty || signupForm.get('indicatif').touched) ||  (submitted))">
+                <p class="error_field">{{account_validation.indicatif[0].message}}</p>
+              </div>
+            </div><!--col-->
+            <div class="col">
+              <label class="label-entreprise">Téléphone<small class="error_field">*</small></label>
+              <input type="text" formControlName="telephone" appPhoneMask class="form-control input-entreprise" required>
+              <div *ngIf="signupForm.get('telephone').hasError(account_validation.telephone[0].type) && ((signupForm.get('telephone').dirty || signupForm.get('telephone').touched) || (submitted))">
+                <p class="error_field">{{account_validation.telephone[0].message}}</p>
+              </div>
+              <div *ngIf="signupForm.get('telephone').hasError(account_validation.telephone[1].type) && ((signupForm.get('telephone').dirty || signupForm.get('telephone').touched) || (submitted))">
+                <p class="error_field">{{account_validation.telephone[1].message}}</p>
+              </div>
+            </div><!--col-->
+            </div><!--row-->
+            <div *ngIf="message" align="center">
+              <p class="error_field">{{message}}</p>
+            </div>
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <button type="button" class="btn btn-sing-1" (click)="isEntreprise()">Suivant</button>
+          </mat-card-actions>
+        </mat-card>
+
+        <div style="margin-bottom: 40px;"  *ngIf="isEntr">
+          <p class="text-barre"><span>Les informations du compte</span></p>
+        </div>
+
+        <mat-card *ngIf="isEntr">
+          <mat-card-content>
+            <div class="row" style="margin-bottom: 15px;">
+              <div class="col">
+                <label class="label-entreprise">Nom<small class="error_field">*</small></label>
+                <input type="text" formControlName="nom" class="form-control input-entreprise" required>
+                <div *ngIf="signupForm.get('nom').hasError(account_validation.nom[0].type) && ((signupForm.get('nom').dirty || signupForm.get('nom').touched) ||  (submitted))">
+                  <p class="error_field">{{account_validation.nom[0].message}}</p>
+                </div>
+              </div><!--col-->
+            </div><!--row-->
+            <div class="row" style="margin-bottom: 15px;">
+              <div class="col">
+                <label class="label-entreprise">Prénom<small class="error_field">*</small></label>
+                <input type="text" formControlName="prenom" class="form-control input-entreprise" required>
+                <div *ngIf="signupForm.get('prenom').hasError(account_validation.prenom[0].type) && ((signupForm.get('prenom').dirty || signupForm.get('prenom').touched) ||  (submitted))">
+                  <p class="error_field">{{account_validation.prenom[0].message}}</p>
+                </div>
+              </div><!--col-->
+            </div><!--row-->
+            <div class="row" style="margin-bottom: 15px;">
+              <div class="col">
+                <label class="label-entreprise">Email<small class="error_field">*</small></label>
+                <input type="email" formControlName="email" (input)="checkEmail()" class="form-control input-entreprise" required>
+                <div *ngIf="signupForm.get('email').hasError(account_validation.email[0].type) && ((signupForm.get('email').dirty || signupForm.get('email').touched) ||  (submitted))">
+                  <p class="error_field">{{account_validation.email[0].message}}</p>
+                </div>
+                <div *ngIf="signupForm.get('email').hasError(account_validation.email[1].type) && ((signupForm.get('email').dirty || signupForm.get('email').touched) ||  (submitted))">
+                  <p class="error_field">{{account_validation.email[1].message}}</p>
+                </div>
+                <div *ngIf="emailExists" class="error_field">Cet email est déjà utilisé.</div>
+              </div><!--col-->
+            </div><!--row-->
+            <div class="row" style="margin-bottom: 15px;">
+              <div class="col">
+                <label class="label-entreprise">Mot de passe<small class="error_field">*</small></label>
+                <div class="input-group mb-3 bloc-input">
+                  <input [type]="hideP ? 'password' : 'text'" formControlName="password" name="password" appAppPassword required class="form-control py-2 border-left-0 input-entreprise">
+                  <span *ngIf="signupForm.get('password').value && signupForm.get('password').value!=''"
+                  class="input-group-text input-group-lgs-reset border-right-0" (click)="hideP = !hideP" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideP"><i [ngClass]="hideP ? 'far fa-eye-slash' : 'fas fa-eye'"></i></span>
+                </div>
+                <div *ngFor="let v of account_validation.password">
+                  <p  class="error_field" *ngIf="signupForm.get('password').hasError(v.type) && ((signupForm.get('password').dirty || signupForm.get('password').touched) || (submitted))">
+                    {{ v.message }}
+                  </p>
+                </div>
+              </div><!--col-->
+            </div><!--row-->
+            <div class="row" style="margin-bottom: 15px;">
+              <div class="col">
+                <label class="label-entreprise">Confirmer le mot de passe<small class="error_field">*</small></label>
+                <div class="input-group mb-3 bloc-input">
+                  <input [type]="hidePassword ? 'password' : 'text'" appConfirmEqualValidator="password" formControlName="confirmpassword" name="confirmpassword" appAppPassword required class="form-control py-2 border-left-0 input-entreprise">
+                  <span *ngIf="signupForm.get('confirmpassword').value && signupForm.get('confirmpassword').value!=''"
+                  class="input-group-text input-group-lgs-reset border-right-0" (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword"><i [ngClass]="hidePassword ? 'far fa-eye-slash' : 'fas fa-eye'"></i></span>
+                </div>
+                <div>
+                  <p  class="error_field" *ngIf="(signupForm.get('confirmpassword').errors?.notEqual || signupForm.get('confirmpassword').value!=signupForm.get('password').value) && ((signupForm.get('confirmpassword').dirty || signupForm.get('confirmpassword').touched) || (submitted))">
+                    Les deux mot de passe ne correspondent pas
+                  </p>
+                </div>
+              </div><!--col-->
+            </div><!--row-->
+            <div class="row">
+              <section class="example-section" style="margin-bottom: 20px;">
+                <mat-checkbox value="" [(ngModel)]="cgu" name="cgu" formControlName="cgu" style="font-size: 11px;">
+                  En cochant cette case, vous acceptez <a [routerLink]="'/conditions'" target="_blank" style="text-decoration: none;color:#970516;font-weight:500;text-transform:uppercase;font-size: 12px;">Nos conditions générales</a>
+                </mat-checkbox>
+
+                <p style="color:#970516; font-size: 11px;text-align: center;" *ngIf="signupForm.get('cgu').dirty == true && (submitted)">
+                  Lire et accepter la déclaration de confidentialité.
+                </p>
+              </section>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <button type="button" class="btn btn-sing-2" (click)="isEntreprise()">Précédent</button>
+            <button class="btn btn-sing-1" style="margin-left: auto;" [disabled]="onLoadForm" type="submit" (click)="onRegisterUser()" >S'inscrire</button>
+          </mat-card-actions>
+        </mat-card>
+      </form>
+
+      <div *ngIf="onLoadForm">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </div>
+
+    </div><!--form-->
+
+  </div><!--left-->
+
+</div><!--container-->

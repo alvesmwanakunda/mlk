@@ -29,6 +29,7 @@ export class AddContactComponent implements OnInit {
   projets:any;
   contact:Contacts;
   message:any;
+  user:any;
 
   constructor(
     private _formBuilder:FormBuilder,
@@ -42,6 +43,7 @@ export class AddContactComponent implements OnInit {
     this.contactFormError={
       nom:{},
     };
+    this.user = JSON.parse(localStorage.getItem('user'));
   }
   champ_validation={
     nom:[
@@ -120,17 +122,32 @@ export class AddContactComponent implements OnInit {
 
    if(this.contactFormGroup.valid){
       this.contact = this.contactFormGroup.value;
-      this.contactService.addContact(this.contact).subscribe((res:any)=>{
-        this.onLoadForm=false;
-        this.message='Contact a été ajouté avec succès';
-        this.openSnackBar(this.message);
-        this.router.navigate(["contact"]);
-      },(error)=>{
-        this.onLoadForm=false;
-        this.message="Une erreur s'est produite veuillez réessayer.";
-        this.openSnackBar(this.message);
-        console.log(error);
-      })
+      if(this.user?.user?.role=="admin"){
+        this.contactService.addContact(this.contact).subscribe((res:any)=>{
+          this.onLoadForm=false;
+          this.message='Contact a été ajouté avec succès';
+          this.openSnackBar(this.message);
+          this.router.navigate(["contact"]);
+        },(error)=>{
+          this.onLoadForm=false;
+          this.message="Une erreur s'est produite veuillez réessayer.";
+          this.openSnackBar(this.message);
+          console.log(error);
+        })
+      }else{
+        this.contactService.addContactEntreprise(this.contact, this.user?.user?.entreprise).subscribe((res:any)=>{
+          this.onLoadForm=false;
+          this.message='Contact a été ajouté avec succès';
+          this.openSnackBar(this.message);
+          this.router.navigate(["contact"]);
+        },(error)=>{
+          this.onLoadForm=false;
+          this.message="Une erreur s'est produite veuillez réessayer.";
+          this.openSnackBar(this.message);
+          console.log(error);
+        })
+      }
+
    }
 
   }

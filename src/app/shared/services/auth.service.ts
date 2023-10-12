@@ -30,6 +30,34 @@ export class AuthService {
     .catch(this.handleError)
   }
 
+  public lostPassword(credentials:Object):Promise<any>{
+    return this.httpClient
+    .post(`${environment.BASE_API_URL}/reset`,credentials)
+    .toPromise()
+    .then((response)=> response as Object)
+    .catch(this.handleError)
+  }
+
+  public resetPassword(credentials:Object):Promise<any>{
+    return this.httpClient
+    .post(`${environment.BASE_API_URL}/reset/password`,credentials)
+    .toPromise()
+    .then((response)=> response as Object)
+    .catch(this.handleError)
+  }
+
+  public signup(credentials){
+    return this.httpClient.post(`${environment.BASE_API_URL}/signup`, credentials);
+  }
+
+  public updateProfil(credentials){
+    return this.httpClient.put(`${environment.BASE_API_URL}/update/profil`, credentials);
+  }
+
+  public checkEmail(email){
+    return this.httpClient.get(`${environment.BASE_API_URL}/check-email/${email}`,);
+  }
+
   setUser(user:Object):void{
     localStorage.setItem("user",JSON.stringify(user))
   }

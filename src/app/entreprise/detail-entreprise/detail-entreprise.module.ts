@@ -11,6 +11,7 @@ import { IntervenantModule } from '../../projet/intervenant/intervenant.module';
 import { EntreprisesService } from 'src/app/shared/services/entreprises.service';
 import { DeleteEntrepriseModule } from '../delete-entreprise/delete-entreprise.module';
 import { ProjetEntrepriseModule } from '../projet-entreprise/projet-entreprise.module';
+import { NavbarUserModule } from 'src/app/navbar-user/navbar-user.module';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { ProjetEntrepriseModule } from '../projet-entreprise/projet-entreprise.m
     IntervenantModule,
     //PieceModule,
     DeleteEntrepriseModule,
-    ProjetEntrepriseModule
+    ProjetEntrepriseModule,
+    NavbarUserModule
   ],
   providers:[EntreprisesService]
 })

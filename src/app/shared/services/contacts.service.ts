@@ -14,6 +14,10 @@ export class ContactsService {
      return this.httpClient.post(`${environment.BASE_API_URL}/contact`,contact);
   }
 
+  public addContactEntreprise(contact, idEntrepise){
+    return this.httpClient.post(`${environment.BASE_API_URL}/contact/entreprise/${idEntrepise}`,contact);
+ }
+
   public getContact(idContact){
     return this.httpClient.get(`${environment.BASE_API_URL}/contact/${idContact}`)
   }

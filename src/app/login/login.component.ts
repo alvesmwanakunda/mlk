@@ -50,7 +50,11 @@ export class LoginComponent implements OnInit {
 
   //redirect
   handleRedirectOnLogin(user){
-    this.router.navigate(["dashboard"]);
+    if(user.user.role=="admin"){
+      this.router.navigate(["dashboard"]);
+    }else{
+      this.router.navigate(["entreprise/dashboard"]);
+    }
   }
 
   onLoginFormValuesChanged() {

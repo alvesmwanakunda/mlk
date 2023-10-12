@@ -4,6 +4,7 @@ import { ContactRoutingModule } from './contact-routing.module';
 import { ContactComponent } from './contact.component';
 import { SharedModule } from '../shared/shared.module';
 import { NavbarModule } from '../navbar/navbar.module';
+import { NavbarUserModule } from '../navbar-user/navbar-user.module';
 import { ContactsService } from '../shared/services/contacts.service';
 import { DeleteContactModule } from './delete-contact/delete-contact.module';
 
@@ -15,7 +16,8 @@ import { DeleteContactModule } from './delete-contact/delete-contact.module';
     ContactRoutingModule,
     SharedModule,
     NavbarModule,
-    DeleteContactModule
+    DeleteContactModule,
+    NavbarUserModule
   ],
   providers:[ContactsService]
 })
