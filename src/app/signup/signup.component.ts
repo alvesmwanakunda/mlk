@@ -185,20 +185,19 @@ export class SignupComponent implements OnInit {
     let login= {};
     console.log("Form", this.signupForm);
     if(!this.signupForm.invalid){
-      Object.assign(this.user, this.signupForm.value);
-      login={
-            email:this.signupForm.get("email").value,
-            password:this.signupForm.get("password").value
-      }
-      console.log("Login", login);
-      this.authService.signup(this.user).subscribe((res:any)=>{
+        Object.assign(this.user, this.signupForm.value);
+        /*login={
+              email:this.signupForm.get("email").value,
+              password:this.signupForm.get("password").value
+        }*/
+        this.authService.signup(this.user).subscribe((res:any)=>{
         console.log("Response", res);
         if(!res.success){
           this.signupFormErrors["email"].found = true;
 
         }else{
             this.isForm=true;
-            this.onLogin(login);
+            this.router.navigate(["mlka"]);
         }
         this.onLoadForm = false;
       });
