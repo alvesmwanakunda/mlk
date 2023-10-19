@@ -1,145 +1,115 @@
-<app-navbar *ngIf="this.user?.user?.role=='admin'"></app-navbar>
-<app-navbar-user *ngIf="this.user?.user?.role=='user'"></app-navbar-user>
-<div class="container">
-  <div class="content-top">
-    <div class="row">
+<app-navbar>
+  <div class="container">
 
-       <div class="col">
-           <div class="row">
-            <div class="col">
-              <p class="title-projet-page" style="padding-top: 10px;">Entreprise : {{entreprise?.nom}}</p>
-            </div>
-           </div><!--row-->
-       </div><!--col-->
+    <div class="content-top">
+      <h2 class="content-title">Entreprise -  {{entreprise?.societe}}</h2>
+      <mat-divider></mat-divider>
+    </div><!--content-->
 
-       <div class="col" align="right">
-        <button type="button" class="btn btn-projet-action" style="margin-right: 5px;" matTooltip="Modifier" (click)="updateEntreprise(entreprise._id)"><i class="fa-regular fa-pen-to-square btn-icon-projet-update"></i></button>
-        <button type="button" class="btn btn-projet-action" style="margin-right: 5px;" matTooltip="Supprimer" (click)="openDialogDelete(entreprise._id)" *ngIf="this.user?.user?.role=='admin'"><i class="fa-solid fa-trash btn-icon-projet-delete"></i></button>
-        <button type="button" class="btn btn-projet" [routerLink]="['/add/entreprise']" *ngIf="this.user?.user?.role=='admin'"><i class="fa-solid fa-plus"></i> Nouveau Entreprise</button>
-       </div><!--col-->
-    </div><!--row-->
-  </div><!--content-->
+    <div class="content-top">
+      <div class="row">
+         <div class="col" align="right">
+          <button type="button" class="btn btn-projet-action" style="margin-right: 5px;" matTooltip="Modifier" (click)="updateEntreprise(entreprise._id)"><i class="fa-regular fa-pen-to-square btn-icon-projet-update"></i></button>
+          <button type="button" class="btn btn-projet-action" style="margin-right: 5px;" matTooltip="Supprimer" (click)="openDialogDelete(entreprise._id)" *ngIf="this.user?.user?.role=='admin'"><i class="fa-solid fa-trash btn-icon-projet-delete"></i></button>
+          <button type="button" class="btn btn-projet" [routerLink]="['/add/entreprise']" *ngIf="this.user?.user?.role=='admin'"><i class="fa-solid fa-plus"></i> Nouveau Entreprise</button>
+         </div><!--col-->
+      </div><!--row-->
+    </div><!--content-->
 
-  <div class="list-projet">
-    <div class="row">
+    <div class="list-projet">
+      <div class="row">
 
-      <div class="col-3">
+        <div class="col-3">
 
-        <div class="card card-projet">
-          <img src="data:image/png;base64,{{entreprise?.photo}}" *ngIf="entreprise?.photo" class="card-img-top card-img-projet" alt="...">
-          <img src="assets/images/ent.png" *ngIf="!entreprise?.photo" class="card-img-projet" alt="...">
-          <!--<div class="img-user-projet">
-            <img src="assets/images/userp.png">
-          </div>-->
-          <div class="card-body" style="padding-top: 40px;">
-            <p class="user-title">{{entreprise?.representant}}</p>
-            <div align="center" style="margin-bottom:40px;"><hr class="projet"></div>
+          <div class="card card-projet">
+            <img src="data:image/png;base64,{{entreprise?.photo}}" *ngIf="entreprise?.photo" class="card-img-top card-img-projet" alt="...">
+            <img src="assets/images/ent.png" *ngIf="!entreprise?.photo" class="card-img-projet" alt="...">
+            <!--<div class="img-user-projet">
+              <img src="assets/images/userp.png">
+            </div>-->
+            <div class="card-body" style="padding-top: 40px;">
+              <p class="user-title">{{entreprise?.nom}} {{entreprise?.prenom}}</p>
+              <div align="center" style="margin-bottom:40px;"><hr class="projet"></div>
 
-            <div class="card card-entrd" style="margin-bottom:20px;">
-                <div class="card-body">
-                  <div class="row">
+              <div class="card card-entrd" style="margin-bottom:20px;">
+                  <div class="card-body">
+                    <div class="row">
+                        <div class="col-1">
+                          <p class="detail-ent-detail"><i class="fa-solid fa-square-phone"></i></p>
+                        </div>
+                        <div class="col">
+                          <p class="detail-ent-detail">{{entreprise?.indicatif}} {{entreprise?.telephone}}</p>
+                        </div>
+                    </div><!--row-->
+                    <div class="row">
                       <div class="col-1">
-                        <p class="detail-ent-detail"><i class="fa-solid fa-square-phone"></i></p>
+                        <p class="detail-ent-detail"><i class="fa-solid fa-envelope"></i></p>
                       </div>
                       <div class="col">
-                        <p class="detail-ent-detail">{{entreprise?.indicatif}} {{entreprise?.telephone}}</p>
+                        <p class="detail-ent-detail">{{entreprise?.email}}</p>
                       </div>
-                  </div><!--row-->
-                  <div class="row">
+                    </div><!--row-->
+                    <div class="row">
                     <div class="col-1">
-                      <p class="detail-ent-detail"><i class="fa-solid fa-envelope"></i></p>
+                      <p class="detail-ent-detail"><i class="fa-solid fa-location-dot"></i></p>
                     </div>
                     <div class="col">
-                      <p class="detail-ent-detail">{{entreprise?.email}}</p>
+                      <p class="detail-ent-detail">{{entreprise?.rue}}, {{entreprise?.postal}} {{entreprise?.ville}}</p>
                     </div>
-                  </div><!--row-->
-                  <div class="row">
+                    </div><!--row-->
+                    <div class="row">
                   <div class="col-1">
-                    <p class="detail-ent-detail"><i class="fa-solid fa-location-dot"></i></p>
+                    <p class="detail-ent-detail"><i class="fa-solid fa-flag"></i></p>
                   </div>
                   <div class="col">
-                    <p class="detail-ent-detail">{{entreprise?.rue}}, {{entreprise?.postal}} {{entreprise?.ville}}</p>
+                    <p class="detail-ent-detail">{{entreprise?.pays}}</p>
                   </div>
-                  </div><!--row-->
-                  <div class="row">
-                <div class="col-1">
-                  <p class="detail-ent-detail"><i class="fa-solid fa-flag"></i></p>
-                </div>
-                <div class="col">
-                  <p class="detail-ent-detail">{{entreprise?.pays}}</p>
-                </div>
-                  </div><!--row-->
-                </div><!--card-body-->
-            </div><!--card-->
+                    </div><!--row-->
+                  </div><!--card-body-->
+              </div><!--card-->
 
-            <div class="row" style="margin-bottom:15px;">
-                <div class="col">
-
-                  <p class="pr-title">Nom Commercial</p>
-                  <p class="pr-title-entrep">{{entreprise?.commercial}}</p>
-
-                </div><!--col-->
-                <div class="col">
-                  <p class="pr-title">Nº SIREN</p>
-                  <p class="pr-title-entrep">{{entreprise?.siren}}</p>
-                </div><!--col-->
-            </div><!--row-->
-            <div class="row" style="margin-bottom:15px;">
-              <div class="col">
-
-                <p class="pr-title">Forme Juridique</p>
-                <p class="pr-title-entrep">{{entreprise?.juridique}}</p>
-
-              </div><!--col-->
-              <div class="col">
-                <p class="pr-title">Nº TVA</p>
-                <p class="pr-title-entrep">{{entreprise?.tva}}</p>
-              </div><!--col-->
-            </div><!--row-->
-            <div class="row" style="margin-bottom:15px;">
-              <div class="col">
-
-                <p class="pr-title">Nº SIRET</p>
-                <p class="pr-title-entrep">{{entreprise?.siret}}</p>
-
-              </div><!--col-->
-              <div class="col">
-                <p class="pr-title">Activité Principale</p>
-                <p class="pr-title-entrep">{{entreprise?.activite}}</p>
-              </div><!--col-->
-            </div><!--row-->
-
-
-          </div><!--card-body-->
-        </div>
-
-      </div><!--col-->
-
-      <div class="col">
-
-        <nav>
-          <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <button class="nav-link tabprojet active" id="nav-int-tab" data-bs-toggle="tab" data-bs-target="#nav-int" type="button" role="tab" aria-controls="nav-int" aria-selected="true">Contacts</button>
-            <button class="nav-link tabprojet" id="nav-projet-tab" data-bs-toggle="tab" data-bs-target="#nav-projet" type="button" role="tab" aria-controls="nav-projet" aria-selected="false">Projets</button>
-            <!--<button class="nav-link tabprojet" id="nav-piece-tab" data-bs-toggle="tab" data-bs-target="#nav-piece" type="button" role="tab" aria-controls="nav-piece" aria-selected="false">Documents</button>
-            <button class="nav-link tabprojet" id="nav-etude-tab" data-bs-toggle="tab" data-bs-target="#nav-etude" type="button" role="tab" aria-controls="nav-etude" aria-selected="false">Agenda</button>-->
+              <div class="row" style="margin-bottom:15px;">
+                  <div class="col">
+                    <p class="pr-title">Nom Commercial : {{entreprise?.commercial}}</p>
+                    <p class="pr-title">Nº SIREN : {{entreprise?.siren}}</p>
+                    <p class="pr-title">Forme Juridique : {{entreprise?.juridique}}</p>
+                    <p class="pr-title">Nº TVA : {{entreprise?.tva}}</p>
+                    <p class="pr-title">Nº SIRET : {{entreprise?.siret}}</p>
+                    <p class="pr-title">Activité Principale : {{entreprise?.activite}}</p>
+                  </div><!--col-->
+              </div><!--row-->
+            </div><!--card-body-->
           </div>
-        </nav>
-        <div class="tab-content" id="nav-tabContent">
-          <div class="tab-pane fade show active" id="nav-int" role="tabpanel" aria-labelledby="nav-int-tab" tabindex="0">
-            <app-intervenant [idEntreprise]="idEntreprise"></app-intervenant>
-          </div>
-          <div class="tab-pane fade" id="nav-projet" role="tabpanel" aria-labelledby="nav-int-tab" tabindex="0">
-            <app-projet-entreprise></app-projet-entreprise>
-          </div><!--pr-->
-          <!--<div class="tab-pane fade" id="nav-piece" role="tabpanel" aria-labelledby="nav-piece-tab" tabindex="0">
-          </div>
-          <div class="tab-pane fade" id="nav-etude" role="tabpanel" aria-labelledby="nav-etude-tab" tabindex="0">
-          </div>-->
-        </div>
 
-      </div><!--col-->
+        </div><!--col-->
 
-    </div><!--row-->
+        <div class="col">
+
+          <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+              <button class="nav-link tabprojet active" id="nav-int-tab" data-bs-toggle="tab" data-bs-target="#nav-int" type="button" role="tab" aria-controls="nav-int" aria-selected="true">Contacts</button>
+              <button class="nav-link tabprojet" id="nav-projet-tab" data-bs-toggle="tab" data-bs-target="#nav-projet" type="button" role="tab" aria-controls="nav-projet" aria-selected="false">Projets</button>
+              <!--<button class="nav-link tabprojet" id="nav-piece-tab" data-bs-toggle="tab" data-bs-target="#nav-piece" type="button" role="tab" aria-controls="nav-piece" aria-selected="false">Documents</button>
+              <button class="nav-link tabprojet" id="nav-etude-tab" data-bs-toggle="tab" data-bs-target="#nav-etude" type="button" role="tab" aria-controls="nav-etude" aria-selected="false">Agenda</button>-->
+            </div>
+          </nav>
+          <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-int" role="tabpanel" aria-labelledby="nav-int-tab" tabindex="0">
+              <app-intervenant [idEntreprise]="idEntreprise"></app-intervenant>
+            </div>
+            <div class="tab-pane fade" id="nav-projet" role="tabpanel" aria-labelledby="nav-int-tab" tabindex="0">
+              <app-projet-entreprise></app-projet-entreprise>
+            </div><!--pr-->
+            <!--<div class="tab-pane fade" id="nav-piece" role="tabpanel" aria-labelledby="nav-piece-tab" tabindex="0">
+            </div>
+            <div class="tab-pane fade" id="nav-etude" role="tabpanel" aria-labelledby="nav-etude-tab" tabindex="0">
+            </div>-->
+          </div>
+
+        </div><!--col-->
+
+      </div><!--row-->
+    </div>
   </div>
-</div>
+</app-navbar>
+

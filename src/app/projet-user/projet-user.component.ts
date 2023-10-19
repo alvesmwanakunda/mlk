@@ -75,9 +75,11 @@ export class ProjetUserComponent {
   ngOnInit(){
 
     this.firstFormGroup=this._formBuilder.group({
-      nom:['',Validators.required],
+      projet:['',Validators.required],
       service:['',Validators.required],
-      responsable:['',null],
+      nom:['',null],
+      prenom:['',null],
+      genre:['',null],
       plan:['',null]
     });
     this.secondFormGroup=this._formBuilder.group({
@@ -172,7 +174,10 @@ export class ProjetUserComponent {
      Object.assign(this.form3, this.threeFormGroup.value)
 
      formData.append("uploadfile", this.file);
+     formData.append("projet", this.form1.projet);
+     formData.append("genre", this.form1.genre);
      formData.append("nom", this.form1.nom);
+     formData.append("prenom", this.form1.prenom);
      formData.append("service", this.form1.service);
      formData.append("etat", this.form1.etat);
      formData.append("responsable", this.form1.responsable);

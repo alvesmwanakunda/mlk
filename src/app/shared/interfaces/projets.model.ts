@@ -1,6 +1,9 @@
 export interface Projets {
   _id:string;
   nom:string;
+  projet:string;
+  prenom:string;
+  genre:string;
   entreprise:string;
   user:string;
   service:string;

@@ -1,14 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: #ECF0F4 !important; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: #f6f6f6 !important; }
+
+a{
+  text-decoration: none !important;
+}
+
+.span-brand{
+    float: left;
+    width: 113px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 
 /* login and signup page */
 
 #container {
   width: 100%;
   height: 100%;
-  background-color: #F3F3F3;
+  background-color: #f6f6f6;
 }
 
 #left {
@@ -33,17 +45,19 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
   padding: 20px 20px 20px;
 }
 
-#left-signup {
+.left-signup {
   float: left;
-  width: 50%;
-  padding: 120px 50px 20px;
+  width: 25%;
+  background-color: #fff;
+  box-shadow: 0 2px 4px #00000024;
+  flex-shrink: 0;
 }
 
-#right-signup {
+.right-signup {
   float: right;
-  width: 50%;
-  //height: 100%;
-  background: #fff;
+  width: 75%;
+  height: 100%;
+  //background: #fff;
   padding: 20px 20px 20px;
 }
 /* end login and signup page */
@@ -380,7 +394,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
 
 /* content */
 .content-top{
- padding-top: 130px !important;
+ //padding-top: 130px !important;
  margin-bottom: 30px;
 }
 
@@ -659,9 +673,13 @@ hr.entreprise{
 
 .pr-title{
   font-style: normal;
-  font-weight: 500;
   font-size: 9px;
-  line-height: 10px;
+  color: #434A5E;
+}
+
+.pr-title-projet{
+  font-style: normal;
+  font-size: 9px;
   color: #434A5E;
   text-align: center
 }
@@ -863,7 +881,7 @@ hr.entreprise{
 }
 
 .mat-stepper-vertical {
-  background-color: #ECF0F4 !important;
+  background-color: #f6f6f6 !important;
 }
 
 .mat-expansion-panel-header {
@@ -1011,15 +1029,14 @@ hr.entreprise{
   display: none;
 }
 
-.mdc-text-field--filled:not(.mdc-text-field--disabled) {
-  background-color: transparent !important;
-  border-radius: 0 !important;
-  border: 0.349546px solid #666B78 !important;
-  //height: 44px !important;
-}
+
 
 .example-full-width {
   width: 100%;
+}
+
+.example-full {
+  width: 40%;
 }
 
 .cal-week-view .cal-event {
@@ -1235,6 +1252,427 @@ hr.entreprise{
     word-break: break-word;
     word-wrap: break-word;
 }
+
+.bg-light-customer {
+  --bs-bg-opacity: 1;
+  background-color: #fff !important;
+  border-bottom: 1px solid #e0e1dd !important;
+}
+
+.link-c{
+    font-size: 14px !important;
+    line-height: 34px !important;
+    color: #000000 !important;
+    display: inline-block !important;
+    padding-right: 30px !important;
+    vertical-align: middle !important;
+}
+
+
+.btn-navbar{
+    align-items: center !important;
+    border-radius: 3px !important;
+    display: flex !important;
+    justify-content: center !important;
+    line-height: 1.3333333 !important;
+    margin: auto !important;
+    min-height: 48px !important;
+    text-transform: none !important;
+    width: 100% !important;
+    background: #28628B !important;
+    color: #fff !important;
+}
+
+// Menus apps
+
+.user-inf{
+    font-size: 12px;
+    color: #726e6e;
+    position: relative;
+    top: 14px;
+    width: 109px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    float: none;
+    /* display: contents; */
+    display: inline-block;
+    left: 6px;
+}
+
+.dot {
+  height: 35px;
+  width: 35px;
+  background-color: #28628B;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-span{
+  font-weight: 700;
+  position: relative;
+  top: 8px;
+  left: 6px;
+  color: #fff;
+}
+
+.profile{
+  padding-left: 20px;
+}
+
+.title-cc{
+    min-height: 56px;
+    font-weight: 700;
+    //padding: 8px 26px 8px 70px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.02em;
+    transition: ease-out 0.5s;
+    padding-left: 30px;
+}
+
+.dashboard {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  min-height: 100vh;
+}
+
+.dashboard-app {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-flex: 2;
+  -webkit-flex-grow: 2;
+  -ms-flex-positive: 2;
+  flex-grow: 2;
+  margin-top: 20px;
+}
+
+.dashboard-content {
+  -webkit-box-flex: 2;
+  -webkit-flex-grow: 2;
+  -ms-flex-positive: 2;
+  flex-grow: 2;
+  padding: 25px;
+}
+
+.dashboard-nav {
+  min-width: 238px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  overflow: auto;
+  background-color: #373193;
+}
+
+.dashboard-compact .dashboard-nav {
+  display: none;
+}
+
+.dashboard-nav header {
+  min-height: 84px;
+  padding: 8px 27px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.dashboard-nav header .menu-toggle {
+  display: none;
+  margin-right: auto;
+}
+
+.dashboard-nav a {
+  color: #515151;
+}
+
+.dashboard-nav a:hover {
+  text-decoration: none;
+  color: #28628B;
+}
+
+.dashboard-nav {
+  //background-color: #443ea2;
+  background-color: #ffffff !important;
+  border-right: 1px solid #efeded !important;
+}
+
+.dashboard-nav a {
+  color: #000000;
+}
+
+.brand-logo {
+  font-family: "Nunito", sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  color: #515151;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.brand-logo:focus, .brand-logo:active, .brand-logo:hover {
+  color: #dbdbdb;
+  text-decoration: none;
+}
+
+.brand-logo i {
+  color: #d2d1d1;
+  font-size: 27px;
+  margin-right: 10px;
+}
+
+.dashboard-nav-list {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.dashboard-nav-item {
+  min-height: 56px;
+  padding: 8px 20px 8px 70px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  letter-spacing: 0.02em;
+  transition: ease-out 0.5s;
+  font-size: 13px;
+}
+
+.dashboard-nav-item i {
+  width: 36px;
+  font-size: 14px;
+  margin-left: -40px;
+}
+
+.dashboard-nav-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.active {
+  background: #f6f6f6;;
+}
+
+.dashboard-nav-dropdown {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.dashboard-nav-dropdown.show {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.dashboard-nav-dropdown.show > .dashboard-nav-dropdown-toggle {
+  font-weight: bold;
+}
+
+.dashboard-nav-dropdown.show > .dashboard-nav-dropdown-toggle:after {
+  -webkit-transform: none;
+  -o-transform: none;
+  transform: none;
+}
+
+.dashboard-nav-dropdown.show > .dashboard-nav-dropdown-menu {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.dashboard-nav-dropdown-toggle:after {
+  content: "";
+  margin-left: auto;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid rgba(81, 81, 81, 0.8);
+  -webkit-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.dashboard-nav .dashboard-nav-dropdown-toggle:after {
+  border-top-color: rgba(255, 255, 255, 0.72);
+}
+
+.dashboard-nav-dropdown-menu {
+  display: none;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.dashboard-nav-dropdown-item {
+  min-height: 40px;
+  padding: 8px 20px 8px 70px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  transition: ease-out 0.5s;
+}
+
+.dashboard-nav-dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.menu-toggle {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  color: #443ea2;
+}
+
+.menu-toggle:hover, .menu-toggle:active, .menu-toggle:focus {
+  text-decoration: none;
+  color: #875de5;
+}
+
+.menu-toggle i {
+  font-size: 20px;
+}
+
+.dashboard-toolbar {
+  min-height: 84px;
+  background-color: #dfdfdf;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px 27px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.nav-item-divider {
+  height: 1px;
+  margin: 1rem 0;
+  overflow: hidden;
+  background-color: #efeded;
+}
+
+@media (min-width: 992px) {
+  .dashboard-app {
+      margin-left: 238px;
+  }
+
+  .dashboard-compact .dashboard-app {
+      margin-left: 0;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .dashboard-content {
+      padding: 15px 0px;
+  }
+}
+
+@media (max-width: 992px) {
+  .dashboard-nav {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 1070;
+  }
+
+  .dashboard-nav.mobile-show {
+      display: block;
+  }
+}
+
+@media (max-width: 992px) {
+  .dashboard-nav header .menu-toggle {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+  }
+}
+
+@media (min-width: 992px) {
+  .dashboard-toolbar {
+      left: 238px;
+  }
+
+  .dashboard-compact .dashboard-toolbar {
+      left: 0;
+  }
+}
+
+
+// End apps
 
 
 

@@ -8,7 +8,7 @@ import { IntervenantModule } from '../../projet/intervenant/intervenant.module';
 import { ProjetsService } from '../../shared/services/projets.service';
 import { DeleteProjetModule } from '../../projet/delete-projet/delete-projet.module';
 import { BoxProjetModule } from '../../projet/box-projet/box-projet.module';
-import { NavbarUserModule } from '../../navbar-user/navbar-user.module';
+import { NavbarModule } from '../../navbar/navbar.module';
 
 
 @NgModule({
@@ -17,7 +17,7 @@ import { NavbarUserModule } from '../../navbar-user/navbar-user.module';
     CommonModule,
     DetailUserProjetRoutingModule,
     SharedModule,
-    NavbarUserModule,
+    NavbarModule,
     FicheModule,
     IntervenantModule,
     DeleteProjetModule,

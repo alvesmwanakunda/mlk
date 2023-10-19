@@ -1,37 +1,39 @@
-<app-navbar></app-navbar>
-<div class="container">
-  <div class="content-top">
-    <div class="row" style="margin-bottom: 30px;">
+<app-navbar>
+  <div class="container">
+    <div class="content-top">
+      <div class="row" style="margin-bottom: 30px;">
 
-       <div class="col">
-           <div class="row">
-            <div class="col">
-              <p class="title-projet-page">Nom du Projet  <button class="btn" type="button" [routerLink]="['/projet']"> - Métrés</button></p>
-            </div>
-           </div><!--row-->
-       </div><!--col-->
+         <div class="col">
+             <div class="row">
+              <div class="col">
+                <p class="title-projet-page">Nom du Projet  <button class="btn" type="button" [routerLink]="['/projet']"> - Métrés</button></p>
+              </div>
+             </div><!--row-->
+         </div><!--col-->
 
-       <div class="col" align="right">
-       <a href="https://viewer.autodesk.com/id/dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6YTM2MHZpZXdlci90MTY4NTM4MzI4Ml8yZWY2YzFhNC1jYTYwLTRlMjQtOGE3OS04NDUxZGE1OTEyMTYuaWZj?sheetId=ZTQ2YTY5YzItYzFjZS1kY2I0LTE5ZWItNThmMTU4OTVmMGQw" target="_blank"> <button type="button" class="btn btn-metre"><i class="fa-solid fa-eye"></i> Visionneuse</button></a>
-       </div><!--col-->
-    </div><!--row-->
+         <div class="col" align="right">
+         <a href="https://viewer.autodesk.com/id/dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6YTM2MHZpZXdlci90MTY4NTM4MzI4Ml8yZWY2YzFhNC1jYTYwLTRlMjQtOGE3OS04NDUxZGE1OTEyMTYuaWZj?sheetId=ZTQ2YTY5YzItYzFjZS1kY2I0LTE5ZWItNThmMTU4OTVmMGQw" target="_blank"> <button type="button" class="btn btn-metre"><i class="fa-solid fa-eye"></i> Visionneuse</button></a>
+         </div><!--col-->
+      </div><!--row-->
 
-    <div>
-      <nav>
-        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-          <button class="nav-link tabprojet active" id="nav-file-tab" data-bs-toggle="tab" data-bs-target="#nav-file" type="button" role="tab" aria-controls="nav-file" aria-selected="true">Lôts</button>
-          <button class="nav-link tabprojet" id="nav-int-tab" data-bs-toggle="tab" data-bs-target="#nav-int" type="button" role="tab" aria-controls="nav-int" aria-selected="false">Batiment</button>
-        </div>
-      </nav>
-      <div class="tab-content" id="nav-tabContent">
-        <div class="tab-pane fade show active" id="nav-file" role="tabpanel" aria-labelledby="nav-file-tab" tabindex="0">
-          <app-lots></app-lots>
-        </div>
-        <div class="tab-pane fade" id="nav-int" role="tabpanel" aria-labelledby="nav-int-tab" tabindex="0">
-          <app-batiment></app-batiment>
+      <div>
+        <nav>
+          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link tabprojet active" id="nav-file-tab" data-bs-toggle="tab" data-bs-target="#nav-file" type="button" role="tab" aria-controls="nav-file" aria-selected="true">Lôts</button>
+            <button class="nav-link tabprojet" id="nav-int-tab" data-bs-toggle="tab" data-bs-target="#nav-int" type="button" role="tab" aria-controls="nav-int" aria-selected="false">Batiment</button>
+          </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show active" id="nav-file" role="tabpanel" aria-labelledby="nav-file-tab" tabindex="0">
+            <app-lots></app-lots>
+          </div>
+          <div class="tab-pane fade" id="nav-int" role="tabpanel" aria-labelledby="nav-int-tab" tabindex="0">
+            <app-batiment></app-batiment>
+          </div>
         </div>
       </div>
-    </div>
-  </div><!--content-->
-</div>
+    </div><!--content-->
+  </div>
+</app-navbar>
+
 

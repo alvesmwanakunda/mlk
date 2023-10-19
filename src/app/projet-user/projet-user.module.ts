@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjetUserComponent } from './projet-user.component';
 import { ProjetUserRoutingModule } from './projet-user-routing.module';
-import { NavbarUserModule } from '../navbar-user/navbar-user.module';
+import { NavbarModule } from '../navbar/navbar.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import { CountriesService } from 'src/app/shared/services/countries.service';
@@ -16,7 +16,7 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule,
     ProjetUserRoutingModule,
     SharedModule,
-    NavbarUserModule,
+    NavbarModule,
     FormsModule,
     ReactiveFormsModule,
   ],

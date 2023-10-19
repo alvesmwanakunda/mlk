@@ -25,6 +25,10 @@ const routes: Routes = [
    loadChildren:()=>import('./signup/signup.module').then(m=>m.SignupModule),
   },
   {
+    path:"mlka",
+    loadChildren:()=>import('./home/home.module').then(m=>m.HomeModule)
+  },
+  {
     path:"profil",
     loadChildren:()=>import('./profil/profil.module').then(m=>m.ProfilModule)
   },

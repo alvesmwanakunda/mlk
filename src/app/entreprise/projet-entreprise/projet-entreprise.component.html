@@ -19,16 +19,16 @@
       <div class="row">
         <div class="col-4" *ngFor="let projet of projets" style="margin-bottom: 15px;">
           <div class="card card-projet-ent">
-            <img src="data:image/png;base64,{{projet?.photo}}" *ngIf="projet?.photo" class="card-img-projet-ent" alt="...">
+            <!--<img src="data:image/png;base64,{{projet?.photo}}" *ngIf="projet?.photo" class="card-img-projet-ent" alt="...">
             <img src="assets/images/pr.png" *ngIf="!projet?.photo" class="card-img-projet-ent" alt="...">
             <div class="etat-projet">
               <span class="label-projet">{{projet?.devise}}</span>
             </div>
             <div class="progress progress-projet" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
               <div class="progress-bar" [ngStyle]="{'width': (projet?.etat=='En attente') ? '0%' : (projet?.etat=='En cours') ? '50%' : (projet?.etat=='Clôturé') ? '100%' : '0%'}"></div>
-            </div>
+            </div>-->
             <div class="card-body">
-              <p class="title-projet-ent">{{projet?.nom}}</p>
+              <p class="title-projet-ent">{{projet?.projet}}</p>
               <p align="center">
                 <button type="button" class="btn btn-outline-secondary btn-detail-projet" (click)="getProjet(projet._id)">Détail</button>
               </p>

@@ -1,6 +1,6 @@
 export interface Entreprises {
  _id:string;
- nom:string;
+ societe:string;
  commercial:string;
  siren:string;
  siret:string;
@@ -20,6 +20,8 @@ export interface Entreprises {
  corps_act:string;
  corps_etat:string;
  fournisseur:string;
- representant:string;
+ nom:string;
+ prenom:string;
+ numero:string;
  nbr_projet:string;
 }

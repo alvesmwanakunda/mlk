@@ -5,6 +5,7 @@ import { SignupRoutingModule } from './signup-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../shared/services/auth.service';
+import { NavbarUserModule } from '../navbar-user/navbar-user.module';
 
 
 
@@ -15,7 +16,8 @@ import { AuthService } from '../shared/services/auth.service';
     SignupRoutingModule,
     SharedModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NavbarUserModule
   ],
   providers:[AuthService]
 })

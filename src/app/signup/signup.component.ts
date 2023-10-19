@@ -28,9 +28,13 @@ export class SignupComponent implements OnInit {
   emailExists: boolean;
   indicatifControl = new FormControl();
   codeFiltres:Observable<any[]>;
+  paysFiltres:Observable<any[]>;
   countries:any=[];
+  indicatifs:any=[];
   isEntr:boolean=false;
   message:any;
+  pays="France";
+  code="+33"
 
 
   constructor(
@@ -55,60 +59,16 @@ export class SignupComponent implements OnInit {
         message: "Veuillez respecter le format email.",
       }
     ],
-    emailen:[
-      {
-        type: "required",
-        message: "Adresse E-mail est requis",
-      },{
-        type:"pattern",
-        message: "Veuillez respecter le format email.",
-      }
-    ],
-    nomen:[
+    input:[
       {
         type:"required",
-        message:"Ce champ est requis"
-      }
-
-    ],
-    nom:[
-
-      {
-        type:"required",
-        message:"Ce champ est requis"
-      }
-
-    ],
-    prenom:[
-
-      {
-        type:"required",
-        message:"Ce champ est requis"
-      }
-
-    ],
-    activite:[
-      {
-        type:"required",
-        message:"Ce champ est requis"
-      }
-    ],
-    representant:[
-      {
-        type:"required",
-        message:"Ce champ est requis"
-      }
-    ],
-    indicatif:[
-      {
-        type:"required",
-        message:"Ce champ est requis"
+        message:"Veuillez indiquer ce champ"
       }
     ],
     telephone:[
       {
         type:"required",
-        message:"Ce champ est requis"
+        message:"Veuillez indiquer votre téléphone"
       },
       {
         type:"pattern",
@@ -125,7 +85,7 @@ export class SignupComponent implements OnInit {
       {
         type: "pattern",
         message:
-          "Le mot de passe doit comporter au moins 8 caracteres,une lettre majuscule, une lettre minuscule et un chiffre",
+          "Votre mot de passe doit contenir 8 caractères minimum",
       },
     ],
     terms: [
@@ -173,15 +133,16 @@ export class SignupComponent implements OnInit {
         Validators.required,
         Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")
       ]),
-      emailen: new FormControl("",[
-        Validators.required,
-        Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")
-      ]),
       nom:new FormControl("",[Validators.required]),
-      nomen:new FormControl("",[Validators.required]),
+      societe:new FormControl("",[Validators.required]),
       prenom:new FormControl("",[Validators.required]),
-      activite:new FormControl("",[Validators.required]),
-      representant:new FormControl("",[Validators.required]),
+      genre:new FormControl("",[Validators.required]),
+      siret:new FormControl("",[Validators.required]),
+      rue:new FormControl("",[Validators.required]),
+      adresse:new FormControl("",[Validators.required]),
+      postal:new FormControl("",[Validators.required]),
+      numero:new FormControl("",null),
+      pays:new FormControl("",[Validators.required]),
       indicatif:new FormControl("",[Validators.required]),
       telephone:new FormControl("",[Validators.required, Validators.pattern("[0-9 ]{9}")]),
       password:password,
@@ -192,11 +153,21 @@ export class SignupComponent implements OnInit {
       startWith(''),
       map((val) => this.filterCode(val))
     );
+
+    this.paysFiltres = this.signupForm.get('pays').valueChanges.pipe(
+      startWith(''),
+      map((val) => this.filterPays(val))
+    );
   }
 
   filterCode(value:string){
     const filtre = value.toLowerCase();
-    return this.countries.filter(option=> option.dial_code.toLocaleLowerCase().includes(filtre));
+    return this.indicatifs.filter(option=> option.dial_code.toLocaleLowerCase().includes(filtre));
+  }
+
+  filterPays(value:string){
+    const filtre = value.toLowerCase();
+    return this.countries.filter(option=> option.name.toLocaleLowerCase().includes(filtre));
   }
 
   checkEmail(){
@@ -251,6 +222,7 @@ export class SignupComponent implements OnInit {
     this.countryService.getCountries().subscribe(
       (data)=>{
         this.countries = data;
+        this.indicatifs = data;
       },
       (error)=>{
         console.log(error);

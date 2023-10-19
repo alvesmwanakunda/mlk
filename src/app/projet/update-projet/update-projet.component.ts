@@ -88,11 +88,13 @@ export class UpdateProjetComponent implements OnInit {
     this.getAllEntreprises();
 
     this.firstFormGroup=this._formBuilder.group({
-      nom:['',Validators.required],
+      projet:['',Validators.required],
       entreprise:['',Validators.required],
       service:['',Validators.required],
       etat:['',null],
-      responsable:['',null],
+      genre:['',null],
+      nom:['',null],
+      prenom:['',null],
       plan:['',null],
     });
     this.secondFormGroup=this._formBuilder.group({
@@ -199,6 +201,9 @@ export class UpdateProjetComponent implements OnInit {
 
      formData.append("uploadfile", this.file);
      formData.append("nom", this.projet.nom);
+     formData.append("prenom", this.projet.prenom);
+     formData.append("genre", this.projet.genre);
+     formData.append("projet", this.projet.projet);
      formData.append("entreprise", this.projet.entreprise);
      formData.append("service", this.projet.service);
      formData.append("etat", this.projet.etat);

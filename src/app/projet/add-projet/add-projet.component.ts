@@ -78,10 +78,12 @@ export class AddProjetComponent implements OnInit {
     this.getAllEntreprises();
 
     this.firstFormGroup=this._formBuilder.group({
-      nom:['',Validators.required],
+      projet:['',Validators.required],
       entreprise:['',Validators.required],
       service:['',Validators.required],
-      responsable:['',null],
+      nom:['',null],
+      prenom:['',null],
+      genre:['',null],
       plan:['',null]
     });
     this.secondFormGroup=this._formBuilder.group({
@@ -90,6 +92,7 @@ export class AddProjetComponent implements OnInit {
       ville:[''],
       rue:[''],
       postal:[''],
+      numero:['']
     });
     this.threeFormGroup=this._formBuilder.group({
       budget:[''],
@@ -182,7 +185,10 @@ export class AddProjetComponent implements OnInit {
      Object.assign(this.form3, this.threeFormGroup.value)
 
      formData.append("uploadfile", this.file);
+     formData.append("projet", this.form1.projet);
+     formData.append("genre", this.form1.genre);
      formData.append("nom", this.form1.nom);
+     formData.append("prenom", this.form1.prenom);
      formData.append("entreprise", this.form1.entreprise);
      formData.append("service", this.form1.service);
      formData.append("etat", this.form1.etat);

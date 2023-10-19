@@ -8,7 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import '@angular/common/locales/global/fr';
 import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtService } from './shared/interceptors/jwt.service';
-import { registerLocaleData,HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { registerLocaleData,HashLocationStrategy, LocationStrategy, PathLocationStrategy, Location } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
@@ -19,7 +19,7 @@ registerLocaleData(localeFr,'fr');
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,8 +40,9 @@ registerLocaleData(localeFr,'fr');
   {
     provide: LOCALE_ID, useValue:'fr'
   },
+  Location,
   {
-    provide: LocationStrategy, useClass:HashLocationStrategy
+    provide: LocationStrategy, useClass:PathLocationStrategy
   },
   HttpClient
  ],

@@ -41,14 +41,14 @@ export class AddEntrepriseComponent implements OnInit {
     private router: Router,
   ){
     this.entrepriseFormError={
-      nom:{},
+      societe:{},
       email:{},
       telephone:{},
       indicatif:{},
     };
   }
   champ_validation={
-    nom:[
+    societe:[
       {
         type:"required",
         message:"Ce champ est obligatoire"
@@ -75,7 +75,19 @@ export class AddEntrepriseComponent implements OnInit {
         message:"Ce champ est obligatoire"
       }
     ],
-    representant:[
+    genre:[
+      {
+        type:"required",
+        message:"Ce champ est obligatoire"
+      }
+    ],
+    nom:[
+      {
+        type:"required",
+        message:"Ce champ est obligatoire"
+      }
+    ],
+    prenom:[
       {
         type:"required",
         message:"Ce champ est obligatoire"
@@ -84,7 +96,7 @@ export class AddEntrepriseComponent implements OnInit {
   }
   ngOnInit(){
     this.firstFormGroup=this._formBuilder.group({
-      nom:['',Validators.required],
+      societe:['',Validators.required],
       commercial:[''],
       siren:[''],
       juridique:[''],
@@ -97,12 +109,15 @@ export class AddEntrepriseComponent implements OnInit {
       adresse:[''],
       ville:[''],
       rue:[''],
+      numero:[],
       postal:[''],
       site:[''],
+      genre:['',Validators.required],
       email:['',Validators.required],
       indicatif:['',Validators.required],
       telephone:['',Validators.required],
-      representant:['',Validators.required]
+      nom:['',Validators.required],
+      prenom:['',Validators.required]
     });
     this.threeFormGroup=this._formBuilder.group({
       corps_act:[''],
@@ -154,7 +169,7 @@ export class AddEntrepriseComponent implements OnInit {
       Object.assign(this.form3, this.threeFormGroup.value)
 
       formData.append("uploadfile", this.file);
-      formData.append("nom", this.form1.nom);
+      formData.append("nom", this.form1.societe);
       formData.append("commercial", this.form1.commercial);
       formData.append("siren", this.form1.siren);
       formData.append("siret", this.form1.siret);
@@ -165,12 +180,15 @@ export class AddEntrepriseComponent implements OnInit {
       formData.append("adresse", this.form2.adresse);
       formData.append("ville", this.form2.ville);
       formData.append("rue", this.form2.rue);
+      formData.append("rue", this.form2.numero);
       formData.append("postal", this.form2.postal);
       formData.append("site", this.form2.site);
       formData.append("email", this.form2.email);
       formData.append("indicatif", this.form2.indicatif);
       formData.append("telephone", this.form2.telephone);
-      formData.append("representant", this.form2.representant);
+      formData.append("nom", this.form2.nom);
+      formData.append("prenom", this.form2.prenom);
+      formData.append("genre", this.form2.genre);
       formData.append("corps_act", this.form3.corps_act);
       formData.append("corps_etat", this.form3.corps_etat);
       formData.append("fournisseur", this.form3.fournisseur);

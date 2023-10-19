@@ -1,119 +1,121 @@
-<app-navbar></app-navbar>
-<div class="container">
-  <div class="content-top">
-    <div class="row">
-       <div class="col">
-        <p class="title-projet-page" style="padding-top: 10px;">Projet : {{projet?.nom}}</p>
-       </div><!--col-->
+<app-navbar>
+  <div class="container">
+    <div class="content-top">
+      <h2 class="content-title">Projet : {{projet?.projet}}</h2>
+      <mat-divider></mat-divider>
+    </div><!--content-->
+    <div>
+      <div class="row">
+         <div class="col" align="right">
+          <button type="button" class="btn btn-projet-action" style="margin-right: 5px;" matTooltip="Modifier" (click)="updateProjet(projet._id)"><i class="fa-regular fa-pen-to-square btn-icon-projet-update"></i></button>
+          <button type="button" class="btn btn-projet-action" style="margin-right: 5px;" matTooltip="Supprimer" (click)="openDialogDelete(projet._id)"><i class="fa-solid fa-trash btn-icon-projet-delete"></i></button>
+          <!--<button type="button" class="btn btn-projet" [routerLink]="['/add/projet']"><i class="fa-solid fa-plus"></i> Nouveau Projet</button>-->
+         </div><!--col-->
+      </div><!--row-->
+    </div><!--content-->
 
-       <div class="col" align="right">
-        <button type="button" class="btn btn-projet-action" style="margin-right: 5px;" matTooltip="Modifier" (click)="updateProjet(projet._id)"><i class="fa-regular fa-pen-to-square btn-icon-projet-update"></i></button>
-        <button type="button" class="btn btn-projet-action" style="margin-right: 5px;" matTooltip="Supprimer" (click)="openDialogDelete(projet._id)"><i class="fa-solid fa-trash btn-icon-projet-delete"></i></button>
-        <!--<button type="button" class="btn btn-projet" [routerLink]="['/add/projet']"><i class="fa-solid fa-plus"></i> Nouveau Projet</button>-->
-       </div><!--col-->
-    </div><!--row-->
-  </div><!--content-->
+    <div class="list-projet">
+      <div class="row">
 
-  <div class="list-projet">
-    <div class="row">
+        <div class="col-3">
 
-      <div class="col-3">
+          <div class="card card-projet">
+            <img src="data:image/png;base64,{{projet?.photo}}" *ngIf="projet?.photo" class="card-img-top card-img-projet" alt="...">
+            <img src="assets/images/pr.png" *ngIf="!projet?.photo" class="card-img-projet" alt="...">
 
-        <div class="card card-projet">
-          <img src="data:image/png;base64,{{projet?.photo}}" *ngIf="projet?.photo" class="card-img-top card-img-projet" alt="...">
-          <img src="assets/images/pr.png" *ngIf="!projet?.photo" class="card-img-projet" alt="...">
+            <div class="card-body" style="padding-top: 40px;">
+              <p class="user-title">{{projet?.genre}} {{projet?.nom}} {{projet?.prenom}}</p>
+              <div align="center" style="margin-bottom:40px;"><hr class="projet"></div>
 
-          <div class="card-body" style="padding-top: 40px;">
-            <p class="user-title">{{projet?.responsable}}</p>
-            <div align="center" style="margin-bottom:40px;"><hr class="projet"></div>
+              <p class="title-projet" style="margin-bottom:20px;">{{projet?.projet}}</p>
 
-            <p class="title-projet" style="margin-bottom:20px;">{{projet?.nom}}</p>
+              <div class="progress progress-projet" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="margin-bottom:10px;">
+                <div class="progress-bar" [ngStyle]="{'width': (projet?.etat=='En attente') ? '0%' : (projet?.etat=='En cours') ? '50%' : (projet?.etat=='Clôturé') ? '100%' : '0%'}"></div>
+              </div>
+              <p class="pr-projet" *ngIf="projet?.etat=='En attente'">0%</p>
+              <p class="pr-projet" *ngIf="projet?.etat=='En cours'">50%</p>
+              <p class="pr-projet" *ngIf="projet?.etat=='Clôturé'">100%</p>
 
-            <div class="progress progress-projet" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="margin-bottom:10px;">
-              <div class="progress-bar" [ngStyle]="{'width': (projet?.etat=='En attente') ? '0%' : (projet?.etat=='En cours') ? '50%' : (projet?.etat=='Clôturé') ? '100%' : '0%'}"></div>
-            </div>
-            <p class="pr-projet" *ngIf="projet?.etat=='En attente'">0%</p>
-            <p class="pr-projet" *ngIf="projet?.etat=='En cours'">50%</p>
-            <p class="pr-projet" *ngIf="projet?.etat=='Clôturé'">100%</p>
+              <!--<div class="row" style="margin-bottom:15px;">
+                  <div class="col">
+                    <div class="card" style="height: 78px;margin-bottom:10px">
+                      <div class="card-body">
+                        <p align="center"><i class="fa-regular fa-calendar-days" style="font-size: 25px;color:#28628B"></i></p>
+                        <p class="pr-title">{{projet?.date_limite |date :'dd MMMM yyyy'}}</p>
+                      </div>
+                    </div>
+                    <p class="pr-title-etat">Date Fin Travaux</p>
+                  </div>
+                  <div class="col">
+                    <div class="card" style="height: 78px;margin-bottom:10px">
+                      <div class="card-body">
+                        <p align="center"><i class="fa-regular fa-calendar-days"  style="font-size: 25px;color:#28628B"></i></p>
+                        <p class="pr-title">{{projet?.createdDate |date :'dd MMMM yyyy'}}</p>
+                      </div>
+                    </div>
+                    <p class="pr-title-etat">Date de début</p>
+                  </div>
+              </div>-->
 
-            <div class="row" style="margin-bottom:15px;">
-                <div class="col">
+              <div class="row">
+                <!--<div class="col">
                   <div class="card" style="height: 78px;margin-bottom:10px">
                     <div class="card-body">
-                      <p align="center"><i class="fa-regular fa-calendar-days" style="font-size: 25px;color:#28628B"></i></p>
-                      <p class="pr-title">{{projet?.date_limite |date :'dd MMMM yyyy'}}</p>
+                      <p align="center"><i class="fa-solid fa-bars-progress" style="font-size: 25px;color:#28628B"></i></p>
+                      <p class="pr-title" *ngIf="projet?.etat!='undefined'">{{projet?.etat}}</p>
                     </div>
                   </div>
-                  <p class="pr-title-etat">Date Fin Travaux</p>
-                </div><!--col-->
+                  <p class="pr-title-etat">Statut</p>
+                </div>-->
                 <div class="col">
-                  <div class="card" style="height: 78px;margin-bottom:10px">
+                  <div class="card" style="margin-bottom:10px">
                     <div class="card-body">
-                      <p align="center"><i class="fa-regular fa-calendar-days"  style="font-size: 25px;color:#28628B"></i></p>
-                      <p class="pr-title">{{projet?.createdDate |date :'dd MMMM yyyy'}}</p>
+                      <p align="center"><i class="fa-solid fa-location-dot"  style="font-size: 25px;color:#28628B"></i></p>
+                      <p class="pr-title-projet">{{projet?.rue}},{{projet?.postal}} {{projet?.ville}}</p>
                     </div>
                   </div>
-                  <p class="pr-title-etat">Date de début</p>
+                  <p class="pr-title-etat">Lieu</p>
                 </div><!--col-->
             </div><!--row-->
-
-            <div class="row">
-              <div class="col">
-                <div class="card" style="height: 78px;margin-bottom:10px">
-                  <div class="card-body">
-                    <p align="center"><i class="fa-solid fa-bars-progress" style="font-size: 25px;color:#28628B"></i></p>
-                    <p class="pr-title" *ngIf="projet?.etat!='undefined'">{{projet?.etat}}</p>
-                  </div>
-                </div>
-                <p class="pr-title-etat">Statut</p>
-              </div><!--col-->
-              <div class="col">
-                <div class="card" style="margin-bottom:10px">
-                  <div class="card-body">
-                    <p align="center"><i class="fa-solid fa-location-dot"  style="font-size: 25px;color:#28628B"></i></p>
-                    <p class="pr-title">{{projet?.rue}},{{projet?.postal}} {{projet?.ville}}</p>
-                  </div>
-                </div>
-                <p class="pr-title-etat">Lieu</p>
-              </div><!--col-->
-          </div><!--row-->
-          </div><!--card-body-->
-        </div>
-
-      </div><!--col-->
-
-      <div class="col">
-
-        <nav>
-          <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <button class="nav-link tabprojet active" id="nav-file-tab" data-bs-toggle="tab" data-bs-target="#nav-file" type="button" role="tab" aria-controls="nav-file" aria-selected="true">Fiche</button>
-            <button class="nav-link tabprojet" id="nav-int-tab" data-bs-toggle="tab" data-bs-target="#nav-int" type="button" role="tab" aria-controls="nav-int" aria-selected="false">Intervenant</button>
-            <!--<button class="nav-link tabprojet" id="nav-bat-tab" data-bs-toggle="tab" data-bs-target="#nav-bat" type="button" role="tab" aria-controls="nav-bat" aria-selected="false">Batiment</button>-->
-            <button class="nav-link tabprojet" id="nav-piece-tab" data-bs-toggle="tab" data-bs-target="#nav-piece" type="button" role="tab" aria-controls="nav-piece" aria-selected="false">Documents</button>
-            <!--<button class="nav-link tabprojet" id="nav-etude-tab" data-bs-toggle="tab" data-bs-target="#nav-etude" type="button" role="tab" aria-controls="nav-etude" aria-selected="false">Etude</button>-->
-            <button class="nav-link tabprojet" id="nav-metre-tab" data-bs-toggle="tab" data-bs-target="#nav-metre" type="button" role="tab" aria-controls="nav-metre" aria-selected="false" [routerLink]="['/metre']">Etude</button>
-            <button class="nav-link tabprojet" id="nav-pre-tab" data-bs-toggle="tab" data-bs-target="#nav-pre" type="button" role="tab" aria-controls="nav-pre" aria-selected="false" [routerLink]="['/devis']">Devis</button>
-            <!--<button class="nav-link tabprojet" id="nav-tra-tab" data-bs-toggle="tab" data-bs-target="#nav-tra" type="button" role="tab" aria-controls="nav-tra" aria-selected="false">Travaux</button>-->
+            </div><!--card-body-->
           </div>
-        </nav>
-        <div class="tab-content" id="nav-tabContent">
-          <div class="tab-pane fade show active" id="nav-file" role="tabpanel" aria-labelledby="nav-file-tab" tabindex="0">
-            <app-fiche></app-fiche>
-          </div>
-          <div class="tab-pane fade" id="nav-int" role="tabpanel" aria-labelledby="nav-int-tab" tabindex="0">
-            <app-intervenant [idProjet]="idProjet"></app-intervenant>
-          </div>
-          <div class="tab-pane fade" id="nav-piece" role="tabpanel" aria-labelledby="nav-piece-tab" tabindex="0">
-            <app-box-projet [idProjet]="idProjet"></app-box-projet>
-          </div>
-          <div class="tab-pane fade" id="nav-etude" role="tabpanel" aria-labelledby="nav-etude-tab" tabindex="0">
-          </div>
-        </div>
 
-      </div><!--col-->
+        </div><!--col-->
 
-    </div><!--row-->
-  </div>
+        <div class="col">
+
+          <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+              <button class="nav-link tabprojet active" id="nav-file-tab" data-bs-toggle="tab" data-bs-target="#nav-file" type="button" role="tab" aria-controls="nav-file" aria-selected="true">Fiche</button>
+              <button class="nav-link tabprojet" id="nav-int-tab" data-bs-toggle="tab" data-bs-target="#nav-int" type="button" role="tab" aria-controls="nav-int" aria-selected="false">Intervenant</button>
+              <!--<button class="nav-link tabprojet" id="nav-bat-tab" data-bs-toggle="tab" data-bs-target="#nav-bat" type="button" role="tab" aria-controls="nav-bat" aria-selected="false">Batiment</button>-->
+              <button class="nav-link tabprojet" id="nav-piece-tab" data-bs-toggle="tab" data-bs-target="#nav-piece" type="button" role="tab" aria-controls="nav-piece" aria-selected="false">Documents</button>
+              <!--<button class="nav-link tabprojet" id="nav-etude-tab" data-bs-toggle="tab" data-bs-target="#nav-etude" type="button" role="tab" aria-controls="nav-etude" aria-selected="false">Etude</button>-->
+              <button class="nav-link tabprojet" id="nav-metre-tab" data-bs-toggle="tab" data-bs-target="#nav-metre" type="button" role="tab" aria-controls="nav-metre" aria-selected="false" [routerLink]="['/metre']">Etude</button>
+              <button class="nav-link tabprojet" id="nav-pre-tab" data-bs-toggle="tab" data-bs-target="#nav-pre" type="button" role="tab" aria-controls="nav-pre" aria-selected="false" [routerLink]="['/devis']">Devis</button>
+              <!--<button class="nav-link tabprojet" id="nav-tra-tab" data-bs-toggle="tab" data-bs-target="#nav-tra" type="button" role="tab" aria-controls="nav-tra" aria-selected="false">Travaux</button>-->
+            </div>
+          </nav>
+          <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-file" role="tabpanel" aria-labelledby="nav-file-tab" tabindex="0">
+              <app-fiche></app-fiche>
+            </div>
+            <div class="tab-pane fade" id="nav-int" role="tabpanel" aria-labelledby="nav-int-tab" tabindex="0">
+              <app-intervenant [idProjet]="idProjet"></app-intervenant>
+            </div>
+            <div class="tab-pane fade" id="nav-piece" role="tabpanel" aria-labelledby="nav-piece-tab" tabindex="0">
+              <app-box-projet [idProjet]="idProjet"></app-box-projet>
+            </div>
+            <div class="tab-pane fade" id="nav-etude" role="tabpanel" aria-labelledby="nav-etude-tab" tabindex="0">
+            </div>
+          </div>
+
+        </div><!--col-->
+
+      </div><!--row-->
+    </div>
 
 
-</div><!--container-->
+  </div><!--container-->
+</app-navbar>
+

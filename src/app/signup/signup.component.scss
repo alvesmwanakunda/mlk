@@ -36,7 +36,7 @@ padding: 20px 50px 20px;
 font-family: 'Rancho' !important;
 font-style: normal !important;
 font-weight: 400 !important;
-font-size: 39.656px !important;
+font-size: 25.656px !important;
 line-height: 62px !important;
 color: #28628B !important;
 text-align: center !important;
@@ -46,7 +46,11 @@ text-align: center !important;
 margin-bottom: 20px;
 }
 
-.text-barre{
+::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: #fff !important;
+}
+
+/*.text-barre{
   text-align: center;
   border-bottom: 1px solid lightgray;
 }
@@ -63,6 +67,51 @@ margin-bottom: 20px;
   font-size: 25px !important;
   line-height: 62px !important;
   color: #28628B !important;
+}*/
+
+.text-barre  {
+  font-family: "Rancho" !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  font-size: 30px !important;
+  line-height: 62px !important;
+  color: #28628B !important;
+  text-align: center;
+}
+
+.title-sign{
+  font-weight: 700 !important;
+  color: #28628B !important;
+  font-family: Poppins !important;
+  font-size: 31px !important;
+}
+
+.title-info{
+  color: #626466;
+  font-size: 23px;
+  font-family: Poppins !important;
+}
+.cgu{
+    font-size: 12px;
+    letter-spacing: 0;
+    line-height: 16px;
+    color: #999;
+    margin-bottom: 25px;
+}
+
+.sizeButtonSignup{
+  align-items: center !important;
+    border-radius: 3px !important;
+    display: flex !important;
+    font-weight: 500 !important;
+    justify-content: center !important;
+    line-height: 1.3333333 !important;
+    margin: auto !important;
+    min-height: 48px !important;
+    text-transform: uppercase !important;
+    width: 50% !important;
+    background: #fecb00 !important;
+    color: #616365 !important;
 }
 
 

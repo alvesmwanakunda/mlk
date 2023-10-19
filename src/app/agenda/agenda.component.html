@@ -1,81 +1,85 @@
-<app-navbar *ngIf="user?.user?.role=='admin'"></app-navbar>
-<app-navbar-user *ngIf="user?.user?.role=='user'"></app-navbar-user>
-<div class="container">
-  <div class="content-top">
+<app-navbar>
+  <div class="container">
 
-    <div class="row" style="margin-bottom: 30px;">
+    <div class="content-top">
+      <h2 class="content-title">Mon agenda</h2>
+      <mat-divider></mat-divider>
+    </div><!--content-->
+
+    <div>
+
+      <div class="row" style="margin-bottom: 30px;">
+        <div class="col" align="right">
+          <button type="button" class="btn btn-projet" (click)="openDialogAgenda()"><i class="fa-solid fa-plus"></i> Nouvel événement</button>
+        </div>
+     </div><!--row-->
+
+     <div class="row"  style="margin-bottom: 30px;">
       <div class="col">
-            <p class="title-projet-page">Agenda</p>
-      </div><!--col-->
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <button type="button" style="font-size: 12px;" class="btn btn-outline-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">Précédent</button>
+          <button type="button" style="font-size: 12px;" class="btn btn-outline-primary" mwlCalendarToday [(viewDate)]="viewDate">Aujourd'hui</button>
+          <button type="button" style="font-size: 12px;" class="btn btn-outline-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">Suivant</button>
+        </div>
+      </div>
       <div class="col" align="right">
-        <button type="button" class="btn btn-projet" (click)="openDialogAgenda()"><i class="fa-solid fa-plus"></i> Nouvel événement</button>
+        <!--<div class="btn-group" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-outline-primary" (click)="setView(CalendarView.Month)"
+          [class.active]="view === CalendarView.Month">Mois</button>
+          <button type="button" class="btn btn-outline-primary" (click)="setView(CalendarView.Week)"
+          [class.active]="view === CalendarView.Week">Week</button>
+          <button type="button" class="btn btn-outline-primary" (click)="setView(CalendarView.Day)"
+          [class.active]="view === CalendarView.Day">Jour</button>
+        </div>-->
       </div>
-   </div><!--row-->
+     </div><!--row-->
 
-   <div class="row"  style="margin-bottom: 30px;">
-    <div class="col">
-      <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" style="font-size: 12px;" class="btn btn-outline-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">Précédent</button>
-        <button type="button" style="font-size: 12px;" class="btn btn-outline-primary" mwlCalendarToday [(viewDate)]="viewDate">Aujourd'hui</button>
-        <button type="button" style="font-size: 12px;" class="btn btn-outline-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">Suivant</button>
-      </div>
+     <div class="row">
+       <div class="col">
+
+        <h2 class="agenda-title">{{ viewDate | calendarDate:(view + 'ViewTitle'):'fr' }}</h2>
+
+        <div [ngSwitch]="view">
+          <!--<mwl-calendar-month-view
+          *ngSwitchCase="CalendarView.Month"
+          [viewDate]="viewDate"
+          [events]="events"
+          [refresh]="refresh"
+          [activeDayIsOpen]="activeDayIsOpen"
+          (dayClicked)="dayClicked($event.day)"
+          (eventClicked)="openDialogUpadte($event.event)"
+          (eventTimesChanged)="eventTimesChanged($event)"
+          locale="fr"
+          >
+          </mwl-calendar-month-view>-->
+
+          <mwl-calendar-week-view
+          *ngSwitchCase="CalendarView.Week"
+          [viewDate]="viewDate"
+          [events]="events"
+          [refresh]="refresh"
+          (eventClicked)="openDialogDetail($event.event)"
+          (eventTimesChanged)="eventTimesChanged($event)"
+          locale="fr"
+          >
+          </mwl-calendar-week-view>
+
+          <!--<mwl-calendar-day-view
+          *ngSwitchCase="CalendarView.Day"
+          [viewDate]="viewDate"
+          [events]="events"
+          [refresh]="refresh"
+          (eventClicked)="openDialogUpadte($event.event)"
+          (eventTimesChanged)="eventTimesChanged($event)"
+          locale="fr"
+          >
+          </mwl-calendar-day-view>-->
+        </div>
+
+       </div>
+     </div><!--row-->
+
     </div>
-    <div class="col" align="right">
-      <!--<div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-outline-primary" (click)="setView(CalendarView.Month)"
-        [class.active]="view === CalendarView.Month">Mois</button>
-        <button type="button" class="btn btn-outline-primary" (click)="setView(CalendarView.Week)"
-        [class.active]="view === CalendarView.Week">Week</button>
-        <button type="button" class="btn btn-outline-primary" (click)="setView(CalendarView.Day)"
-        [class.active]="view === CalendarView.Day">Jour</button>
-      </div>-->
-    </div>
-   </div><!--row-->
-
-   <div class="row">
-     <div class="col">
-
-      <h2 class="agenda-title">{{ viewDate | calendarDate:(view + 'ViewTitle'):'fr' }}</h2>
-
-      <div [ngSwitch]="view">
-        <!--<mwl-calendar-month-view
-        *ngSwitchCase="CalendarView.Month"
-        [viewDate]="viewDate"
-        [events]="events"
-        [refresh]="refresh"
-        [activeDayIsOpen]="activeDayIsOpen"
-        (dayClicked)="dayClicked($event.day)"
-        (eventClicked)="openDialogUpadte($event.event)"
-        (eventTimesChanged)="eventTimesChanged($event)"
-        locale="fr"
-        >
-        </mwl-calendar-month-view>-->
-
-        <mwl-calendar-week-view
-        *ngSwitchCase="CalendarView.Week"
-        [viewDate]="viewDate"
-        [events]="events"
-        [refresh]="refresh"
-        (eventClicked)="openDialogDetail($event.event)"
-        (eventTimesChanged)="eventTimesChanged($event)"
-        locale="fr"
-        >
-        </mwl-calendar-week-view>
-
-        <!--<mwl-calendar-day-view
-        *ngSwitchCase="CalendarView.Day"
-        [viewDate]="viewDate"
-        [events]="events"
-        [refresh]="refresh"
-        (eventClicked)="openDialogUpadte($event.event)"
-        (eventTimesChanged)="eventTimesChanged($event)"
-        locale="fr"
-        >
-        </mwl-calendar-day-view>-->
-      </div>
-
-     </div>
-   </div><!--row-->
-
   </div>
-</div>
+</app-navbar>
+

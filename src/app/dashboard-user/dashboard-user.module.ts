@@ -4,7 +4,7 @@ import { DashboardUserComponent } from './dashboard-user.component';
 import { DashboardUserRoutingModule } from './dashboard-user-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { ProjetsService } from '../shared/services/projets.service';
-import { NavbarUserModule } from '../navbar-user/navbar-user.module';
+import { NavbarModule } from '../navbar/navbar.module';
 
 
 @NgModule({
@@ -13,7 +13,7 @@ import { NavbarUserModule } from '../navbar-user/navbar-user.module';
     CommonModule,
     DashboardUserRoutingModule,
     SharedModule,
-    NavbarUserModule
+    NavbarModule
   ],
   providers:[ProjetsService]
 })

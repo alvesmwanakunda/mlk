@@ -46,6 +46,9 @@ export class UpdateEntrepriseComponent implements OnInit {
       this.idEntreprise = data.id
      });
      this.entrepriseFormError={
+      societe:{},
+      prenom:{},
+      genre:{},
       nom:{},
       email:{},
       telephone:{},
@@ -54,12 +57,6 @@ export class UpdateEntrepriseComponent implements OnInit {
     this.user = JSON.parse(localStorage.getItem('user'));
   }
   champ_validation={
-    nom:[
-      {
-        type:"required",
-        message:"Ce champ est obligatoire"
-      }
-    ],
     email:[
       {
         type:"required",
@@ -81,7 +78,7 @@ export class UpdateEntrepriseComponent implements OnInit {
         message:"Ce champ est obligatoire"
       }
     ],
-    representant:[
+    input:[
       {
         type:"required",
         message:"Ce champ est obligatoire"
@@ -93,7 +90,7 @@ export class UpdateEntrepriseComponent implements OnInit {
     this.getContry();
 
     this.firstFormGroup=this._formBuilder.group({
-      nom:['',Validators.required],
+      societe:['',Validators.required],
       commercial:['',null],
       siren:['',null],
       juridique:['',null],
@@ -106,12 +103,15 @@ export class UpdateEntrepriseComponent implements OnInit {
       adresse:['',null],
       ville:['',null],
       rue:['',null],
+      numero:['',null],
       postal:['',null],
       site:['',null],
       email:['',Validators.required],
       indicatif:['',Validators.required],
       telephone:['',Validators.required],
-      representant:['',Validators.required]
+      genre:['',Validators.required],
+      nom:['',Validators.required],
+      prenom:['',Validators.required]
     });
     this.threeFormGroup=this._formBuilder.group({
       corps_act:['',null],
@@ -169,7 +169,11 @@ export class UpdateEntrepriseComponent implements OnInit {
      Object.assign(this.entreprise, this.threeFormGroup.value)
 
      formData.append("uploadfile",this.file);
+     formData.append("societe", this.entreprise.societe);
+     formData.append("numero", this.entreprise.numero);
+     formData.append("genre", this.entreprise.genre);
      formData.append("nom", this.entreprise.nom);
+     formData.append("prenom", this.entreprise.prenom);
      formData.append("commercial", this.entreprise.commercial);
      formData.append("siren", this.entreprise.siren);
      formData.append("siret", this.entreprise.siret);
