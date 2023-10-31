@@ -41,25 +41,25 @@
                       <div style="margin-bottom: 15px;">
                         <label class="label-entreprise">Entreprise <small class="error_field">*</small></label>
                         <select  formControlName="entreprise"  [(ngModel)]="projet.entreprise" class="form-select input-entreprise" aria-label="Default select example" required>
-                          <option *ngFor="let entre of entreprises " [value]="entre._id">{{entre?.nom}}</option>
+                          <option *ngFor="let entre of entreprises " [value]="entre._id">{{entre?.societe}}</option>
                         </select>
                         <div *ngIf="firstFormGroup.get('entreprise').hasError(champ_validation.entreprise[0].type) && (firstFormGroup.get('entreprise').dirty || firstFormGroup.get('entreprise').touched)">
                           <p class="error_field">{{champ_validation.entreprise[0].message}}</p>
                         </div>
                       </div><!--div-->
-                      <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Type Service <small class="error_field">*</small></label>
-                        <select formControlName="service"  [(ngModel)]="projet.service" class="form-select input-entreprise" aria-label="Default select example" required>
-                          <option value="Installation">Installation</option>
-                          <option value="Désinstallation">Désinstallation</option>
-                          <option value="Remise aux normes">Remise aux normes</option>
-                        </select>
-                        <div *ngIf="firstFormGroup.get('service').hasError(champ_validation.service[0].type) && (firstFormGroup.get('service').dirty || firstFormGroup.get('service').touched)">
-                          <p class="error_field">{{champ_validation.service[0].message}}</p>
-                        </div>
-                      </div><!--div-->
                    </div>
                   </div>
+                  <div style="margin-bottom: 15px;">
+                    <label class="label-entreprise">Type Service <small class="error_field">*</small></label>
+                    <select formControlName="service"  [(ngModel)]="projet.service" class="form-select input-entreprise" aria-label="Default select example" required>
+                      <option value="Installation">Installation</option>
+                      <option value="Désinstallation">Désinstallation</option>
+                      <option value="Remise aux normes">Remise aux normes</option>
+                    </select>
+                    <div *ngIf="firstFormGroup.get('service').hasError(champ_validation.service[0].type) && (firstFormGroup.get('service').dirty || firstFormGroup.get('service').touched)">
+                      <p class="error_field">{{champ_validation.service[0].message}}</p>
+                    </div>
+                  </div><!--div-->
                   <div class="row" style="margin-bottom: 15px;">
                     <div class="col-2">
                       <label class="label-entreprise">Genre</label>

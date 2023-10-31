@@ -18,11 +18,12 @@ export class FileBoxComponent implements OnInit {
 
   fichiers:any=[];
   fileName:any;
-  file:File;
+  files:any;
   progress:number;
   idFolder:any;
   @Input() id?:any;
   @Input() idProjet?:any;
+  error:any;
 
   constructor(
     private boxService : BoxService,
@@ -35,9 +36,15 @@ export class FileBoxComponent implements OnInit {
 
   onFileSelected(event){
     //console.log("File", event.target.files[0]);
-    this.file = event.target.files[0];
+    /*this.file = event.target.files[0];
     this.fileName = this.file.name;
-    this.addFile(this.file);
+    this.addFile(this.file);*/
+
+    this.files = event.target.files;
+    for(let file of this.files){
+      this.fileName = file.name;
+      this.addFile(file);
+    }
 
   }
 
@@ -63,6 +70,7 @@ export class FileBoxComponent implements OnInit {
       }),
       catchError((err:any)=>{
         this.progress=null;
+        this.error=err.message;
         return throwError(err.message);
       })
     ).toPromise();

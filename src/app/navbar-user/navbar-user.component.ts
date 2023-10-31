@@ -18,28 +18,9 @@ export class NavbarUserComponent implements OnInit {
   company:any;
 
   constructor(private authService:AuthService,private router:Router, private entrepriseService:EntreprisesService){
-    this.user = JSON.parse(localStorage.getItem('user'));
   }
 
   ngOnInit(){
-    this.getEntrepriseId();
+
   }
-
-  getEntrepriseId(){
-    this.entrepriseService.getEntreprise(this.user?.user?.entreprise).subscribe((res:any)=>{
-       this.company = res.message
-    },(error)=>{
-        console.log("Une erreur", error);
-    })
-  }
-
-
-  logout(){
-    this.authService.logout();
-  }
-
-  getEntreprise(){
-    this.router.navigate(['detail/entreprise',this.user?.user?.entreprise]);
-  }
-
 }

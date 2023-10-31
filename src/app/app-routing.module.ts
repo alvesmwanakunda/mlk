@@ -132,6 +132,22 @@ const routes: Routes = [
   {
     path:'devis',
     loadChildren:()=>import('./projet/devis/devis.module').then(m=>m.DevisModule)
+  },
+  {
+  path:'modulaires',
+    loadChildren:()=>import('./modulaires/modulaires.module').then(m=>m.ModulairesModule)
+  },
+  {
+  path:'modulaire',
+    loadChildren:()=>import('./modulaires/add-module/add-module.module').then(m=>m.AddModuleModule)
+  },
+  {
+    path:'modulaire/:id',
+    loadChildren:()=>import('./modulaires/update-module/update-module.module').then(m=>m.UpdateModuleModule)
+  },
+  {
+    path:'plan3d',
+    loadChildren:()=>import('./plan3d/plan3d.module').then(m=>m.Plan3dModule)
   }
 ];
 

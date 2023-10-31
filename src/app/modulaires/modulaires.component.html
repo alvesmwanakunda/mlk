@@ -1,0 +1,300 @@
+<app-navbar>
+  <div class="container">
+
+    <div class="content-top">
+      <h2 class="content-title">Les modules</h2>
+      <mat-divider></mat-divider>
+    </div><!--content-->
+    <div>
+      <div class="row" style="margin-bottom: 35px;">
+        <div class="col">
+          <input type="text"  (keyup)="applyFilter($event)" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher">
+        </div>
+        <div class="col"  align="right">
+          <button type="button" class="btn btn-projet" routerLink="/modulaire"><i class="fa-solid fa-plus"></i> Nouveau module</button>
+        </div>
+      </div>
+      <mat-tab-group (selectedIndexChange)="onTabChange($event)">
+        <mat-tab label="Stock">
+          <div style="padding-top: 40px;">
+            <table mat-table [dataSource]="dataSource">
+              <!-- Position Column -->
+              <ng-container matColumnDef="nom">
+                <th mat-header-cell *matHeaderCellDef> Module </th>
+                <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;" (click)="getModule(element.id)"> {{element?.nom}} </td>
+              </ng-container>
+
+               <!-- Symbol Column -->
+               <ng-container matColumnDef="photo">
+                <th mat-header-cell *matHeaderCellDef>Photo</th>
+                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;" (click)="getModule(element.id)">
+                  <img [src]="element?.photo" style="width: 90px;height: 90px;padding: 10px;" *ngIf="element?.photo!==undefined"/>
+                </td>
+              </ng-container>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="projet">
+                <th mat-header-cell *matHeaderCellDef>Projet</th>
+                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;" (click)="getModule(element.id)">
+                  <span *ngIf="element?.projet">{{element?.projet}}</span>
+                  <span *ngIf="!element?.projet">Non affecté</span>
+                </td>
+              </ng-container>
+
+              <!-- Weight Column -->
+              <ng-container matColumnDef="hauteur">
+                <th mat-header-cell *matHeaderCellDef>Hauteur</th>
+                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.hauteur}}  </td>
+              </ng-container>
+
+              <ng-container matColumnDef="largeur">
+                <th mat-header-cell *matHeaderCellDef>Largeur</th>
+                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.largeur}}  </td>
+              </ng-container>
+
+              <ng-container matColumnDef="longueur">
+                <th mat-header-cell *matHeaderCellDef>Longueur</th>
+                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.longueur}}  </td>
+              </ng-container>
+
+              <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>Action</th>
+                <td mat-cell *matCellDef="let element">
+                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item  (click)="openDialogDelete(element.id)">
+                      <mat-icon>delete</mat-icon>
+                      <span>Supprimer</span>
+                    </button>
+                  </mat-menu>
+                </td>
+              </ng-container>
+
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[10, 20]"
+                          showFirstLastButtons
+                          aria-label="Select page of periodic elements"
+                          >
+            </mat-paginator>
+          </div>
+        </mat-tab>
+        <mat-tab label="En préparation">
+          <div style="padding-top: 40px;">
+            <table mat-table [dataSource]="dataSource">
+
+              <!-- Position Column -->
+              <ng-container matColumnDef="nom">
+                <th mat-header-cell *matHeaderCellDef> Module </th>
+                <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;" (click)="getModule(element.id)"> {{element?.nom}} </td>
+              </ng-container>
+
+               <!-- Symbol Column -->
+               <ng-container matColumnDef="photo">
+                <th mat-header-cell *matHeaderCellDef>Photo</th>
+                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;" (click)="getModule(element.id)">
+                  <img [src]="element?.photo" style="width: 90px;height: 90px;padding: 10px;" *ngIf="element?.photo!==undefined"/>
+                </td>
+              </ng-container>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="projet">
+                <th mat-header-cell *matHeaderCellDef>Projet</th>
+                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;" (click)="getModule(element.id)">
+                  <span *ngIf="element?.projet">{{element?.projet}}</span>
+                  <span *ngIf="!element?.projet">Non affecté</span>
+                </td>
+              </ng-container>
+
+               <!-- Weight Column -->
+               <ng-container matColumnDef="hauteur">
+                <th mat-header-cell *matHeaderCellDef>Hauteur</th>
+                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.hauteur}}  </td>
+              </ng-container>
+
+              <ng-container matColumnDef="largeur">
+                <th mat-header-cell *matHeaderCellDef>Largeur</th>
+                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.largeur}}  </td>
+              </ng-container>
+
+              <ng-container matColumnDef="longueur">
+                <th mat-header-cell *matHeaderCellDef>Longueur</th>
+                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.longueur}}  </td>
+              </ng-container>
+
+              <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>Action</th>
+                <td mat-cell *matCellDef="let element">
+                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item  (click)="openDialogDelete(element.id)">
+                      <mat-icon>delete</mat-icon>
+                      <span>Supprimer</span>
+                    </button>
+                  </mat-menu>                </td>
+              </ng-container>
+
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[10, 20]"
+                          showFirstLastButtons
+                          aria-label="Select page of periodic elements"
+                          >
+            </mat-paginator>
+          </div>
+        </mat-tab>
+        <mat-tab label="Prêt à partir">
+          <div style="padding-top: 40px;">
+            <table mat-table [dataSource]="dataSource">
+
+              <!-- Position Column -->
+              <ng-container matColumnDef="nom">
+                <th mat-header-cell *matHeaderCellDef> Module </th>
+                <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;" (click)="getModule(element.id)"> {{element?.nom}} </td>
+              </ng-container>
+
+               <!-- Symbol Column -->
+               <ng-container matColumnDef="photo">
+                <th mat-header-cell *matHeaderCellDef>Photo</th>
+                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;" (click)="getModule(element.id)">
+                  <img [src]="element?.photo" style="width: 90px;height: 90px;padding: 10px;" *ngIf="element?.photo"/>
+                </td>
+              </ng-container>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="projet">
+                <th mat-header-cell *matHeaderCellDef>Projet</th>
+                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;" (click)="getModule(element.id)">
+                  <span *ngIf="element?.projet">{{element?.projet}}</span>
+                  <span *ngIf="!element?.projet">Non affecté</span>
+                </td>
+              </ng-container>
+
+               <!-- Weight Column -->
+               <ng-container matColumnDef="hauteur">
+                <th mat-header-cell *matHeaderCellDef>Hauteur</th>
+                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.hauteur}}  </td>
+              </ng-container>
+
+              <ng-container matColumnDef="largeur">
+                <th mat-header-cell *matHeaderCellDef>Largeur</th>
+                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.largeur}}  </td>
+              </ng-container>
+
+              <ng-container matColumnDef="longueur">
+                <th mat-header-cell *matHeaderCellDef>Longueur</th>
+                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.longueur}}  </td>
+              </ng-container>
+
+              <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>Action</th>
+                <td mat-cell *matCellDef="let element">
+                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item  (click)="openDialogDelete(element.id)">
+                      <mat-icon>delete</mat-icon>
+                      <span>Supprimer</span>
+                    </button>
+                  </mat-menu>
+                </td>
+              </ng-container>
+
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[10, 20]"
+                          showFirstLastButtons
+                          aria-label="Select page of periodic elements"
+                          >
+            </mat-paginator>
+          </div>
+        </mat-tab>
+        <mat-tab label="Site">
+          <div style="padding-top: 40px;">
+            <table mat-table [dataSource]="dataSource">
+
+              <!-- Position Column -->
+              <ng-container matColumnDef="nom">
+                <th mat-header-cell *matHeaderCellDef> Module </th>
+                <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;" (click)="getModule(element.id)"> {{element?.nom}} </td>
+              </ng-container>
+
+               <!-- Symbol Column -->
+               <ng-container matColumnDef="photo">
+                <th mat-header-cell *matHeaderCellDef>Photo</th>
+                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;" (click)="getModule(element.id)">
+                  <img [src]="element?.photo" style="width: 90px;height: 90px;padding: 10px;" *ngIf="element?.photo"/>
+                </td>
+              </ng-container>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="projet">
+                <th mat-header-cell *matHeaderCellDef>Projet</th>
+                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;" (click)="getModule(element.id)">
+                  <span *ngIf="element?.projet">{{element?.projet}}</span>
+                  <span *ngIf="!element?.projet">Non affecté</span>
+                </td>
+              </ng-container>
+
+               <!-- Weight Column -->
+               <ng-container matColumnDef="hauteur">
+                <th mat-header-cell *matHeaderCellDef>Hauteur</th>
+                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.hauteur}}  </td>
+              </ng-container>
+
+              <ng-container matColumnDef="largeur">
+                <th mat-header-cell *matHeaderCellDef>Largeur</th>
+                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.largeur}}  </td>
+              </ng-container>
+
+              <ng-container matColumnDef="longueur">
+                <th mat-header-cell *matHeaderCellDef>Longueur</th>
+                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.longueur}}  </td>
+              </ng-container>
+
+              <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>Action</th>
+                <td mat-cell *matCellDef="let element">
+                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item  (click)="openDialogDelete(element.id)">
+                      <mat-icon>delete</mat-icon>
+                      <span>Supprimer</span>
+                    </button>
+                  </mat-menu>
+                </td>
+              </ng-container>
+
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[10, 20]"
+                          showFirstLastButtons
+                          aria-label="Select page of periodic elements"
+                          >
+            </mat-paginator>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+
+    </div>
+  </div>
+</app-navbar>

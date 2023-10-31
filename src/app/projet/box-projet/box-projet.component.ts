@@ -21,7 +21,6 @@ import { DeleteFileComponent } from 'src/app/box/delete-file/delete-file.compone
 })
 export class BoxProjetComponent implements OnInit,AfterViewInit {
 
-  @Input() idProjet?:any;
   idFolder:any;
   displayedColumns:string[]=['name','size','modified','modifiedby','action'];
   dataSource =new MatTableDataSource<Fichiers>();
@@ -32,6 +31,8 @@ export class BoxProjetComponent implements OnInit,AfterViewInit {
   snackbar:boolean=false;
   showBox:boolean=true;
   showDetailBox:boolean=false;
+  //@Input() idProjet?:any;
+  idProjet:any;
 
   constructor(
     private boxService :BoxService,
@@ -40,14 +41,20 @@ export class BoxProjetComponent implements OnInit,AfterViewInit {
     private router: Router,
     public route:ActivatedRoute,
   ){
-     this.boxService.listDossier.subscribe((message:any)=>{
+    this.route.params.subscribe((data:any)=>{
+      this.idProjet = data.id
+     })
+
+    this.boxService.listDossier.subscribe((message:any)=>{
       console.log("liste des documents", message );
       this.getAllFiles();
     });
     this.boxService.PrevieusBox.subscribe((message:any)=>{
-      this.idProjet = message.idProjet;
-      console.log("Ici", message);
-      this.showBoxView(this.idProjet);
+      if(message?.idProjet){
+        this.idProjet = message.idProjet;
+        console.log("Ici", message);
+        this.showBoxView(this.idProjet);
+      }
     })
   }
 
@@ -62,6 +69,8 @@ export class BoxProjetComponent implements OnInit,AfterViewInit {
 
   getAllFiles(){
     this.boxService.getFolderByProjet(this.idProjet).subscribe((res:any)=>{
+
+      console.log("Projet", this.idProjet);
 
       this.fichiers = res.message.dossiers.concat(res.message.fichiers);
       this.dataSource.data = this.fichiers.map((data)=>({

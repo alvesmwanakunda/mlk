@@ -24,6 +24,10 @@
           <i class="fa-regular fa-clipboard"></i>
             Devis
         </a>
+        <a class="dashboard-nav-item" [routerLink]="['/modulaires']" [routerLinkActive]="['active']" *ngIf="user?.user?.role!='user'">
+          <i class="fa-solid fa-cubes"></i>
+          Module
+        </a>
         <a  class="dashboard-nav-item" [routerLink]="['/entreprises']" [routerLinkActive]="['active']" *ngIf="user?.user?.role!='user'">
           <i class="fa-regular fa-building"></i>
             Entreprise

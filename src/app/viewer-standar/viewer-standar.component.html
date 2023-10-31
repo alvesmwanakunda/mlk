@@ -1,0 +1,85 @@
+<div>
+  <mat-toolbar>
+    <button mat-icon-button style="margin-right: 55px;" (click)="closeDialog()">
+      <mat-icon>close</mat-icon>
+    </button>
+    <span style="font-size:15px;font-weight:400;">
+      <img src="assets/images/pdf.png" *ngIf="file?.extension=='pdf'" style="margin-right: 10px;margin-top: -4px;">
+      <img src="assets/images/doc.png" *ngIf="file?.extension=='docx'" style="margin-right: 10px;margin-top: -4px;">
+      <img src="assets/images/xls.png" *ngIf="file?.extension=='xlsx' || file?.extension=='xls'" style="margin-right: 10px;margin-top: -4px;">
+      <img src="assets/images/pptx.png"  *ngIf="file?.extension=='pptx'" style="margin-right: 10px;margin-top: -4px;">
+      <img src="assets/images/image.png"  *ngIf="file?.extension=='png' || file?.extension=='jpeg' || file?.extension=='jpg' || file?.extension=='gif'" style="margin-right: 10px;margin-top: -4px;">
+      {{file?.nom}}
+    </span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon favorite-icon" matTooltip="lien partagé" [cdkCopyToClipboard]="file?.chemin">
+      <mat-icon>link</mat-icon>
+    </button>
+    <button mat-icon-button class="example-icon" matTooltip="Télécharger" (click)="download()">
+      <mat-icon>vertical_align_bottom</mat-icon>
+    </button>
+   <!-- <button mat-icon-button class="example-icon" matTooltip="Imprimer" (click)="print()">
+      <mat-icon>print</mat-icon>
+    </button>-->
+  </mat-toolbar>
+</div>
+<div mat-dialog-content>
+  <div class="row">
+    <div class="col"></div>
+    <div class="col"></div>
+  </div><!--row-->
+   <div style="--aspect-ratio: 16/9;" *ngIf="isPdf" class="page">
+    <pdf-viewer
+      [src]="src"
+      [original-size]="fit"
+      [fit-to-page]="fit"
+      [render-text]="true"
+      [rotation]="0"
+      [show-all]="true"
+      class="pdf-viewer"
+      [page]="page"
+      [zoom]="zoom_to"
+      [zoom-scale]="'page-width'"
+      (after-load-complete)="afterLoadComplete($event)"
+      class="pdf-viewer"
+      [ngStyle]="{'width.px':width,'height.px':height}"
+    ></pdf-viewer>
+   </div>
+  <!--style-->
+   <div *ngIf="isOffice" align="center">
+    <iframe [src]='src'></iframe>
+  </div>
+  <div *ngIf="isImage"  align="center">
+    <img [src]="src" class="image-preview"/>
+  </div>
+</div>
+
+<div class="border-pdf" *ngIf="isPdf">
+  <mat-toolbar class="mlk-toolbar">
+    <button mat-icon-button class="example-icon" (click)="prevPage()" [disabled]="page === 1">
+     <mat-icon class="toolbar-icon">keyboard_arrow_down</mat-icon>
+   </button>
+   <button mat-icon-button class="example-icon" (click)="nextPage()" [disabled]="page === totalPages">
+    <mat-icon class="toolbar-icon">keyboard_arrow_up</mat-icon>
+  </button>
+  <div class="toolbar-space">
+    <span class="toolbar-showing">Affichage</span>
+    <span  class="toolbar-showing"><input type="text" class="toolbar-input" [value]="page"></span>
+    <span  class="toolbar-showing">sur {{ totalPages }}</span>
+  </div>
+  <div class="toolbar-percent">
+    {{percent}}%
+  </div>
+  <button mat-icon-button class="example-icon" (click)="zoom_in()">
+    <mat-icon class="toolbar-icon">zoom_in</mat-icon>
+  </button>
+  <button mat-icon-button class="example-icon" (click)="zoom_out()">
+   <mat-icon class="toolbar-icon">zoom_out</mat-icon>
+ </button>
+   <span class="example-spacer"></span>
+   <button mat-icon-button class="example-icon favorite-icon" (click)="get_fit()">
+     <mat-icon class="toolbar-icon">zoom_out_map</mat-icon>
+   </button>
+
+ </mat-toolbar>
+</div>

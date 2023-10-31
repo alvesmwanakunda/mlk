@@ -44,4 +44,25 @@ export class ProjetsService {
   public updateProjetPhoto(idProjet, projet){
     return this.httpClient.put(`${environment.BASE_API_URL}/projet/file/${idProjet}`,projet)
   }
+
+  // Module
+  public addModule(module){
+    return this.httpClient.post(`${environment.BASE_API_URL}/module`,module);
+  }
+
+  public updateModule(module, idModule){
+    return this.httpClient.put(`${environment.BASE_API_URL}/module/${idModule}`,module);
+  }
+
+  public getModule(idModule){
+    return this.httpClient.get(`${environment.BASE_API_URL}/module/${idModule}`);
+  }
+
+  public getAllModule(){
+    return this.httpClient.get(`${environment.BASE_API_URL}/modules`);
+  }
+
+  public deleteModule(idModule){
+    return this.httpClient.delete(`${environment.BASE_API_URL}/module/${idModule}`);
+  }
 }

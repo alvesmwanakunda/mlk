@@ -97,21 +97,21 @@ export class AddEntrepriseComponent implements OnInit {
   ngOnInit(){
     this.firstFormGroup=this._formBuilder.group({
       societe:['',Validators.required],
-      commercial:[''],
-      siren:[''],
-      juridique:[''],
-      siret:[''],
-      tva:[''],
-      activite:['']
+      commercial:['',null],
+      siren:['',null],
+      juridique:['',null],
+      siret:['',null],
+      tva:['',null],
+      activite:['',null]
     });
     this.secondFormGroup=this._formBuilder.group({
-      pays:[''],
-      adresse:[''],
-      ville:[''],
-      rue:[''],
-      numero:[],
-      postal:[''],
-      site:[''],
+      pays:['',null],
+      adresse:['',null],
+      ville:['',null],
+      rue:['',null],
+      numero:['',null],
+      postal:['',null],
+      site:['',null],
       genre:['',Validators.required],
       email:['',Validators.required],
       indicatif:['',Validators.required],
@@ -120,9 +120,9 @@ export class AddEntrepriseComponent implements OnInit {
       prenom:['',Validators.required]
     });
     this.threeFormGroup=this._formBuilder.group({
-      corps_act:[''],
-      corps_etat:[''],
-      fournisseur:['']
+      corps_act:['',null],
+      corps_etat:['',null],
+      fournisseur:['',null]
     });
     this.codeFiltres = this.secondFormGroup.get('indicatif').valueChanges.pipe(
       startWith(''),
@@ -169,7 +169,7 @@ export class AddEntrepriseComponent implements OnInit {
       Object.assign(this.form3, this.threeFormGroup.value)
 
       formData.append("uploadfile", this.file);
-      formData.append("nom", this.form1.societe);
+      formData.append("societe", this.form1.societe);
       formData.append("commercial", this.form1.commercial);
       formData.append("siren", this.form1.siren);
       formData.append("siret", this.form1.siret);
@@ -180,7 +180,7 @@ export class AddEntrepriseComponent implements OnInit {
       formData.append("adresse", this.form2.adresse);
       formData.append("ville", this.form2.ville);
       formData.append("rue", this.form2.rue);
-      formData.append("rue", this.form2.numero);
+      formData.append("numero", this.form2.numero);
       formData.append("postal", this.form2.postal);
       formData.append("site", this.form2.site);
       formData.append("email", this.form2.email);

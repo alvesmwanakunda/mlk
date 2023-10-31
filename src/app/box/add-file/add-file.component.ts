@@ -20,10 +20,11 @@ export class AddFileComponent implements OnInit {
 
   fichiers:any=[];
   fileName:any;
-  file:File;
+  files:any;
   progress:number;
   idFolder:any;
   @Input() id?:any;
+  error:any;
 
   constructor(
     private boxService : BoxService,
@@ -36,10 +37,11 @@ export class AddFileComponent implements OnInit {
 
   onFileSelected(event){
     //console.log("File", event.target.files[0]);
-    this.file = event.target.files[0];
-    this.fileName = this.file.name;
-    this.addFile(this.file);
-
+    this.files = event.target.files;
+    for(let file of this.files){
+      this.fileName = file.name;
+      this.addFile(file);
+    }
   }
 
   addFile(file){
@@ -64,6 +66,7 @@ export class AddFileComponent implements OnInit {
       }),
       catchError((err:any)=>{
         this.progress=null;
+        this.error=err.message;
         return throwError(err.message);
       })
     ).toPromise();

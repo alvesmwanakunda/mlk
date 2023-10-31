@@ -42,7 +42,7 @@
           <img src="assets/images/doc.png" *ngIf="element.extension=='docx'" style="margin-right: 10px;margin-top: -4px;">
           <img src="assets/images/xls.png" *ngIf="element.extension=='xlsx' || element.extension=='xls'" style="margin-right: 10px;margin-top: -4px;">
           <img src="assets/images/pptx.png"  *ngIf="element.extension=='pptx'" style="margin-right: 10px;margin-top: -4px;">
-          <img src="assets/images/image.png"  *ngIf="element.extension=='png' || element.extension=='jpeg' || element.extension=='jpg' || element.extension=='gif'" style="margin-right: 10px;margin-top: -4px;">
+          <img [src]="element.chemin"  *ngIf="element.extension=='png' || element.extension=='jpeg' || element.extension=='jpg' || element.extension=='gif'" style="margin-right: 10px;margin-top: -4px;width: 24px;height: 24px;">
           <span>{{element?.nom}}</span>
         </p>
       </td>

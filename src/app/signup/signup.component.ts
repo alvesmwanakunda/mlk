@@ -137,7 +137,7 @@ export class SignupComponent implements OnInit {
       societe:new FormControl("",[Validators.required]),
       prenom:new FormControl("",[Validators.required]),
       genre:new FormControl("",[Validators.required]),
-      siret:new FormControl("",[Validators.required]),
+      siret:new FormControl("",null),
       rue:new FormControl("",[Validators.required]),
       adresse:new FormControl("",[Validators.required]),
       postal:new FormControl("",[Validators.required]),

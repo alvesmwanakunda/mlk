@@ -22,7 +22,8 @@ export class DetailUserProjetComponent implements OnInit {
     public dialog: MatDialog
   ) {
     this.route.params.subscribe((data:any)=>{
-      this.idProjet = data.id
+      this.idProjet = data.id;
+      console.log("projet id", this.idProjet);
      })
   }
 

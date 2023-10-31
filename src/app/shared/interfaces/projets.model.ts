@@ -23,4 +23,5 @@ export interface Projets {
   code_projet:string;
   code_client:string;
   createdDate:Date;
+  plan:string
 }

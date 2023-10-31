@@ -1,0 +1,114 @@
+<app-navbar>
+  <div class="container">
+    <div class="content-top">
+      <div class="row">
+        <div class="col">
+          <p class="title-projet-page">Nouveau module <button class="btn" type="button" [routerLink]="['/modulaires']"><i class="fa-solid fa-arrow-left" style="color:#28628B;"></i></button></p>
+        </div>
+        <div class="col">
+           <div align="right">
+            <i class="fa-solid fa-cube" style="font-size: 30px;color: #666C7E;"></i>
+           </div>
+        </div>
+      </div><!--row-->
+      <div class="row">
+        <div class="col">
+          <hr class="entreprise">
+        </div>
+      </div><!--row-->
+
+      <div class="row">
+        <div class="col">
+          <form [formGroup]="moduleForm" style="margin-bottom: 35px;">
+            <div class="row" style="margin-bottom: 15px;">
+              <div class="col">
+                <label class="label-entreprise">Nom du module <small class="error_field">*</small></label>
+                <input type="text" formControlName="nom" class="form-control input-entreprise" required>
+                <div *ngIf="moduleForm.get('nom').hasError(champ_validation.input[0].type) && (moduleForm.get('nom').dirty || moduleForm.get('nom').touched)">
+                  <p class="error_field">{{champ_validation.input[0].message}}</p>
+                </div>
+              </div>
+              <div class="col">
+                <label class="label-entreprise">Etat <small class="error_field">*</small></label>
+                <select formControlName="type" class="form-control input-entreprise" required>
+                   <option value="Stock">Stock</option>
+                   <option value="En préparation">En préparation</option>
+                   <option value="Prêt à partir">Prêt à partir</option>
+                   <option value="Site">Site</option>
+                </select>
+                <div *ngIf="moduleForm.get('type').hasError(champ_validation.input[0].type) && (moduleForm.get('type').dirty || moduleForm.get('type').touched)">
+                  <p class="error_field">{{champ_validation.input[0].message}}</p>
+                </div>
+              </div>
+            </div><!--div-->
+            <div class="row" style="margin-bottom: 15px;">
+              <div class="col">
+                <label class="label-entreprise">Marque</label>
+                <input type="text" formControlName="marque" class="form-control input-entreprise">
+              </div><!--div-->
+            </div>
+            <div class="row" style="margin-bottom: 15px;">
+              <div class="col">
+                <label class="label-entreprise">Hauteur</label>
+                <input type="text" formControlName="hauteur" class="form-control input-entreprise">
+              </div><!--div-->
+              <div class="col">
+                <label class="label-entreprise">Largeur</label>
+                <input type="text" formControlName="largeur" class="form-control input-entreprise">
+              </div>
+              <div class="col">
+                <label class="label-entreprise">Longueur</label>
+                <input type="text" formControlName="longueur" class="form-control input-entreprise">
+              </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 15px;">
+              <div class="col">
+                <label class="label-entreprise">Projet</label>
+                <select formControlName="projet" class="form-control input-entreprise">
+                   <option [value]="p?._id" *ngFor="let p of projets">{{p?.projet}}</option>
+                </select>
+              </div><!--div-->
+              <div class="col">
+                <label class="label-entreprise">Position</label>
+                <input type="text" formControlName="position" class="form-control input-entreprise">
+              </div>
+           </div>
+
+           <div class="row" style="margin-bottom: 15px;">
+            <div class="col">
+             <label class="label-entreprise">Photo <span *ngIf="imageName">({{imageName}})</span></label>
+             <br/>
+             <div *ngIf="isSize">
+              <mat-chip disabled color="accent">{{isSize}}</mat-chip>
+             </div>
+             <input type="file" class="file-input" accept='image/*' (change)="onFileSelectedImage($event)" #fileUpload>
+             <button type="button" (click)="fileUpload.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> charger la photo</button>
+            </div>
+            <div class="col">
+             <label class="label-entreprise">Plan <span *ngIf="fileName">({{fileName}})</span></label>
+             <br/>
+             <input type="file" class="file-input" accept='.pdf' (change)="onFileSelectedPlan($event)" #fileUpload1>
+             <button type="button" (click)="fileUpload1.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> charger le plan</button>
+            </div>
+         </div>
+
+          </form>
+          <div align="right">
+            <button mat-button routerLink="/modulaires" class="btn-entreprise-back" style="margin-right: 10px;"><i class="fa-solid fa-chevron-left"></i> ANNULER</button>
+            <button mat-button  class="btn-entreprise" (click)="addModule()" [disabled]="moduleForm.invalid">VALIDER</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="snackbar" *ngIf="progress">
+      <br/>
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" [style.width]="progress + '%'">{{progress}}%</div>
+      </div>
+      <br/>
+      <p style="font-size: 12px;" *ngIf="progress<100">Fichier {{fileName}} est en cours de chargement...</p>
+      <p style="font-size: 12px;color: rgb(16, 93, 38);" *ngIf="progress==100">Fichier {{fileName}} est chargé avec succès</p>
+    </div>
+  </div>
+</app-navbar>
