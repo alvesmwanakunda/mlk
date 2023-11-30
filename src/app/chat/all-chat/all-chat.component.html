@@ -1,0 +1,35 @@
+<app-navbar>
+  <div class="container">
+    <div style="margin-bottom: 40px;">
+      <h2 class="content-title">Discussions</h2>
+      <mat-divider></mat-divider>
+    </div>
+
+    <div  class="content-top">
+      <div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col" class="th-chat">Client</th>
+              <th scope="col" class="th-chat">Messages</th>
+              <th scope="col" class="th-chat">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let m of messages">
+              <td class="td-chat">{{m?.nom}} {{m?.prenom}}</td>
+              <td>
+                <span *ngIf="m?.number!=0" class="badge rounded-pill bg-danger">{{m?.number}}</span>
+                <span *ngIf="m?.number==0" class="td-chat">{{m?.number}}</span>
+              </td>
+              <td>
+                 <span><button mat-button class="td-chat-button" (click)="getMessage(m?.user,m?.number)" color="accent">Lire les messages</button></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</app-navbar>

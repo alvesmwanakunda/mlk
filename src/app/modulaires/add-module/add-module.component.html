@@ -64,6 +64,15 @@
 
             <div class="row" style="margin-bottom: 15px;">
               <div class="col">
+                <label class="label-entreprise">Fournisseur</label>
+                <select formControlName="entreprise" class="form-control input-entreprise">
+                   <option [value]="ent?._id" *ngFor="let ent of entreprises">{{ent?.societe}}</option>
+                </select>
+              </div><!--div-->
+           </div>
+
+            <div class="row" style="margin-bottom: 15px;">
+              <div class="col">
                 <label class="label-entreprise">Projet</label>
                 <select formControlName="projet" class="form-control input-entreprise">
                    <option [value]="p?._id" *ngFor="let p of projets">{{p?.projet}}</option>

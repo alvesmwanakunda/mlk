@@ -1,0 +1,281 @@
+.mkla-header{
+  background-color: #F0F0F0;
+  background-position: left top;
+  background-repeat-x: repeat;
+  background-image: none;
+  height: 48px;
+  line-height: 48px;
+  width: 100%;
+  display: flex;
+  border-spacing: 0;
+  white-space: nowrap;
+  position: fixed;
+  top: 0;
+  z-index: 2;
+  box-shadow: var(--shadow4, 0 0 2px var(--shadowAmbient, rgba(0, 0, 0, 0.12)), 0 2px 4px var(--shadowKey, rgba(0, 0, 0, 0.14)));
+}
+
+.mkla-headerLeft{
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  height: 100%;
+}
+
+.mlka-btnLeft{
+    height: 100%;
+    line-height: 48px;
+    display: flex;
+}
+
+.mlka-btnLeft1{
+  color: #242424;
+  background-color: #F0F0F0;
+  min-width: 68px;
+  line-height: 48px;
+  background: transparent;
+  border-width: 0;
+  width: auto;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: visible;
+  display: block;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  cursor: pointer;
+  outline-offset: -1px;
+}
+
+.mlka-btnLeftUser{
+  color: #242424;
+  background-color: #F0F0F0;
+  min-width: 176px;
+  line-height: 48px;
+  background: transparent;
+  border-width: 0;
+  width: auto;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: visible;
+  display: block;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  cursor: pointer;
+  outline-offset: -1px;
+}
+
+.mlka-headerCenter{
+  display: flex;
+  flex: 1 0 auto;
+  height: 100%;
+  width: calc(100% - 116px);
+}
+.mlka-centerChild{
+  height: 48px;
+  display: flex;
+}
+.mlka-userName{
+  justify-content: flex-end;
+  max-width: 48px;
+  height: 100%;
+  line-height: 48px;
+  display: flex;
+}
+
+.mlka-leftMChild{
+  height: 100%;
+  line-height: 48px;
+  display: flex;
+}
+.mlka-leftMChild1{
+  height: 100%;
+  display: flex;
+  vertical-align: middle;
+  outline-offset: -1px;
+  padding: 0 12px 0 8px;
+  text-decoration: none;
+  color: #28628B;
+  background-color: #F0F0F0;
+}
+
+.mlka-fontName{
+    color: #28628B;
+    display: inline-block;
+    font-weight: 600;
+    font-family: SegoeUI-SemiBold-final,Segoe UI Semibold,SegoeUI-Regular-final,Segoe UI,"Segoe UI Web (West European)",Segoe,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,Tahoma,Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    line-height: 48px;
+    -webkit-font-smoothing: antialiased;
+}
+
+.mkla-headerRight{
+  display: flex;
+  flex: 0 0 auto;
+  color: #242424;
+  background-color: #F0F0F0;
+}
+.mlka-menu{
+  background-color: #F0F0F0;
+  position: fixed;
+  top: 0;
+  height: 100%;
+  width: 68px;
+  box-shadow: var(--shadow4, 0 0 2px var(--shadowAmbient, rgba(0, 0, 0, 0.12)), 0 2px 4px var(--shadowKey, rgba(0, 0, 0, 0.14)));
+}
+
+.mlka-menuContent{
+  line-height: 20px;
+  font-weight: 400;
+  font-size: 14px;
+}
+.mlka-menuList{
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 68px;
+    background-color: #F0F0F0;
+}
+.mlka-menuListChild{
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+  padding-bottom: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 48px;
+  width: 68px;
+  background-color: #F0F0F0;
+  height: 100%;
+}
+.mlka-menuItem{
+   flex-direction: column;
+   overflow-y: clip;
+   overflow-x: clip;
+   align-items: center;
+   display: flex;
+   min-height: 56px;
+}
+.mlka-menuIcon{
+    position: fixed;
+    height: 1px;
+    width: 1px;
+    opacity: 0.001;
+    z-index: -1;
+    content-visibility: hidden;
+    top: 0px;
+    left: 0px;
+}
+
+.mlka-menuBtn1 {
+  align-items: center;
+  box-sizing: border-box;
+  display: inline-flex;
+  justify-content: center;
+  text-decoration-line: none;
+  vertical-align: middle;
+  margin: 0px;
+  overflow: hidden;
+  background-color: #f0f0f0;
+  color: #242424;
+  border: 1 solid #d1d1d1;
+  outline-style: none;
+  padding: 5px 12px;
+  min-width: 96px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  transition-duration: 100ms;
+  transition-property: background, border, color;
+  transition-timing-function: cubic-bezier(0.33,0,0.67,1);
+}
+
+.mlka-menuBtn{
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  height: 56px;
+  max-width: 68px;
+  min-width: 68px;
+  touch-action: none;
+  user-select: none;
+  padding-bottom: 1px;
+  padding-left: 1px;
+  padding-right: 1px;
+  padding-top: 1px;
+  border-bottom-width: 0px;
+  border-right-width: 0px;
+  border-top-width: 0px;
+  min-height: 56px;
+  width: 68px;
+  font-weight: 400;
+}
+.mlka-menuBtn:hover {
+  cursor: pointer;
+  background-color: #fff;
+}
+.activeMenus {
+    border-left: 3px solid #28628B!important;
+    position: relative;
+    left:2px;
+
+}
+
+.activeIcon {
+  color:#28628B!important;
+}
+.mlka-menuspan {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  font-size: 18px;
+  height: 20px;
+  width: 20px;
+  --fui-Button__icon--spacing: 6px;
+}
+
+.mlka-menuspan1{
+  pointer-events: none;
+  justify-content: center;
+  height: 56px;
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+  width: 68px;
+}
+
+.mlka-menuspanIcon{
+  line-height: 0 !important;
+  display: inline !important;
+  width: 24 !important;
+  height: 24 !important;
+  pointer-events: none !important;
+  color: #616161;
+}
+.mlka-menuspanTitle{
+  color:#616161;
+  font-size:10px;
+  line-height:14px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  margin-bottom: 0px;
+  margin-left: 7px;
+  margin-right: 7px;
+  margin-top: 0px;
+  width: 60px;
+  display: block;
+  font-family: 'Segoe UI', 'Segoe UI Web (West European)', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif;
+  pointer-events: none;
+}

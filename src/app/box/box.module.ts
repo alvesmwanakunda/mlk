@@ -14,6 +14,21 @@ import { DeleteFileModule } from './delete-file/delete-file.module';
 import { UpdateFileModule } from './update-file/update-file.module';
 import { ViewerModule } from '../viewer/viewer.module';
 import { BreadcrumbService } from '../shared/services/breadcrumb.service';
+import { AuthGuardService } from '../shared/services/auth-guard.service';
+import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { MoveFolderModule } from './move-folder/move-folder.module';
+
+export function jwtOptionsFactory() {
+  return {
+    tokenGetter: () => {
+      const token = JSON.parse(localStorage.getItem('user'))?.token;
+      console.log("Token", token);
+      return token || '';
+    },
+    allowedDomains: [window.location.origin], // Dynamiquement obtenu
+    disallowedRoutes: [`${window.location.origin}/box`], // Dynamiquement obtenu
+  };
+}
 
 
 @NgModule({
@@ -31,8 +46,15 @@ import { BreadcrumbService } from '../shared/services/breadcrumb.service';
     UpdateDossierModule,
     DeleteDossierModule,
     DeleteFileModule,
-    UpdateFileModule
+    UpdateFileModule,
+    MoveFolderModule,
+    JwtModule.forRoot({
+      jwtOptionsProvider: {
+        provide: JWT_OPTIONS,
+        useFactory: jwtOptionsFactory,
+      },
+    }),
   ],
-  providers:[BoxService, BreadcrumbService]
+  providers:[BoxService, BreadcrumbService,AuthGuardService]
 })
 export class BoxModule { }

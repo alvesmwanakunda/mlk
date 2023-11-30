@@ -7,6 +7,20 @@ import { NavbarModule } from '../navbar/navbar.module';
 import { NavbarUserModule } from '../navbar-user/navbar-user.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../shared/services/auth.service';
+import { AuthGuardService } from '../shared/services/auth-guard.service';
+import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+
+export function jwtOptionsFactory() {
+  return {
+    tokenGetter: () => {
+      const token = JSON.parse(localStorage.getItem('user'))?.token;
+      console.log("Token", token);
+      return token || '';
+    },
+    allowedDomains: [window.location.origin], // Dynamiquement obtenu
+    disallowedRoutes: [`${window.location.origin}/profil`], // Dynamiquement obtenu
+  };
+}
 
 
 @NgModule({
@@ -18,8 +32,14 @@ import { AuthService } from '../shared/services/auth.service';
     NavbarModule,
     NavbarUserModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    JwtModule.forRoot({
+      jwtOptionsProvider: {
+        provide: JWT_OPTIONS,
+        useFactory: jwtOptionsFactory,
+      },
+    }),
   ],
-  providers:[AuthService]
+  providers:[AuthService,AuthGuardService]
 })
 export class ProfilModule { }

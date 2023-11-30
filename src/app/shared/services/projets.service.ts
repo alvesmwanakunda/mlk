@@ -62,7 +62,59 @@ export class ProjetsService {
     return this.httpClient.get(`${environment.BASE_API_URL}/modules`);
   }
 
+  public getAllModuleByEntreprise(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/modules/entreprise/${id}`);
+  }
+
   public deleteModule(idModule){
     return this.httpClient.delete(`${environment.BASE_API_URL}/module/${idModule}`);
+  }
+
+  // Devis
+    public addDevis(devis){
+      return this.httpClient.post(`${environment.BASE_API_URL}/devis`,devis);
+    }
+
+    public updateDevis(devis, id){
+      return this.httpClient.put(`${environment.BASE_API_URL}/devis/${id}`,devis);
+    }
+
+    public getDevis(id){
+      return this.httpClient.get(`${environment.BASE_API_URL}/devis/${id}`);
+    }
+
+    public getAllDevis(){
+      return this.httpClient.get(`${environment.BASE_API_URL}/devis`);
+    }
+
+    public deleteDevis(id){
+      return this.httpClient.delete(`${environment.BASE_API_URL}/devis/${id}`);
+    }
+    public getAllDevisProjet(id){
+      return this.httpClient.get(`${environment.BASE_API_URL}/devis/projet/${id}`);
+    }
+
+   // Factures
+   public addFacture(facture){
+    return this.httpClient.post(`${environment.BASE_API_URL}/devis`,facture);
+  }
+
+  public updateFacture(facture, id){
+    return this.httpClient.put(`${environment.BASE_API_URL}/devis/${id}`,facture);
+  }
+
+  public getFacture(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/facture/${id}`);
+  }
+
+  public getAllFacture(){
+    return this.httpClient.get(`${environment.BASE_API_URL}/factures`);
+  }
+
+  public deleteFacture(id){
+    return this.httpClient.delete(`${environment.BASE_API_URL}/facture/${id}`);
+  }
+  public getAllFactureProjet(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/facture/projet/${id}`);
   }
 }

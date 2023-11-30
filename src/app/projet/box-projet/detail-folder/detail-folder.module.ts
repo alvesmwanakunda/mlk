@@ -12,6 +12,7 @@ import { UpdateFileModule } from 'src/app/box/update-file/update-file.module';
 import { DeleteFileModule } from 'src/app/box/delete-file/delete-file.module';
 import { FileBoxModule } from '../file-box/file-box.module';
 import { DetailFolderComponent } from './detail-folder.component';
+import { MoveFolderProjetModule } from '../move-folder-projet/move-folder-projet.module';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { DetailFolderComponent } from './detail-folder.component';
     DeleteDossierModule,
     UpdateFileModule,
     DeleteFileModule,
-    FileBoxModule
+    FileBoxModule,
+    MoveFolderProjetModule
   ],
   providers:[BoxService, BreadcrumbService],
   exports:[DetailFolderComponent]

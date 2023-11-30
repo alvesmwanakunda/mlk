@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { MatPaginatorIntl } from '@angular/material/paginator';
+import { EntreprisesService } from '../shared/services/entreprises.service';
 
 @Component({
   selector: 'app-dashboard-user',
@@ -20,11 +21,13 @@ export class DashboardUserComponent implements OnInit, AfterViewInit {
   projets:any=[];
   isListe:boolean=false;
   user:any;
+  company:any
 
   constructor(
     private projetService: ProjetsService,
     private router: Router,
-    private matPaginatorIntl:MatPaginatorIntl
+    private matPaginatorIntl:MatPaginatorIntl,
+    private entrepriseService:EntreprisesService
     ) {
       this.user = JSON.parse(localStorage.getItem('user'));
       //console.log("User",this.user);
@@ -37,7 +40,16 @@ export class DashboardUserComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.getAllProjet();
+    this.getEntrepriseId();
     this.dataSource.paginator=this.paginator;
+  }
+
+  getEntrepriseId(){
+    this.entrepriseService.getEntreprise(this.user?.user?.entreprise).subscribe((res:any)=>{
+       this.company = res.message
+    },(error)=>{
+        console.log("Une erreur", error);
+    })
   }
 
   getAllProjet(){
@@ -45,7 +57,7 @@ export class DashboardUserComponent implements OnInit, AfterViewInit {
        this.projets = data.message;
        this.dataSource.data = data.message.map((data)=>({
         id:data._id,
-        nom:data.nom,
+        nom:data.projet,
         entreprise:data?.entreprise?.nom,
         etat:data.etat,
         limite:data.date_limite,

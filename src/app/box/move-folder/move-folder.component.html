@@ -1,0 +1,40 @@
+<div mat-dialog-content class="mat-typography">
+    <div style="margin-bottom: 20px;">
+      <h3 class="title-move">Déplacer "{{infos?.nom}}"</h3>
+      <mat-divider></mat-divider>
+    </div>
+     <div *ngIf="!isSubFolder">
+      <mat-list>
+          <mat-list-item *ngFor="let folder of folders" class="move-item" (dblclick)="onListItemDoubleClick(folder)" [class.selected]="folder===selectedFolder">
+            <mat-icon matListItemIcon class="folder-icon-move">folder_supervised</mat-icon>
+            <div matListItemTitle class="folder-move">{{folder?.nom}} <span style="float: right;"><button mat-button color="primary" class="move-btn" (click)="onButtonMoveClick($event,folder)">Déplacer</button></span></div>
+          </mat-list-item>
+      </mat-list>
+     </div>
+     <div *ngIf="isSubFolder">
+      <div class="breadcrumbs" style="margin-bottom: 30px;">
+        <nav role="navigation" class="breadcrumbs-container">
+          <div class="breadcrumbs-item">
+           <a (click)="returnToBox()" class="breadcrumbs-item-anchor">Box</a>
+           <mat-icon class="mat-icon breadcrumbs-item-chevron material-icons">chevron_right</mat-icon>
+          </div>
+          <div *ngFor="let b of breadcrumbs; let i = index" [ngClass]="b?.current ? 'breadcrumbs-item adf-active' : 'breadcrumbs-item'">
+           <a (click)="removeFoldersAndSetCurrent(i,b?.id)" class="breadcrumbs-item-anchor">{{b?.name}}</a>
+           <mat-icon class="mat-icon breadcrumbs-item-chevron material-icons" *ngIf="b?.current==false">chevron_right</mat-icon>
+          </div>
+        </nav>
+      </div>
+      <mat-list>
+        <mat-list-item *ngFor="let folder of subFolders" class="move-item" (dblclick)="onListItemDoubleClick(folder)" [class.selected]="folder===selectedFolder">
+          <mat-icon matListItemIcon class="folder-icon-move">folder_supervised</mat-icon>
+          <div matListItemTitle class="folder-move">{{folder?.nom}} <span style="float: right;"><button mat-button color="primary" class="move-btn" (click)="onButtonMoveClick($event,folder)">Déplacer</button></span></div>
+        </mat-list-item>
+    </mat-list>
+     </div>
+</div>
+<div mat-dialog-actions style="justify-content: flex-end !important;" *ngIf="isAction">
+    <span>
+      <button mat-raised-button color="warn" (click)="close()">Annuler</button>
+      <button mat-raised-button color="primary" (click)="actionMove()">Déplacer</button>
+    </span>
+</div>

@@ -1,7 +1,8 @@
 import { Component,ViewEncapsulation, OnInit } from '@angular/core';
 import { AuthService } from '../shared/services/auth.service';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { EntreprisesService } from '../shared/services/entreprises.service';
+import { filter } from 'rxjs';
 
 
 @Component({
@@ -16,11 +17,24 @@ export class NavbarUserComponent implements OnInit {
   toggleNavbar = true;
   user:any;
   company:any;
+  currentRoute:string;
 
   constructor(private authService:AuthService,private router:Router, private entrepriseService:EntreprisesService){
+    this.router.events.pipe(
+      filter(event=>event instanceof NavigationEnd)
+    ).subscribe((event:NavigationEnd)=>{
+      this.currentRoute = event.url;
+    })
   }
 
   ngOnInit(){
 
+  }
+
+  isSignUpRoute():boolean{
+    return this.currentRoute==='/signup';
+  }
+  isLoginOrHomeRoute(): boolean {
+    return this.currentRoute === '/' || this.currentRoute === '/login';
   }
 }

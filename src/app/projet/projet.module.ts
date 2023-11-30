@@ -9,6 +9,8 @@ import { IntervenantModule } from './intervenant/intervenant.module';
 import { ProjetsService } from '../shared/services/projets.service';
 import { DeleteProjetModule } from './delete-projet/delete-projet.module';
 import { BoxProjetModule } from './box-projet/box-projet.module';
+import { DevisProjetModule } from '../devis/devis-projet/devis-projet.module';
+import { FactureProjetModule } from '../factures/facture-projet/facture-projet.module';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import { BoxProjetModule } from './box-projet/box-projet.module';
     FicheModule,
     IntervenantModule,
     DeleteProjetModule,
-    BoxProjetModule
+    BoxProjetModule,
+    DevisProjetModule,
+    FactureProjetModule
   ],
   providers:[ProjetsService]
 })

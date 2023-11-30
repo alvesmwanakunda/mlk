@@ -2,19 +2,21 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment} from 'src/environments/environment';
 import { Router } from '@angular/router';
-import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private jwtHelper = new JwtHelperService();
-
   constructor(
     private readonly httpClient: HttpClient,
-    private router: Router
+    private router: Router,
   ) { }
+
+  /*public isAuthenticated():boolean{
+    let token = JSON.parse(localStorage.getItem("user"));
+    return !this.jwtHelper.isTokenExpired(token.token);
+  }*/
 
   private handleError(error:any):Promise<any>{
     localStorage.clear();

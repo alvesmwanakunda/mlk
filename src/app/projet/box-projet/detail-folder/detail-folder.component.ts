@@ -13,6 +13,7 @@ import { DeleteDossierComponent } from 'src/app/box/delete-dossier/delete-dossie
 import { UpdateFileComponent } from 'src/app/box/update-file/update-file.component';
 import { DeleteFileComponent } from 'src/app/box/delete-file/delete-file.component';
 import { BreadcrumbService } from 'src/app/shared/services/breadcrumb.service';
+import { MoveFolderProjetComponent } from '../move-folder-projet/move-folder-projet.component';
 @Component({
   selector: 'app-detail-folder',
   templateUrl: './detail-folder.component.html',
@@ -172,6 +173,15 @@ export class DetailFolderComponent implements OnInit,AfterViewInit {
       console.log("idFolder", this.idFolder);
       this.getAllFiles(this.idFolder);
     }
+  }
+
+  openDialogMove(id, extension?){
+    const dialogRef = this.dialog.open(MoveFolderProjetComponent,{width:'50%',data:{id:id,extension:extension,idProjet:this.idProjet}});
+    dialogRef.afterClosed().subscribe((result:any)=>{
+       if(result){
+        this.getAllFiles(this.idFolder);
+       }
+    })
   }
 
   closeBox(){

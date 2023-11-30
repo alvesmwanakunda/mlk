@@ -1,10 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: #f6f6f6 !important; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, "Noto Sans", Arial, "Odoo Unicode Support Noto", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+  background-color: #F5F5F5 !important;
+}
 
 a{
   text-decoration: none !important;
+}
+
+:root{
+  --shadow4: 0 0 2px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.14);
+  --shadowAmbient: rgba(0,0,0,0.12);
+  --shadowKey: rgba(0,0,0,0.14);
 }
 
 .span-brand{
@@ -1035,6 +1045,10 @@ hr.entreprise{
   width: 100%;
 }
 
+.example-full-login {
+  width: 75%;
+}
+
 .example-full {
   width: 40%;
 }
@@ -1262,7 +1276,7 @@ hr.entreprise{
 .link-c{
     font-size: 14px !important;
     line-height: 34px !important;
-    color: #000000 !important;
+    color: #616161 !important;
     display: inline-block !important;
     padding-right: 30px !important;
     vertical-align: middle !important;
@@ -1305,15 +1319,17 @@ hr.entreprise{
   width: 35px;
   background-color: #28628B;
   border-radius: 50%;
-  display: inline-block;
+  //display: inline-block;
 }
 
 .dot-span{
-  font-weight: 700;
+  //font-weight: 700;
   position: relative;
-  top: 8px;
-  left: 6px;
+  bottom: 5px;
+  //top: 8px;
+  //left: 6px;
   color: #fff;
+  text-align: center;
 }
 
 .profile{
@@ -1340,26 +1356,14 @@ hr.entreprise{
 }
 
 .dashboard-app {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-box-flex: 2;
-  -webkit-flex-grow: 2;
-  -ms-flex-positive: 2;
   flex-grow: 2;
-  margin-top: 20px;
+  margin-top: 49px;
+  //box-shadow: var(--shadow4,0 0 2px var(--shadowAmbient,rgba(0,0,0,.12)),0 2px 4px var(--shadowKey,rgba(0,0,0,.14)));
 }
 
 .dashboard-content {
-  -webkit-box-flex: 2;
-  -webkit-flex-grow: 2;
-  -ms-flex-positive: 2;
   flex-grow: 2;
   padding: 25px;
 }
@@ -1483,9 +1487,9 @@ hr.entreprise{
   background: rgba(255, 255, 255, 0.04);
 }
 
-.active {
+/*.active {
   background: #f6f6f6;;
-}
+}*/
 
 .dashboard-nav-dropdown {
   display: -webkit-box;
@@ -1621,7 +1625,7 @@ hr.entreprise{
 
 @media (min-width: 992px) {
   .dashboard-app {
-      margin-left: 238px;
+      margin-left: 69px;
   }
 
   .dashboard-compact .dashboard-app {
@@ -1671,6 +1675,157 @@ hr.entreprise{
   }
 }
 
+.card1{
+  background-color: #28628B !important;
+  border-radius: 9px !important;
+  box-shadow: none !important;
+  height: 300px !important;
+}
+
+.card2{
+  background-color: #48ae4d !important;
+  border-radius: 9px !important;
+  box-shadow: none !important;
+  height: 300px !important;
+}
+
+.card3{
+  background-color: #53a3db !important;
+  border-radius: 9px !important;
+  box-shadow: none !important;
+  height: 300px !important;
+}
+
+.btncard1{
+  border-radius: 40px !important;
+  width: 150px;
+  height: 44px !important;
+  align-items: center !important;
+  background-color: #fff !important;
+}
+
+.btncard2{
+  border-radius: 40px !important;
+  width: 173px;
+  height: 44px !important;
+  align-items: center !important;
+  background-color: #fff !important;
+}
+
+.chat-box {
+    position: fixed;
+    bottom: 0;
+    width: 87%;
+}
+
+.chat-input{
+  width: 100% !important;
+  border-radius: 7px !important;
+  border-color: #efeded !important;
+  padding: 12px 20px;
+  /* margin: 8px 0; */
+  display: inline-block;
+  border: 0 solid #efeded !important;
+  box-sizing: border-box;
+}
+
+.chat-user-name{
+  font-size: 15px;
+  font-weight: bold;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, "Noto Sans", Arial, "Odoo Unicode Support Noto", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  color: #4f4e4ee3;
+}
+.chat-date{
+  --text-opacity: 1;
+  color: rgba(55, 65, 81, 0.76) !important;
+  opacity: 0.75 !important;
+  font-size: 0.8125rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, "Noto Sans", Arial, "Odoo Unicode Support Noto", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+.chat-user{
+  width: 36px;
+  height: 36px;
+  background-color: #224168;
+  border-radius: 0.25rem !important;
+}
+.chat-receveid{
+  width: 36px;
+  height: 36px;
+  background-color: #4ca6df;
+  border-radius: 0.25rem !important;
+}
+.chat-short-name{
+  font-size: 19px;
+  font-weight: bold;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, "Noto Sans", Arial, "Odoo Unicode Support Noto", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  padding-left: 9px;
+  position: relative;
+  top: 7px;
+}
+
+.chat-content{
+  margin-bottom: 30px;
+  padding-top: 100px;
+  max-height: 500px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.th-chat{
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, "Noto Sans", Arial, "Odoo Unicode Support Noto", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.td-chat{
+  font-size: 13px;
+  color: #575555;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, "Noto Sans", Arial, "Odoo Unicode Support Noto", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+.td-chat-button{
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, "Noto Sans", Arial, "Odoo Unicode Support Noto", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+  font-size: 13px !important;
+}
+
+.title-move{
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, "Noto Sans", Arial, "Odoo Unicode Support Noto", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+  color: #444746 !important;
+  font-size: 18px !important;
+}
+
+.folder-move{
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, "Noto Sans", Arial, "Odoo Unicode Support Noto", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+  color: rgb(60,64,67) !important;
+  font-size: 14px !important;
+}
+.folder-icon-move{
+  color: rgb(60,64,67) !important;
+  font-size: 19px !important;
+}
+
+.move-item{
+  height: 41px !important;
+  margin-bottom: 10px !important;
+}
+
+.move-item:hover{
+  background-color: #ece8e895 !important;
+  cursor: pointer !important;
+  border-radius: 5px 60px 60px 5px !important;
+}
+.move-item.selected {
+  background-color: rgb(190 209 238 / 58%) !important;;
+  cursor: pointer !important;
+  border-radius: 5px 60px 60px 5px !important;
+}
+
+.move-btn{
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, "Noto Sans", Arial, "Odoo Unicode Support Noto", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+  font-size: 13px !important;
+}
+
+
+
+
 
 // End apps
 
@@ -1680,6 +1835,7 @@ hr.entreprise{
 
 
 /* Importing Bootstrap SCSS file. */
+@import 'assets/css/menus_mlka.scss';
 @import 'bootstrap/scss/bootstrap';
 @import "../node_modules/angular-calendar/css/angular-calendar.css";
 @import "~@ng-select/ng-select/themes/default.theme.css";

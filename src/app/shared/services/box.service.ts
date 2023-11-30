@@ -73,6 +73,16 @@ export class BoxService {
     );
  }
 
+ // move folder and file
+
+public moveFolder(id,parent){
+  return this.httpClient.get(`${environment.BASE_API_URL}/dossier/move/${id}/${parent}`)
+}
+
+public moveFile(id,parent){
+  return this.httpClient.get(`${environment.BASE_API_URL}/fichier/move/${id}/${parent}`)
+}
+
 
 
 

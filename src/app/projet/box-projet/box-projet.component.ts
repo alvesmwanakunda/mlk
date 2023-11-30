@@ -12,6 +12,7 @@ import { UpdateDossierComponent } from 'src/app/box/update-dossier/update-dossie
 import { DeleteDossierComponent } from 'src/app/box/delete-dossier/delete-dossier.component';
 import { UpdateFileComponent } from 'src/app/box/update-file/update-file.component';
 import { DeleteFileComponent } from 'src/app/box/delete-file/delete-file.component';
+import { MoveFolderProjetComponent } from './move-folder-projet/move-folder-projet.component';
 
 
 @Component({
@@ -135,6 +136,14 @@ export class BoxProjetComponent implements OnInit,AfterViewInit {
 
   openDialogFileDelete(idFile){
     const dialogRef = this.dialog.open(DeleteFileComponent,{width:'30%',data:{id:idFile}});
+    dialogRef.afterClosed().subscribe((result:any)=>{
+       if(result){
+        this.getAllFiles();
+       }
+    })
+  }
+  openDialogMove(id, extension?){
+    const dialogRef = this.dialog.open(MoveFolderProjetComponent,{width:'50%',data:{id:id,extension:extension,idProjet:this.idProjet}});
     dialogRef.afterClosed().subscribe((result:any)=>{
        if(result){
         this.getAllFiles();

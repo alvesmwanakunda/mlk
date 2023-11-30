@@ -60,6 +60,13 @@
                 <p>{{module?.largeur}}</p>
                 <mat-divider></mat-divider>
               </div>
+
+              <div class="bloc-info">
+                <p class="title-info">Fournisseur</p>
+                <p>{{entreprise?.societe}}</p>
+                <mat-divider></mat-divider>
+              </div>
+
               <div class="bloc-info">
                 <p class="title-info">Projet</p>
                 <p><span *ngIf="projet">{{projet?.projet}}</span> <span *ngIf="!projet">Non affecté</span></p>
@@ -82,7 +89,7 @@
       </mat-card>
     </div>
 
-    <div>
+    <div *ngIf="user?.user?.role!='user'">
       <mat-card>
         <mat-card-content>
           <form [formGroup]="moduleForm" style="margin-bottom: 35px;" *ngIf="module">
@@ -128,6 +135,15 @@
                 <input type="text" formControlName="longueur" [(ngModel)]="module.longueur" class="form-control input-entreprise">
               </div>
             </div>
+
+            <div class="row" style="margin-bottom: 15px;">
+              <div class="col">
+                <label class="label-entreprise">Fournisseur</label>
+                <select formControlName="entreprise" [(ngModel)]="entreprise._id" class="form-control input-entreprise">
+                   <option [value]="ent?._id" *ngFor="let ent of entreprises">{{ent?.societe}}</option>
+                </select>
+              </div><!--div-->
+           </div>
 
             <div class="row" style="margin-bottom: 15px;">
               <div class="col">

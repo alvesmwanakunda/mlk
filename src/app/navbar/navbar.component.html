@@ -1,4 +1,4 @@
-<div class='dashboard'>
+<!--<div class='dashboard'>
   <div class="dashboard-nav">
       <header>
         <a href="#!" class="menu-toggle">
@@ -6,41 +6,55 @@
         </a>
         <a class="brand-logo" matTooltip="{{company?.societe}}" *ngIf="user?.user?.role=='user'">
            <span class="span-brand">{{company?.societe}}</span>
+           <span>
+            <button mat-icon-button (click)="getChatClient()">
+              <mat-icon matBadge="{{number}}" matBadgeColor="warn">notifications</mat-icon>
+            </button>
+          </span>
         </a>
         <a class="brand-logo" matTooltip="MLKA" *ngIf="user?.user?.role!='user'">
           <span class="span-brand">MLKA</span>
+          <span>
+            <button mat-icon-button [routerLink]="['/all/discussions']">
+              <mat-icon matBadge="{{number}}" matBadgeColor="warn">notifications</mat-icon>
+            </button>
+          </span>
        </a>
       </header>
       <nav class="dashboard-nav-list">
-        <a class="dashboard-nav-item" [routerLink]="['/entreprise/dashboard']" [routerLinkActive]="['active']" *ngIf="user?.user?.role=='user'">
+        <a class="dashboard-nav-item" [routerLink]="['/entreprise/dashboard']" [routerLinkActive]="['activeMenus']" *ngIf="user?.user?.role=='user'">
             <i class="fa-solid fa-list-check"></i>
             Projet
         </a>
-        <a class="dashboard-nav-item" [routerLink]="['/dashboard']" [routerLinkActive]="['active']" *ngIf="user?.user?.role!='user'">
+        <a class="dashboard-nav-item" [routerLink]="['/dashboard']" [routerLinkActive]="['activeMenus']" *ngIf="user?.user?.role!='user'">
           <i class="fa-solid fa-list-check"></i>
           Projet
         </a>
-        <a  class="dashboard-nav-item">
+        <a  class="dashboard-nav-item" [routerLink]="['/devis']" [routerLinkActive]="['activeMenus']"  *ngIf="user?.user?.role!='user'">
           <i class="fa-regular fa-clipboard"></i>
             Devis
         </a>
-        <a class="dashboard-nav-item" [routerLink]="['/modulaires']" [routerLinkActive]="['active']" *ngIf="user?.user?.role!='user'">
+        <a  class="dashboard-nav-item" [routerLink]="['/facture']" [routerLinkActive]="['activeMenus']"  *ngIf="user?.user?.role!='user'">
+          <i class="fa-solid fa-file-lines"></i>
+            Factures
+        </a>
+        <a class="dashboard-nav-item" [routerLink]="['/modulaires']" [routerLinkActive]="['activeMenus']">
           <i class="fa-solid fa-cubes"></i>
           Module
         </a>
-        <a  class="dashboard-nav-item" [routerLink]="['/entreprises']" [routerLinkActive]="['active']" *ngIf="user?.user?.role!='user'">
+        <a  class="dashboard-nav-item" [routerLink]="['/entreprises']" [routerLinkActive]="['activeMenus']" *ngIf="user?.user?.role!='user'">
           <i class="fa-regular fa-building"></i>
             Entreprise
         </a>
-        <a  class="dashboard-nav-item" [routerLink]="['/contact']" [routerLinkActive]="['active']">
+        <a  class="dashboard-nav-item" [routerLink]="['/contact']" [routerLinkActive]="['activeMenus']"  *ngIf="user?.user?.role!='user'">
           <i class="fa-regular fa-address-card"></i>
             Contact
         </a>
-        <a  class="dashboard-nav-item" [routerLink]="['/box']" [routerLinkActive]="['active']" *ngIf="user?.user?.role!='user'">
+        <a  class="dashboard-nav-item" [routerLink]="['/box']" [routerLinkActive]="['activeMenus']" *ngIf="user?.user?.role!='user'">
           <i class="fa-solid fa-box"></i>
             Box
         </a>
-        <a  class="dashboard-nav-item" [routerLink]="['/agenda']" [routerLinkActive]="['active']">
+        <a  class="dashboard-nav-item" [routerLink]="['/agenda']" [routerLinkActive]="['activeMenus']">
           <i class="fa-regular fa-calendar-days"></i>
             Agenda
         </a>
@@ -48,11 +62,11 @@
           <a  class="title-cc">
             COMPTE
           </a>
-          <a  class="dashboard-nav-item" [routerLink]="['/detail/entreprise',user?.user?.entreprise]" [routerLinkActive]="['active']" *ngIf="user?.user?.role=='user'">
+          <a  class="dashboard-nav-item" [routerLink]="['/detail/entreprise',user?.user?.entreprise]" [routerLinkActive]="['activeMenus']" *ngIf="user?.user?.role=='user'">
             <i class="fa-regular fa-building"></i>
               Entreprise
           </a>
-          <a  class="profile" [routerLink]="['/profil']" [routerLinkActive]="['active']">
+          <a  class="profile" [routerLink]="['/profil']" [routerLinkActive]="['activeMenus']">
             <span class="dot">
               <span class="dot-span">{{user?.user?.nom.substring(0, 1)}}{{user?.user?.prenom.substring(0, 1)}}</span>
             </span>
@@ -72,5 +86,235 @@
         <ng-content></ng-content>
       </div>
   </div>
+</div>-->
+<div>
+  <div class="mkla-header">
+     <div class="mkla-headerLeft">
+       <div class="mlka-btnLeft">
+        <button class="mlka-btnLeft1">
+          <mat-icon style="position: relative;top: 5px;">apps</mat-icon>
+        </button>
+       </div>
+     </div>
+     <div class="mlka-headerCenter">
+       <div style="width: 100%;">
+        <div>
+          <div style="position: relative;">
+            <div>
+              <div class="mlka-centerChild">
+                <div id="leftM" class="mlka-centerChild" style="justify-content: flex-start;">
+                  <div class="mlka-leftMChild"></div>
+                  <div class="mlka-leftMChild">
+                    <div class="mlka-leftMChild1">
+                      <span class="mlka-fontName" *ngIf="user?.user?.role=='user'">{{company?.societe}}</span>
+                      <span class="mlka-fontName" *ngIf="user?.user?.role!='user'">Mlka</span>
+
+                    </div>
+                  </div>
+                </div>
+                <div id="centerM" class="mlka-centerChild" style="flex: 1 0 auto; justify-content:center;">
+                </div>
+                <div id="boutonM" class="mlka-centerChild" style="justify-content:flex-end;">
+                  <div class="mlka-leftMChild"></div>
+                    <div class="mlka-leftMChild">
+                      <div style="height: 100%;">
+                        <button class="mlka-btnLeft1"  (click)="getChatClient()" *ngIf="user?.user?.role=='user'">
+                          <mat-icon class="material-symbols-outlined" style="position: relative;top: 12px;right: 10px;" matBadge="{{number}}" matBadgeColor="warn">notifications</mat-icon>
+                        </button>
+                        <button class="mlka-btnLeft1"  [routerLink]="['/all/discussions']" *ngIf="user?.user?.role!='user'">
+                          <mat-icon class="material-symbols-outlined" style="position: relative;top: 12px;right: 10px;" matBadge="{{number}}" matBadgeColor="warn">notifications</mat-icon>
+                        </button>
+
+                      </div>
+                    </div>
+                    <div class="mlka-leftMChild"></div>
+                </div>
+                <div id="nameUser" class="mlka-userName"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+       </div>
+     </div>
+     <div class="mkla-headerRight">
+       <div class="mlka-leftMChild">
+         <button class="mlka-btnLeftUser" [matMenuTriggerFor]="menu">
+          <div class="dot">
+            <div class="dot-span">{{user?.user?.nom.substring(0, 1)}}{{user?.user?.prenom.substring(0, 1)}}</div>
+          </div>
+          <!--<span class="dot">
+            <span class="dot-span">{{user?.user?.nom.substring(0, 1)}}{{user?.user?.prenom.substring(0, 1)}}</span>
+          </span>-->
+         </button>
+         <mat-menu #menu="matMenu">
+          <button mat-menu-item [routerLink]="['/profil']">
+            <mat-icon>person</mat-icon>
+            <span style="font-size: 14px;">Mon profil</span>
+          </button>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span style="font-size: 14px;">Déconnexion</span>
+          </button>
+        </mat-menu>
+       </div>
+     </div>
+  </div><!--haeadr-->
+  <div class="mlka-menu">
+     <div class="mlka-menuContent">
+        <div class="mlka-menuList">
+            <div class="mlka-menuListChild">
+               <i class="mlka-menuIcon"></i>
+               <div class="mlka-menuItem">
+                  <div *ngIf="user?.user?.role=='user'">
+                    <div style="position:relative;">
+                      <a class="mlka-menuBtn mlka-menuBtn1" [routerLink]="['/entreprise/dashboard']" [routerLinkActive]="['activeMenus']">
+                        <span class="mlka-menuspan">
+                          <div class="mlka-menuspan1">
+                            <div>
+                              <i class="fa-solid fa-home mlka-menuspanIcon" [routerLinkActive]="['activeIcon']"></i>
+                            </div>
+                            <span class="mlka-menuspanTitle">Accueil</span>
+                          </div>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                  <div *ngIf="user?.user?.role!='user'">
+                    <div style="position:relative;">
+                      <a class="mlka-menuBtn mlka-menuBtn1" [routerLink]="['/dashboard']" [routerLinkActive]="['activeMenus']">
+                        <span class="mlka-menuspan">
+                          <div class="mlka-menuspan1">
+                            <div>
+                              <i class="fa-solid fa-home mlka-menuspanIcon"  [routerLinkActive]="['activeIcon']"></i>
+                            </div>
+                            <span class="mlka-menuspanTitle">Accueil</span>
+                          </div>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                  <div *ngIf="user?.user?.role!='user'">
+                    <div style="position:relative;">
+                      <a class="mlka-menuBtn mlka-menuBtn1" [routerLink]="['/devis']" [routerLinkActive]="['activeMenus']">
+                        <span class="mlka-menuspan">
+                          <div class="mlka-menuspan1">
+                            <div>
+                              <i class="fa-regular fa-clipboard mlka-menuspanIcon" [routerLinkActive]="['activeIcon']"></i>
+                            </div>
+                            <span class="mlka-menuspanTitle">Devis</span>
+                          </div>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                  <div *ngIf="user?.user?.role!='user'">
+                    <div style="position:relative;">
+                      <a class="mlka-menuBtn mlka-menuBtn1"  [routerLink]="['/facture']" [routerLinkActive]="['activeMenus']">
+                        <span class="mlka-menuspan">
+                          <div class="mlka-menuspan1">
+                            <div>
+                              <i class="fa-solid fa-file-lines mlka-menuspanIcon" [routerLinkActive]="['activeIcon']"></i>
+                            </div>
+                            <span class="mlka-menuspanTitle">Factures</span>
+                          </div>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                  <div>
+                    <div style="position:relative;">
+                      <a class="mlka-menuBtn mlka-menuBtn1"  [routerLink]="['/modulaires']" [routerLinkActive]="['activeMenus']">
+                        <span class="mlka-menuspan">
+                          <div class="mlka-menuspan1">
+                            <div>
+                              <i class="fa-solid fa-cubes mlka-menuspanIcon" [routerLinkActive]="['activeIcon']"></i>
+                            </div>
+                            <span class="mlka-menuspanTitle">Module</span>
+                          </div>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                  <div *ngIf="user?.user?.role!='user'">
+                    <div style="position:relative;">
+                      <a class="mlka-menuBtn mlka-menuBtn1" [routerLink]="['/entreprises']" [routerLinkActive]="['activeMenus']">
+                        <span class="mlka-menuspan">
+                          <div class="mlka-menuspan1">
+                            <div>
+                              <i class="fa-regular fa-building mlka-menuspanIcon" [routerLinkActive]="['activeIcon']"></i>
+                            </div>
+                            <span class="mlka-menuspanTitle">Entreprises</span>
+                          </div>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                  <div *ngIf="user?.user?.role!='user'">
+                    <div style="position:relative;">
+                      <a class="mlka-menuBtn mlka-menuBtn1"  [routerLink]="['/contact']" [routerLinkActive]="['activeMenus']">
+                        <span class="mlka-menuspan">
+                          <div class="mlka-menuspan1">
+                            <div>
+                              <i class="fa-regular fa-address-card mlka-menuspanIcon" [routerLinkActive]="['activeIcon']"></i>
+                            </div>
+                            <span class="mlka-menuspanTitle">Contacts</span>
+                          </div>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                  <div *ngIf="user?.user?.role!='user'">
+                    <div style="position:relative;">
+                      <a class="mlka-menuBtn mlka-menuBtn1"  [routerLink]="['/box']" [routerLinkActive]="['activeMenus']">
+                        <span class="mlka-menuspan">
+                          <div class="mlka-menuspan1">
+                            <div>
+                              <i class="fa-solid fa-box mlka-menuspanIcon" [routerLinkActive]="['activeIcon']"></i>
+                            </div>
+                            <span class="mlka-menuspanTitle">Box</span>
+                          </div>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                  <div>
+                    <div style="position:relative;">
+                      <a class="mlka-menuBtn mlka-menuBtn1"  [routerLink]="['/agenda']" [routerLinkActive]="['activeMenus']">
+                        <span class="mlka-menuspan">
+                          <div class="mlka-menuspan1">
+                            <div>
+                              <i class="fa-regular fa-calendar-days mlka-menuspanIcon" [routerLinkActive]="['activeIcon']"></i>
+                            </div>
+                            <span class="mlka-menuspanTitle">Agenda</span>
+                          </div>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                  <div *ngIf="user?.user?.role=='user'">
+                    <div style="position:relative;">
+                      <a class="mlka-menuBtn mlka-menuBtn1" [routerLink]="['/detail/entreprise',user?.user?.entreprise]" [routerLinkActive]="['activeMenus']">
+                        <span class="mlka-menuspan">
+                          <div class="mlka-menuspan1">
+                            <div>
+                              <i class="fa-regular fa-building mlka-menuspanIcon" [routerLinkActive]="['activeIcon']"></i>
+                            </div>
+                            <span class="mlka-menuspanTitle">Entreprise</span>
+                          </div>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+               </div>
+            </div>
+        </div>
+     </div>
+  </div>
+
+  <div class='dashboard-app'>
+    <div class='dashboard-content'>
+      <ng-content></ng-content>
+    </div>
+</div>
 </div>
 

@@ -90,6 +90,10 @@
               <mat-icon style="font-size: 18px;">delete</mat-icon>
               <span style="font-size: 14px;">Supprimer</span>
             </button>
+            <button mat-menu-item (click)="openDialogMove(element.id,element.extension)">
+              <mat-icon style="font-size: 18px;">drive_file_move</mat-icon>
+              <span style="font-size: 14px;">Déplacer</span>
+            </button>
 
           </mat-menu>
         </td>

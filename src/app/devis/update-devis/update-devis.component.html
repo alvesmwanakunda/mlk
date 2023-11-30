@@ -1,0 +1,63 @@
+<mat-dialog-content class="mat-typography">
+  <div style="padding-top: 40px;">
+    <form [formGroup]="devisForm" style="margin-bottom: 35px;" *ngIf="devis">
+      <div class="row" style="margin-bottom: 15px;">
+        <div class="col">
+          <label class="label-entreprise">Devis <small class="error_field">*</small></label>
+          <input type="text" formControlName="nom" [(ngModel)]="devis.nom" class="form-control input-entreprise" required>
+          <div *ngIf="devisForm.get('nom').hasError(champ_validation.input[0].type) && (devisForm.get('nom').dirty || devisForm.get('nom').touched)">
+            <p class="error_field">{{champ_validation.input[0].message}}</p>
+          </div>
+        </div>
+      </div><!--div-->
+
+      <div class="row" style="margin-bottom: 15px;">
+        <div class="col">
+          <label class="label-entreprise">Numéro <small class="error_field">*</small></label>
+          <input type="text" formControlName="numero" [(ngModel)]="devis.numero" class="form-control input-entreprise" required>
+          <div *ngIf="devisForm.get('numero').hasError(champ_validation.input[0].type) && (devisForm.get('numero').dirty || devisForm.get('numero').touched)">
+            <p class="error_field">{{champ_validation.input[0].message}}</p>
+          </div>
+        </div>
+      </div><!--div-->
+
+      <div class="row" style="margin-bottom: 15px;">
+        <div class="col">
+          <label class="label-entreprise">Projet  <small class="error_field">*</small></label>
+          <select formControlName="projet" [(ngModel)]="devisProjet" class="form-control input-entreprise" required>
+             <option [value]="p?._id" *ngFor="let p of projets">{{p?.projet}}</option>
+          </select>
+          <div *ngIf="devisForm.get('projet').hasError(champ_validation.input[0].type) && (devisForm.get('projet').dirty || devisForm.get('projet').touched)">
+            <p class="error_field">{{champ_validation.input[0].message}}</p>
+          </div>
+        </div><!--div-->
+     </div>
+
+     <div class="row" style="margin-bottom: 15px;">
+      <div class="col">
+       <label class="label-entreprise">Pièce jointe <span *ngIf="fileName">({{fileName}})</span> <span *ngIf="!fileName">({{devis?.devis}})</span></label>
+       <p *ngIf="devis?.devis">
+        <iframe [src]="src"></iframe>
+      </p>
+       <br/>
+       <input type="file" class="file-input" accept='.pdf' (change)="onFileSelectedPlan($event)" #fileUpload1>
+       <button type="button" (click)="fileUpload1.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> changer la pièce jointe</button>
+      </div>
+   </div>
+    </form>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button mat-button mat-dialog-close>Fermer</button>
+  <button mat-button  class="btn-entreprise" (click)="updateDevis()" [disabled]="devisForm.invalid">VALIDER</button>
+</mat-dialog-actions>
+
+<div id="snackbar" *ngIf="progress">
+  <br/>
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" [style.width]="progress + '%'">{{progress}}%</div>
+  </div>
+  <br/>
+  <p style="font-size: 12px;" *ngIf="progress<100">Fichier {{fileName}} est en cours de chargement...</p>
+  <p style="font-size: 12px;color: rgb(16, 93, 38);" *ngIf="progress==100">Fichier {{fileName}} est chargé avec succès</p>
+</div>

@@ -5,6 +5,9 @@ import { LoginComponent } from './login.component';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../shared/services/auth.service';
+import { NavbarUserModule } from '../navbar-user/navbar-user.module';
+import { JwtHelperService } from '@auth0/angular-jwt';
+
 
 
 @NgModule({
@@ -14,8 +17,9 @@ import { AuthService } from '../shared/services/auth.service';
     LoginRoutingModule,
     SharedModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NavbarUserModule
   ],
-  providers:[AuthService]
+  providers:[AuthService,JwtHelperService]
 })
 export class LoginModule { }

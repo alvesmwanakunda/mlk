@@ -14,6 +14,7 @@ import { DeleteFileModule } from '../delete-file/delete-file.module';
 import { UpdateFileModule } from '../update-file/update-file.module';
 import { ViewerModule } from '../../viewer/viewer.module';
 import { BreadcrumbService } from 'src/app/shared/services/breadcrumb.service';
+import { MoveFolderModule } from '../move-folder/move-folder.module';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { BreadcrumbService } from 'src/app/shared/services/breadcrumb.service';
     UpdateDossierModule,
     DeleteDossierModule,
     DeleteFileModule,
-    UpdateFileModule
+    UpdateFileModule,
+    MoveFolderModule
   ],
   providers:[BoxService, BreadcrumbService]
 })

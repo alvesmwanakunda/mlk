@@ -15,15 +15,22 @@ export class LoginComponent implements OnInit {
   testValidation:boolean=false;
   loginForm:FormGroup;
   loginFormErrors:any;
+  hideP:boolean=true;
 
   password=new FormControl("",[Validators.required, Validators.minLength(10)]);
-  email=new FormControl("",[Validators.required]);
+  email=new FormControl("",[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]);
 
   account_validation_messages={
-    email:[{
-     type:"pattern",
-     message:"Email est incorrect. Veuillez ressayer à nouveau."
-    }]
+    email:[
+      {
+        type:"required",
+        message:"Email est obligatoire."
+      },
+      {
+       type:"pattern",
+       message:"Email est incorrect. Veuillez ressayer à nouveau."
+      }
+    ]
 }
 
   constructor(

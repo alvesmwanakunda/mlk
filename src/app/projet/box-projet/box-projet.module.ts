@@ -13,10 +13,11 @@ import { UpdateFileModule } from 'src/app/box/update-file/update-file.module';
 import { DeleteFileModule } from 'src/app/box/delete-file/delete-file.module';
 import { FileBoxModule } from './file-box/file-box.module';
 import { DetailFolderModule } from './detail-folder/detail-folder.module';
+import { MoveFolderProjetModule } from './move-folder-projet/move-folder-projet.module';
 
 
 @NgModule({
-  declarations: [BoxProjetComponent],
+  declarations: [BoxProjetComponent,],
   imports: [
     CommonModule,
     SharedModule,
@@ -29,7 +30,8 @@ import { DetailFolderModule } from './detail-folder/detail-folder.module';
     UpdateFileModule,
     DeleteFileModule,
     FileBoxModule,
-    DetailFolderModule
+    DetailFolderModule,
+    MoveFolderProjetModule
   ],
   exports:[BoxProjetComponent],
   providers:[BoxService, BreadcrumbService]

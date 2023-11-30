@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes, Router, PreloadAllModules } from '@angular/router';
+import { RouterModule, Routes, Router, PreloadAllModules, CanActivate } from '@angular/router';
 
 const routes: Routes = [
   {
@@ -30,27 +30,27 @@ const routes: Routes = [
   },
   {
     path:"profil",
-    loadChildren:()=>import('./profil/profil.module').then(m=>m.ProfilModule)
+    loadChildren:()=>import('./profil/profil.module').then(m=>m.ProfilModule),
   },
   {
     path:"dashboard",
-    loadChildren:()=>import('./dashboard/dashboard.module').then(m=>m.DashboardModule)
+    loadChildren:()=>import('./dashboard/dashboard.module').then(m=>m.DashboardModule),
   },
   {
     path:"entreprise/dashboard",
-    loadChildren:()=>import('./dashboard-user/dashboard-user.module').then(m=>m.DashboardUserModule)
+    loadChildren:()=>import('./dashboard-user/dashboard-user.module').then(m=>m.DashboardUserModule),
   },
   {
     path:"add/entreprise/projet",
-    loadChildren:()=>import('./projet-user/projet-user.module').then(m=>m.ProjetUserModule)
+    loadChildren:()=>import('./projet-user/projet-user.module').then(m=>m.ProjetUserModule),
   },
   {
     path:'update/entreprise/projet/:id',
-    loadChildren:()=>import('./projet-user/update-user-projet/update-user-projet.module').then(m=>m.UpdateUserProjetModule)
+    loadChildren:()=>import('./projet-user/update-user-projet/update-user-projet.module').then(m=>m.UpdateUserProjetModule),
   },
   {
     path:'entreprise/projet/:id',
-    loadChildren:()=>import('./projet-user/detail-user-projet/detail-user-projet.module').then(m=>m.DetailUserProjetModule)
+    loadChildren:()=>import('./projet-user/detail-user-projet/detail-user-projet.module').then(m=>m.DetailUserProjetModule),
   },
   /*{
      path:"box/projet/:id",
@@ -62,92 +62,109 @@ const routes: Routes = [
   },*/
   {
     path:"projet/:id",
-    loadChildren:()=>import('./projet/projet.module').then(m=>m.ProjetModule)
+    loadChildren:()=>import('./projet/projet.module').then(m=>m.ProjetModule),
   },
   {
     path:"update/projet/:id",
-    loadChildren:()=>import('./projet/update-projet/update-projet.module').then(m=>m.UpdateProjetModule)
+    loadChildren:()=>import('./projet/update-projet/update-projet.module').then(m=>m.UpdateProjetModule),
 
   },
   {
     path:"metre",
-    loadChildren:()=>import('./metre/metre.module').then(m=>m.MetreModule)
+    loadChildren:()=>import('./metre/metre.module').then(m=>m.MetreModule),
   },
   {
     path:"lot/:id",
-    loadChildren:()=>import('./metre/lots/detail-lot/detail-lot.module').then(m=>m.DetailLotModule)
+    loadChildren:()=>import('./metre/lots/detail-lot/detail-lot.module').then(m=>m.DetailLotModule),
   },
   {
     path:"batiment",
-    loadChildren:()=>import('./metre/batiment/rdc/rdc.module').then(m=>m.RdcModule)
+    loadChildren:()=>import('./metre/batiment/rdc/rdc.module').then(m=>m.RdcModule),
   },
   {
     path:"contact",
-    loadChildren:()=>import('./contact/contact.module').then(m=>m.ContactModule)
+    loadChildren:()=>import('./contact/contact.module').then(m=>m.ContactModule),
   },
   {
     path:"add/contact",
-    loadChildren:()=>import('./contact/add-contact/add-contact.module').then(m=>m.AddContactModule)
+    loadChildren:()=>import('./contact/add-contact/add-contact.module').then(m=>m.AddContactModule),
   },
   {
     path:"update/contact/:id",
-    loadChildren:()=>import('./contact/update-contact/update-contact.module').then(m=>m.UpdateContactModule)
+    loadChildren:()=>import('./contact/update-contact/update-contact.module').then(m=>m.UpdateContactModule),
   },
   {
     path:"box",
-    loadChildren:()=>import('./box/box.module').then(m=>m.BoxModule)
+    loadChildren:()=>import('./box/box.module').then(m=>m.BoxModule),
   },
   {
      path:"box/:id",
-     loadChildren: () => import("./box/detailbox/detailbox.module").then((m)=> m.DetailboxModule)
+     loadChildren: () => import("./box/detailbox/detailbox.module").then((m)=> m.DetailboxModule),
   },
   {
     path:"agenda",
-    loadChildren:()=>import('./agenda/agenda.module').then(m=>m.AgendaModule)
+    loadChildren:()=>import('./agenda/agenda.module').then(m=>m.AgendaModule),
   },
   {
     path:'entreprises',
-    loadChildren:()=>import('./entreprise/entreprise.module').then(m=>m.EntrepriseModule)
+    loadChildren:()=>import('./entreprise/entreprise.module').then(m=>m.EntrepriseModule),
   },
   {
     path:'detail/entreprise/:id',
-    loadChildren:()=>import('./entreprise/detail-entreprise/detail-entreprise.module').then(m=>m.DetailEntrepriseModule)
+    loadChildren:()=>import('./entreprise/detail-entreprise/detail-entreprise.module').then(m=>m.DetailEntrepriseModule),
   },
   {
     path:'add/entreprise',
-    loadChildren:()=>import('./entreprise/add-entreprise/add-entreprise.module').then(m=>m.AddEntrepriseModule)
+    loadChildren:()=>import('./entreprise/add-entreprise/add-entreprise.module').then(m=>m.AddEntrepriseModule),
   },
   {
     path:'entreprise/:id',
-    loadChildren:()=>import('./entreprise/update-entreprise/update-entreprise.module').then(m=>m.UpdateEntrepriseModule)
+    loadChildren:()=>import('./entreprise/update-entreprise/update-entreprise.module').then(m=>m.UpdateEntrepriseModule),
   },
   {
     path:'add/projet',
-    loadChildren:()=>import('./projet/add-projet/add-projet.module').then(m=>m.AddProjetModule)
+    loadChildren:()=>import('./projet/add-projet/add-projet.module').then(m=>m.AddProjetModule),
   },
   {
     path:'appartement',
-    loadChildren:()=>import('./metre/batiment/appartement/appartement.module').then(m=>m.AppartementModule)
+    loadChildren:()=>import('./metre/batiment/appartement/appartement.module').then(m=>m.AppartementModule),
+  },
+
+  {
+    path:'modulaires',
+    loadChildren:()=>import('./modulaires/modulaires.module').then(m=>m.ModulairesModule),
   },
   {
-    path:'devis',
-    loadChildren:()=>import('./projet/devis/devis.module').then(m=>m.DevisModule)
-  },
-  {
-  path:'modulaires',
-    loadChildren:()=>import('./modulaires/modulaires.module').then(m=>m.ModulairesModule)
-  },
-  {
-  path:'modulaire',
-    loadChildren:()=>import('./modulaires/add-module/add-module.module').then(m=>m.AddModuleModule)
+    path:'modulaire',
+    loadChildren:()=>import('./modulaires/add-module/add-module.module').then(m=>m.AddModuleModule),
   },
   {
     path:'modulaire/:id',
-    loadChildren:()=>import('./modulaires/update-module/update-module.module').then(m=>m.UpdateModuleModule)
+    loadChildren:()=>import('./modulaires/update-module/update-module.module').then(m=>m.UpdateModuleModule),
   },
   {
     path:'plan3d',
     loadChildren:()=>import('./plan3d/plan3d.module').then(m=>m.Plan3dModule)
+  },
+  {
+    path:'devis',
+    loadChildren:()=>import('./devis/devis.module').then(m=>m.DevisModule),
+  },
+  {
+    path:'facture',
+    loadChildren:()=>import('./factures/factures.module').then(m=>m.FacturesModule),
+  },
+  {
+    path:'discussions',
+    loadChildren:()=>import('./chat/chat.module').then(m=>m.ChatModule),
+  },
+  {
+    path:'all/discussions',
+    loadChildren:()=>import('./chat/all-chat/all-chat.module').then(m=>m.AllChatModule)
+  },
+  {
+    path:'read/discussion/:id/:numero',
+    loadChildren:()=>import('./chat/read-chat/read-chat.module').then(m=>m.ReadChatModule)
   }
 ];
 

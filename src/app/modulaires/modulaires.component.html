@@ -11,7 +11,7 @@
           <input type="text"  (keyup)="applyFilter($event)" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher">
         </div>
         <div class="col"  align="right">
-          <button type="button" class="btn btn-projet" routerLink="/modulaire"><i class="fa-solid fa-plus"></i> Nouveau module</button>
+          <button type="button" class="btn btn-projet" routerLink="/modulaire" *ngIf="user?.user?.role=='admin'"><i class="fa-solid fa-plus"></i> Nouveau module</button>
         </div>
       </div>
       <mat-tab-group (selectedIndexChange)="onTabChange($event)">
@@ -64,7 +64,11 @@
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu #menu="matMenu">
-                    <button mat-menu-item  (click)="openDialogDelete(element.id)">
+                    <button mat-menu-item  (click)="getModule(element.id)">
+                      <mat-icon>edit</mat-icon>
+                      <span>Voir</span>
+                    </button>
+                    <button mat-menu-item  (click)="openDialogDelete(element.id)" *ngIf="user?.user?.role=='admin'">
                       <mat-icon>delete</mat-icon>
                       <span>Supprimer</span>
                     </button>
@@ -134,11 +138,16 @@
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu #menu="matMenu">
-                    <button mat-menu-item  (click)="openDialogDelete(element.id)">
+                    <button mat-menu-item  (click)="getModule(element.id)">
+                      <mat-icon>edit</mat-icon>
+                      <span>Voir</span>
+                    </button>
+                    <button mat-menu-item  (click)="openDialogDelete(element.id)" *ngIf="user?.user?.role=='admin'">
                       <mat-icon>delete</mat-icon>
                       <span>Supprimer</span>
                     </button>
-                  </mat-menu>                </td>
+                  </mat-menu>
+                </td>
               </ng-container>
 
 
@@ -203,7 +212,11 @@
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu #menu="matMenu">
-                    <button mat-menu-item  (click)="openDialogDelete(element.id)">
+                    <button mat-menu-item  (click)="getModule(element.id)">
+                      <mat-icon>edit</mat-icon>
+                      <span>Voir</span>
+                    </button>
+                    <button mat-menu-item  (click)="openDialogDelete(element.id)" *ngIf="user?.user?.role=='admin'">
                       <mat-icon>delete</mat-icon>
                       <span>Supprimer</span>
                     </button>
@@ -273,7 +286,11 @@
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu #menu="matMenu">
-                    <button mat-menu-item  (click)="openDialogDelete(element.id)">
+                    <button mat-menu-item  (click)="getModule(element.id)">
+                      <mat-icon>edit</mat-icon>
+                      <span>Voir</span>
+                    </button>
+                    <button mat-menu-item  (click)="openDialogDelete(element.id)" *ngIf="user?.user?.role=='admin'">
                       <mat-icon>delete</mat-icon>
                       <span>Supprimer</span>
                     </button>

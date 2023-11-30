@@ -13,6 +13,7 @@ import { DeleteFileComponent } from '../delete-file/delete-file.component';
 import { UpdateFileComponent } from '../update-file/update-file.component';
 import { ViewerComponent } from '../../viewer/viewer.component';
 import { BreadcrumbService } from 'src/app/shared/services/breadcrumb.service';
+import { MoveFolderComponent } from '../move-folder/move-folder.component';
 
 
 @Component({
@@ -174,6 +175,15 @@ export class DetailboxComponent implements OnInit, AfterViewInit {
       this.getAllFiles(idFile);
     }
 
+  }
+
+  openDialogMove(id, extension?){
+    const dialogRef = this.dialog.open(MoveFolderComponent,{width:'50%',data:{id:id,extension:extension}});
+    dialogRef.afterClosed().subscribe((result:any)=>{
+       if(result){
+        this.getAllFiles(this.idFolder);
+       }
+    })
   }
 
 }

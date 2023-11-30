@@ -23,6 +23,7 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   modules:any=[];
   type="Stock";
+  user:any;
 
   constructor(
     private projectService :ProjetsService,
@@ -31,6 +32,7 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
     private sanitizer: DomSanitizer,
     public dialog: MatDialog
   ){
+    this.user = JSON.parse(localStorage.getItem('user'));
   }
 
   ngOnInit(){
@@ -44,6 +46,28 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
 
   getAllModules(type){
     console.log("Type", type);
+    if(this.user?.user?.role=='user'){
+      this.projectService.getAllModuleByEntreprise(this.user?.user?.entreprise).subscribe((data:any)=>{
+        console.log("data",data);
+         this.modules = data.message.filter(item=>item.type===type);
+         this.dataSource.data = this.modules.map((data)=>({
+          id:data?._id,
+          nom:data?.nom,
+          projet:data?.project?.projet,
+          position:data?.position,
+          hauteur:data?.hauteur,
+          largeur:data?.largeur,
+          longueur:data?.longueur,
+          photo:this.getSafeUrl(data?.photo) || null,
+         })) as Modules[]
+      },
+      (error) => {
+        console.log("Erreur lors de la récupération des données", error);
+      }
+      );
+    }
+    else{
+
     this.projectService.getAllModule().subscribe((data:any)=>{
       console.log("data",data);
        this.modules = data.message.filter(item=>item.type===type);
@@ -62,6 +86,7 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
       console.log("Erreur lors de la récupération des données", error);
     }
     );
+    }
   }
 
   applyFilter(event: Event) {

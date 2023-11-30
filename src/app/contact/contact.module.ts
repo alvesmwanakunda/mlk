@@ -7,6 +7,20 @@ import { NavbarModule } from '../navbar/navbar.module';
 import { NavbarUserModule } from '../navbar-user/navbar-user.module';
 import { ContactsService } from '../shared/services/contacts.service';
 import { DeleteContactModule } from './delete-contact/delete-contact.module';
+import { AuthGuardService } from '../shared/services/auth-guard.service';
+import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+
+export function jwtOptionsFactory() {
+  return {
+    tokenGetter: () => {
+      const token = JSON.parse(localStorage.getItem('user'))?.token;
+      console.log("Token", token);
+      return token || '';
+    },
+    allowedDomains: [window.location.origin], // Dynamiquement obtenu
+    disallowedRoutes: [`${window.location.origin}/contact`], // Dynamiquement obtenu
+  };
+}
 
 
 @NgModule({
@@ -17,8 +31,14 @@ import { DeleteContactModule } from './delete-contact/delete-contact.module';
     SharedModule,
     NavbarModule,
     DeleteContactModule,
-    NavbarUserModule
+    NavbarUserModule,
+    JwtModule.forRoot({
+      jwtOptionsProvider: {
+        provide: JWT_OPTIONS,
+        useFactory: jwtOptionsFactory,
+      },
+    }),
   ],
-  providers:[ContactsService]
+  providers:[ContactsService,AuthGuardService]
 })
 export class ContactModule { }

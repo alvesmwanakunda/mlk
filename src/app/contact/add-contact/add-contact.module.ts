@@ -11,6 +11,21 @@ import { EntreprisesService } from 'src/app/shared/services/entreprises.service'
 import { ContactsService } from 'src/app/shared/services/contacts.service';
 import { NavbarUserModule } from 'src/app/navbar-user/navbar-user.module';
 
+import { AuthGuardService } from '../../shared/services/auth-guard.service';
+import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+
+export function jwtOptionsFactory() {
+  return {
+    tokenGetter: () => {
+      const token = JSON.parse(localStorage.getItem('user'))?.token;
+      console.log("Token", token);
+      return token || '';
+    },
+    allowedDomains: [window.location.origin], // Dynamiquement obtenu
+    disallowedRoutes: [`${window.location.origin}/add/contact`], // Dynamiquement obtenu
+  };
+}
+
 
 @NgModule({
   declarations: [AddContactComponent],
@@ -21,8 +36,14 @@ import { NavbarUserModule } from 'src/app/navbar-user/navbar-user.module';
     NavbarModule,
     ReactiveFormsModule,
     FormsModule,
-    NavbarUserModule
+    NavbarUserModule,
+    JwtModule.forRoot({
+      jwtOptionsProvider: {
+        provide: JWT_OPTIONS,
+        useFactory: jwtOptionsFactory,
+      },
+    }),
   ],
-  providers:[CountriesService,ProjetsService,EntreprisesService,ContactsService]
+  providers:[CountriesService,ProjetsService,EntreprisesService,ContactsService,AuthGuardService]
 })
 export class AddContactModule { }

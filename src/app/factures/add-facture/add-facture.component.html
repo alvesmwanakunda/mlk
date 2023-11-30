@@ -1,0 +1,60 @@
+<mat-dialog-content class="mat-typography">
+  <div style="padding-top: 40px;">
+    <form [formGroup]="factureForm" style="margin-bottom: 35px;">
+      <div class="row" style="margin-bottom: 15px;">
+        <div class="col">
+          <label class="label-entreprise">Devis <small class="error_field">*</small></label>
+          <input type="text" formControlName="nom" class="form-control input-entreprise" required>
+          <div *ngIf="factureForm.get('nom').hasError(champ_validation.input[0].type) && (factureForm.get('nom').dirty || factureForm.get('nom').touched)">
+            <p class="error_field">{{champ_validation.input[0].message}}</p>
+          </div>
+        </div>
+      </div><!--div-->
+
+      <div class="row" style="margin-bottom: 15px;">
+        <div class="col">
+          <label class="label-entreprise">Numéro <small class="error_field">*</small></label>
+          <input type="text" formControlName="numero" class="form-control input-entreprise" required>
+          <div *ngIf="factureForm.get('numero').hasError(champ_validation.input[0].type) && (factureForm.get('numero').dirty || factureForm.get('numero').touched)">
+            <p class="error_field">{{champ_validation.input[0].message}}</p>
+          </div>
+        </div>
+      </div><!--div-->
+
+      <div class="row" style="margin-bottom: 15px;">
+        <div class="col">
+          <label class="label-entreprise">Projet  <small class="error_field">*</small></label>
+          <select formControlName="projet" class="form-control input-entreprise" required>
+             <option [value]="p?._id" *ngFor="let p of projets">{{p?.projet}}</option>
+          </select>
+          <div *ngIf="factureForm.get('projet').hasError(champ_validation.input[0].type) && (factureForm.get('projet').dirty || factureForm.get('projet').touched)">
+            <p class="error_field">{{champ_validation.input[0].message}}</p>
+          </div>
+        </div><!--div-->
+     </div>
+
+     <div class="row" style="margin-bottom: 15px;">
+      <div class="col">
+       <label class="label-entreprise">Pièce jointe <span *ngIf="fileName">({{fileName}})</span></label>
+       <br/>
+       <input type="file" class="file-input" accept='.pdf' (change)="onFileSelectedPlan($event)" #fileUpload1>
+       <button type="button" (click)="fileUpload1.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> charger la pièce jointe</button>
+      </div>
+   </div>
+    </form>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button mat-button mat-dialog-close>Fermer</button>
+  <button mat-button  class="btn-entreprise" (click)="addFacture()" [disabled]="factureForm.invalid">VALIDER</button>
+</mat-dialog-actions>
+
+<div id="snackbar" *ngIf="progress">
+  <br/>
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" [style.width]="progress + '%'">{{progress}}%</div>
+  </div>
+  <br/>
+  <p style="font-size: 12px;" *ngIf="progress<100">Fichier {{fileName}} est en cours de chargement...</p>
+  <p style="font-size: 12px;color: rgb(16, 93, 38);" *ngIf="progress==100">Fichier {{fileName}} est chargé avec succès</p>
+</div>

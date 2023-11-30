@@ -1,10 +1,68 @@
 <app-navbar>
   <div class="container">
 
-    <div class="content-top">
-      <h2 class="content-title">Tableau de Bord - Projets</h2>
-      <mat-divider></mat-divider>
+    <div>
+      <h2 class="content-title">Bienvenu(e)</h2>
+      <h2>MLKA</h2>
+
     </div><!--content-->
+    <div class="content-top">
+      <mat-card style="border-radius: 9px;">
+        <mat-card-content>
+           <div class="row">
+             <div class="col">
+               <mat-card class="card1">
+                <mat-card-content>
+                  <div align="center" style="margin-bottom: 35px">
+                    <a href="https://mlka-market.com/" target="_blank">
+                     <button mat-stroked-button class="btncard1"><i class="fa-solid fa-store"></i> Mlka Market</button>
+                    </a>
+                  </div>
+                  <div align="center" style="margin-bottom: 40px">
+                    <img src="assets/images/d1.png">
+                  </div>
+                  <p style="color: #fff;text-align: center;">
+                    Réalisez vos projets de construction, bloc par bloc, avec MLKA MARKET.
+                  </p>
+                </mat-card-content>
+               </mat-card>
+             </div><!--col-->
+             <div class="col">
+              <mat-card class="card2">
+                <mat-card-content>
+                  <div align="center" style="margin-bottom: 35px">
+                    <a href="https://mlka-innov.fr/" target="_blank"><button mat-stroked-button class="btncard2"><i class="fa-solid fa-lightbulb"></i> Mlka Innovation</button></a>
+                  </div>
+                  <div align="center" style="margin-bottom: 40px">
+                    <img src="assets/images/d2.png">
+                  </div>
+                  <p style="color: #fff;text-align: center;">
+                    Du neuf à la rénovation, créez l'espace parfait avec MLKA INNOVATION.
+                  </p>
+                </mat-card-content>
+               </mat-card>
+             </div><!--col-->
+             <div class="col">
+              <mat-card class="card3">
+                <mat-card-content>
+                  <div align="center" style="margin-bottom: 35px">
+                    <a href="https://mlka-hld.fr/" target="_blank">
+                     <button mat-stroked-button class="btncard2"><i class="fa-solid fa-lightbulb"></i> Mlka Services</button>
+                    </a>
+                  </div>
+                  <div align="center" style="margin-bottom: 40px">
+                    <img src="assets/images/d4.png">
+                  </div>
+                  <p style="color: #fff;text-align: center;">
+                    Construisez l'avenir, modulez vos rêves, et réinventez l'espace avec MLKA.
+                  </p>
+                </mat-card-content>
+               </mat-card>
+             </div><!--col-->
+           </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
 
     <!--<div class="type-projet">
       <div class="row">
@@ -50,6 +108,8 @@
         </div>
       </div>
     </div>-->
+
+    <mat-divider style="margin-bottom: 30px;"></mat-divider>
 
     <div class="list-projet">
       <div class="row">
@@ -107,7 +167,7 @@
               <div class="progress-bar" [ngStyle]="{'width': (projet?.etat=='En attente') ? '0%' : (projet?.etat=='En cours') ? '50%' : (projet?.etat=='Clôturé') ? '100%' : '0%'}"></div>
             </div>
             <div class="card-body">
-              <p class="title-projet">{{projet?.nom}}</p>
+              <p class="title-projet">{{projet?.projet}}</p>
               <p align="center">
                 <button type="button" class="btn btn-outline-secondary btn-detail-projet" (click)="getProjet(projet._id)">Détail</button>
               </p>

@@ -29,6 +29,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {ClipboardModule} from '@angular/cdk/clipboard';
 import { FileSizeConvertPipe } from './pipes/file-size-convert.pipe';
 import { DataAsAgoPipe } from './pipes/data-as-ago.pipe';
+import {MatBadgeModule} from '@angular/material/badge';
+
 
 
 
@@ -68,7 +70,8 @@ import { DataAsAgoPipe } from './pipes/data-as-ago.pipe';
     MatChipsModule,
     MatAutocompleteModule,
     MatToolbarModule,
-    ClipboardModule
+    ClipboardModule,
+    MatBadgeModule
   ],
   exports:[
     MatCardModule,
@@ -98,7 +101,8 @@ import { DataAsAgoPipe } from './pipes/data-as-ago.pipe';
     MatToolbarModule,
     ClipboardModule,
     FileSizeConvertPipe,
-    DataAsAgoPipe
+    DataAsAgoPipe,
+    MatBadgeModule
   ],
 })
 export class SharedModule { }

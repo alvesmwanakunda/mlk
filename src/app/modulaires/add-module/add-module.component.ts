@@ -2,6 +2,7 @@ import { Component,OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProjetsService } from 'src/app/shared/services/projets.service';
+import { EntreprisesService } from 'src/app/shared/services/entreprises.service';
 import {
   HttpClient,
   HttpEventType,
@@ -22,6 +23,7 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
 export class AddModuleComponent implements OnInit {
 
   projets:any=[];
+  entreprises:any=[];
   moduleForm : FormGroup;
   image:File;
   imageName:any;
@@ -41,6 +43,7 @@ export class AddModuleComponent implements OnInit {
     private _formBuilder :FormBuilder,
     public snackbar:MatSnackBar,
     private projetService: ProjetsService,
+    private entrepriseService: EntreprisesService,
     private http: HttpClient
   ){}
 
@@ -56,11 +59,13 @@ export class AddModuleComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllProjet();
+    this.getAllEntreprise();
     this.moduleForm=this._formBuilder.group({
       nom:['',Validators.required],
       type:['',Validators.required],
       position:['',null],
       projet:['',null],
+      entreprise:['',null],
       largeur:['',null],
       hauteur:['',null],
       longueur:['',null],
@@ -71,6 +76,14 @@ export class AddModuleComponent implements OnInit {
   getAllProjet(){
     this.projetService.getAllProjet().subscribe((res:any)=>{
         this.projets=res.message
+    },(error)=>{
+      console.log(error);
+    })
+  }
+
+  getAllEntreprise(){
+    this.entrepriseService.getAllEntreprise().subscribe((res:any)=>{
+      this.entreprises=res.message
     },(error)=>{
       console.log(error);
     })
@@ -125,6 +138,7 @@ export class AddModuleComponent implements OnInit {
      formData.append("hauteur", this.form.hauteur);
      formData.append("largeur", this.form.largeur);
      formData.append("longueur", this.form.longueur);
+     formData.append("entreprise",this.form.entreprise);
 
      return this.http.post(`${environment.BASE_API_URL}/module`,formData,{
       reportProgress:true,

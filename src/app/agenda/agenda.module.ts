@@ -12,6 +12,20 @@ import { UpdateAgendaModule } from './update-agenda/update-agenda.module';
 import { DeleteAgendaModule } from './delete-agenda/delete-agenda.module';
 import { DetailAgendaModule } from './detail-agenda/detail-agenda.module';
 import { NavbarUserModule } from '../navbar-user/navbar-user.module';
+import { AuthGuardService } from '../shared/services/auth-guard.service';
+import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+
+export function jwtOptionsFactory() {
+  return {
+    tokenGetter: () => {
+      const token = JSON.parse(localStorage.getItem('user'))?.token;
+      console.log("Token", token);
+      return token || '';
+    },
+    allowedDomains: [window.location.origin], // Dynamiquement obtenu
+    disallowedRoutes: [`${window.location.origin}/agenda`], // Dynamiquement obtenu
+  };
+}
 
 class CustomDateFormatter extends CalendarNativeDateFormatter{
   public override dayViewHour({ date, locale }: DateFormatterParams): string {
@@ -40,8 +54,14 @@ class CustomDateFormatter extends CalendarNativeDateFormatter{
         provide: CalendarDateFormatter,
         useClass:CustomDateFormatter
       },
-    })
+    }),
+    JwtModule.forRoot({
+      jwtOptionsProvider: {
+        provide: JWT_OPTIONS,
+        useFactory: jwtOptionsFactory,
+      },
+    }),
   ],
-  providers:[AgendaService]
+  providers:[AgendaService,AuthGuardService]
 })
 export class AgendaModule { }

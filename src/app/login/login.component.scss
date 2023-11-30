@@ -40,8 +40,40 @@
   text-align: center !important;
 }
 
+.title-login{
+  font-weight: 700 !important;
+  color: #28628B !important;
+  font-family: Poppins !important;
+  font-size: 25px !important;
+}
+
 .bloc-input{
   margin-bottom: 20px;
 }
+
+.sizeButtonLogin{
+  align-items: center !important;
+    border-radius: 7px !important;
+    display: flex !important;
+    font-weight: 500 !important;
+    justify-content: center !important;
+    line-height: 1.3333333 !important;
+    margin: auto !important;
+    min-height: 48px !important;
+    text-transform: uppercase !important;
+    width: 75% !important;
+    background: #28628B !important;
+    color: #fff !important;
+}
+
+.content-form{
+     width: 100%;
+    /* max-width: 380px; */
+    grid-area: body;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
 
 

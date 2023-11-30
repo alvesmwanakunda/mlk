@@ -1,64 +1,68 @@
-<div id="container">
+<app-navbar-user></app-navbar-user>
 
-  <div id="left">
-    <div>
-      <img src="assets/images/logo.png" class="img-log">
-    </div><!--logo-->
-    <div>
-      <img src="assets/images/image1.png" class="img-center">
-    </div><!--image-->
-    <div>
-      <p class="plt">PLATEFORME WEB</p>
-      <p class="gtp">Gestion parc modulaire</p>
-    </div><!--text-->
-  </div><!--left-->
+<div class="container" style="padding-top: 90px;">
 
-  <div id="right">
+  <div class="row justify-content-md-center">
+    <div class="col-lg-6 col-md-6 col-md-auto">
+        <mat-card style="background-color: #F0F0F0 !important;">
+          <mat-card-content style="padding-top: 30px !important;padding-bottom: 30px !important;">
+            <h1 class="text-center" style="margin-bottom: 50px;">
+              <span class="title-login">Connectez-vous</span>
+            </h1>
 
-    <div align="right">
-       <button type="button" class="btn btn-singup" [routerLink]="'/signup'">S'inscrire</button>
-    </div><!--right-->
+            <form [formGroup]="loginForm" novalidate style="margin-bottom: 20px;">
 
-    <div class="form-div">
+              <div *ngIf="testValidation">
+                <p class="text-danger text-center">Veuillez remplir tous les champs</p>
+              </div>
+              <div class="content-form">
+                 <div class="row">
+                   <div class="col">
+                    <mat-form-field class="example-full-login">
+                      <mat-label>E-mail</mat-label>
+                      <input matInput formControlName="email">
+                    </mat-form-field>
+                    <div *ngIf="loginForm.get('email').hasError(account_validation_messages.email[0].type) && ((loginForm.get('email').dirty || loginForm.get('email').touched))">
+                      <p class="error_field">{{account_validation_messages.email[0].message}}</p>
+                    </div>
+                    <div *ngIf="loginForm.get('email').hasError(account_validation_messages.email[1].type) && ((loginForm.get('email').dirty || loginForm.get('email').touched))">
+                      <p class="error_field">{{account_validation_messages.email[1].message}}</p>
+                    </div>
+                    <div *ngIf="loginFormErrors.email.notfound">
+                      <p style="color:#BA0237">Adresse email ou le mot de passe invalide.</p>
+                    </div>
+                   </div>
+                 </div>
+                 <div class="row">
+                   <div class="col">
+                    <mat-form-field class="example-full-login">
+                      <mat-label>Mot de passe</mat-label>
+                      <input matInput formControlName="password" [type]="hideP ? 'password' : 'text'">
+                      <button *ngIf="loginForm.get('password').value && loginForm.get('password').value!=''" mat-icon-button matSuffix (click)="hideP = !hideP" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideP">
+                        <mat-icon>{{hideP ? 'visibility_off' : 'visibility'}}</mat-icon>
+                      </button>
+                    </mat-form-field>
+                   </div>
+                 </div>
+                 <div style="margin-bottom: 20px;">
+                  <button mat-button color="primary" [routerLink]="'/reset'">Mot de passe oubliée ?</button>
+                </div>
+                <div align="center" style="margin-bottom: 30px;">
+                  <button mat-raised-button [disabled]="onLoadForm" type="submit" (click)="onLogin()" class="sizeButtonLogin" style="color: #fff;">Se connecter</button>
+                </div>
+                <div>
+                  <p>Pas encore de compte Mlka ? <button mat-button [routerLink]="'/signup'" type="button">S'inscrire</button></p>
+                </div>
+              </div>
+           </form>
 
-      <h3 class="title-page">Bienvenue !</h3>
-      <form [formGroup]="loginForm" novalidate>
-        <div *ngIf="testValidation">
-           <p class="text-danger text-center">Veuillez remplir tous les champs</p>
-        </div>
-        <div>
-          <label class="label-style">E-mail</label>
-          <div class="input-group mb-3 bloc-input">
-            <span class="input-group-text input-group-lgs border-right-0" id="basic-addon1"><i class="fas fa-user"></i></span>
-            <input type="email" formControlName="email" class="form-control py-2 border-left-0 input-lgs" placeholder="al@gmail.com" aria-label="Username" aria-describedby="basic-addon1">
-          </div>
-          <div *ngIf="loginFormErrors.email.notfound">
-            <p style="color:#BA0237">Adresse email ou le mot de passe invalide.</p>
-          </div>
-
-          <label class="label-style">Mot de passe</label>
-          <div class="input-group mb-3 bloc-input">
-            <span class="input-group-text input-group-lgs border-right-0" id="basic-addon2"><i class="fas fa-lock"></i></span>
-            <input type="password" formControlName="password" class="form-control py-2 border-left-0 input-lgs"  aria-label="Password" aria-describedby="basic-addon2">
-          </div>
-
-          <div>
-            <button mat-button class="label-style" [routerLink]="'/reset'">Mot de passe oubliée ?</button>
-          </div>
-
-          <div align="center">
-            <button [disabled]="onLoadForm" type="submit" (click)="onLogin()" class="btn btn-sing">Se connecter</button>
-          </div>
-
-        </div><!--div-->
-      </form><!--form-->
-
-      <!--<div *ngIf="onLoadForm">
-        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-      </div>-->
-
-    </div><!--form-->
-
-  </div><!--left-->
-
-</div><!--container-->
+          </mat-card-content>
+          <mat-card-footer>
+            <div *ngIf="onLoadForm">
+              <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            </div>
+          </mat-card-footer>
+        </mat-card>
+    </div>
+  </div>
+</div>

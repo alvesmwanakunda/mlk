@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light-customer fixed-top">
+<nav class="navbar navbar-expand-lg navbar-light bg-light-customer fixed-top headerMenu">
   <div class="container-fluid">
     <a class="navbar-brand" href="#"><img src="assets/images/logom.png"></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,9 +11,8 @@
         <a class="nav-link link-c" href="https://mlka-market.com/">MarketPlace</a>
       </div>
       <span>
-        <button class="btn btn-navbar" [routerLink]="'/'">
-          Se connecter
-        </button>
+        <a class="nav-link link-c" [routerLink]="'/'" *ngIf="isSignUpRoute()"><i class="fa-solid fa-right-to-bracket"></i> Connexion</a>
+        <a class="nav-link link-c" [routerLink]="'/signup'" *ngIf="isLoginOrHomeRoute()"><i class="fa-solid fa-user-plus"></i> Inscription</a>
       </span>
     </div>
   </div>

@@ -13,6 +13,7 @@ import { DeleteFileComponent } from './delete-file/delete-file.component';
 import { UpdateFileComponent } from './update-file/update-file.component';
 import { ViewerComponent } from '../viewer/viewer.component';
 import { BreadcrumbService } from '../shared/services/breadcrumb.service';
+import { MoveFolderComponent } from './move-folder/move-folder.component';
 
 
 
@@ -125,6 +126,15 @@ export class BoxComponent implements OnInit, AfterViewInit {
 
   openDialogFileDelete(idFile){
     const dialogRef = this.dialog.open(DeleteFileComponent,{width:'30%',data:{id:idFile}});
+    dialogRef.afterClosed().subscribe((result:any)=>{
+       if(result){
+        this.getAllFiles();
+       }
+    })
+  }
+
+  openDialogMove(id, extension?){
+    const dialogRef = this.dialog.open(MoveFolderComponent,{width:'50%',data:{id:id,extension:extension}});
     dialogRef.afterClosed().subscribe((result:any)=>{
        if(result){
         this.getAllFiles();

@@ -15,6 +15,7 @@ import { Router,ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewerStandarComponent } from 'src/app/viewer-standar/viewer-standar.component';
 import { DomSanitizer } from '@angular/platform-browser';
+import { EntreprisesService } from 'src/app/shared/services/entreprises.service';
 
 
 
@@ -42,6 +43,10 @@ export class UpdateModuleComponent implements OnInit {
   module:Modules;
   projet:any;
   src:any;
+  entreprises:any=[];
+  entreprise:any;
+  user:any;
+
 
   constructor(
     private _formBuilder :FormBuilder,
@@ -52,10 +57,13 @@ export class UpdateModuleComponent implements OnInit {
     private router:Router,
     public dialog: MatDialog,
     private sanitizer: DomSanitizer,
+    private entrepriseService: EntreprisesService,
+
   ){
     this.route.params.subscribe((data:any)=>{
       this.idModule = data.id
      });
+     this.user = JSON.parse(localStorage.getItem('user'));
   }
 
   champ_validation={
@@ -70,6 +78,7 @@ export class UpdateModuleComponent implements OnInit {
   ngOnInit(): void {
     this.getModule();
     this.getAllProjet();
+    this.getAllEntreprise();
   }
 
   getAllProjet(){
@@ -80,11 +89,20 @@ export class UpdateModuleComponent implements OnInit {
     })
   }
 
+  getAllEntreprise(){
+    this.entrepriseService.getAllEntreprise().subscribe((res:any)=>{
+      this.entreprises=res.message
+    },(error)=>{
+      console.log(error);
+    })
+  }
+
   getModule(){
     this.projetService.getModule(this.idModule).subscribe((res:any)=>{
 
       this.module = res.message;
       this.projet = res.message?.project;
+      this.entreprise = res.message?.entreprise;
       if(this.module.chemin){
         this.src=this.getSafeUrl(this.module.chemin);
       }
@@ -94,6 +112,7 @@ export class UpdateModuleComponent implements OnInit {
           type:[this.module.type,Validators.required],
           position:[this.module.position,null],
           projet:[this.projet?._id,null],
+          entreprise:[this.entreprise?._id,null],
           largeur:[this.module.largeur,null],
           hauteur:[this.module.hauteur,null],
           longueur:[this.module.longueur,null],
@@ -163,6 +182,7 @@ export class UpdateModuleComponent implements OnInit {
     formData.append("hauteur", this.form.hauteur);
     formData.append("largeur", this.form.largeur);
     formData.append("longueur", this.form.longueur);
+    formData.append("entreprise",this.form.entreprise);
 
     return this.http.put(`${environment.BASE_API_URL}/module/${this.idModule}`,formData,{
      reportProgress:true,
