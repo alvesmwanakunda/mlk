@@ -165,6 +165,10 @@ const routes: Routes = [
   {
     path:'read/discussion/:id/:numero',
     loadChildren:()=>import('./chat/read-chat/read-chat.module').then(m=>m.ReadChatModule)
+  },
+  {
+    path:'conditions',
+    loadChildren:()=>import('./conditions/conditions.module').then(m=>m.ConditionsModule)
   }
 ];
 

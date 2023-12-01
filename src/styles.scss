@@ -1360,7 +1360,14 @@ hr.entreprise{
   flex-direction: column;
   flex-grow: 2;
   margin-top: 49px;
-  //box-shadow: var(--shadow4,0 0 2px var(--shadowAmbient,rgba(0,0,0,.12)),0 2px 4px var(--shadowKey,rgba(0,0,0,.14)));
+  height: 100vh;
+  border-top-left-radius: 3px; /* Ajoutez la valeur de border-radius souhaitée pour le coin supérieur gauche */
+  border-bottom-left-radius: 3px;
+  /*box-shadow: var(
+  --shadow4,
+  0 0 2px var(--shadowAmbient, rgba(0, 0, 0, 0.12)),
+  0 0 4px var(--shadowKey, rgba(0, 0, 0, 0.14))
+ );*/
 }
 
 .dashboard-content {

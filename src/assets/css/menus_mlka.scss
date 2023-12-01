@@ -12,7 +12,7 @@
   position: fixed;
   top: 0;
   z-index: 2;
-  box-shadow: var(--shadow4, 0 0 2px var(--shadowAmbient, rgba(0, 0, 0, 0.12)), 0 2px 4px var(--shadowKey, rgba(0, 0, 0, 0.14)));
+  //box-shadow: var(--shadow4, 0 0 2px var(--shadowAmbient, rgba(0, 0, 0, 0.12)), 0 2px 4px var(--shadowKey, rgba(0, 0, 0, 0.14)));
 }
 
 .mkla-headerLeft{
@@ -126,7 +126,7 @@
   top: 0;
   height: 100%;
   width: 68px;
-  box-shadow: var(--shadow4, 0 0 2px var(--shadowAmbient, rgba(0, 0, 0, 0.12)), 0 2px 4px var(--shadowKey, rgba(0, 0, 0, 0.14)));
+  //box-shadow: var(--shadow4, 0 0 2px var(--shadowAmbient, rgba(0, 0, 0, 0.12)), 0 2px 4px var(--shadowKey, rgba(0, 0, 0, 0.14)));
 }
 
 .mlka-menuContent{
@@ -221,13 +221,13 @@
 }
 .mlka-menuBtn:hover {
   cursor: pointer;
-  background-color: #fff;
+  background-color: #F5F5F5;
 }
 .activeMenus {
     border-left: 3px solid #28628B!important;
     position: relative;
     left:2px;
-
+    background-color: #fff;
 }
 
 .activeIcon {
@@ -261,6 +261,11 @@
   pointer-events: none !important;
   color: #616161;
 }
+
+.mlka-menuspanIcon:hover{
+  color:#28628B!important;
+}
+
 .mlka-menuspanTitle{
   color:#616161;
   font-size:10px;
