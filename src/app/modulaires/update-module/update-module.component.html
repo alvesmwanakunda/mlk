@@ -27,8 +27,9 @@
                 <mat-divider></mat-divider>
               </div>
               <div class="bloc-info">
-                <p class="title-info">Position</p>
-                <p>{{module?.position}}</p>
+                <p class="title-info">Position <button mat-mini-fab color="primary" matTooltip="Ouvrir" (click)="openDialogPosition()"><i class="fa-solid fa-map-pin"></i></button>
+                </p>
+                <!--<p>{{module?.position}}</p>-->
                 <mat-divider></mat-divider>
               </div>
               <div class="bloc-info">
@@ -46,24 +47,24 @@
             </div>
             <div class="col-5">
               <div class="bloc-info">
-                <p class="title-info">Hauteur</p>
+                <p class="title-info">Hauteur(mm)</p>
                 <p>{{module?.hauteur}}</p>
                 <mat-divider></mat-divider>
               </div>
               <div class="bloc-info">
-                <p class="title-info">Longueur</p>
+                <p class="title-info">Longueur(mm)</p>
                 <p>{{module?.longueur}}</p>
                 <mat-divider></mat-divider>
               </div>
               <div class="bloc-info">
-                <p class="title-info">Largeur</p>
+                <p class="title-info">Largeur(mm)</p>
                 <p>{{module?.largeur}}</p>
                 <mat-divider></mat-divider>
               </div>
 
               <div class="bloc-info">
                 <p class="title-info">Fournisseur</p>
-                <p>{{entreprise?.societe}}</p>
+                <p><span *ngIf="entreprise">{{entreprise?.societe}}</span> <span *ngIf="!entreprise">Pas de fournisseur</span></p>
                 <mat-divider></mat-divider>
               </div>
 
@@ -123,15 +124,15 @@
             </div>
             <div class="row" style="margin-bottom: 15px;">
               <div class="col">
-                <label class="label-entreprise">Hauteur</label>
+                <label class="label-entreprise">Hauteur(mm)</label>
                 <input type="text" formControlName="hauteur" [(ngModel)]="module.hauteur" class="form-control input-entreprise">
               </div><!--div-->
               <div class="col">
-                <label class="label-entreprise">Largeur</label>
+                <label class="label-entreprise">Largeur(mm)</label>
                 <input type="text" formControlName="largeur" [(ngModel)]="module.largeur" class="form-control input-entreprise">
               </div>
               <div class="col">
-                <label class="label-entreprise">Longueur</label>
+                <label class="label-entreprise">Longueur(mm)</label>
                 <input type="text" formControlName="longueur" [(ngModel)]="module.longueur" class="form-control input-entreprise">
               </div>
             </div>
@@ -139,19 +140,22 @@
             <div class="row" style="margin-bottom: 15px;">
               <div class="col">
                 <label class="label-entreprise">Fournisseur</label>
-                <select formControlName="entreprise" [(ngModel)]="entreprise._id" class="form-control input-entreprise">
+                <select formControlName="entreprise" [(ngModel)]="entreprise._id" class="form-control input-entreprise" *ngIf="entreprise?._id">
                    <option [value]="ent?._id" *ngFor="let ent of entreprises">{{ent?.societe}}</option>
                 </select>
+                <select formControlName="entreprise"  class="form-control input-entreprise" *ngIf="!entreprise?._id">
+                  <option [value]="ent?._id" *ngFor="let ent of entreprises">{{ent?.societe}}</option>
+               </select>
               </div><!--div-->
            </div>
 
             <div class="row" style="margin-bottom: 15px;">
               <div class="col">
                 <label class="label-entreprise">Projet</label>
-                <select formControlName="projet" [(ngModel)]="projet._id" class="form-control input-entreprise" *ngIf="projet">
+                <select formControlName="projet" [(ngModel)]="projet._id" class="form-control input-entreprise" *ngIf="projet?._id">
                    <option [value]="p?._id" *ngFor="let p of projets">{{p?.projet}}</option>
                 </select>
-                <select formControlName="projet" class="form-control input-entreprise" *ngIf="!projet">
+                <select formControlName="projet" class="form-control input-entreprise" *ngIf="!projet?._id">
                   <option [value]="p?._id" *ngFor="let p of projets">{{p?.projet}}</option>
                </select>
               </div><!--div-->

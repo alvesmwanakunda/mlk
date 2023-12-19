@@ -11,6 +11,8 @@ import { DeleteProjetModule } from './delete-projet/delete-projet.module';
 import { BoxProjetModule } from './box-projet/box-projet.module';
 import { DevisProjetModule } from '../devis/devis-projet/devis-projet.module';
 import { FactureProjetModule } from '../factures/facture-projet/facture-projet.module';
+import { ChatProjetModule } from '../chat-projet/chat-projet.module';
+import { PreparationModule } from './preparation/preparation.module';
 
 
 @NgModule({
@@ -25,7 +27,9 @@ import { FactureProjetModule } from '../factures/facture-projet/facture-projet.m
     DeleteProjetModule,
     BoxProjetModule,
     DevisProjetModule,
-    FactureProjetModule
+    FactureProjetModule,
+    ChatProjetModule,
+    PreparationModule
   ],
   providers:[ProjetsService]
 })

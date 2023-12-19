@@ -79,7 +79,7 @@
           <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
               <button class="nav-link tabprojet active" id="nav-file-tab" data-bs-toggle="tab" data-bs-target="#nav-file" type="button" role="tab" aria-controls="nav-file" aria-selected="true">Fiche</button>
-              <!--<button class="nav-link tabprojet" id="nav-int-tab" data-bs-toggle="tab" data-bs-target="#nav-int" type="button" role="tab" aria-controls="nav-int" aria-selected="false">Intervenant</button>-->
+              <button class="nav-link tabprojet" id="nav-tra-tab" data-bs-toggle="tab" data-bs-target="#nav-tra" type="button" role="tab" aria-controls="nav-tra" aria-selected="false">Consommation</button>
               <button class="nav-link tabprojet" id="nav-piece-tab" data-bs-toggle="tab" data-bs-target="#nav-piece" type="button" role="tab" aria-controls="nav-piece" aria-selected="false">Documents</button>
               <button class="nav-link tabprojet" id="nav-plan-tab" data-bs-toggle="tab" data-bs-target="#nav-pre" type="button" role="tab" aria-controls="nav-plan" aria-selected="false">
                 <a *ngIf="projet?.plan" href="{{projet?.plan}}" target="_blank" style="color: #737477">Plan 3D</a>
@@ -93,9 +93,9 @@
             <div class="tab-pane fade show active" id="nav-file" role="tabpanel" aria-labelledby="nav-file-tab" tabindex="0">
               <app-fiche></app-fiche>
             </div>
-            <!--<div class="tab-pane fade" id="nav-int" role="tabpanel" aria-labelledby="nav-int-tab" tabindex="0">
-              <app-intervenant [idProjet]="idProjet"></app-intervenant>
-            </div>-->
+            <div class="tab-pane fade" id="nav-tra" role="tabpanel" aria-labelledby="nav-tra-tab" tabindex="0">
+              <app-preparation></app-preparation>
+            </div>
             <div class="tab-pane fade" id="nav-piece" role="tabpanel" aria-labelledby="nav-piece-tab" tabindex="0">
               <app-box-projet></app-box-projet>
             </div>
@@ -110,6 +110,14 @@
         </div><!--col-->
 
       </div><!--row-->
+    </div>
+    <div align="right">
+      <p class="channel-projet-btn">
+        <button mat-icon-button color="primary" style="width: 75px !important;height: 75px !important;" (click)="openDialogChat()" *ngIf="numberMessage<=0"><i class="fa-solid fa-comments" style="font-size:45px;"></i></button>
+        <button mat-icon-button color="primary" style="width: 75px !important;height: 75px !important;" (click)="openDialogChat()"  *ngIf="numberMessage>0">
+          <mat-icon class="material-symbols-outlined projet-badge" style="font-size:45px;" matBadge="{{numberMessage}}" matBadgeColor="warn">notifications</mat-icon>
+        </button>
+      </p>
     </div>
 
 

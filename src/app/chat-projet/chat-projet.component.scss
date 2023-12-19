@@ -1,0 +1,20 @@
+:host ::ng-deep .mdc-text-field--outlined {
+  --mdc-outlined-text-field-container-shape: 28px;
+  border-radius: 28px 0 0 28px !important;
+  min-width: 28px !important;
+}
+
+:host ::ng-deep .mat-form-field-outline-start {
+  border-radius: 28px 0 0 28px !important;
+  min-width: 28px !important;
+}
+
+:host ::ng-deep .mat-form-field-outline-end {
+  border-radius: 0 28px 28px 0 !important;
+  min-width: 28px !important;
+}
+
+/* Add padding to move the label and input into the center to prevent overlapping the rounded border */
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+  padding: 0 32px !important;
+}

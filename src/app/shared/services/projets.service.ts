@@ -70,6 +70,15 @@ export class ProjetsService {
     return this.httpClient.delete(`${environment.BASE_API_URL}/module/${idModule}`);
   }
 
+  public countModuleByEntreprise(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/count/modules/${id}`);
+  }
+
+  public countModule(){
+    return this.httpClient.get(`${environment.BASE_API_URL}/count/modules`);
+  }
+
+
   // Devis
     public addDevis(devis){
       return this.httpClient.post(`${environment.BASE_API_URL}/devis`,devis);
@@ -87,12 +96,32 @@ export class ProjetsService {
       return this.httpClient.get(`${environment.BASE_API_URL}/devis`);
     }
 
+    public getAllDevisEntreprise(id){
+      return this.httpClient.get(`${environment.BASE_API_URL}/devis/entreprise/${id}`);
+    }
+
     public deleteDevis(id){
       return this.httpClient.delete(`${environment.BASE_API_URL}/devis/${id}`);
     }
+
     public getAllDevisProjet(id){
       return this.httpClient.get(`${environment.BASE_API_URL}/devis/projet/${id}`);
     }
+
+    public getAllProduits(){
+      return this.httpClient.get(`${environment.BASE_API_URL}/devis/produits`);
+    }
+
+    public getAllProduitsByDevis(id){
+      return this.httpClient.get(`${environment.BASE_API_URL}/devis/produits/devis/${id}`);
+    }
+
+    public deleteProduitsByDevis(id){
+      return this.httpClient.delete(`${environment.BASE_API_URL}/devis/produits/${id}`);
+    }
+
+
+
 
    // Factures
    public addFacture(facture){

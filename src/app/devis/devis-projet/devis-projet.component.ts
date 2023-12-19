@@ -90,6 +90,10 @@ export class DevisProjetComponent implements OnInit, AfterViewInit {
     })
   }
 
+  openDevis(id){
+    this.router.navigate(['devis',id])
+  }
+
 
 
 }

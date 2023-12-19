@@ -16,6 +16,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ViewerStandarComponent } from 'src/app/viewer-standar/viewer-standar.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { EntreprisesService } from 'src/app/shared/services/entreprises.service';
+import { DeleteModuleComponent } from '../delete-module/delete-module.component';
+import { PositionComponent } from '../position/position.component';
 
 
 
@@ -103,6 +105,7 @@ export class UpdateModuleComponent implements OnInit {
       this.module = res.message;
       this.projet = res.message?.project;
       this.entreprise = res.message?.entreprise;
+      console.log("Module", res);
       if(this.module.chemin){
         this.src=this.getSafeUrl(this.module.chemin);
       }
@@ -197,6 +200,7 @@ export class UpdateModuleComponent implements OnInit {
          this.openSnackBar(this.message)
          //this.progress=null;
          this.progress = 100;
+         this.getModule();
        }
      }),
      catchError((err:any)=>{
@@ -210,6 +214,16 @@ export class UpdateModuleComponent implements OnInit {
 
  getSafeUrl(url){
   return  this.sanitizer.bypassSecurityTrustResourceUrl(url);
+}
+
+openDialogPosition(){
+  const dialogRef = this.dialog.open(PositionComponent,{width:'50%'});
+  dialogRef.afterClosed().subscribe((result:any)=>{
+     if(result){
+      console.log("Type", result);
+
+     }
+  })
 }
 
 }

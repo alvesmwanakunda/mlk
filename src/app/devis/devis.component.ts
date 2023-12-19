@@ -20,17 +20,20 @@ import { DeleteDevisComponent } from './delete-devis/delete-devis.component';
 })
 export class DevisComponent implements OnInit, AfterViewInit {
 
-  displayedColumns:string[]=['nom','numero','devis','projet','date','action'];
+  displayedColumns:string[]=['nom','numero','projet','date','action'];
   dataSource =new MatTableDataSource<Devis>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   devis:any=[];
+  user:any;
 
 
   constructor(
     private projectService :ProjetsService,
     private matPaginatorIntl:MatPaginatorIntl,
     public dialog: MatDialog
-  ){}
+  ){
+    this.user = JSON.parse(localStorage.getItem('user'));
+  }
 
 
   ngOnInit() {
@@ -43,23 +46,35 @@ export class DevisComponent implements OnInit, AfterViewInit {
   }
 
   getAllDevis(){
-    this.projectService.getAllDevis().subscribe((data:any)=>{
-      console.log("data",data);
-       this.dataSource.data = data.message.map((data)=>({
+    if(this.user?.user?.role=='user'){
+      this.projectService.getAllDevisEntreprise(this.user?.user?.entreprise).subscribe((data:any)=>{
+        this.dataSource.data = data.message.map((data)=>({
         id:data?._id,
         nom:data?.nom,
         projet:data?.projet?.projet,
         numero:data?.numero,
-        devis:data?.devis,
         date:data?.dateLastUpdate,
-        extension:data?.extension,
-        chemin:data?.chemin
-       })) as Devis[]
+        })) as Devis[]
     },
     (error) => {
       console.log("Erreur lors de la récupération des données", error);
+    });
+
+    }else{
+      this.projectService.getAllDevis().subscribe((data:any)=>{
+          this.dataSource.data = data.message.map((data)=>({
+          id:data?._id,
+          nom:data?.nom,
+          projet:data?.projet?.projet,
+          numero:data?.numero,
+          date:data?.dateLastUpdate,
+          })) as Devis[]
+      },
+      (error) => {
+        console.log("Erreur lors de la récupération des données", error);
+      });
     }
-    );
+
   }
 
   applyFilter(event: Event) {

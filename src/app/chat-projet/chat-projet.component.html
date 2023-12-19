@@ -1,0 +1,61 @@
+
+<mat-dialog-content class="chat-content-projet">
+
+  <div class="chat-header">
+    <div class="row">
+      <div class="col">
+        <p style="font-weight: bold;">Discussion Projet</p>
+      </div>
+      <div class="col">
+        <div align="right" style="position:relative;bottom: 12px;">
+          <button mat-icon-button mat-dialog-close color="primary"><i class="fa-solid fa-close"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div  style="padding: 65px 24px 20px 24px;">
+
+     <div *ngFor="let m of messages">
+       <div *ngIf="m?.user?._id==user?.user?._id">
+        <p class="text-center">{{ m?.createdAt | date:'d MMM y à HH:mm' }}</p>
+        <div class="row">
+          <div class="col-2"></div>
+          <div class="col-10">
+            <div class="alert chat-message-user" role="alert">
+              {{m?.message}}
+            </div>
+          </div>
+        </div>
+       </div>
+       <div *ngIf="m?.user?._id!=user?.user?._id">
+        <p class="text-center">{{ m?.createdAt | date:'d MMM y à HH:mm' }}</p>
+        <div class="row">
+          <div class="col-10">
+            <div class="alert chat-message-user-not" role="alert">
+              {{m?.message}}
+            </div>
+          </div>
+          <div class="col-2"></div>
+        </div>
+       </div>
+
+     </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions style="bottom:0px !important;position:fixed !important;background-color:white !important;">
+  <div class="row">
+    <div class="col-8">
+      <form [formGroup]="chatForm">
+        <input class="form-control shadow-none chat-input-projet" formControlName="message"/>
+      </form>
+    </div>
+    <div class="col-4">
+      <div align="right">
+        <button mat-icon-button color="primary" (click)="addMessage()" [disabled]="chatForm.invalid"><i class="fa-solid fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+</mat-dialog-actions>
+
+

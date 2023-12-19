@@ -1,63 +1,169 @@
-<mat-dialog-content class="mat-typography">
-  <div style="padding-top: 40px;">
-    <form [formGroup]="devisForm" style="margin-bottom: 35px;" *ngIf="devis">
-      <div class="row" style="margin-bottom: 15px;">
+<app-navbar>
+  <div class="container">
+    <div class="content-top">
+      <div class="row">
         <div class="col">
-          <label class="label-entreprise">Devis <small class="error_field">*</small></label>
-          <input type="text" formControlName="nom" [(ngModel)]="devis.nom" class="form-control input-entreprise" required>
-          <div *ngIf="devisForm.get('nom').hasError(champ_validation.input[0].type) && (devisForm.get('nom').dirty || devisForm.get('nom').touched)">
-            <p class="error_field">{{champ_validation.input[0].message}}</p>
+          <h2 class="content-title">Devis</h2>
+        </div>
+        <div class="col">
+          <div align="right">
+            <button type="button" *ngIf="devis" class="btn btn-projet" (click)="updateDevis()" [disabled]="devisForm.invalid"><i class="fa-solid fa-plus"></i> Enregistrer</button>
           </div>
         </div>
-      </div><!--div-->
-
-      <div class="row" style="margin-bottom: 15px;">
-        <div class="col">
-          <label class="label-entreprise">Numéro <small class="error_field">*</small></label>
-          <input type="text" formControlName="numero" [(ngModel)]="devis.numero" class="form-control input-entreprise" required>
-          <div *ngIf="devisForm.get('numero').hasError(champ_validation.input[0].type) && (devisForm.get('numero').dirty || devisForm.get('numero').touched)">
-            <p class="error_field">{{champ_validation.input[0].message}}</p>
-          </div>
-        </div>
-      </div><!--div-->
-
-      <div class="row" style="margin-bottom: 15px;">
-        <div class="col">
-          <label class="label-entreprise">Projet  <small class="error_field">*</small></label>
-          <select formControlName="projet" [(ngModel)]="devisProjet" class="form-control input-entreprise" required>
-             <option [value]="p?._id" *ngFor="let p of projets">{{p?.projet}}</option>
-          </select>
-          <div *ngIf="devisForm.get('projet').hasError(champ_validation.input[0].type) && (devisForm.get('projet').dirty || devisForm.get('projet').touched)">
-            <p class="error_field">{{champ_validation.input[0].message}}</p>
-          </div>
-        </div><!--div-->
-     </div>
-
-     <div class="row" style="margin-bottom: 15px;">
-      <div class="col">
-       <label class="label-entreprise">Pièce jointe <span *ngIf="fileName">({{fileName}})</span> <span *ngIf="!fileName">({{devis?.devis}})</span></label>
-       <p *ngIf="devis?.devis">
-        <iframe [src]="src"></iframe>
-      </p>
-       <br/>
-       <input type="file" class="file-input" accept='.pdf' (change)="onFileSelectedPlan($event)" #fileUpload1>
-       <button type="button" (click)="fileUpload1.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> changer la pièce jointe</button>
       </div>
-   </div>
-    </form>
-  </div>
-</mat-dialog-content>
-<mat-dialog-actions align="center">
-  <button mat-button mat-dialog-close>Fermer</button>
-  <button mat-button  class="btn-entreprise" (click)="updateDevis()" [disabled]="devisForm.invalid">VALIDER</button>
-</mat-dialog-actions>
+    </div><!--content-->
+    <mat-divider style="margin-bottom: 30px;"></mat-divider>
+    <div>
+      <form [formGroup]="devisForm" *ngIf="devis">
+        <div class="row justify-content-md-center">
+          <div class="col-lg-11 col-md-11 col-md-auto">
+              <div *ngIf="onLoadForm">
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+              </div>
+              <div class="row">
+                <div class="col-5">
+                  <mat-form-field class="example-full-width">
+                    <mat-label style="font-size: 13px !important;color: #000 !important;">Client</mat-label>
+                    <input matInput  formControlName="nom" [(ngModel)]="devis.nom" required style="font-size: 13px;">
+                  </mat-form-field>
+                  <div *ngIf="devisForm.get('nom').hasError(champ_validation.input[0].type) && (devisForm.get('nom').dirty || devisForm.get('nom').touched)">
+                    <p class="error_field">{{champ_validation.input[0].message}}</p>
+                  </div>
+                </div>
+                <div class="col-7">
+                    <div>
+                      <mat-form-field class="example-full-width">
+                        <mat-label style="font-size: 13px !important;color: #000 !important;">Numéro</mat-label>
+                        <input matInput formControlName="numero" [(ngModel)]="devis.numero" required style="font-size: 13px;">
+                      </mat-form-field>
+                      <div *ngIf="devisForm.get('numero').hasError(champ_validation.input[0].type) && (devisForm.get('numero').dirty || devisForm.get('numero').touched)">
+                        <p class="error_field">{{champ_validation.input[0].message}}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <mat-form-field class="example-full-width">
+                        <mat-label style="font-size: 13px !important;color: #000 !important;">Projet</mat-label>
+                        <mat-select matInput formControlName="projet" [(ngModel)]="devisProjet" (selectionChange)="selectProjet($event.value)" required style="font-size: 13px;">
+                          <mat-option [value]="p?._id" *ngFor="let p of projets">
+                            {{p?.projet}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <div *ngIf="devisForm.get('projet').hasError(champ_validation.input[0].type) && (devisForm.get('projet').dirty || devisForm.get('projet').touched)">
+                        <p class="error_field">{{champ_validation.input[0].message}}</p>
+                      </div>
+                    </div>
+                </div>
+              </div>
+          </div><!--col-->
+        </div>
+      </form>
+    </div>
+    <div>
+      <mat-tab-group color="warn" backgroundColor="primary">
+        <mat-tab label="Lignes de la commande">
 
-<div id="snackbar" *ngIf="progress">
-  <br/>
-  <div class="progress">
-    <div class="progress-bar" role="progressbar" [style.width]="progress + '%'">{{progress}}%</div>
-  </div>
-  <br/>
-  <p style="font-size: 12px;" *ngIf="progress<100">Fichier {{fileName}} est en cours de chargement...</p>
-  <p style="font-size: 12px;color: rgb(16, 93, 38);" *ngIf="progress==100">Fichier {{fileName}} est chargé avec succès</p>
+          <form [formGroup]="produitForm">
+            <div class="row" style="padding-top: 30px;">
+              <div class="col-4">
+                <mat-form-field class="example-full-width">
+                  <mat-label style="font-size: 13px !important;color: #000 !important;">Produits</mat-label>
+                  <input  matInput type="text"  formControlName="name" [matAutocomplete]="auto" required style="font-size: 13px;">
+                  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
+                    <mat-option *ngFor="let p of produitFiltres | async" [value]="p?.name">
+                      {{p?.name}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div *ngIf="produitForm.get('name').hasError(champ_validation.input[0].type) && (produitForm.get('name').dirty || produitForm.get('name').touched)">
+                  <p class="error_field">{{champ_validation.input[0].message}}</p>
+                </div>
+              </div>
+              <div class="col-3">
+                <div *ngIf="isProduit">
+                  <mat-form-field class="example-full-width">
+                    <mat-label style="font-size: 13px !important;color: #000 !important;">Quantite</mat-label>
+                    <input  matInput type="number" formControlName="quantite" [(ngModel)]="qte" required style="font-size: 13px;">
+                  </mat-form-field>
+                  <div *ngIf="produitForm.get('quantite').hasError(champ_validation.input[0].type) && (produitForm.get('quantite').dirty || produitForm.get('quantite').touched)">
+                    <p class="error_field">{{champ_validation.input[0].message}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-3">
+                <div *ngIf="isProduit">
+                  <mat-form-field class="example-full-width">
+                    <mat-label style="font-size: 13px !important;color: #000 !important;">Prix</mat-label>
+                    <input  matInput type="number" formControlName="price_unitaire" [(ngModel)]="pdevis.price" readonly style="font-size: 13px;">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-2">
+                <div *ngIf="isProduit" style="padding-top: 10px;float: right;">
+                  <button mat-raised-button color="primary" (click)="addProduits()" [disabled]="produitForm.invalid">Ajouter</button>
+                </div>
+              </div>
+          </div>
+          </form>
+          <div>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col" class="th-chat">Produit</th>
+                  <th scope="col" class="th-chat">Description</th>
+                  <th scope="col" class="th-chat">Quantité</th>
+                  <th scope="col" class="th-chat">Prix</th>
+                  <th scope="col" class="th-chat">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let m of listProduits; let i=index">
+                  <td class="td-chat"><p class="info-tab">{{m?.produit}}</p></td>
+                  <td class="td-chat"><p class="info-tab" [innerHTML]="m?.description"></p></td>
+                  <td class="td-chat">
+                    <mat-form-field style="height: 65px;width: 75px;">
+                      <input class="info-tab" type="number" matInput  [(ngModel)]="m.quantite" (change)="updatePrice(m)">
+                    </mat-form-field>
+                  </td>
+                  <td class="td-chat"><p class="info-tab">{{m?.price_unitaire}} €</p></td>
+                  <td class="td-chat">
+                    <button mat-icon-button color="warn" (click)="deleteProduit(i)" matTooltip="Supprimer"><mat-icon>delete</mat-icon></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-tab>
+        <mat-tab label="Les commandes">
+          <div style="padding-top: 30px;">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col" class="th-chat">Produit</th>
+                  <th scope="col" class="th-chat">Description</th>
+                  <th scope="col" class="th-chat">Quantité</th>
+                  <th scope="col" class="th-chat">Prix unitaire</th>
+                  <th scope="col" class="th-chat">Prix</th>
+                  <th scope="col" class="th-chat">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let m of produitsDevis">
+                  <td class="td-chat"><p class="info-tab">{{m?.produit}}</p></td>
+                  <td class="td-chat"><p class="info-tab" [innerHTML]="m?.description"></p></td>
+                  <td class="td-chat"><p class="info-tab">{{m?.quantite}}</p></td>
+                  <td class="td-chat"><p class="info-tab">{{m?.price_unitaire}} €</p></td>
+                  <td class="td-chat"><p class="info-tab">{{m?.price}} €</p></td>
+                  <td class="td-chat">
+                    <button mat-icon-button (click)="deleteProduitsByDevis(m?._id)" color="warn" matTooltip="Supprimer"><mat-icon>delete</mat-icon></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
 </div>
+</app-navbar>
+

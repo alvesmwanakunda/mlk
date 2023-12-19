@@ -505,8 +505,8 @@ a{
 .card-img-projet{
   border-top-left-radius: 0 !important;
   border-top-right-radius: 0 !important;
-  width: 100% !important;
-  height: 147px !important;
+  //width: 100% !important;
+  height: 196px !important;
 }
 
 .card-img-projet-ent {
@@ -555,7 +555,7 @@ a{
 .etat-projet{
   position: absolute;
   bottom: 174px;
-  background-color: #28628B;
+  background-color: #48ae4d;
   width: 55px;
   height: 20px;
   text-align: center
@@ -1830,6 +1830,63 @@ hr.entreprise{
   font-size: 13px !important;
 }
 
+.channel-projet-btn{
+    position: fixed;
+    bottom: 20px;
+    float: right;
+    right: 45px;
+}
+.chat-popup {
+  opacity: 0;
+}
+
+.chat-header{
+  border-bottom: 1px rgba(0,0,0,.12) solid;
+  height: 50px;
+  padding: 14px 7px 10px 7px;
+  position: fixed;
+  width: 25%;
+  background-color: white;
+}
+
+.chat-input-projet{
+    border-radius: 30px !important;
+    font-size: 14px !important;
+    width: 230px !important;
+    height: 46px !important;
+    background: #dee2e6 !important;
+}
+
+.chat-content-projet{
+  color: #000 !important;
+  font-size: 14px !important;
+  font-weight: normal !important;
+  padding: 0px !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, "Noto Sans", Arial, "Odoo Unicode Support Noto", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+}
+
+.chat-message-user{
+  background-color: #28628B !important;
+  border-color: #28628B !important;
+  color: #fff !important;
+  font-size: 13px !important;
+  border-radius: 80px !important;
+}
+
+.chat-message-user-not{
+  background-color: #dee2e6 !important;
+  border-color: #dee2e6 !important;
+  color: #000 !important;
+  font-size: 13px !important;
+  border-radius: 80px !important;
+}
+
+// Devis
+.info-tab{
+  color: #000;
+  font-size: 13px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, "Noto Sans", Arial, "Odoo Unicode Support Noto", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+}
 
 
 

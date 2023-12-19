@@ -14,12 +14,12 @@ export class ChatService {
 
 
   //Devs
-  //private socket = io(environment.BASE_API_URL);
+  private socket = io(environment.BASE_API_URL);
 
   //Prod
-  private socket = io(environment.BASE_URL,{
+  /*private socket = io(environment.BASE_API_URL,{
     path:'/api/socket.io'
-  })
+  })*/
 
   constructor(private readonly httpClient: HttpClient) { }
 
@@ -106,4 +106,30 @@ export class ChatService {
   updateCountAdmin(idSender){
     return this.httpClient.get(`${environment.BASE_API_URL}/messages/update/admin/${idSender}`);
   }
+
+  // chat projet
+
+    sendMessageProjet(idProjet, body){
+      return this.httpClient.post(`${environment.BASE_API_URL}/messages/projet/send/${idProjet}`,body)
+    }
+
+    getAllMessageProjet(idProjet){
+       return this.httpClient.get(`${environment.BASE_API_URL}/messages/projet/${idProjet}`)
+    }
+
+    getReadMessageClient(idProjet){
+      return this.httpClient.get(`${environment.BASE_API_URL}/messages/projet/pending/client/${idProjet}`);
+    }
+
+    getReadMessageAdmin(idProjet){
+      return this.httpClient.get(`${environment.BASE_API_URL}/messages/projet/pending/admin/${idProjet}`);
+    }
+
+    updateReadMessageAdmin(idProjet){
+      return this.httpClient.get(`${environment.BASE_API_URL}/messages/projet/update/admin/${idProjet}`);
+    }
+
+    updateReadMessageClient(idProjet){
+      return this.httpClient.get(`${environment.BASE_API_URL}/messages/projet/update/client/${idProjet}`);
+    }
 }

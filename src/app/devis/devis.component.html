@@ -11,7 +11,7 @@
         <input type="text"  (keyup)="applyFilter($event)" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher">
       </div>
       <div class="col"  align="right">
-        <button type="button" class="btn btn-projet" (click)="openDialog()"><i class="fa-solid fa-plus"></i> Nouveau devis</button>
+        <button type="button" class="btn btn-projet" routerLink="/new/devis"><i class="fa-solid fa-plus"></i> Nouveau devis</button>
       </div>
     </div>
 
@@ -26,12 +26,6 @@
        <ng-container matColumnDef="numero">
         <th mat-header-cell *matHeaderCellDef>Numéro</th>
         <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"> {{element?.numero}}</td>
-      </ng-container>
-
-      <!-- Name Column -->
-      <ng-container matColumnDef="devis">
-        <th mat-header-cell *matHeaderCellDef>Devis</th>
-        <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.devis}}</td>
       </ng-container>
 
        <!-- Name Column -->
@@ -54,11 +48,11 @@
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="openDialogFile(element?.chemin,element?.extension)">
+            <!--<button mat-menu-item (click)="openDialogFile(element?.chemin,element?.extension)">
               <mat-icon>visibility</mat-icon>
               <span>Voir</span>
-            </button>
-            <button mat-menu-item (click)="openDialogUpdate(element?.id)">
+            </button>-->
+            <button mat-menu-item [routerLink]="'/devis/' + element?.id">
               <mat-icon>edit</mat-icon>
               <span>Editer</span>
             </button>

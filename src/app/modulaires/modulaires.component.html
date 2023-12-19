@@ -5,6 +5,43 @@
       <h2 class="content-title">Les modules</h2>
       <mat-divider></mat-divider>
     </div><!--content-->
+    <div style="margin-bottom: 30px;">
+        <h2 style="margin-bottom: 15px;">Total modules : {{countModules?.module}}</h2>
+        <div class="row">
+           <div class="col">
+              <mat-card style="background-color: #28628B !important">
+                <mat-card-content>
+                    <p style="color: #fff;text-align: center;">Stock</p>
+                    <p style="color: #fff;text-align: center;">{{countModules?.stock}}</p>
+                </mat-card-content>
+              </mat-card>
+           </div>
+           <div class="col">
+            <mat-card style="background-color: #48ae4d !important">
+              <mat-card-content>
+                  <p style="color: #fff;text-align: center;">En préparation</p>
+                  <p style="color: #fff;text-align: center;">{{countModules?.preparation}}</p>
+              </mat-card-content>
+            </mat-card>
+           </div>
+           <div class="col">
+            <mat-card style="background-color: #53a3db !important">
+              <mat-card-content>
+                  <p style="color: #fff;text-align: center;">Prêt à partir</p>
+                  <p style="color: #fff;text-align: center;">{{countModules?.pret}}</p>
+              </mat-card-content>
+            </mat-card>
+           </div>
+           <div class="col">
+            <mat-card style="background-color: rgb(201, 36, 129) !important">
+              <mat-card-content>
+                  <p style="color: #fff;text-align: center;">Site</p>
+                  <p style="color: #fff;text-align: center;">{{countModules?.site}}</p>
+              </mat-card-content>
+            </mat-card>
+           </div>
+        </div>
+    </div>
     <div>
       <div class="row" style="margin-bottom: 35px;">
         <div class="col">

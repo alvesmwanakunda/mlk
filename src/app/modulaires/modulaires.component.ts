@@ -24,6 +24,7 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
   modules:any=[];
   type="Stock";
   user:any;
+  countModules:any;
 
   constructor(
     private projectService :ProjetsService,
@@ -36,6 +37,11 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
   }
 
   ngOnInit(){
+    if(this.user?.user?.role=='user'){
+       this.countModuleEntreprise();
+    }else{
+       this.countModule();
+    }
     this.matPaginatorIntl.itemsPerPageLabel="Modules par page";
   }
 
@@ -89,6 +95,23 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
     }
   }
 
+  countModule(){
+    this.projectService.countModule().subscribe((res:any)=>{
+      this.countModules = res.message;
+      console.log("count", this.countModule);
+    },(error) => {
+        console.log("Erreur lors de la récupération des données", error);
+    })
+  }
+
+  countModuleEntreprise(){
+    this.projectService.countModuleByEntreprise(this.user?.user?.entreprise).subscribe((res:any)=>{
+      this.countModules = res.message;
+    },(error) => {
+        console.log("Erreur lors de la récupération des données", error);
+    })
+  }
+
   applyFilter(event: Event) {
       const filterValue = (event.target as HTMLInputElement).value;
       this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -127,6 +150,7 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
        }
     })
   }
+
 
   getModule(id){
     this.router.navigate(['modulaire', id]);
