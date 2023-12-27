@@ -5,14 +5,39 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav me-auto mb-2 mb-lg-0">
+      <div class="navbar-nav me-auto mb-2 mb-lg-0" *ngIf="!isMlka()">
         <a class="nav-link link-c" href="https://mlka-hld.fr/">Services</a>
         <a class="nav-link link-c" href="https://mlka-innov.fr/">Réemploi</a>
         <a class="nav-link link-c" href="https://mlka-market.com/">MarketPlace</a>
       </div>
+      <div class="navbar-nav me-auto mb-2 mb-lg-0" *ngIf="isMlka()">
+        <a class="nav-link link-c" [routerLink]="['/entreprise/dashboard']">Accueil</a>
+        <a class="nav-link link-c" [routerLink]="['/devis']">Devis</a>
+        <a class="nav-link link-c" [routerLink]="['/modulaires']">Module</a>
+        <a class="nav-link link-c" [routerLink]="['/agenda']">Agenda</a>
+        <a class="nav-link link-c" [routerLink]="['/detail/entreprise',user?.user?.entreprise]">Entreprise</a>
+      </div>
       <span>
         <a class="nav-link link-c" [routerLink]="'/'" *ngIf="isSignUpRoute()"><i class="fa-solid fa-right-to-bracket"></i> Connexion</a>
         <a class="nav-link link-c" [routerLink]="'/signup'" *ngIf="isLoginOrHomeRoute()"><i class="fa-solid fa-user-plus"></i> Inscription</a>
+        <a class="nav-link link-c" *ngIf="isMlka()">
+          <button class="mlka-user" [matMenuTriggerFor]="menu">
+            <div class="dot">
+              <div class="dot-span">{{user?.user?.nom.substring(0, 1)}}{{user?.user?.prenom.substring(0, 1)}}</div>
+            </div>
+           </button>
+           <mat-menu #menu="matMenu">
+            <button mat-menu-item [routerLink]="['/profil']">
+              <mat-icon>person</mat-icon>
+              <span style="font-size: 14px;">Mon profil</span>
+            </button>
+            <button mat-menu-item (click)="logout()">
+              <mat-icon>logout</mat-icon>
+              <span style="font-size: 14px;">Déconnexion</span>
+            </button>
+           </mat-menu>
+        </a>
+
       </span>
     </div>
   </div>

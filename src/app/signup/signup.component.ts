@@ -135,6 +135,7 @@ export class SignupComponent implements OnInit {
       ]),
       nom:new FormControl("",[Validators.required]),
       societe:new FormControl("",[Validators.required]),
+      company:new FormControl("",[Validators.required]),
       prenom:new FormControl("",[Validators.required]),
       genre:new FormControl("",[Validators.required]),
       siret:new FormControl("",null),
@@ -145,8 +146,8 @@ export class SignupComponent implements OnInit {
       pays:new FormControl("",[Validators.required]),
       indicatif:new FormControl("",[Validators.required]),
       telephone:new FormControl("",[Validators.required, Validators.pattern("[0-9 ]{9}")]),
-      password:password,
-      confirmpassword: confirmpassword,
+      //password:password,
+      //confirmpassword: confirmpassword,
       cgu: new FormControl("", [CustomValidators.equal(true)])
     });
     this.codeFiltres = this.signupForm.get('indicatif').valueChanges.pipe(
@@ -197,7 +198,11 @@ export class SignupComponent implements OnInit {
 
         }else{
             this.isForm=true;
-            this.router.navigate(["mlka"]);
+            let login={
+              email : res?.message?.email,
+              password : res?.signature,
+            };
+            this.onLogin(login);
         }
         this.onLoadForm = false;
       });
@@ -207,10 +212,11 @@ export class SignupComponent implements OnInit {
   }
 
   onLogin(login):void{
+
     this.authService.signin(login).then((res:any)=>{
       this.authService.setUser(res.message)
       if(res){
-        this.router.navigate(["entreprise/dashboard"]);
+        this.router.navigate(["mlka"]);
       }
     }).catch((err)=>{
       console.log("Erreur login", err);

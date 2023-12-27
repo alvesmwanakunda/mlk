@@ -44,6 +44,20 @@
         <div class="row">
           <div class="col">
             <mat-form-field class="example-full-width">
+              <mat-label>Type d'entreprise</mat-label>
+              <mat-select matInput formControlName="company" required>
+                <mat-option value="person">Particulier</mat-option>
+                <mat-option value="company">Société</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div *ngIf="signupForm.get('company').hasError(account_validation.input[0].type) && ((signupForm.get('company').dirty || signupForm.get('company').touched) ||  (submitted))">
+              <p class="error_field">{{account_validation.input[0].message}}</p>
+            </div>
+          </div>
+      </div>
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="example-full-width">
               <mat-label>Sociéte</mat-label>
               <input matInput formControlName="societe" required>
             </mat-form-field>
@@ -155,7 +169,7 @@
           </div>
           <div *ngIf="emailExists" class="error_field">Cet email est déjà utilisé.</div>
         </div>
-        <div class="row">
+        <!--<div class="row">
           <div class="col">
             <mat-form-field class="example-full-width">
               <mat-label>Mot de passe</mat-label>
@@ -192,7 +206,7 @@
                 </mat-icon>
             </mat-form-field>
           </div>
-        </div>
+        </div>-->
         <!--<div>
           <mat-form-field class="example-full-width">
             <mat-label>Message</mat-label>

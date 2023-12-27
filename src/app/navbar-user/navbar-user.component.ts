@@ -24,7 +24,8 @@ export class NavbarUserComponent implements OnInit {
       filter(event=>event instanceof NavigationEnd)
     ).subscribe((event:NavigationEnd)=>{
       this.currentRoute = event.url;
-    })
+    });
+    this.user = JSON.parse(localStorage.getItem('user'));
   }
 
   ngOnInit(){
@@ -36,5 +37,13 @@ export class NavbarUserComponent implements OnInit {
   }
   isLoginOrHomeRoute(): boolean {
     return this.currentRoute === '/' || this.currentRoute === '/login';
+  }
+
+  isMlka():boolean{
+    return this.currentRoute==='/mlka';
+  }
+
+  logout(){
+    this.authService.logout();
   }
 }

@@ -33,6 +33,10 @@ const routes: Routes = [
     loadChildren:()=>import('./profil/profil.module').then(m=>m.ProfilModule),
   },
   {
+    path:"profil/password",
+    loadChildren:()=>import('./profil/update-password/update-password.module').then(m=>m.UpdatePasswordModule)
+  },
+  {
     path:"dashboard",
     loadChildren:()=>import('./dashboard/dashboard.module').then(m=>m.DashboardModule),
   },

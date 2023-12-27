@@ -56,6 +56,10 @@ export class AuthService {
     return this.httpClient.put(`${environment.BASE_API_URL}/update/profil`, credentials);
   }
 
+  public updateProfilPassword(credentials){
+    return this.httpClient.put(`${environment.BASE_API_URL}/update/profil/password`, credentials);
+  }
+
   public checkEmail(email){
     return this.httpClient.get(`${environment.BASE_API_URL}/check-email/${email}`,);
   }

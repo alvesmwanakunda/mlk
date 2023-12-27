@@ -1,10 +1,21 @@
 <app-navbar>
   <div class="container">
-    <div class="content-top">
-      <h2 class="content-title" style="text-align: center;">Informations personnelles <button mat-mini-fab color="primary" (click)="editProfil()"><mat-icon>edit</mat-icon></button></h2>
-    </div><!--content-->
+
     <div class="row justify-content-md-center">
       <div class="col-lg-8 col-md-auto" *ngIf="!isEditer">
+
+        <div class="content-top">
+          <div class="row">
+            <div class="col">
+              <h2 class="content-title">Informations personnelles <button mat-mini-fab color="primary" (click)="editProfil()"><mat-icon>edit</mat-icon></button></h2>
+            </div>
+            <div class="col">
+              <div align="right">
+                <button mat-raised-button color="primary" [routerLink]="'/profil/password'"><mat-icon>edit</mat-icon> Nouveau mot de passe</button>
+              </div>
+            </div>
+          </div>
+        </div><!--content-->
 
         <div style="margin-bottom: 25px;">
           <mat-card class="example-card">
