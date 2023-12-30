@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ViewerStandarModule } from 'src/app/viewer-standar/viewer-standar.module';
 import { FactureProjetComponent } from './facture-projet.component';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -12,7 +13,8 @@ import { FactureProjetComponent } from './facture-projet.component';
   imports: [
     CommonModule,
     SharedModule,
-    ViewerStandarModule
+    ViewerStandarModule,
+    RouterModule,
   ],
   exports:[FactureProjetComponent]
 })

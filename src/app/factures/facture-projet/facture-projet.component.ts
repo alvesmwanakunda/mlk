@@ -3,10 +3,9 @@ import { ProjetsService } from '../../shared/services/projets.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginatorIntl } from '@angular/material/paginator';
-import { ViewerStandarComponent } from '../../viewer-standar/viewer-standar.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { Facture } from 'src/app/shared/interfaces/facture.model';
+import { Devis } from 'src/app/shared/interfaces/devis.model';
 
 @Component({
   selector: 'app-facture-projet',
@@ -18,8 +17,8 @@ import { Facture } from 'src/app/shared/interfaces/facture.model';
 export class FactureProjetComponent implements OnInit, AfterViewInit {
 
   idProjet:any;
-  displayedColumns:string[]=['nom','numero','date','action'];
-  dataSource =new MatTableDataSource<Facture>();
+  displayedColumns:string[]=['numero','date','total'];
+  dataSource =new MatTableDataSource<Devis>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   factures:any=[];
 
@@ -46,22 +45,18 @@ export class FactureProjetComponent implements OnInit, AfterViewInit {
 
   getAllFactureProjet(){
     this.projectService.getAllFactureProjet(this.idProjet).subscribe((data:any)=>{
-      console.log("data",data);
-       this.dataSource.data = data.message.map((data)=>({
+        this.dataSource.data = data.message.map((data)=>({
         id:data?._id,
-        nom:data?.nom,
         projet:data?.projet?.projet,
         numero:data?.numero,
-        facture:data?.facture,
+        total:data?.total,
         date:data?.dateLastUpdate,
-        extension:data?.extension,
-        chemin:data?.chemin
-       })) as Facture[]
+        })) as Devis[]
     },
     (error) => {
       console.log("Erreur lors de la récupération des données", error);
-    }
-    );
+    });
+
   }
 
   applyFilter(event: Event) {
@@ -70,21 +65,6 @@ export class FactureProjetComponent implements OnInit, AfterViewInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
-  }
-
-  openDialogFile(chemin, extension){
-    const dialogRef = this.dialog.open(ViewerStandarComponent,{
-      maxWidth:'100vw',
-      maxHeight:'100vh',
-      width:'100%',
-      height:'100%',
-      panelClass:'full-screen-modal',
-      data:{chemin:chemin,extension:extension}});
-    dialogRef.afterClosed().subscribe((result:any)=>{
-       if(result){
-        this.getAllFactureProjet();
-       }
-    })
   }
 
 

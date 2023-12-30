@@ -6,63 +6,57 @@
           <h2 class="content-title">Devis</h2>
         </div>
         <div class="col">
-          <div align="right">
-            <button type="button" *ngIf="devis" class="btn btn-projet" (click)="updateDevis()" [disabled]="devisForm.invalid"><i class="fa-solid fa-plus"></i> Enregistrer</button>
-          </div>
+           <div align="right" *ngIf="devis">
+            <button mat-raised-button color="primary" style="margin-right: 10px;" *ngIf="!devis?.isFacture" (click)="convertToFacture()">Facture</button>
+            <button mat-raised-button style="margin-right: 10px;" [routerLink]="'/devis/' + devis?._id+'/devis'">Aperçu</button>
+            <button mat-raised-button color="accent" (click)="openDialogSigne(devis?._id)" *ngIf="!devis?.signature">Accepter & Signer</button>
+           </div>
         </div>
       </div>
     </div><!--content-->
     <mat-divider style="margin-bottom: 30px;"></mat-divider>
-    <div>
-      <form [formGroup]="devisForm" *ngIf="devis">
-        <div class="row justify-content-md-center">
-          <div class="col-lg-11 col-md-11 col-md-auto">
-              <div *ngIf="onLoadForm">
-                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    <div style="margin-bottom: 30px;">
+      <div class="row">
+         <div class="col">
+           <h2>{{devis?.numero}}</h2>
+         </div>
+      </div>
+      <div class="row">
+        <div class="col">
+           <div class="row">
+              <div class="col-2">
+                <p>Client</p>
               </div>
-              <div class="row">
-                <div class="col-5">
-                  <mat-form-field class="example-full-width">
-                    <mat-label style="font-size: 13px !important;color: #000 !important;">Client</mat-label>
-                    <input matInput  formControlName="nom" [(ngModel)]="devis.nom" required style="font-size: 13px;">
-                  </mat-form-field>
-                  <div *ngIf="devisForm.get('nom').hasError(champ_validation.input[0].type) && (devisForm.get('nom').dirty || devisForm.get('nom').touched)">
-                    <p class="error_field">{{champ_validation.input[0].message}}</p>
-                  </div>
-                </div>
-                <div class="col-7">
-                    <div>
-                      <mat-form-field class="example-full-width">
-                        <mat-label style="font-size: 13px !important;color: #000 !important;">Numéro</mat-label>
-                        <input matInput formControlName="numero" [(ngModel)]="devis.numero" required style="font-size: 13px;">
-                      </mat-form-field>
-                      <div *ngIf="devisForm.get('numero').hasError(champ_validation.input[0].type) && (devisForm.get('numero').dirty || devisForm.get('numero').touched)">
-                        <p class="error_field">{{champ_validation.input[0].message}}</p>
-                      </div>
-                    </div>
-                    <div>
-                      <mat-form-field class="example-full-width">
-                        <mat-label style="font-size: 13px !important;color: #000 !important;">Projet</mat-label>
-                        <mat-select matInput formControlName="projet" [(ngModel)]="devisProjet" (selectionChange)="selectProjet($event.value)" required style="font-size: 13px;">
-                          <mat-option [value]="p?._id" *ngFor="let p of projets">
-                            {{p?.projet}}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                      <div *ngIf="devisForm.get('projet').hasError(champ_validation.input[0].type) && (devisForm.get('projet').dirty || devisForm.get('projet').touched)">
-                        <p class="error_field">{{champ_validation.input[0].message}}</p>
-                      </div>
-                    </div>
-                </div>
+              <div class="col-10">
+                  <p>{{devis?.entreprise?.societe}}</p>
+                  <p>{{devis?.entreprise?.rue}} {{devis?.entreprise?.rue}}</p>
+                  <p>{{devis?.entreprise?.pays}} {{devis?.entreprise?.postal}}</p>
               </div>
-          </div><!--col-->
+           </div>
         </div>
-      </form>
+        <div class="col">
+          <div class="row">
+            <div class="col-2">
+              <p>Projet</p>
+            </div>
+            <div class="col-10">
+                <p>{{devis?.projet?.projet}}</p>
+            </div>
+         </div>
+         <div class="row">
+          <div class="col-2">
+            <p style="font-weight: bold;">TOTAL</p>
+          </div>
+          <div class="col-10">
+              <p>{{devis?.total}} €</p>
+          </div>
+       </div>
+        </div>
+      </div>
     </div>
     <div>
-      <mat-tab-group color="warn" backgroundColor="primary">
+      <mat-tab-group backgroundColor="primary">
         <mat-tab label="Lignes de la commande">
-
           <form [formGroup]="produitForm">
             <div class="row" style="padding-top: 30px;">
               <div class="col-4">
@@ -79,7 +73,7 @@
                   <p class="error_field">{{champ_validation.input[0].message}}</p>
                 </div>
               </div>
-              <div class="col-3">
+              <div class="col-2">
                 <div *ngIf="isProduit">
                   <mat-form-field class="example-full-width">
                     <mat-label style="font-size: 13px !important;color: #000 !important;">Quantite</mat-label>
@@ -90,7 +84,21 @@
                   </div>
                 </div>
               </div>
-              <div class="col-3">
+              <div class="col-2">
+                <div *ngIf="isProduit">
+                  <mat-form-field class="example-full-width">
+                    <mat-label style="font-size: 13px !important;color: #000 !important;">Unites</mat-label>
+                    <mat-select  matInput  formControlName="unites" required style="font-size: 13px;">
+                       <mat-option value="Unité(s)">Unité(s)</mat-option>
+                       <mat-option value="Douzaines">Douzaines</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div *ngIf="produitForm.get('unites').hasError(champ_validation.input[0].type) && (produitForm.get('unites').dirty || produitForm.get('unites').touched)">
+                    <p class="error_field">{{champ_validation.input[0].message}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-2">
                 <div *ngIf="isProduit">
                   <mat-form-field class="example-full-width">
                     <mat-label style="font-size: 13px !important;color: #000 !important;">Prix</mat-label>
@@ -109,53 +117,50 @@
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th scope="col" class="th-chat">Produit</th>
-                  <th scope="col" class="th-chat">Description</th>
-                  <th scope="col" class="th-chat">Quantité</th>
-                  <th scope="col" class="th-chat">Prix</th>
-                  <th scope="col" class="th-chat">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let m of listProduits; let i=index">
-                  <td class="td-chat"><p class="info-tab">{{m?.produit}}</p></td>
-                  <td class="td-chat"><p class="info-tab" [innerHTML]="m?.description"></p></td>
-                  <td class="td-chat">
-                    <mat-form-field style="height: 65px;width: 75px;">
-                      <input class="info-tab" type="number" matInput  [(ngModel)]="m.quantite" (change)="updatePrice(m)">
-                    </mat-form-field>
-                  </td>
-                  <td class="td-chat"><p class="info-tab">{{m?.price_unitaire}} €</p></td>
-                  <td class="td-chat">
-                    <button mat-icon-button color="warn" (click)="deleteProduit(i)" matTooltip="Supprimer"><mat-icon>delete</mat-icon></button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </mat-tab>
-        <mat-tab label="Les commandes">
-          <div style="padding-top: 30px;">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th scope="col" class="th-chat">Produit</th>
-                  <th scope="col" class="th-chat">Description</th>
-                  <th scope="col" class="th-chat">Quantité</th>
-                  <th scope="col" class="th-chat">Prix unitaire</th>
-                  <th scope="col" class="th-chat">Prix</th>
-                  <th scope="col" class="th-chat">Action</th>
+                  <th scope="col" class="th-devis">Produit</th>
+                  <!--<th scope="col" class="th-devis">Description</th>-->
+                  <th scope="col" class="th-devis">Quantité</th>
+                  <th scope="col" class="th-devis">Unité(s)</th>
+                  <th scope="col" class="th-devis">Prix unitaire</th>
+                  <!--<th scope="col" class="th-devis">Prix</th>-->
+                  <th scope="col" class="th-devis">TVA</th>
+                  <th scope="col" class="th-devis">Total</th>
+                  <th scope="col" class="th-devis">Action</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let m of produitsDevis">
                   <td class="td-chat"><p class="info-tab">{{m?.produit}}</p></td>
-                  <td class="td-chat"><p class="info-tab" [innerHTML]="m?.description"></p></td>
-                  <td class="td-chat"><p class="info-tab">{{m?.quantite}}</p></td>
-                  <td class="td-chat"><p class="info-tab">{{m?.price_unitaire}} €</p></td>
-                  <td class="td-chat"><p class="info-tab">{{m?.price}} €</p></td>
+                  <!--<td class="td-chat"><p class="info-tab" [innerHTML]="m?.description"></p></td>-->
                   <td class="td-chat">
-                    <button mat-icon-button (click)="deleteProduitsByDevis(m?._id)" color="warn" matTooltip="Supprimer"><mat-icon>delete</mat-icon></button>
+                    <p class="info-tab" style="cursor: pointer;" *ngIf="!m.isEditable" (click)="isEditePrice(m)">{{m?.quantite}}</p>
+                    <mat-form-field style="height: 65px;width: 75px;" *ngIf="m.isEditable">
+                      <input class="info-tab" type="number" matInput  [(ngModel)]="m.quantite" (change)="updatePrice(m)">
+                    </mat-form-field>
+                  </td>
+                  <td class="td-chat">
+                    <p class="info-tab" style="cursor: pointer;" *ngIf="!m.isEditable" (click)="isEditePrice(m)">{{m?.unites}}</p>
+                    <mat-form-field style="height: 65px;width: 96px;" *ngIf="m.isEditable">
+                      <mat-select  matInput  [(ngModel)]="m.unites" (ngModelChange)="updateUnite(m)" style="font-size: 10px;">
+                        <mat-option value="Unité(s)" style="font-size: 10px;">Unité(s)</mat-option>
+                        <mat-option value="Douzaines" style="font-size: 10px;">Douzaines</mat-option>
+                     </mat-select>
+                    </mat-form-field>
+                  </td>
+                  <td class="td-chat"><p class="info-tab">{{m?.price_unitaire}} €</p></td>
+                  <td class="td-chat"><p class="info-tab">20%</p></td>
+                  <td class="td-chat"><p class="info-tab">{{m?.total}} €</p></td>
+                  <!--<td class="td-chat"><p class="info-tab">{{m?.price}} €</p></td>-->
+                  <td class="td-chat">
+                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                      <button mat-menu-item (click)="deleteProduitsByDevis(m?._id)">
+                        <mat-icon>delete</mat-icon>
+                        <span>Supprimer</span>
+                      </button>
+                    </mat-menu>
                   </td>
                 </tr>
               </tbody>

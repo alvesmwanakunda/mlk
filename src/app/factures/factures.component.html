@@ -10,40 +10,35 @@
       <div class="col">
         <input type="text"  (keyup)="applyFilter($event)" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher">
       </div>
-      <div class="col"  align="right">
-        <button type="button" class="btn btn-projet" (click)="openDialog()"><i class="fa-solid fa-plus"></i> Nouvelle facture</button>
+      <div class="col">
       </div>
     </div>
 
     <table mat-table [dataSource]="dataSource">
       <!-- Position Column -->
-      <ng-container matColumnDef="nom">
-        <th mat-header-cell *matHeaderCellDef> Nom </th>
-        <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;"> {{element?.nom}} </td>
-      </ng-container>
 
        <!-- Symbol Column -->
        <ng-container matColumnDef="numero">
         <th mat-header-cell *matHeaderCellDef>Numéro</th>
-        <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"> {{element?.numero}}</td>
+        <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;" [routerLink]="'/facture/' + element?.id"> {{element?.numero}}</td>
       </ng-container>
 
-      <!-- Name Column -->
-      <ng-container matColumnDef="facture">
-        <th mat-header-cell *matHeaderCellDef>Facture</th>
-        <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.facture}}</td>
+       <!-- Weight Column -->
+       <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef>Date de création</th>
+        <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;" [routerLink]="'/facture/' + element?.id">{{element?.date |date :'dd MMMM yyyy'}}  </td>
       </ng-container>
 
        <!-- Name Column -->
        <ng-container matColumnDef="projet">
         <th mat-header-cell *matHeaderCellDef>Projet</th>
-        <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.projet}}</td>
+        <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;" [routerLink]="'/facture/' + element?.id">{{element?.projet}}</td>
       </ng-container>
 
-      <!-- Weight Column -->
-      <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef>Date</th>
-        <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.date |date :'dd MMMM yyyy'}}  </td>
+      <!-- Name Column -->
+      <ng-container matColumnDef="total">
+        <th mat-header-cell *matHeaderCellDef>Total</th>
+        <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;" [routerLink]="'/facture/' + element?.id">{{element?.total}} €</td>
       </ng-container>
 
 
@@ -54,17 +49,13 @@
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="openDialogFile(element?.chemin,element?.extension)">
+            <!--<button mat-menu-item (click)="openDialogFile(element?.chemin,element?.extension)">
               <mat-icon>visibility</mat-icon>
               <span>Voir</span>
-            </button>
-            <button mat-menu-item (click)="openDialogUpdate(element?.id)">
+            </button>-->
+            <button mat-menu-item [routerLink]="'/facture/' + element?.id">
               <mat-icon>edit</mat-icon>
               <span>Editer</span>
-            </button>
-            <button mat-menu-item (click)="openDialogDelete(element?.id)">
-              <mat-icon>delete</mat-icon>
-              <span>Supprimer</span>
             </button>
           </mat-menu>
         </td>

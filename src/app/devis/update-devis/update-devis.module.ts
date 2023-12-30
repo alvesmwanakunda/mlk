@@ -7,6 +7,7 @@ import { UpdateDevisRoutingModule } from './update-devis-routing.module';
 import { AuthGuardService } from '../../shared/services/auth-guard.service';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { NavbarModule } from 'src/app/navbar/navbar.module';
+import { DevisSigneModule } from '../devis-signe/devis-signe.module';
 
 export function jwtOptionsFactory() {
   return {
@@ -29,6 +30,7 @@ export function jwtOptionsFactory() {
     ReactiveFormsModule,
     UpdateDevisRoutingModule,
     NavbarModule,
+    DevisSigneModule,
     JwtModule.forRoot({
       jwtOptionsProvider: {
         provide: JWT_OPTIONS,

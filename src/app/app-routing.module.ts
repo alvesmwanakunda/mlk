@@ -163,8 +163,16 @@ const routes: Routes = [
     loadChildren:()=>import('./devis/update-devis/update-devis.module').then(m=>m.UpdateDevisModule)
   },
   {
+    path:'devis/:id/:type',
+    loadChildren:()=>import('./devis/devis-pdf/devis-pdf.module').then(m=>m.DevisPdfModule)
+  },
+  {
     path:'facture',
     loadChildren:()=>import('./factures/factures.module').then(m=>m.FacturesModule),
+  },
+  {
+    path:'facture/:id',
+    loadChildren:()=>import('./factures/detail-facture/detail-facture.module').then(m=>m.DetailFactureModule),
   },
   {
     path:'discussions',

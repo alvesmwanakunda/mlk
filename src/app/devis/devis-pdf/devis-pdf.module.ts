@@ -1,11 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FacturesRoutingModule } from './factures-routing.module';
-import { FacturesComponent } from './factures.component';
-import { SharedModule } from '../shared/shared.module';
-import { NavbarModule } from '../navbar/navbar.module';
-import { ViewerStandarModule } from '../viewer-standar/viewer-standar.module';
-import { AuthGuardService } from '../shared/services/auth-guard.service';
+import { DevisPdfRoutingModule } from './devis-pdf-routing.module';
+import { DevisPdfComponent } from './devis-pdf.component';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { AuthGuardService } from '../../shared/services/auth-guard.service';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 
 export function jwtOptionsFactory() {
@@ -16,20 +14,17 @@ export function jwtOptionsFactory() {
       return token || '';
     },
     allowedDomains: [window.location.origin], // Dynamiquement obtenu
-    disallowedRoutes: [`${window.location.origin}/facture`], // Dynamiquement obtenu
+    disallowedRoutes: [`${window.location.origin}/devis/:id/:type`], // Dynamiquement obtenu
   };
 }
 
 
-
 @NgModule({
-  declarations: [FacturesComponent],
+  declarations: [DevisPdfComponent],
   imports: [
     CommonModule,
-    FacturesRoutingModule,
+    DevisPdfRoutingModule,
     SharedModule,
-    NavbarModule,
-    ViewerStandarModule,
     JwtModule.forRoot({
       jwtOptionsProvider: {
         provide: JWT_OPTIONS,
@@ -39,4 +34,4 @@ export function jwtOptionsFactory() {
   ],
   providers:[AuthGuardService]
 })
-export class FacturesModule { }
+export class DevisPdfModule { }

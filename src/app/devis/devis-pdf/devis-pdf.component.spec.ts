@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DeleteFactureComponent } from './delete-facture.component';
+import { DevisPdfComponent } from './devis-pdf.component';
 
-describe('DeleteFactureComponent', () => {
-  let component: DeleteFactureComponent;
-  let fixture: ComponentFixture<DeleteFactureComponent>;
+describe('DevisPdfComponent', () => {
+  let component: DevisPdfComponent;
+  let fixture: ComponentFixture<DevisPdfComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DeleteFactureComponent ]
+      declarations: [ DevisPdfComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DeleteFactureComponent);
+    fixture = TestBed.createComponent(DevisPdfComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

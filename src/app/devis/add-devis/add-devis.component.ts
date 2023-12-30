@@ -1,15 +1,11 @@
 import { Component,Inject, OnInit } from '@angular/core';
 import { ProjetsService } from 'src/app/shared/services/projets.service';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { EntreprisesService } from 'src/app/shared/services/entreprises.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import {
-  HttpClient,
-  HttpEventType,
-  HttpErrorResponse
-} from "@angular/common/http";
-import { map, catchError, startWith } from "rxjs/operators";
-import { Observable, throwError } from "rxjs";
-import { environment} from 'src/environments/environment';
+import {HttpClient} from "@angular/common/http";
+import { map, startWith } from "rxjs/operators";
+import { Observable } from "rxjs";
 
 
 @Component({
@@ -26,22 +22,24 @@ export class AddDevisComponent implements OnInit {
   message:any;
   produits:any=[];
   listProduits:any[]=[];
+  entreprises:any=[];
   pdevis:any;
   produitFiltres:Observable<any[]>;
+  entrepriseFiltres:Observable<any[]>;
   isProduit:boolean=false;
   qte=1;
   user:any;
   entreprise:any;
+  totalDevis=0;
 
   constructor(
     private _formBuilder :FormBuilder,
     public snackbar:MatSnackBar,
     private projetService: ProjetsService,
+    private entrepresiService: EntreprisesService,
     private http: HttpClient,
   ){
     this.user = JSON.parse(localStorage.getItem('user'));
-    //console.log("User", this.user);
-    //this.user?.user?.role=='user'
   }
 
   champ_validation={
@@ -54,16 +52,20 @@ export class AddDevisComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getAllProjet();
+    if(this.user?.user?.role=="user"){
+      this.getAllProjet(this.user?.user?.entreprise);
+      this.getEntrepriseById();
+    }
     this.getAllProduits();
+    this.getAllEntreprise();
     this.devisForm=this._formBuilder.group({
-      nom:['',Validators.required],
-      numero:['',Validators.required],
       projet:['',Validators.required],
+      entreprise:['',null],
     });
     this.produitForm=this._formBuilder.group({
        name:['', Validators.required],
        quantite:['',Validators.required],
+       unites:['',Validators.required],
        price:['',null],
        price_unitaire:['',null],
        description:['',null],
@@ -71,23 +73,37 @@ export class AddDevisComponent implements OnInit {
     this.produitFiltres = this.produitForm.get('name').valueChanges.pipe(
       startWith(''),
       map((val) => this.filterProduit(val))
-    )
+    );
+    this.entrepriseFiltres = this.devisForm.get('entreprise').valueChanges.pipe(
+      startWith(''),
+      map((val)=> this.filterEntreprise(val))
+    );
   }
 
-  getAllProjet(){
-    if(this.user?.user?.role=='user'){
-      this.projetService.getProjetEntreprise(this.user?.user?.entreprise).subscribe((res:any)=>{
-          this.projets=res.message
-      },(error)=>{
-        console.log(error);
-      })
-    }else{
-      this.projetService.getAllProjet().subscribe((res:any)=>{
-          this.projets=res.message
+  // user role egal user
+    getEntrepriseById(){
+      this.entrepresiService.getEntreprise(this.user?.user?.entreprise).subscribe((res:any)=>{
+          this.entreprise = res.message;
       },(error)=>{
         console.log(error);
       })
     }
+  //end
+
+  getAllProjet(idEntreprise){
+      this.projetService.getProjetEntreprise(idEntreprise).subscribe((res:any)=>{
+          this.projets=res.message
+      },(error)=>{
+        console.log(error);
+      })
+  }
+
+  getAllEntreprise(){
+     this.entrepresiService.getAllEntreprise().subscribe((res:any)=>{
+        this.entreprises = res.message;
+     },(error)=>{
+      console.log(error);
+    })
   }
 
   getAllProduits(){
@@ -100,13 +116,24 @@ export class AddDevisComponent implements OnInit {
   }
 
   filterProduit(value:string){
+      //const filtre = value.toLowerCase();
+      const filtre = value ? value.toLowerCase() : '';
+      //return this.produits.filter(option=> option.name.toLocaleLowerCase().includes(filtre));
+      return this.produits.filter(option => {
+      // Vérifiez si option et option.name sont définis avant d'appeler toLowerCase()
+      return option && option.name && option.name.toLowerCase().includes(filtre);
+    });
+  }
+
+  filterEntreprise(value:string){
     //const filtre = value.toLowerCase();
     const filtre = value ? value.toLowerCase() : '';
     //return this.produits.filter(option=> option.name.toLocaleLowerCase().includes(filtre));
-    return this.produits.filter(option => {
+    return this.entreprises.filter(option => {
       // Vérifiez si option et option.name sont définis avant d'appeler toLowerCase()
-      return option && option.name && option.name.toLowerCase().includes(filtre);
-  });
+      console.log("Option entre", option);
+      return option && option.societe && option.societe.toLowerCase().includes(filtre);
+    });
   }
 
   onOptionSelected(event) {
@@ -118,24 +145,40 @@ export class AddDevisComponent implements OnInit {
     }
   }
 
+  onOptionClientSelected(event) {
+    const selectedName = event.option.value;
+    if(selectedName){
+      this.entreprise = this.entreprises.filter(item=> item.societe==selectedName)[0];
+      //console.log("Entre", this.entreprise);
+      this.getAllProjet(this.entreprise?._id);
+    }
+  }
+
   addProduits(){
   const nameValue = this.produitForm.get('name').value;
   const quantiteValue = this.produitForm.get('quantite').value;
   const priceUnitaireValue = this.produitForm.get('price_unitaire').value;
+  const unites= this.produitForm.get('unites').value
+  const tva = (parseInt(quantiteValue) * parseInt(priceUnitaireValue))*20/100;
+  const total = (parseInt(quantiteValue) * parseInt(priceUnitaireValue))+ tva
   // Vérifiez si les valeurs ne sont pas null ou undefined
-    if (nameValue !== null && quantiteValue !== null && priceUnitaireValue !== null) {
+    if (nameValue !== null && quantiteValue !== null && priceUnitaireValue !== null && unites !==null) {
       let payload = {
         produit: nameValue,
         quantite: quantiteValue,
         price_unitaire: priceUnitaireValue,
         description: this.pdevis?.description_short,
-        price: parseInt(quantiteValue) * parseInt(priceUnitaireValue)
+        price: parseInt(quantiteValue) * parseInt(priceUnitaireValue),
+        tva: tva,
+        total:total,
+        unites: unites
       };
 
       console.log("Payload", payload);
 
       this.produitForm.reset();
       this.isProduit=false;
+      this.totalDevis=this.totalDevis + total;
       this.listProduits.push(payload);
       console.log("Liste P", this.listProduits);
     } else {
@@ -157,11 +200,11 @@ export class AddDevisComponent implements OnInit {
     }
   }
 
-  selectProjet(event){
+  /*selectProjet(event){
     console.log("Projet", event);
     this.entreprise = this.projets.filter(item=>item._id==event)[0];
     console.log("Entreprise", this.entreprise);
-  }
+  }*/
 
   openSnackBar(message){
     this.snackbar.open(message, 'Fermer',{
@@ -172,10 +215,9 @@ export class AddDevisComponent implements OnInit {
   addDevis(){
     this.onLoadForm=true;
     let payload={
-       nom:this.devisForm.get('nom').value,
-       numero:this.devisForm.get('numero').value,
+       total:this.totalDevis,
        projet:this.devisForm.get('projet').value,
-       entreprise:this.entreprise?.entreprise,
+       entreprise:this.entreprise?._id,
        produits:this.listProduits
     }
     if(!this.devisForm.invalid){
@@ -192,45 +234,4 @@ export class AddDevisComponent implements OnInit {
     }
 
   }
-
-  /*addDevis(){
-
-    this.onLoadForm=true;
-    this.form={};
-    this.progress=1;
-
-    const formData:FormData=new FormData();
-    Object.assign(this.form, this.devisForm.value);
-    formData.append("uploadfile", this.file);
-    formData.append("nom", this.form.nom);
-    formData.append("projet", this.form.projet);
-    formData.append("numero", this.form.numero);
-
-
-    return this.http.post(`${environment.BASE_API_URL}/devis`,formData,{
-     reportProgress:true,
-     observe:'events'
-   })
-   .pipe(
-     map((event:any)=>{
-       if (event.type === HttpEventType.UploadProgress){
-         this.progress = Math.round((75/event.total)*event.loaded);
-       }else if(event.type==HttpEventType.Response){
-         this.message='Facture a été ajouté avec succès';
-         this.openSnackBar(this.message)
-         //this.progress=null;
-         this.progress = 100;
-       }
-     }),
-     catchError((err:any)=>{
-       this.progress=null;
-       this.message="Une erreur s'est produite veuillez réessayer.";
-       this.openSnackBar(this.message);
-       return throwError(err.message);
-     })
-   ).toPromise();
- }*/
-
-
-
 }

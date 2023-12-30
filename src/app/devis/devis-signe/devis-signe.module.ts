@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DeleteFactureComponent } from './delete-facture.component';
 import { SharedModule } from '../../shared/shared.module';
+import { DevisSigneComponent } from './devis-signe.component';
 
 
 
 @NgModule({
-  declarations: [DeleteFactureComponent],
+  declarations: [DevisSigneComponent],
   imports: [
     CommonModule,
-    SharedModule,
+    SharedModule
   ]
 })
-export class DeleteFactureModule { }
+export class DevisSigneModule { }

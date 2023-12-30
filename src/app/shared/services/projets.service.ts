@@ -88,6 +88,10 @@ export class ProjetsService {
       return this.httpClient.put(`${environment.BASE_API_URL}/devis/${id}`,devis);
     }
 
+    public updateDevisSignature(devis, id){
+      return this.httpClient.put(`${environment.BASE_API_URL}/devis/signature/${id}`,devis);
+    }
+
     public getDevis(id){
       return this.httpClient.get(`${environment.BASE_API_URL}/devis/${id}`);
     }
@@ -120,29 +124,31 @@ export class ProjetsService {
       return this.httpClient.delete(`${environment.BASE_API_URL}/devis/produits/${id}`);
     }
 
+    public addProduitDevis(id, body){
+      return this.httpClient.post(`${environment.BASE_API_URL}/devis/produits/${id}`,body);
+    }
 
+    public updateProduitDevis(id, body){
+      return this.httpClient.put(`${environment.BASE_API_URL}/devis/produits/${id}`,body);
+    }
 
+    public updateProduitUniteDevis(id, body){
+      return this.httpClient.put(`${environment.BASE_API_URL}/devis/produits/unite/${id}`,body);
+    }
 
    // Factures
-   public addFacture(facture){
-    return this.httpClient.post(`${environment.BASE_API_URL}/devis`,facture);
-  }
-
-  public updateFacture(facture, id){
-    return this.httpClient.put(`${environment.BASE_API_URL}/devis/${id}`,facture);
-  }
-
-  public getFacture(id){
-    return this.httpClient.get(`${environment.BASE_API_URL}/facture/${id}`);
+   public addFacture(idDevis, body){
+    return this.httpClient.put(`${environment.BASE_API_URL}/devis/facture/${idDevis}`,body);
   }
 
   public getAllFacture(){
-    return this.httpClient.get(`${environment.BASE_API_URL}/factures`);
+    return this.httpClient.get(`${environment.BASE_API_URL}/facture`);
   }
 
-  public deleteFacture(id){
-    return this.httpClient.delete(`${environment.BASE_API_URL}/facture/${id}`);
+  public getAllFactureEntreprise(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/facture/entreprise/${id}`);
   }
+
   public getAllFactureProjet(id){
     return this.httpClient.get(`${environment.BASE_API_URL}/facture/projet/${id}`);
   }

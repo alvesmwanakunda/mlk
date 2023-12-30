@@ -17,27 +17,29 @@
 
     <table mat-table [dataSource]="dataSource">
       <!-- Position Column -->
-      <ng-container matColumnDef="nom">
-        <th mat-header-cell *matHeaderCellDef> Nom </th>
-        <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;"> {{element?.nom}} </td>
-      </ng-container>
 
        <!-- Symbol Column -->
        <ng-container matColumnDef="numero">
         <th mat-header-cell *matHeaderCellDef>Numéro</th>
-        <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"> {{element?.numero}}</td>
+        <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;" [routerLink]="'/devis/' + element?.id"> {{element?.numero}}</td>
+      </ng-container>
+
+       <!-- Weight Column -->
+       <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef>Date de création</th>
+        <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;" [routerLink]="'/devis/' + element?.id">{{element?.date |date :'dd MMMM yyyy'}}  </td>
       </ng-container>
 
        <!-- Name Column -->
        <ng-container matColumnDef="projet">
         <th mat-header-cell *matHeaderCellDef>Projet</th>
-        <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.projet}}</td>
+        <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;" [routerLink]="'/devis/' + element?.id">{{element?.projet}}</td>
       </ng-container>
 
-      <!-- Weight Column -->
-      <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef>Date</th>
-        <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.date |date :'dd MMMM yyyy'}}  </td>
+      <!-- Name Column -->
+      <ng-container matColumnDef="total">
+        <th mat-header-cell *matHeaderCellDef>Total</th>
+        <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;" [routerLink]="'/devis/' + element?.id">{{element?.total}} €</td>
       </ng-container>
 
 

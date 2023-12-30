@@ -1,0 +1,168 @@
+<div class="container">
+  <div style="padding-top: 50px;">
+    <div class="alert alert-primary" role="alert" style="text-align: center;">
+      {{title}} <b style="cursor: pointer;" class="text-primary" [routerLink]="url">-> {{redirect}}</b>
+    </div>
+    <div style="margin-bottom: 30px;">
+      <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #F5F5F5;">
+        <!-- Navbar content -->
+        <div class="container-fluid">
+          <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" [routerLink]="'/entreprise/dashboard'"><i class="fa-solid fa-house"></i> /</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" [routerLink]="url">{{cle}} /</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link">{{cle}} {{devis?.numero}}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div><!--nav-->
+    <div class="row">
+       <div class="col-3">
+          <h2>{{devis?.total}} €</h2>
+          <p style="margin-bottom: 35px;">
+            <button mat-raised-button color="primary" (click)="convetToPDF()"><i class="fa-solid fa-download"></i> Télécharger</button>
+          </p>
+          <p class="text-primary">
+            {{cle}} - {{devis?.numero}}
+          </p>
+          <p style="cursor: pointer;" class="text-primary" [routerLink]="url">{{detail}}</p>
+
+       </div><!--col-->
+       <div class="col-9">
+            <div id="contentToConvert" style="padding-left:10px;padding-right:10px;">
+              <table id="mytable">
+                <tr>
+                  <td style="width:50%;">
+                    <img src="assets/images/logo.png">
+                  </td>
+                  <td  style="width:50%;">
+                    <div id="header1">
+                      <p style="font-size: 18px;font-weight: 600;">{{devis?.entreprise?.societe}}</p>
+                      <p>{{devis?.entreprise?.rue}} {{devis?.entreprise?.numero}}</p>
+                      <p>{{devis?.entreprise?.pays}}</p>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <table id="mytable" style="margin-bottom: 20px;">
+                <tr>
+                  <td style="width:50%;">
+                    <p style="font-size: 15px;font-weight: 600;">MLKA</p>
+                    <p>18 Place des Nymphéas 93420 Villepinte</p>
+                    <p>Immeuble LE TROPICAL - HQ</p>
+                    <p>TVA N° FR26832632905</p>
+                    <p>Email : info@mlka.fr</p>
+                  </td>
+                  <td style="width:50%;">
+                    <p style="font-size: 20px;font-weight: 600;color: #53A3DB;text-align: right;">{{cle}}</p>
+                    <p style="text-align: right;">N° {{devis?.numero}}</p>
+                    <p style="text-align: right;">En date du : {{devis?.dateLastUpdate |date :'dd/MM/yyyy'}}</p>
+                  </td>
+                </tr>
+              </table>
+
+              <table class="table" style="--bs-body-bg: transparent !important;margin-bottom: 20px">
+                <thead>
+                  <tr style="background-color: #53A3DB !important;">
+                    <th scope="col" style="color: #fff !important;">N°</th>
+                    <th scope="col" style="color: #fff !important;">DÉSIGNATION</th>
+                    <th scope="col" style="color: #fff !important;">QTÉ</th>
+                    <th scope="col" style="color: #fff !important;">U.</th>
+                    <th scope="col" style="color: #fff !important;">PRIX U.</th>
+                    <th scope="col" style="color: #fff !important;">TOTAL HT</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let p of produitsDevis; let i=index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{p?.produit}}</td>
+                    <td>{{p?.quantite}}</td>
+                    <td>{{p?.unites}}</td>
+                    <td>{{p?.price_unitaire}} €</td>
+                    <td>{{p?.price}} €</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table id="mytable" style="margin-bottom: 20px;">
+                <tr>
+                  <td style="width:50%;">
+                    <p>
+                      <b>Conditions de paiement</b>
+                      <br/>
+                      Acompte de 30 % à la signature soit {{p30}} € TTC Acompte de 40 % au début des travaux soit {{p40}} € TTC Reste à facturer : {{pReste}} € TTC
+                      <br/>
+                      Méthodes de paiement acceptées : Virement bancaire.
+                      <br/>
+                      <b>IBAN FR76 3000 4009 6300 0103 3019 410</b>
+                      <br/>
+                      <b>BIC- SWIFT BNPAFRPPXXX</b>
+                    </p>
+
+                  </td>
+                  <td style="width:30%;">
+                    <table class="table table-bordered" style="border: 1px solid #e8e8e8 !important;">
+                      <tr style="border: 1px solid #e8e8e8 !important;">
+                        <td>
+                          <p style="font-weight: bold;background: transparent;">Total net HT</p>
+                          <p style="background: transparent;">TVA 20,00 %</p>
+                          <p style="font-weight: bold;background: transparent;">Total TTC</p>
+                        </td>
+                        <td>
+                          <p style="font-weight: bold;background:transparent">{{sommePrix}} €</p>
+                          <p style="background:transparent;">{{sommeTVA}} €</p>
+                          <p style="font-weight: bold;background:transparent;">{{devis?.total}} €</p>
+                        </td>
+                      </tr>
+                      <tr style="background-color: #53A3DB;border: 1px solid #53A3DB;">
+                        <td style="color: #fff;">
+                          <p style="font-size: 15px;font-weight: 600;background:transparent;color:#fff;">NET À PAYER</p>
+                        </td>
+                        <td style="color: #fff;">
+                          <p style="font-size: 15px;font-weight: 600;background:transparent;color:#fff;">{{devis?.total}} €</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <table id="mytable">
+                <tr>
+                  <td style="width:50%;">
+                     <p><b>Pour l'entreprise</b></p>
+                     <div class="header2">
+                        <img [src]="devis?.signature" style="width: 100%;">
+                     </div>
+                  </td>
+                  <td style="width:50%;">
+                    <p><b>Pour le client</b></p>
+                    <div class="header2">
+                       <p style="margin-bottom: 57px;">Mention "Reçu avant l'exécution des travaux, bon pour accord", date et signature</p>
+                       <p>...... / ..... / ..........</p>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <footer>
+                 <hr/>
+                 <p style="font-size: 13px;">
+                  SA MLKA - 18 Place des Nymphéas, Immeuble LE TROPICAL 93420 Villepinte, France - N°SIRET 83263290500028 RCS
+                 </p>
+                 <p style="text-align: center;font-size: 13px">Bobigny - APE : 7490</p>
+              </footer>
+
+             </div>
+       </div><!--col-->
+    </div><!--row-->
+  </div>
+</div>

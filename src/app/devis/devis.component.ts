@@ -20,7 +20,7 @@ import { DeleteDevisComponent } from './delete-devis/delete-devis.component';
 })
 export class DevisComponent implements OnInit, AfterViewInit {
 
-  displayedColumns:string[]=['nom','numero','projet','date','action'];
+  displayedColumns:string[]=['numero','date','projet','total','action'];
   dataSource =new MatTableDataSource<Devis>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   devis:any=[];
@@ -50,9 +50,9 @@ export class DevisComponent implements OnInit, AfterViewInit {
       this.projectService.getAllDevisEntreprise(this.user?.user?.entreprise).subscribe((data:any)=>{
         this.dataSource.data = data.message.map((data)=>({
         id:data?._id,
-        nom:data?.nom,
         projet:data?.projet?.projet,
         numero:data?.numero,
+        total:data?.total,
         date:data?.dateLastUpdate,
         })) as Devis[]
     },
@@ -64,9 +64,9 @@ export class DevisComponent implements OnInit, AfterViewInit {
       this.projectService.getAllDevis().subscribe((data:any)=>{
           this.dataSource.data = data.message.map((data)=>({
           id:data?._id,
-          nom:data?.nom,
           projet:data?.projet?.projet,
           numero:data?.numero,
+          total:data?.total,
           date:data?.dateLastUpdate,
           })) as Devis[]
       },
@@ -85,14 +85,7 @@ export class DevisComponent implements OnInit, AfterViewInit {
     }
 }
 
-openDialog(){
-  const dialogRef = this.dialog.open(AddDevisComponent,{width:'50%'});
-  dialogRef.afterClosed().subscribe((result:any)=>{
-     if(result){
-      this.getAllDevis();
-     }
-  })
-}
+
 
 openDialogDelete(id){
   const dialogRef = this.dialog.open(DeleteDevisComponent,{width:'30%',data:{id:id}});
@@ -103,14 +96,6 @@ openDialogDelete(id){
   })
 }
 
-openDialogUpdate(id){
-  const dialogRef = this.dialog.open(UpdateDevisComponent,{width:'50%',data:{id:id}});
-  dialogRef.afterClosed().subscribe((result:any)=>{
-     if(result){
-      this.getAllDevis();
-     }
-  })
-}
 
 openDialogFile(chemin, extension){
   const dialogRef = this.dialog.open(ViewerStandarComponent,{

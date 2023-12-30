@@ -1,10 +1,13 @@
-import { Component,Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProjetsService } from 'src/app/shared/services/projets.service';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Devis } from 'src/app/shared/interfaces/devis.model';
 import { Router,ActivatedRoute } from '@angular/router';
 import { Observable, map, startWith } from 'rxjs';
+import { ProduitDevis } from 'src/app/shared/interfaces/produitDevis.model';
+import { DevisSigneComponent } from '../devis-signe/devis-signe.component';
+import { MatDialog } from '@angular/material/dialog';
+
 
 
 @Component({
@@ -18,8 +21,7 @@ export class UpdateDevisComponent implements OnInit {
   devisForm : FormGroup;
   onLoadForm:boolean=false;
   message:any;
-  devis:Devis;
-  devisProjet:any;
+  devis:any;
   idDevis:any;
   produits:any=[];
   produitsDevis:any=[];
@@ -27,10 +29,12 @@ export class UpdateDevisComponent implements OnInit {
   pdevis:any;
   produitFiltres:Observable<any[]>;
   isProduit:boolean=false;
+  isPrice:boolean=false;
   qte=1;
   produitForm: FormGroup;
   user:any;
   entreprise:any;
+  ProduitDevis:ProduitDevis;
 
 
 
@@ -41,6 +45,7 @@ export class UpdateDevisComponent implements OnInit {
     private projetService: ProjetsService,
     private route: ActivatedRoute,
     private router:Router,
+    public dialog: MatDialog
   ){
     this.route.params.subscribe((data:any)=>{
       this.idDevis = data.id
@@ -58,7 +63,6 @@ export class UpdateDevisComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getAllProjet();
     this.getAllProduits();
     this.getAllProduitsByDevis();
     this.getDevis();
@@ -68,6 +72,7 @@ export class UpdateDevisComponent implements OnInit {
       price:['',null],
       price_unitaire:['',null],
       description:['',null],
+      unites:['',Validators.required],
    });
    this.produitFiltres = this.produitForm.get('name').valueChanges.pipe(
      startWith(''),
@@ -75,34 +80,11 @@ export class UpdateDevisComponent implements OnInit {
    )
   }
 
-  getAllProjet(){
-    if(this.user?.user?.role=='user'){
-      this.projetService.getProjetEntreprise(this.user?.user?.entreprise).subscribe((res:any)=>{
-          this.projets=res.message
-      },(error)=>{
-        console.log(error);
-      })
-    }else{
-      this.projetService.getAllProjet().subscribe((res:any)=>{
-          this.projets=res.message
-      },(error)=>{
-        console.log(error);
-      })
-    }
-  }
+
 
   getDevis(){
     this.projetService.getDevis(this.idDevis).subscribe((res:any)=>{
         this.devis = res.message
-        this.devisProjet = res.message?.projet?._id;
-        this.entreprise = res.message?.entreprise;
-        if(this.devis){
-          this.devisForm=this._formBuilder.group({
-            nom:[this.devis.nom,Validators.required],
-            numero:[this.devis.numero,Validators.required],
-            projet:[this.devisProjet,Validators.required]
-          });
-        }
     },(error)=>{
       console.log(error);
     })
@@ -111,7 +93,6 @@ export class UpdateDevisComponent implements OnInit {
   getAllProduits(){
     this.projetService.getAllProduits().subscribe((res:any)=>{
         this.produits = res.message?.products;
-        //console.log("Produits", this.produits);
     },(error)=>{
       console.log(error);
     })
@@ -119,21 +100,17 @@ export class UpdateDevisComponent implements OnInit {
 
   getAllProduitsByDevis(){
     this.projetService.getAllProduitsByDevis(this.idDevis).subscribe((res:any)=>{
-        //console.log("Produits devis", res);
-        this.produitsDevis = res.message;
+        this.produitsDevis = res.message.map((produit:ProduitDevis)=>({ ...produit, isEditable:false}));
     },(error)=>{
       console.log(error);
     })
   }
 
   filterProduit(value:string){
-    //const filtre = value.toLowerCase();
     const filtre = value ? value.toLowerCase() : '';
-    //return this.produits.filter(option=> option.name.toLocaleLowerCase().includes(filtre));
     return this.produits.filter(option => {
-      // Vérifiez si option et option.name sont définis avant d'appeler toLowerCase()
       return option && option.name && option.name.toLowerCase().includes(filtre);
-  });
+    });
   }
 
   onOptionSelected(event) {
@@ -149,6 +126,9 @@ export class UpdateDevisComponent implements OnInit {
     const nameValue = this.produitForm.get('name').value;
     const quantiteValue = this.produitForm.get('quantite').value;
     const priceUnitaireValue = this.produitForm.get('price_unitaire').value;
+    const unites= this.produitForm.get('unites').value
+    const tva = (parseInt(quantiteValue) * parseInt(priceUnitaireValue))*20/100;
+    const total = (parseInt(quantiteValue) * parseInt(priceUnitaireValue))+ tva
     // Vérifiez si les valeurs ne sont pas null ou undefined
       if (nameValue !== null && quantiteValue !== null && priceUnitaireValue !== null) {
         let payload = {
@@ -156,30 +136,87 @@ export class UpdateDevisComponent implements OnInit {
           quantite: quantiteValue,
           price_unitaire: priceUnitaireValue,
           description: this.pdevis?.description_short,
-          price: parseInt(quantiteValue) * parseInt(priceUnitaireValue)
+          price: parseInt(quantiteValue) * parseInt(priceUnitaireValue),
+          tva: tva,
+          total:total,
+          unites: unites
         };
-
         this.produitForm.reset();
         this.isProduit=false;
-        this.listProduits.push(payload);
-        //console.log("Liste P", this.listProduits);
+        this.projetService.addProduitDevis(this.idDevis,payload).subscribe((res:any)=>{
+          this.message='Produit a été modifié avec succès';
+          this.getAllProduitsByDevis();
+          this.getDevis();
+          this.openSnackBar(this.message);
+
+        },(error)=>{
+          console.log(error);
+          this.message="Une erreur s'est produite veuillez réessayer.";
+           this.openSnackBar(this.message);
+        })
       } else {
         console.error("Les valeurs du formulaire sont null ou undefined. La réinitialisation est annulée.");
       }
   }
 
-  updatePrice(m: any) {
-    const quantiteValue = m?.quantite || 0; // Assurez-vous que la quantité est définie, sinon, utilisez 0
-    const priceUnitaireValue = m?.price_unitaire || 0; // Assurez-vous que le prix unitaire est défini, sinon, utilisez 0
-    m.price = parseInt(quantiteValue) * parseInt(priceUnitaireValue);
+  isEditePrice(produit: ProduitDevis) {
+    //this.isPrice = !this.isPrice;
+    produit.isEditable = !produit.isEditable;
   }
 
-  deleteProduit(index: number) {
-    // Vérifiez si l'index est dans la plage valide
-    if (index >= 0 && index < this.listProduits.length) {
-      // Supprimez l'élément à l'index spécifié
-      this.listProduits.splice(index, 1);
-    }
+
+  updatePrice(m: any) {
+    console.log("Devis Selection", m);
+    const quantiteValue = m?.quantite || 0;
+    const priceUnitaireValue = m?.price_unitaire || 0;
+    const price = parseInt(quantiteValue) * parseInt(priceUnitaireValue);
+    const tva = (parseInt(quantiteValue) * parseInt(priceUnitaireValue))*20/100;
+    const total = (parseInt(quantiteValue) * parseInt(priceUnitaireValue))+ tva
+
+    let payload = {
+      quantite: quantiteValue,
+      price: price,
+      tva: tva,
+      total:total,
+    };
+    this.projetService.updateProduitDevis(m?._id,payload).subscribe((res:any)=>{
+      console.log("Update Prix", res);
+      this.getAllProduitsByDevis();
+      this.getDevis();
+    },(error)=>{
+      console.log(error);
+    })
+  }
+
+  updateUnite(m: any) {
+    console.log("Devis Selection", m);
+    let payload = {
+      unites:m.unites
+    };
+    this.projetService.updateProduitUniteDevis(m?._id,payload).subscribe((res:any)=>{
+      console.log("Update Unites", res);
+      this.getAllProduitsByDevis();
+    },(error)=>{
+      console.log(error);
+    })
+  }
+
+  convertToFacture(){
+
+    let payload={
+      facture:true
+    };
+    this.projetService.addFacture(this.idDevis,payload).subscribe((res:any)=>{
+      this.message='Votre facture a été générée avec succès.';
+          this.getDevis();
+          this.openSnackBar(this.message);
+
+    },(error)=>{
+          console.log(error);
+          this.message="Une erreur s'est produite veuillez réessayer.";
+           this.openSnackBar(this.message);
+    })
+
   }
 
   openSnackBar(message){
@@ -191,40 +228,19 @@ export class UpdateDevisComponent implements OnInit {
   deleteProduitsByDevis(idProduit){
     this.projetService.deleteProduitsByDevis(idProduit).subscribe((res:any)=>{
         this.getAllProduitsByDevis();
-
+        this.getDevis();
     },(error)=>{
       console.log(error);
     })
   }
 
-  selectProjet(event){
-    console.log("Projet", event);
-    let entre= this.projets.filter(item=>item._id==event)[0];
-    this.entreprise  = entre.entreprise;
-    console.log("Entreprise", this.entreprise);
+  openDialogSigne(id){
+    const dialogRef = this.dialog.open(DevisSigneComponent,{width:'50%',data:{id:id}});
+    dialogRef.afterClosed().subscribe((result:any)=>{
+       if(result){
+          this.getDevis();
+       }
+    })
   }
 
-  updateDevis(){
-
-    this.onLoadForm=true;
-    let payload={
-       nom:this.devisForm.get('nom').value,
-       numero:this.devisForm.get('numero').value,
-       projet:this.devisForm.get('projet').value,
-       entreprise:this.entreprise,
-       produits:this.listProduits
-    }
-    if(!this.devisForm.invalid){
-      this.projetService.updateDevis(payload, this.idDevis).subscribe((res:any)=>{
-        this.message='Devis a été modifié avec succès';
-        this.openSnackBar(this.message)
-        this.onLoadForm=false;
-      },(error)=>{
-        console.log(error);
-        this.onLoadForm=false;
-        this.message="Une erreur s'est produite veuillez réessayer.";
-         this.openSnackBar(this.message);
-      })
-    }
-  }
 }

@@ -22,28 +22,30 @@
               </div>
               <div class="row">
                 <div class="col-5">
+                 <div  *ngIf="this.user?.user?.role!='user'">
                   <mat-form-field class="example-full-width">
                     <mat-label style="font-size: 13px !important;color: #000 !important;">Client</mat-label>
-                    <input matInput  formControlName="nom" required style="font-size: 13px;">
+                    <input  matInput type="text"  formControlName="entreprise" [matAutocomplete]="auto1" required style="font-size: 13px;">
+                    <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="onOptionClientSelected($event)">
+                      <mat-option *ngFor="let p of entrepriseFiltres | async" [value]="p?.societe">
+                        {{p?.societe}}
+                      </mat-option>
+                    </mat-autocomplete>
                   </mat-form-field>
-                  <div *ngIf="devisForm.get('nom').hasError(champ_validation.input[0].type) && (devisForm.get('nom').dirty || devisForm.get('nom').touched)">
+                  <div *ngIf="devisForm.get('entreprise').hasError(champ_validation.input[0].type) && (devisForm.get('entreprise').dirty || devisForm.get('entreprise').touched)">
                     <p class="error_field">{{champ_validation.input[0].message}}</p>
+                  </div>
+                 </div>
+                  <div *ngIf="entreprise">
+                     <p>{{entreprise?.societe}}</p>
+                     <p>{{entreprise?.rue}} {{entreprise?.numero}}, {{entreprise?.pays}}</p>
                   </div>
                 </div>
                 <div class="col-7">
                     <div>
                       <mat-form-field class="example-full-width">
-                        <mat-label style="font-size: 13px !important;color: #000 !important;">Numéro</mat-label>
-                        <input matInput formControlName="numero" required style="font-size: 13px;">
-                      </mat-form-field>
-                      <div *ngIf="devisForm.get('numero').hasError(champ_validation.input[0].type) && (devisForm.get('numero').dirty || devisForm.get('numero').touched)">
-                        <p class="error_field">{{champ_validation.input[0].message}}</p>
-                      </div>
-                    </div>
-                    <div>
-                      <mat-form-field class="example-full-width">
                         <mat-label style="font-size: 13px !important;color: #000 !important;">Projet</mat-label>
-                        <mat-select matInput formControlName="projet" required style="font-size: 13px;" (selectionChange)="selectProjet($event.value)">
+                        <mat-select matInput formControlName="projet" required style="font-size: 13px;">
                           <mat-option [value]="p?._id" *ngFor="let p of projets">
                             {{p?.projet}}
                           </mat-option>
@@ -79,7 +81,7 @@
                   <p class="error_field">{{champ_validation.input[0].message}}</p>
                 </div>
               </div>
-              <div class="col-3">
+              <div class="col-2">
                 <div *ngIf="isProduit">
                   <mat-form-field class="example-full-width">
                     <mat-label style="font-size: 13px !important;color: #000 !important;">Quantite</mat-label>
@@ -90,7 +92,21 @@
                   </div>
                 </div>
               </div>
-              <div class="col-3">
+              <div class="col-2">
+                <div *ngIf="isProduit">
+                  <mat-form-field class="example-full-width">
+                    <mat-label style="font-size: 13px !important;color: #000 !important;">Unites</mat-label>
+                    <mat-select  matInput  formControlName="unites" required style="font-size: 13px;">
+                       <mat-option value="Unité(s)">Unité(s)</mat-option>
+                       <mat-option value="Douzaines">Douzaines</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div *ngIf="produitForm.get('unites').hasError(champ_validation.input[0].type) && (produitForm.get('unites').dirty || produitForm.get('unites').touched)">
+                    <p class="error_field">{{champ_validation.input[0].message}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-2">
                 <div *ngIf="isProduit">
                   <mat-form-field class="example-full-width">
                     <mat-label style="font-size: 13px !important;color: #000 !important;">Prix</mat-label>
@@ -114,6 +130,7 @@
                   <th scope="col" class="th-chat">Description</th>
                   <th scope="col" class="th-chat">Quantité</th>
                   <th scope="col" class="th-chat">Prix</th>
+                  <th scope="col" class="th-chat">Taxes</th>
                   <th scope="col" class="th-chat">Action</th>
                 </tr>
               </thead>
@@ -127,6 +144,7 @@
                     </mat-form-field>
                   </td>
                   <td class="td-chat"><p class="info-tab">{{m?.price_unitaire}} €</p></td>
+                  <td class="td-chat"><p class="info-tab">20% (Marchandises)</p></td>
                   <td class="td-chat">
                     <button mat-icon-button color="warn" (click)="deleteProduit(i)" matTooltip="Supprimer"><mat-icon>delete</mat-icon></button>
                   </td>
