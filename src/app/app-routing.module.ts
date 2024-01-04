@@ -143,7 +143,7 @@ const routes: Routes = [
     loadChildren:()=>import('./modulaires/add-module/add-module.module').then(m=>m.AddModuleModule),
   },
   {
-    path:'modulaire/:id',
+    path:'modulaires/:id',
     loadChildren:()=>import('./modulaires/update-module/update-module.module').then(m=>m.UpdateModuleModule),
   },
   {

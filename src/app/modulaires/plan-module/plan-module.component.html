@@ -1,0 +1,84 @@
+<div class="container">
+  <div class="row" style="margin-bottom: 30px;">
+
+    <div class="col">
+        <div class="row">
+         <div class="col">
+           <input (keyup)="applyFilter($event)" type="text" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher par nom de dossier ou fichier">
+         </div>
+        </div><!--row-->
+    </div><!--col-->
+
+    <div class="col" align="right">
+      <input type="file" class="file-input" accept='image/png,image/jpeg,image/jpg,image/gif,.pdf,.docx,.xlsx,.pptx' (change)="onFileSelected($event)" #fileUpload multiple>
+       <button type="button"  (click)="fileUpload.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> Charger</button>
+
+    </div><!--col-->
+  </div><!--row-->
+
+ <table mat-table [dataSource]="dataSource">
+
+  <!-- Position Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef class="box-header"> Nom </th>
+    <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;" (click)="openDialogFile(element.chemin, element.extension)">
+      <p class="box-title" matTooltip="{{element?.nom}}">
+        <img src="assets/images/pdf.png" *ngIf="element.extension=='pdf'" style="margin-right: 10px;margin-top: -4px;">
+        <img src="assets/images/doc.png" *ngIf="element.extension=='docx'" style="margin-right: 10px;margin-top: -4px;">
+        <img src="assets/images/xls.png" *ngIf="element.extension=='xlsx' || element.extension=='xls'" style="margin-right: 10px;margin-top: -4px;">
+        <img src="assets/images/pptx.png"  *ngIf="element.extension=='pptx'" style="margin-right: 10px;margin-top: -4px;">
+        <img [src]="element.chemin"  *ngIf="element.extension=='png' || element.extension=='jpeg' || element.extension=='jpg' || element.extension=='gif'" style="margin-right: 10px;margin-top: -4px;width: 24px;height: 24px;">
+        <span>{{element?.nom}}</span>
+      </p>
+    </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="size">
+    <th mat-header-cell *matHeaderCellDef class="box-header"> Taille </th>
+    <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"><span *ngIf="element.size">{{element?.size|fileSizeConvert}}</span></td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="modified">
+    <th mat-header-cell *matHeaderCellDef class="box-header"> Modifié </th>
+    <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">  {{element?.dateLastUpdate|dataAsAgo}}  </td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="modifiedby">
+    <th mat-header-cell *matHeaderCellDef class="box-header">Modifié par</th>
+    <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"> {{element?.creator?.nom}} {{element?.creator?.prenom}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef>Actions</th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button color="accent"  matTooltip="Supprimer" (click)="deletePlan(element?.id)"><mat-icon>delete</mat-icon></button>
+
+    </td>
+  </ng-container>
+
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<mat-paginator [pageSizeOptions]="[10, 20]"
+              showFirstLastButtons
+              aria-label="Select page of periodic elements">
+</mat-paginator>
+</div>
+
+<div id="snackbar" *ngIf="progress">
+  <br/>
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" [style.width]="progress + '%'">{{progress}}%</div>
+  </div>
+  <br/>
+  <p style="font-size: 12px;" *ngIf="progress<100">Fichier {{fileName}} est en cours de chargement...</p>
+  <p style="font-size: 12px;color: rgb(16, 93, 38);" *ngIf="progress==100">Fichier {{fileName}} est chargé avec succès</p>
+  <p style="font-size: 12px;color:red;" *ngIf="error">
+    Erreur lors du téléchargement du fichier : {{error}}
+  </p>
+</div>

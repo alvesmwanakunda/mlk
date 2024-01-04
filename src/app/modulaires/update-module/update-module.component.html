@@ -7,190 +7,256 @@
     </div><!--content-->
 
     <div style="margin-bottom: 40px;">
-      <mat-card>
-        <mat-card-content>
-          <div class="row">
-            <div class="col-5">
-              <div class="bloc-info">
-                <p class="title-info">Module</p>
-                <p>{{module?.nom}}</p>
-                <mat-divider></mat-divider>
-              </div>
-              <div class="bloc-info">
-                <p class="title-info">Etat</p>
-                <p>{{module?.type}}</p>
-                <mat-divider></mat-divider>
-              </div>
-              <div class="bloc-info">
-                <p class="title-info">Marque</p>
-                <p>{{module?.marque}}</p>
-                <mat-divider></mat-divider>
-              </div>
-              <div class="bloc-info">
-                <p class="title-info">Position <button mat-mini-fab color="primary" matTooltip="Ouvrir" (click)="openDialogPosition()"><i class="fa-solid fa-map-pin"></i></button>
-                </p>
-                <!--<p>{{module?.position}}</p>-->
-                <mat-divider></mat-divider>
-              </div>
-              <div class="bloc-info">
-                <p class="title-info">
-                  Photo <button mat-mini-fab color="primary" matTooltip="Ouvrir" *ngIf="module?.nom_photo" (click)="openDialogFile(module.photo,'png')"><i class="fa-solid fa-link"></i></button>
-                </p>
-                <p *ngIf="module?.nom_photo">
-                  <img [src]="module.photo" alt="" width="200px" height="150px"/>
-                </p>
-                <p *ngIf="!module?.nom_photo">Pas d'image</p>
-              </div>
+
+      <div>
+        <mat-tab-group backgroundColor="primary">
+          <mat-tab label="Informations">
+            <div style="padding-top: 20px;">
+              <mat-card>
+                <mat-card-content>
+                  <div class="row">
+                    <div class="col-5">
+                       <div class="row" style="margin-bottom: 15px;">
+                         <div class="col">
+                          <div class="bloc-info">
+                            <p class="title-info">Module</p>
+                            <p style="font-size: 13px;">{{module?.nom}}</p>
+                          </div>
+                         </div>
+                         <mat-divider></mat-divider>
+                       </div>
+
+                       <div class="row" style="margin-bottom: 15px;">
+                        <div class="col">
+                          <div class="bloc-info">
+                            <p class="title-info">Marque</p>
+                            <p style="font-size: 13px;">{{module?.marque}}</p>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="bloc-info">
+                            <p class="title-info">Etat</p>
+                            <p style="font-size: 13px;">{{module?.type}}</p>
+                          </div>
+                         </div>
+                        <!--<div class="col">
+                          <div class="bloc-info">
+                            <p class="title-info">Position <button mat-icon-button color="primary" matTooltip="Ouvrir" (click)="openDialogPosition()"><i class="fa-solid fa-map-pin"></i></button>
+                            </p>
+                          </div>
+                        </div>-->
+                        <mat-divider></mat-divider>
+                      </div>
+
+                      <div class="bloc-info">
+                        <div class="row">
+                           <div class="col">
+                            <p class="title-info">
+                              Image principale
+                            </p>
+                           </div>
+                           <div class="col">
+                            <div align="right" style="position:relative;bottom:17px;">
+                              <button mat-icon-button color="primary" matTooltip="Ouvrir" *ngIf="module?.nom_photo" (click)="openDialogFile(module.photo,'png')"><mat-icon fontIcon="attach_file"></mat-icon></button>
+                              <input type="file" class="file-input" accept='image/*' (change)="onFileSelectedPlanImage($event,'image')" #fileUpload2>
+                              <button mat-icon-button color="warn" matTooltip="Supprimer" (click)="fileUpload2.click()"  *ngIf="module?.nom_photo"><mat-icon fontIcon="delete_forever"></mat-icon></button>
+                            </div>
+                           </div>
+                        </div>
+                        <p *ngIf="module?.nom_photo" style="text-align: center;">
+                          <img [src]="module.photo" alt="" width="200px" height="150px"/>
+                        </p>
+                        <p *ngIf="!module?.nom_photo" style="font-size: 13px;">Pas d'image</p>
+                      </div>
+                    </div>
+                    <div class="col-2">
+                      <div class="vl"></div>
+                    </div>
+                    <div class="col-5">
+
+                      <div class="row" style="margin-bottom: 15px;">
+                        <div class="col">
+                          <div class="bloc-info">
+                            <p class="title-info">Hauteur(mm)</p>
+                            <p style="font-size: 13px;">{{module?.hauteur}}</p>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="bloc-info">
+                            <p class="title-info">Longueur(mm)</p>
+                            <p style="font-size: 13px;">{{module?.longueur}}</p>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="bloc-info">
+                            <p class="title-info">Largeur(mm)</p>
+                            <p style="font-size: 13px;">{{module?.largeur}}</p>
+                          </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                      </div>
+
+                      <div class="row" style="margin-bottom: 15px;">
+                        <div class="col">
+                          <div class="bloc-info">
+                            <p class="title-info">Projet</p>
+                            <p style="font-size: 13px;"><span *ngIf="projet">{{projet?.projet}}</span> <span *ngIf="!projet">Non affecté</span></p>
+                          </div>
+                        </div>
+
+                        <div class="col">
+                          <div class="bloc-info">
+                            <p class="title-info">Bâtiment</p>
+                            <p style="font-size: 13px;">{{module?.batiment}}</p>
+                          </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                      </div>
+
+                      <div class="bloc-info">
+                        <div class="row">
+                          <div class="col">
+                           <p class="title-info">
+                             Plan principal
+                           </p>
+                          </div>
+                          <div class="col">
+                           <div align="right" style="position:relative;bottom:17px;">
+                             <button mat-icon-button color="primary" matTooltip="Ouvrir" *ngIf="module?.plan" (click)="openDialogFile(module.chemin,'pdf')"><mat-icon fontIcon="attach_file"></mat-icon></button>
+                             <input type="file" class="file-input" accept='.pdf' (change)="onFileSelectedPlanImage($event,'plan')" #fileUpload3>
+                             <button mat-icon-button color="warn" matTooltip="Supprimer" (click)="fileUpload3.click()" *ngIf="module?.plan"><mat-icon fontIcon="delete_forever"></mat-icon></button>
+                           </div>
+                          </div>
+                       </div>
+                        <p *ngIf="module?.plan" style="text-align: center;">
+                          <iframe [src]="src"></iframe>
+                        </p>
+                        <p *ngIf="!module?.plan" style="font-size: 13px;">Pas de plan</p>
+
+                      </div>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
             </div>
-            <div class="col-2">
-              <div class="vl"></div>
-            </div>
-            <div class="col-5">
-              <div class="bloc-info">
-                <p class="title-info">Hauteur(mm)</p>
-                <p>{{module?.hauteur}}</p>
-                <mat-divider></mat-divider>
-              </div>
-              <div class="bloc-info">
-                <p class="title-info">Longueur(mm)</p>
-                <p>{{module?.longueur}}</p>
-                <mat-divider></mat-divider>
-              </div>
-              <div class="bloc-info">
-                <p class="title-info">Largeur(mm)</p>
-                <p>{{module?.largeur}}</p>
-                <mat-divider></mat-divider>
-              </div>
-
-              <div class="bloc-info">
-                <p class="title-info">Fournisseur</p>
-                <p><span *ngIf="entreprise">{{entreprise?.societe}}</span> <span *ngIf="!entreprise">Pas de fournisseur</span></p>
-                <mat-divider></mat-divider>
-              </div>
-
-              <div class="bloc-info">
-                <p class="title-info">Projet</p>
-                <p><span *ngIf="projet">{{projet?.projet}}</span> <span *ngIf="!projet">Non affecté</span></p>
-                <mat-divider></mat-divider>
-              </div>
-
-              <div class="bloc-info">
-                <p class="title-info">
-                  Plan <button mat-mini-fab color="primary" matTooltip="Ouvrir" *ngIf="module?.plan"  (click)="openDialogFile(module.chemin,'pdf')"><i class="fa-solid fa-link"></i></button>
-                </p>
-                <p *ngIf="module?.plan">
-                  <iframe [src]="src"></iframe>
-                </p>
-                <p *ngIf="!module?.plan">Pas de plan</p>
-
-              </div>
-            </div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
-
-    <div *ngIf="user?.user?.role!='user'">
-      <mat-card>
-        <mat-card-content>
-          <form [formGroup]="moduleForm" style="margin-bottom: 35px;" *ngIf="module">
-            <div class="row" style="margin-bottom: 15px;">
-              <div class="col">
-                <label class="label-entreprise">Nom du module <small class="error_field">*</small></label>
-                <input type="text" formControlName="nom" [(ngModel)]="module.nom" class="form-control input-entreprise" required>
-                <div *ngIf="moduleForm.get('nom').hasError(champ_validation.input[0].type) && (moduleForm.get('nom').dirty || moduleForm.get('nom').touched)">
-                  <p class="error_field">{{champ_validation.input[0].message}}</p>
-                </div>
-              </div>
-              <div class="col">
-                <label class="label-entreprise">Etat <small class="error_field">*</small></label>
-                <select formControlName="type" [(ngModel)]="module.type" class="form-control input-entreprise" required>
-                   <option value="Stock">Stock</option>
-                   <option value="En préparation">En préparation</option>
-                   <option value="Prêt à partir">Prêt à partir</option>
-                   <option value="Site">Site</option>
-                </select>
-                <div *ngIf="moduleForm.get('type').hasError(champ_validation.input[0].type) && (moduleForm.get('type').dirty || moduleForm.get('type').touched)">
-                  <p class="error_field">{{champ_validation.input[0].message}}</p>
-                </div>
-              </div>
-            </div><!--div-->
-
-            <div class="row" style="margin-bottom: 15px;">
-              <div class="col">
-                <label class="label-entreprise">Marque</label>
-                <input type="text" formControlName="marque" [(ngModel)]="module.marque" class="form-control input-entreprise">
-              </div><!--div-->
-            </div>
-            <div class="row" style="margin-bottom: 15px;">
-              <div class="col">
-                <label class="label-entreprise">Hauteur(mm)</label>
-                <input type="text" formControlName="hauteur" [(ngModel)]="module.hauteur" class="form-control input-entreprise">
-              </div><!--div-->
-              <div class="col">
-                <label class="label-entreprise">Largeur(mm)</label>
-                <input type="text" formControlName="largeur" [(ngModel)]="module.largeur" class="form-control input-entreprise">
-              </div>
-              <div class="col">
-                <label class="label-entreprise">Longueur(mm)</label>
-                <input type="text" formControlName="longueur" [(ngModel)]="module.longueur" class="form-control input-entreprise">
-              </div>
-            </div>
-
-            <div class="row" style="margin-bottom: 15px;">
-              <div class="col">
-                <label class="label-entreprise">Fournisseur</label>
-                <select formControlName="entreprise" [(ngModel)]="entreprise._id" class="form-control input-entreprise" *ngIf="entreprise?._id">
-                   <option [value]="ent?._id" *ngFor="let ent of entreprises">{{ent?.societe}}</option>
-                </select>
-                <select formControlName="entreprise"  class="form-control input-entreprise" *ngIf="!entreprise?._id">
-                  <option [value]="ent?._id" *ngFor="let ent of entreprises">{{ent?.societe}}</option>
-               </select>
-              </div><!--div-->
-           </div>
-
-            <div class="row" style="margin-bottom: 15px;">
-              <div class="col">
-                <label class="label-entreprise">Projet</label>
-                <select formControlName="projet" [(ngModel)]="projet._id" class="form-control input-entreprise" *ngIf="projet?._id">
-                   <option [value]="p?._id" *ngFor="let p of projets">{{p?.projet}}</option>
-                </select>
-                <select formControlName="projet" class="form-control input-entreprise" *ngIf="!projet?._id">
-                  <option [value]="p?._id" *ngFor="let p of projets">{{p?.projet}}</option>
-               </select>
-              </div><!--div-->
-              <div class="col">
-                <label class="label-entreprise">Position</label>
-                <input type="text" formControlName="position" [(ngModel)]="module.position" class="form-control input-entreprise">
-              </div>
-           </div>
-
-           <div class="row" style="margin-bottom: 15px;">
-            <div class="col">
-             <label class="label-entreprise">Photo <span *ngIf="imageName">({{imageName}})</span></label>
-             <br/>
-             <div *ngIf="isSize">
-              <mat-chip disabled color="accent">{{isSize}}</mat-chip>
+          </mat-tab>
+          <mat-tab label="Position">
+             <div style="padding-top: 20px;">
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2618.9424619896226!2d2.5078592757248828!3d48.97361967134805!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e614ffd9cdbd83%3A0x3d2bb5dfb174bbe!2s18%20Pl.%20des%20Nymph%C3%A9as%2C%2093420%20Villepinte%2C%20France!5e0!3m2!1sfr!2ssn!4v1702491580081!5m2!1sfr!2ssn" width="1200" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
              </div>
-             <input type="file" class="file-input" accept='image/*' (change)="onFileSelectedImage($event)" #fileUpload>
-             <button type="button" (click)="fileUpload.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> charger la photo</button>
-            </div>
-            <div class="col">
-             <label class="label-entreprise">Plan <span *ngIf="fileName">({{fileName}})</span></label>
-             <br/>
-             <input type="file" class="file-input" accept='.pdf' (change)="onFileSelectedPlan($event)" #fileUpload1>
-             <button type="button" (click)="fileUpload1.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> charger le plan</button>
-            </div>
-         </div>
+          </mat-tab>
+          <mat-tab label="Formulaire"  *ngIf="user?.user?.role!='user'">
+            <div style="padding-top: 20px;">
+              <mat-card>
+                <mat-card-content>
+                  <form [formGroup]="moduleForm" style="margin-bottom: 35px;" *ngIf="module">
+                    <div class="row" style="margin-bottom: 15px;">
+                      <div class="col">
+                        <label class="label-entreprise">Nom du module <small class="error_field">*</small></label>
+                        <input type="text" formControlName="nom" [(ngModel)]="module.nom" class="form-control input-entreprise" required>
+                        <div *ngIf="moduleForm.get('nom').hasError(champ_validation.input[0].type) && (moduleForm.get('nom').dirty || moduleForm.get('nom').touched)">
+                          <p class="error_field">{{champ_validation.input[0].message}}</p>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <label class="label-entreprise">Etat <small class="error_field">*</small></label>
+                        <select formControlName="type" [(ngModel)]="module.type" class="form-control input-entreprise" required>
+                           <option value="Stock">Stock</option>
+                           <option value="En préparation">En préparation</option>
+                           <option value="Prêt à partir">Prêt à partir</option>
+                           <option value="Site">Site</option>
+                        </select>
+                        <div *ngIf="moduleForm.get('type').hasError(champ_validation.input[0].type) && (moduleForm.get('type').dirty || moduleForm.get('type').touched)">
+                          <p class="error_field">{{champ_validation.input[0].message}}</p>
+                        </div>
+                      </div>
+                    </div><!--div-->
 
-          </form>
-          <div align="right" *ngIf="module">
-            <button mat-button routerLink="/modulaires" class="btn-entreprise-back" style="margin-right: 10px;"><i class="fa-solid fa-chevron-left"></i> ANNULER</button>
-            <button mat-button  class="btn-entreprise" (click)="updateModule()"  [disabled]="moduleForm.invalid">VALIDER</button>
-          </div>
-        </mat-card-content>
-      </mat-card>
+                    <div class="row" style="margin-bottom: 15px;">
+                      <div class="col">
+                        <label class="label-entreprise">Marque</label>
+                        <input type="text" formControlName="marque" [(ngModel)]="module.marque" class="form-control input-entreprise">
+                      </div><!--div-->
+                    </div>
+                    <div class="row" style="margin-bottom: 15px;">
+                      <div class="col">
+                        <label class="label-entreprise">Hauteur(mm)</label>
+                        <input type="text" formControlName="hauteur" [(ngModel)]="module.hauteur" class="form-control input-entreprise">
+                      </div><!--div-->
+                      <div class="col">
+                        <label class="label-entreprise">Largeur(mm)</label>
+                        <input type="text" formControlName="largeur" [(ngModel)]="module.largeur" class="form-control input-entreprise">
+                      </div>
+                      <div class="col">
+                        <label class="label-entreprise">Longueur(mm)</label>
+                        <input type="text" formControlName="longueur" [(ngModel)]="module.longueur" class="form-control input-entreprise">
+                      </div>
+                    </div>
+
+                    <div class="row" style="margin-bottom: 15px;">
+                      <div class="col">
+                        <label class="label-entreprise">Projet</label>
+                        <select formControlName="projet" [(ngModel)]="projet._id" class="form-control input-entreprise" *ngIf="projet?._id">
+                           <option [value]="p?._id" *ngFor="let p of projets">{{p?.projet}}</option>
+                        </select>
+                        <select formControlName="projet" class="form-control input-entreprise" *ngIf="!projet?._id">
+                          <option [value]="p?._id" *ngFor="let p of projets">{{p?.projet}}</option>
+                       </select>
+                      </div><!--div-->
+                      <div class="col">
+                        <label class="label-entreprise">Bâtiment</label>
+                        <input type="text" formControlName="batiment" [(ngModel)]="module.batiment" class="form-control input-entreprise">
+                      </div>
+                      <div class="col">
+                        <label class="label-entreprise">Position</label>
+                        <input type="text" formControlName="position" [(ngModel)]="module.position" class="form-control input-entreprise">
+                      </div>
+                   </div>
+
+                   <div class="row" style="margin-bottom: 15px;">
+                    <div class="col">
+                     <label class="label-entreprise">Image principale <span *ngIf="imageName">({{imageName}})</span></label>
+                     <br/>
+                     <div *ngIf="isSize">
+                      <mat-chip disabled color="accent">{{isSize}}</mat-chip>
+                     </div>
+                     <input type="file" class="file-input" accept='image/*' (change)="onFileSelectedImage($event)" #fileUpload>
+                     <button type="button" (click)="fileUpload.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> charger la photo</button>
+                    </div>
+                    <div class="col">
+                     <label class="label-entreprise">Plan principal <span *ngIf="fileName">({{fileName}})</span></label>
+                     <br/>
+                     <input type="file" class="file-input" accept='.pdf' (change)="onFileSelectedPlan($event)" #fileUpload1>
+                     <button type="button" (click)="fileUpload1.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> charger le plan</button>
+                    </div>
+                 </div>
+
+                  </form>
+                  <div align="right" *ngIf="module">
+                    <button mat-button routerLink="/modulaires" class="btn-entreprise-back" style="margin-right: 10px;"><i class="fa-solid fa-chevron-left"></i> ANNULER</button>
+                    <button mat-button  class="btn-entreprise" (click)="updateModule()"  [disabled]="moduleForm.invalid">VALIDER</button>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+
+          </mat-tab>
+          <mat-tab label="Plans">
+            <div style="padding-top: 20px;">
+              <app-plan-module></app-plan-module>
+            </div>
+          </mat-tab>
+          <mat-tab label="Historiques">
+            <div style="padding-top: 20px;">
+              <app-historique-module></app-historique-module>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+
     </div>
+
+
 
 
 

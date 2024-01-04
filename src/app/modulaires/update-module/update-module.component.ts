@@ -48,6 +48,8 @@ export class UpdateModuleComponent implements OnInit {
   entreprises:any=[];
   entreprise:any;
   user:any;
+  url:any;
+  urlMessage:any;
 
 
   constructor(
@@ -104,7 +106,6 @@ export class UpdateModuleComponent implements OnInit {
 
       this.module = res.message;
       this.projet = res.message?.project;
-      this.entreprise = res.message?.entreprise;
       console.log("Module", res);
       if(this.module.chemin){
         this.src=this.getSafeUrl(this.module.chemin);
@@ -115,7 +116,7 @@ export class UpdateModuleComponent implements OnInit {
           type:[this.module.type,Validators.required],
           position:[this.module.position,null],
           projet:[this.projet?._id,null],
-          entreprise:[this.entreprise?._id,null],
+          batiment:[this.module.batiment,null],
           largeur:[this.module.largeur,null],
           hauteur:[this.module.hauteur,null],
           longueur:[this.module.longueur,null],
@@ -145,6 +146,12 @@ export class UpdateModuleComponent implements OnInit {
     this.fileName = this.file.name;
   }
 
+  onFileSelectedPlanImage(event,type){
+    this.file = event.target.files[0];
+    this.fileName = this.file.name;
+    this.updatePlanAndImage(this.file, type);
+  }
+
   openSnackBar(message){
     this.snackbar.open(message, 'Fermer',{
       duration:6000,
@@ -166,7 +173,7 @@ export class UpdateModuleComponent implements OnInit {
       })
   }
 
-  updateModule(){
+ updateModule(){
 
     this.onLoadForm=true;
     this.form={};
@@ -185,7 +192,7 @@ export class UpdateModuleComponent implements OnInit {
     formData.append("hauteur", this.form.hauteur);
     formData.append("largeur", this.form.largeur);
     formData.append("longueur", this.form.longueur);
-    formData.append("entreprise",this.form.entreprise);
+    formData.append("batiment",this.form.batiment);
 
     return this.http.put(`${environment.BASE_API_URL}/module/${this.idModule}`,formData,{
      reportProgress:true,
@@ -210,6 +217,46 @@ export class UpdateModuleComponent implements OnInit {
        return throwError(err.message);
      })
    ).toPromise();
+ }
+
+ updatePlanAndImage(file,type){
+
+  this.onLoadForm=true;
+  this.form={};
+  this.progress=1;
+
+  if(type=="plan"){
+    this.url='module/plan';
+    this.urlMessage="Plan principal a été modifié avec succès"
+  }else{
+    this.url='module/image';
+    this.urlMessage="Image principale a été modifié avec succès";
+  }
+  const formData:FormData=new FormData();
+  formData.append("uploadfile", file);
+  return this.http.put(`${environment.BASE_API_URL}/${this.url}/${this.idModule}`,formData,{
+    reportProgress:true,
+    observe:'events'
+  })
+  .pipe(
+    map((event:any)=>{
+      if (event.type === HttpEventType.UploadProgress){
+        this.progress = Math.round((75/event.total)*event.loaded);
+      }else if(event.type==HttpEventType.Response){
+        this.message=this.urlMessage;
+        this.openSnackBar(this.message)
+        this.progress = 100;
+        this.getModule();
+      }
+    }),
+    catchError((err:any)=>{
+      this.progress=null;
+      this.message="Une erreur s'est produite veuillez réessayer.";
+      this.openSnackBar(this.message);
+      return throwError(err.message);
+    })
+  ).toPromise();
+
  }
 
  getSafeUrl(url){

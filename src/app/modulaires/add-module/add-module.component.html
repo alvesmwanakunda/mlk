@@ -62,14 +62,6 @@
               </div>
             </div>
 
-            <div class="row" style="margin-bottom: 15px;">
-              <div class="col">
-                <label class="label-entreprise">Fournisseur</label>
-                <select formControlName="entreprise" class="form-control input-entreprise">
-                   <option [value]="ent?._id" *ngFor="let ent of entreprises">{{ent?.societe}}</option>
-                </select>
-              </div><!--div-->
-           </div>
 
             <div class="row" style="margin-bottom: 15px;">
               <div class="col">
@@ -79,6 +71,10 @@
                 </select>
               </div><!--div-->
               <div class="col">
+                <label class="label-entreprise">Bâtiment</label>
+                <input type="text" formControlName="batiment" class="form-control input-entreprise">
+              </div>
+              <div class="col">
                 <label class="label-entreprise">Position</label>
                 <input type="text" formControlName="position" class="form-control input-entreprise">
               </div>
@@ -86,7 +82,7 @@
 
            <div class="row" style="margin-bottom: 15px;">
             <div class="col">
-             <label class="label-entreprise">Photo <span *ngIf="imageName">({{imageName}})</span></label>
+             <label class="label-entreprise">Image principale <span *ngIf="imageName">({{imageName}})</span></label>
              <br/>
              <div *ngIf="isSize">
               <mat-chip disabled color="accent">{{isSize}}</mat-chip>
@@ -95,7 +91,7 @@
              <button type="button" (click)="fileUpload.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> charger la photo</button>
             </div>
             <div class="col">
-             <label class="label-entreprise">Plan <span *ngIf="fileName">({{fileName}})</span></label>
+             <label class="label-entreprise">Plan principal <span *ngIf="fileName">({{fileName}})</span></label>
              <br/>
              <input type="file" class="file-input" accept='.pdf' (change)="onFileSelectedPlan($event)" #fileUpload1>
              <button type="button" (click)="fileUpload1.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> charger le plan</button>

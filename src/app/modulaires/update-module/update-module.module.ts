@@ -7,6 +7,8 @@ import { NavbarModule } from '../../navbar/navbar.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ViewerStandarModule } from 'src/app/viewer-standar/viewer-standar.module';
 import { PositionModule } from '../position/position.module';
+import { HistoriqueModuleModule } from '../historique-module/historique-module.module';
+import { PlanModuleModule } from '../plan-module/plan-module.module';
 
 
 @NgModule({
@@ -19,7 +21,9 @@ import { PositionModule } from '../position/position.module';
     FormsModule,
     ReactiveFormsModule,
     ViewerStandarModule,
-    PositionModule
+    PositionModule,
+    HistoriqueModuleModule,
+    PlanModuleModule
   ]
 })
 export class UpdateModuleModule { }

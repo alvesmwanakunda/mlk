@@ -65,7 +65,7 @@ export class AddModuleComponent implements OnInit {
       type:['',Validators.required],
       position:['',null],
       projet:['',null],
-      entreprise:['',null],
+      batiment:['',null],
       largeur:['',null],
       hauteur:['',null],
       longueur:['',null],
@@ -138,7 +138,7 @@ export class AddModuleComponent implements OnInit {
      formData.append("hauteur", this.form.hauteur);
      formData.append("largeur", this.form.largeur);
      formData.append("longueur", this.form.longueur);
-     formData.append("entreprise",this.form.entreprise);
+     formData.append("batiment",this.form.batiment);
 
      return this.http.post(`${environment.BASE_API_URL}/module`,formData,{
       reportProgress:true,

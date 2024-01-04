@@ -153,6 +153,6 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
 
 
   getModule(id){
-    this.router.navigate(['modulaire', id]);
+    this.router.navigate(['modulaires', id]);
   }
 }

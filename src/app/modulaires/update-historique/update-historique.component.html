@@ -1,0 +1,14 @@
+<mat-dialog-content class="mat-typography">
+  <div  style="padding-top: 30px;">
+    <form [formGroup]="historiqueForm" *ngIf="historique">
+      <mat-form-field class="example-full-width">
+        <mat-label>Commentaire</mat-label>
+        <textarea matInput formControlName="observation" [(ngModel)]="historique.observation"></textarea>
+      </mat-form-field>
+    </form>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+   <button mat-button mat-dialog-close>Fermer</button>
+   <button mat-button (click)="updateModule()" cdkFocusInitial style=" background: #09895a !important;color:#fff">Valider</button>
+</mat-dialog-actions>

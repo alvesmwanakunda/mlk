@@ -14,4 +14,5 @@ export interface Modules {
   largeur:string;
   longueur:string;
   marque:string;
+  batiment:string;
 }

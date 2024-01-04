@@ -8,6 +8,7 @@ import { DeleteModuleModule } from './delete-module/delete-module.module';
 import { AuthGuardService } from '../shared/services/auth-guard.service';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 
+
 export function jwtOptionsFactory() {
   return {
     tokenGetter: () => {

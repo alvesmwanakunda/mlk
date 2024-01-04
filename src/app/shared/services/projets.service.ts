@@ -78,6 +78,51 @@ export class ProjetsService {
     return this.httpClient.get(`${environment.BASE_API_URL}/count/modules`);
   }
 
+  // Historique
+
+  public addHistorique(id, body){
+    return this.httpClient.post(`${environment.BASE_API_URL}/historique/save/${id}`,body)
+  }
+
+  public updateHistorique(id, body){
+    return this.httpClient.put(`${environment.BASE_API_URL}/historique/update/${id}`,body)
+  }
+
+  public allHistorique(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/historique/list/${id}`)
+  }
+
+  public getHistorique(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/historique/get/${id}`)
+  }
+
+  public deleteHistorique(id){
+    return this.httpClient.delete(`${environment.BASE_API_URL}/historique/${id}`)
+  }
+
+  // Plan
+
+  public addPlanModule(id, body){
+    return this.httpClient.post(`${environment.BASE_API_URL}/plan/module/${id}`,body)
+  }
+
+  public updatePlanModule(id, body){
+    return this.httpClient.put(`${environment.BASE_API_URL}/plan/module/${id}`,body)
+  }
+
+  public getPlanModule(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/plan/module/${id}`)
+  }
+
+  public deletePlanModule(id){
+    return this.httpClient.delete(`${environment.BASE_API_URL}/plan/module/${id}`)
+  }
+
+  public getAllPlanModule(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/plans/module/${id}`)
+  }
+
+
 
   // Devis
     public addDevis(devis){
