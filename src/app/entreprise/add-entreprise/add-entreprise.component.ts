@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { EntreprisesService } from '../../shared/services/entreprises.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { CountriesService } from 'src/app/shared/services/countries.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../shared/services/auth.service';
+import { EntreprisesService } from 'src/app/shared/services/entreprises.service';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CustomValidators } from "ng2-validation";
 import { startWith, map, Observable } from 'rxjs';
+import { CountriesService } from 'src/app/shared/services/countries.service';
 
 @Component({
   selector: 'app-add-entreprise',
@@ -13,131 +15,118 @@ import { startWith, map, Observable } from 'rxjs';
 })
 export class AddEntrepriseComponent implements OnInit {
 
-  firstFormGroup:FormGroup;
-  secondFormGroup:FormGroup;
-  threeFormGroup:FormGroup;
-  myPaysControl = new FormControl();
-  indicatifControl = new FormControl();
-  filteredOptions:string[]=[];
-  fileName:any;
-  file:File;
-  entrepriseFormError:any;
   onLoadForm:boolean=false;
-  form1:any;
-  form2:any;
-  form3:any;
-  message:any;
-  countries: any=[];
-  selectedImage: string;
+  isForm:boolean=false;
+  signupForm: FormGroup;
+  submitted = false;
+  signupFormErrors:any;
+  errorMessage: string="";
+  user:any;
+  emailExists: boolean;
+  societeExists: boolean;
+  indicatifControl = new FormControl();
   codeFiltres:Observable<any[]>;
-  paysFiltres:Observable<any[]>
+  paysFiltres:Observable<any[]>;
+  countries:any=[];
+  indicatifs:any=[];
+  isEntr:boolean=false;
+  message:any;
+  pays="France";
+  code="+33"
 
 
   constructor(
     private _formBuilder:FormBuilder,
-    private entrepriseService:EntreprisesService,
     private _snackBar:MatSnackBar,
     private countryService:CountriesService,
     private router: Router,
+    private authService: AuthService,
+    private entrepriseService: EntreprisesService
   ){
-    this.entrepriseFormError={
-      societe:{},
+    this.signupFormErrors={
+      nom:{},
       email:{},
-      telephone:{},
-      indicatif:{},
     };
   }
-  champ_validation={
-    societe:[
-      {
-        type:"required",
-        message:"Ce champ est obligatoire"
-      }
-    ],
+
+  account_validation={
     email:[
       {
-        type:"required",
-        message:"Ce champ est obligatoire"
+        type: "required",
+        message: "Adresse E-mail est obligatoire",
       },{
         type:"pattern",
-        message:"Veuillez respecter le format email xxx@ccc.com"
+        message: "Veuillez respecter le format email.",
+      }
+    ],
+    input:[
+      {
+        type:"required",
+        message:"Veuillez indiquer ce champ"
       }
     ],
     telephone:[
       {
         type:"required",
-        message:"Ce champ est obligatoire"
-      }
-    ],
-    indicatif:[
+        message:"Veuillez indiquer votre téléphone"
+      },
       {
-        type:"required",
-        message:"Ce champ est obligatoire"
+        type:"pattern",
+        message:"Numéro de téléphone incorrect"
       }
     ],
-    genre:[
-      {
-        type:"required",
-        message:"Ce champ est obligatoire"
+  };
+
+  onFormValuesChanged(){
+    for (const field in this.signupFormErrors){
+      if(!this.signupFormErrors.hasOwnProperty(field)){
+        continue;
       }
-    ],
-    nom:[
-      {
-        type:"required",
-        message:"Ce champ est obligatoire"
+      this.signupFormErrors[field]={};
+      const control = this.signupForm.get(field);
+      if(control && control.dirty && !control.valid){
+        this.signupForm[field] = control.errors;
       }
-    ],
-    prenom:[
-      {
-        type:"required",
-        message:"Ce champ est obligatoire"
-      }
-    ],
+    }
   }
+
   ngOnInit(){
-    this.firstFormGroup=this._formBuilder.group({
-      societe:['',Validators.required],
-      commercial:['',null],
-      siren:['',null],
-      juridique:['',null],
-      siret:['',null],
-      tva:['',null],
-      activite:['',null]
+    this.isForm = false;
+    this.errorMessage="";
+    this.getContry();
+
+    this.signupForm = new FormGroup({
+      email: new FormControl("",[
+        Validators.required,
+        Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")
+      ]),
+      nom:new FormControl("",[Validators.required]),
+      societe:new FormControl("",[Validators.required]),
+      company:new FormControl("",[Validators.required]),
+      prenom:new FormControl("",[Validators.required]),
+      genre:new FormControl("",[Validators.required]),
+      siret:new FormControl("",null),
+      rue:new FormControl("",[Validators.required]),
+      postal:new FormControl("",[Validators.required]),
+      numero:new FormControl("",null),
+      pays:new FormControl("",[Validators.required]),
+      indicatif:new FormControl("",[Validators.required]),
+      telephone:new FormControl("",[Validators.required, Validators.pattern("[0-9 ]{9}")]),
+
     });
-    this.secondFormGroup=this._formBuilder.group({
-      pays:['',null],
-      adresse:['',null],
-      ville:['',null],
-      rue:['',null],
-      numero:['',null],
-      postal:['',null],
-      site:['',null],
-      genre:['',Validators.required],
-      email:['',Validators.required],
-      indicatif:['',Validators.required],
-      telephone:['',Validators.required],
-      nom:['',Validators.required],
-      prenom:['',Validators.required]
-    });
-    this.threeFormGroup=this._formBuilder.group({
-      corps_act:['',null],
-      corps_etat:['',null],
-      fournisseur:['',null]
-    });
-    this.codeFiltres = this.secondFormGroup.get('indicatif').valueChanges.pipe(
+    this.codeFiltres = this.signupForm.get('indicatif').valueChanges.pipe(
       startWith(''),
       map((val) => this.filterCode(val))
     );
-    this.paysFiltres = this.secondFormGroup.get('pays').valueChanges.pipe(
+    this.paysFiltres = this.signupForm.get('pays').valueChanges.pipe(
       startWith(''),
       map((val) => this.filterPays(val))
     );
-    this.getContry();
   }
 
   filterCode(value:string){
     const filtre = value.toLowerCase();
-    return this.countries.filter(option=> option.dial_code.toLocaleLowerCase().includes(filtre));
+    return this.indicatifs.filter(option=> option.dial_code.toLocaleLowerCase().includes(filtre));
   }
 
   filterPays(value:string){
@@ -145,68 +134,45 @@ export class AddEntrepriseComponent implements OnInit {
     return this.countries.filter(option=> option.name.toLocaleLowerCase().includes(filtre));
   }
 
-  onFileSelected(event){
-    this.file = event.target.files[0];
-    this.fileName = this.file.name;
-    const reader = new FileReader();
-    reader.onload=()=>{
-      this.selectedImage = reader.result as string;
-    };
-    reader.readAsDataURL(this.file);
+  checkEmail(){
+    const email = this.signupForm.get('email').value;
+    this.authService.checkEmail(email).subscribe((response:{exists:boolean})=>{
+      this.emailExists = response.exists;
+    })
+  }
 
+  checkSociete(){
+    const societe = this.signupForm.get('societe').value;
+    this.entrepriseService.checkSociete(societe).subscribe((response:{exists:boolean})=>{
+      this.societeExists = response.exists;
+    })
   }
 
   addEntreprise():void{
-
-     this.onLoadForm=true;
-
-      this.form1={};
-      this.form2={};
-      this.form3={};
-      const formData:FormData=new FormData();
-      Object.assign(this.form1, this.firstFormGroup.value);
-      Object.assign(this.form2, this.secondFormGroup.value);
-      Object.assign(this.form3, this.threeFormGroup.value)
-
-      formData.append("uploadfile", this.file);
-      formData.append("societe", this.form1.societe);
-      formData.append("commercial", this.form1.commercial);
-      formData.append("siren", this.form1.siren);
-      formData.append("siret", this.form1.siret);
-      formData.append("juridique", this.form1.juridique);
-      formData.append("tva", this.form1.tva);
-      formData.append("activite", this.form1.activite);
-      formData.append("pays", this.form2.pays);
-      formData.append("adresse", this.form2.adresse);
-      formData.append("ville", this.form2.ville);
-      formData.append("rue", this.form2.rue);
-      formData.append("numero", this.form2.numero);
-      formData.append("postal", this.form2.postal);
-      formData.append("site", this.form2.site);
-      formData.append("email", this.form2.email);
-      formData.append("indicatif", this.form2.indicatif);
-      formData.append("telephone", this.form2.telephone);
-      formData.append("nom", this.form2.nom);
-      formData.append("prenom", this.form2.prenom);
-      formData.append("genre", this.form2.genre);
-      formData.append("corps_act", this.form3.corps_act);
-      formData.append("corps_etat", this.form3.corps_etat);
-      formData.append("fournisseur", this.form3.fournisseur);
-
-      this.entrepriseService.addEntreprise(formData).subscribe((res:any)=>{
-
-        try {
-             this.onLoadForm=false;
-             this.message='Entreprise a été ajouté avec succès';
-             this.openSnackBar(this.message);
-             this.router.navigate(["detail/entreprise",res.message._id]);
-        } catch (error) {
-            this.onLoadForm=false;
-            this.message="Une erreur s'est produite veuillez réessayer.";
+    this.onLoadForm = true;
+    this.submitted = true;
+    this.user = {};
+    let login= {};
+    console.log("Form", this.signupForm);
+    if(!this.signupForm.invalid){
+        Object.assign(this.user, this.signupForm.value);
+        this.entrepriseService.newAddEntreprise(this.user).subscribe((res:any)=>{
+        console.log("Response", res);
+        if(!res.success){
+          this.signupFormErrors["email"].found = true;
+          this.message="Une erreur s'est produite veuillez réessayer.";
+          this.openSnackBar(this.message);
+        }else{
+            this.isForm=true;
+            this.message='Entreprise a été ajouté avec succès';
             this.openSnackBar(this.message);
+            this.router.navigate(["detail/entreprise",res.entreprise._id]);
         }
-
-      })
+        this.onLoadForm = false;
+      });
+    }else{
+      this.onLoadForm=false;
+    }
   }
 
   openSnackBar(message){
@@ -219,6 +185,7 @@ export class AddEntrepriseComponent implements OnInit {
     this.countryService.getCountries().subscribe(
       (data)=>{
         this.countries = data;
+        this.indicatifs = data;
       },
       (error)=>{
         console.log(error);

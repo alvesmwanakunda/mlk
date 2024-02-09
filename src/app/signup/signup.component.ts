@@ -140,14 +140,14 @@ export class SignupComponent implements OnInit {
       genre:new FormControl("",[Validators.required]),
       siret:new FormControl("",null),
       rue:new FormControl("",[Validators.required]),
-      adresse:new FormControl("",[Validators.required]),
+      //adresse:new FormControl("",[Validators.required]),
       postal:new FormControl("",[Validators.required]),
       numero:new FormControl("",null),
       pays:new FormControl("",[Validators.required]),
       indicatif:new FormControl("",[Validators.required]),
       telephone:new FormControl("",[Validators.required, Validators.pattern("[0-9 ]{9}")]),
-      //password:password,
-      //confirmpassword: confirmpassword,
+      password:password,
+      confirmpassword: confirmpassword,
       cgu: new FormControl("", [CustomValidators.equal(true)])
     });
     this.codeFiltres = this.signupForm.get('indicatif').valueChanges.pipe(

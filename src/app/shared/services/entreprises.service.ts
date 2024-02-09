@@ -14,8 +14,16 @@ export class EntreprisesService {
      return this.httpClient.post(`${environment.BASE_API_URL}/entreprise`,entreprise);
   }
 
+  public newAddEntreprise(entreprise){
+    return this.httpClient.post(`${environment.BASE_API_URL}/add/entreprise`,entreprise);
+ }
+
   public getEntreprise(idEntreprise){
     return this.httpClient.get(`${environment.BASE_API_URL}/entreprise/${idEntreprise}`)
+  }
+
+  public checkSociete(societe){
+    return this.httpClient.get(`${environment.BASE_API_URL}/check-societe/${societe}`,);
   }
 
   public getAllEntreprise(){

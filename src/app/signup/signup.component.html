@@ -76,7 +76,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-8">
+          <div class="col">
             <mat-form-field class="example-full-width">
               <mat-label>Rue</mat-label>
               <input matInput formControlName="rue" required>
@@ -85,7 +85,9 @@
               <p class="error_field">{{account_validation.input[0].message}}</p>
             </div>
           </div>
-          <div class="col-4">
+        </div>
+        <div class="row">
+          <div class="col">
             <mat-form-field class="example-full-width">
               <mat-label>Numéro</mat-label>
               <input matInput formControlName="numero">
@@ -94,8 +96,17 @@
               <p class="error_field">{{account_validation.input[0].message}}</p>
             </div>
           </div>
+          <div class="col">
+            <mat-form-field class="example-full-width">
+              <mat-label>Code postal</mat-label>
+              <input matInput formControlName="postal" required>
+            </mat-form-field>
+            <div *ngIf="signupForm.get('postal').hasError(account_validation.input[0].type) && ((signupForm.get('postal').dirty || signupForm.get('postal').touched) ||  (submitted))">
+              <p class="error_field">{{account_validation.input[0].message}}</p>
+            </div>
+          </div>
         </div>
-        <div class="row">
+        <!--<div class="row">
           <div class="col-4">
             <mat-form-field class="example-full-width">
               <mat-label>Code postal</mat-label>
@@ -114,7 +125,7 @@
               <p class="error_field">{{account_validation.input[0].message}}</p>
             </div>
           </div>
-        </div>
+        </div>-->
         <div>
           <mat-form-field class="example-full-width">
             <mat-label>Pays</mat-label>
@@ -169,7 +180,7 @@
           </div>
           <div *ngIf="emailExists" class="error_field">Cet email est déjà utilisé.</div>
         </div>
-        <!--<div class="row">
+        <div class="row">
           <div class="col">
             <mat-form-field class="example-full-width">
               <mat-label>Mot de passe</mat-label>
@@ -206,7 +217,7 @@
                 </mat-icon>
             </mat-form-field>
           </div>
-        </div>-->
+        </div>
         <!--<div>
           <mat-form-field class="example-full-width">
             <mat-label>Message</mat-label>
