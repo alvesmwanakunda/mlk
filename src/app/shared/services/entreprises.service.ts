@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment} from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EntreprisesService {
+
 
   constructor(private readonly httpClient: HttpClient) { }
 
@@ -40,6 +42,10 @@ export class EntreprisesService {
 
   public updateEntreprisePhoto(idEntreprise, entreprise){
     return this.httpClient.put(`${environment.BASE_API_URL}/entreprise/file/${idEntreprise}`,entreprise)
+  }
+
+  public searchApiFrance(body){
+    return this.httpClient.get(`${environment.BASE_API_URL}/api-search/${body}`)
   }
 
 

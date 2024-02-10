@@ -62,23 +62,26 @@
                 <div *ngIf="signupForm.get('company').hasError(account_validation.input[0].type) && ((signupForm.get('company').dirty || signupForm.get('company').touched) ||  (submitted))">
                   <p class="error_field">{{account_validation.input[0].message}}</p>
                 </div>
+                <div style="margin-bottom: 15px;">
+                   <button mat-button type="button" (click)="openDialogSearch()" style="color:#04189f;font-weight: normal;">Si l'entreprise se trouve en France, veuillez cliquer ici pour la chercher.</button>
+                </div>
               </div>
           </div>
             <div class="row">
               <div class="col">
                 <mat-form-field class="example-full-width">
                   <mat-label>Sociéte</mat-label>
-                  <input matInput formControlName="societe" (input)="checkSociete()" required>
+                  <input matInput formControlName="societe" [(ngModel)]="searchObject.societe" (input)="checkSociete()" required>
                 </mat-form-field>
                 <div *ngIf="signupForm.get('societe').hasError(account_validation.input[0].type) && ((signupForm.get('societe').dirty || signupForm.get('societe').touched) ||  (submitted))">
                   <p class="error_field">{{account_validation.input[0].message}}</p>
                 </div>
-                <div *ngIf="societeExists" class="error_field">L'entreprise existe déjà.</div>
+                <div *ngIf="societeExists" class="error_field" style="margin-bottom: 15px;">L'entreprise existe déjà.</div>
               </div>
               <div class="col">
                 <mat-form-field class="example-full-width">
                   <mat-label>Siret</mat-label>
-                  <input matInput formControlName="siret">
+                  <input matInput formControlName="siret" [(ngModel)]="searchObject.siret">
                 </mat-form-field>
                 <!--<div *ngIf="signupForm.get('siret').hasError(account_validation.input[0].type) && ((signupForm.get('siret').dirty || signupForm.get('siret').touched) ||  (submitted))">
                   <p class="error_field">{{account_validation.input[0].message}}</p>
@@ -89,7 +92,7 @@
               <div class="col">
                 <mat-form-field class="example-full-width">
                   <mat-label>Rue</mat-label>
-                  <input matInput formControlName="rue" required>
+                  <input matInput formControlName="rue" [(ngModel)]="searchObject.rue" required>
                 </mat-form-field>
                 <div *ngIf="signupForm.get('rue').hasError(account_validation.input[0].type) && ((signupForm.get('rue').dirty || signupForm.get('rue').touched) ||  (submitted))">
                   <p class="error_field">{{account_validation.input[0].message}}</p>
@@ -99,7 +102,7 @@
               <div class="col">
                 <mat-form-field class="example-full-width">
                   <mat-label>Numéro</mat-label>
-                  <input matInput formControlName="numero">
+                  <input matInput formControlName="numero" [(ngModel)]="searchObject.numero">
                 </mat-form-field>
                 <div *ngIf="signupForm.get('numero').hasError(account_validation.input[0].type) && ((signupForm.get('numero').dirty || signupForm.get('numero').touched) ||  (submitted))">
                   <p class="error_field">{{account_validation.input[0].message}}</p>
@@ -108,7 +111,7 @@
               <div class="col">
                 <mat-form-field class="example-full-width">
                   <mat-label>Code postal</mat-label>
-                  <input matInput formControlName="postal" required>
+                  <input matInput formControlName="postal" [(ngModel)]="searchObject.postal" required>
                 </mat-form-field>
                 <div *ngIf="signupForm.get('postal').hasError(account_validation.input[0].type) && ((signupForm.get('postal').dirty || signupForm.get('postal').touched) ||  (submitted))">
                   <p class="error_field">{{account_validation.input[0].message}}</p>

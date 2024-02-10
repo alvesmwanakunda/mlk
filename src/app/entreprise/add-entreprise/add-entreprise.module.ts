@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EntreprisesService } from '../../shared/services/entreprises.service';
 import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import { CountriesService } from 'src/app/shared/services/countries.service';
+import { SearchEntrepriseModule } from '../search-entreprise/search-entreprise.module';
 
 
 
@@ -21,6 +22,7 @@ import { CountriesService } from 'src/app/shared/services/countries.service';
     NavbarModule,
     FormsModule,
     ReactiveFormsModule,
+    SearchEntrepriseModule
   ],
   providers:[
     EntreprisesService,

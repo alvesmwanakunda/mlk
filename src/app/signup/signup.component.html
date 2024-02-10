@@ -59,11 +59,12 @@
           <div class="col">
             <mat-form-field class="example-full-width">
               <mat-label>Sociéte</mat-label>
-              <input matInput formControlName="societe" required>
+              <input matInput formControlName="societe" (input)="checkSociete()" required>
             </mat-form-field>
             <div *ngIf="signupForm.get('societe').hasError(account_validation.input[0].type) && ((signupForm.get('societe').dirty || signupForm.get('societe').touched) ||  (submitted))">
               <p class="error_field">{{account_validation.input[0].message}}</p>
             </div>
+            <div *ngIf="societeExists" class="error_field">L'entreprise existe déjà.</div>
           </div>
           <div class="col">
             <mat-form-field class="example-full-width">

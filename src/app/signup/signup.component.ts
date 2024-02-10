@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../shared/services/auth.service';
+import { EntreprisesService } from '../shared/services/entreprises.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from "ng2-validation";
 import { startWith, map, Observable } from 'rxjs';
@@ -26,6 +27,7 @@ export class SignupComponent implements OnInit {
   errorMessage: string="";
   user:any;
   emailExists: boolean;
+  societeExists: boolean;
   indicatifControl = new FormControl();
   codeFiltres:Observable<any[]>;
   paysFiltres:Observable<any[]>;
@@ -42,6 +44,7 @@ export class SignupComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private countryService: CountriesService,
+    private entrepriseService: EntreprisesService
   ) {
     this.signupFormErrors={
       nom:{},
@@ -175,6 +178,13 @@ export class SignupComponent implements OnInit {
     const email = this.signupForm.get('email').value;
     this.authService.checkEmail(email).subscribe((response:{exists:boolean})=>{
       this.emailExists = response.exists;
+    })
+  }
+
+  checkSociete(){
+    const societe = this.signupForm.get('societe').value;
+    this.entrepriseService.checkSociete(societe).subscribe((response:{exists:boolean})=>{
+      this.societeExists = response.exists;
     })
   }
 

@@ -1,0 +1,48 @@
+<mat-dialog-content class="mat-typography">
+  <div style="padding-top: 30px;">
+
+    <form [formGroup]="searchForm" novalidate>
+      <div class="row">
+        <div class="col-8">
+          <mat-form-field class="example-full-width">
+            <mat-label>Rechercher par nom,siren,adresse etc..</mat-label>
+            <input matInput formControlName="valeur" required>
+          </mat-form-field>
+          <div *ngIf="searchForm.get('valeur').hasError(validation.input[0].type) && ((searchForm.get('valeur').dirty || searchForm.get('valeur').touched) ||  (submitted))">
+            <p class="error_field">{{validation.input[0].message}}</p>
+          </div>
+        </div>
+        <div class="col-4">
+          <button mat-stroked-button type="submit" (click)="searchEntreprise()" style="position:relative;top: 11px;">Rechercher</button>
+        </div>
+      </div>
+    </form>
+    <mat-divider></mat-divider>
+
+    <table class="table" style="--bs-body-bg: transparent !important">
+      <thead>
+        <tr style="background-color: #53A3DB !important;">
+          <th scope="col" style="color: #fff !important;font-size: 13px;">ENTREPRISE</th>
+          <th scope="col" style="color: #fff !important;font-size: 13px;">SIREN</th>
+          <th scope="col" style="color: #fff !important;font-size: 13px;">SIRET</th>
+          <th scope="col" style="color: #fff !important;font-size: 13px;">ADRESSE</th>
+          <th scope="col" style="color: #fff !important;font-size: 13px;">ACTION</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of listEntreprise; let i=index">
+          <td style="font-size:12px">{{p?.nom_complet}}</td>
+          <td style="font-size:12px">{{p?.siren}}</td>
+          <td style="font-size:12px">{{p?.siege?.siret}}</td>
+          <td style="font-size:12px">{{p?.siege?.adresse}}</td>
+          <td>
+            <button mat-stroked-button color="primary" type="button" (click)="selectEntreprise(i)">Valider</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+   <button mat-button mat-dialog-close>Fermer</button>
+</mat-dialog-actions>

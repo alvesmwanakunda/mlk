@@ -7,6 +7,9 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { CustomValidators } from "ng2-validation";
 import { startWith, map, Observable } from 'rxjs';
 import { CountriesService } from 'src/app/shared/services/countries.service';
+import { SearchEntrepriseComponent } from '../search-entreprise/search-entreprise.component';
+import { MatDialog } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-add-entreprise',
@@ -33,6 +36,13 @@ export class AddEntrepriseComponent implements OnInit {
   message:any;
   pays="France";
   code="+33"
+  searchObject={
+    societe:"",
+    siret:"",
+    rue:"",
+    postal:"",
+    numero:""
+  }
 
 
   constructor(
@@ -41,7 +51,8 @@ export class AddEntrepriseComponent implements OnInit {
     private countryService:CountriesService,
     private router: Router,
     private authService: AuthService,
-    private entrepriseService: EntreprisesService
+    private entrepriseService: EntreprisesService,
+    public dialog: MatDialog
   ){
     this.signupFormErrors={
       nom:{},
@@ -145,6 +156,21 @@ export class AddEntrepriseComponent implements OnInit {
     const societe = this.signupForm.get('societe').value;
     this.entrepriseService.checkSociete(societe).subscribe((response:{exists:boolean})=>{
       this.societeExists = response.exists;
+    })
+  }
+
+  openDialogSearch(){
+    const dialogRef = this.dialog.open(SearchEntrepriseComponent,{width:'60%'});
+    dialogRef.afterClosed().subscribe((result:any)=>{
+       if(result){
+        this.searchObject = result;
+        if(this.searchObject){
+          this.entrepriseService.checkSociete(this.searchObject?.societe).subscribe((response:{exists:boolean})=>{
+            this.societeExists = response.exists;
+          })
+        }
+        //console.log("searchObject",this.searchObject);
+       }
     })
   }
 
