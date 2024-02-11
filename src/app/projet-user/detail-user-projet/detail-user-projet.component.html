@@ -85,7 +85,7 @@
                 <a *ngIf="projet?.plan" href="{{projet?.plan}}" target="_blank" style="color: #737477">Plan 3D</a>
                 <a  *ngIf="!projet?.plan" routerLink="/plan3d" target="_blank" style="color: #737477">Plan 3D</a>
               </button>
-              <button class="nav-link tabprojet" id="nav-metre-tab" data-bs-toggle="tab" data-bs-target="#nav-metre" type="button" role="tab" aria-controls="nav-metre" aria-selected="false">Factures</button>
+              <!--<button class="nav-link tabprojet" id="nav-metre-tab" data-bs-toggle="tab" data-bs-target="#nav-metre" type="button" role="tab" aria-controls="nav-metre" aria-selected="false">Factures</button>-->
               <button class="nav-link tabprojet" id="nav-pre-tab" data-bs-toggle="tab" data-bs-target="#nav-pre" type="button" role="tab" aria-controls="nav-pre" aria-selected="false">Devis</button>
             </div>
           </nav>
@@ -99,9 +99,9 @@
             <div class="tab-pane fade" id="nav-piece" role="tabpanel" aria-labelledby="nav-piece-tab" tabindex="0">
               <app-box-projet></app-box-projet>
             </div>
-            <div class="tab-pane fade" id="nav-metre" role="tabpanel" aria-labelledby="nav-metre-tab" tabindex="0">
+            <!--<div class="tab-pane fade" id="nav-metre" role="tabpanel" aria-labelledby="nav-metre-tab" tabindex="0">
               <app-facture-projet></app-facture-projet>
-            </div>
+            </div>-->
             <div class="tab-pane fade" id="nav-pre" role="tabpanel" aria-labelledby="nav-pre-tab" tabindex="0">
               <app-devis-projet></app-devis-projet>
             </div>

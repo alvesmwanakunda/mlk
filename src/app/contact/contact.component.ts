@@ -71,7 +71,7 @@ export class ContactComponent implements OnInit,AfterViewInit {
 
   getAllContactByEntreprise(){
 
-    this.contactService.getContactAllEntreprise(this.user?.user?.entreprise).subscribe((data:any)=>{
+    this.contactService.getAllContact().subscribe((data:any)=>{
       this.contacts = data.message;
       this.dataSource.data = data.message.map((data)=>({
        id:data._id,

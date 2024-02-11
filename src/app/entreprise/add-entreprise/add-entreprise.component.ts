@@ -25,7 +25,6 @@ export class AddEntrepriseComponent implements OnInit {
   signupFormErrors:any;
   errorMessage: string="";
   user:any;
-  emailExists: boolean;
   societeExists: boolean;
   indicatifControl = new FormControl();
   codeFiltres:Observable<any[]>;
@@ -55,7 +54,6 @@ export class AddEntrepriseComponent implements OnInit {
     public dialog: MatDialog
   ){
     this.signupFormErrors={
-      nom:{},
       email:{},
     };
   }
@@ -111,11 +109,8 @@ export class AddEntrepriseComponent implements OnInit {
         Validators.required,
         Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")
       ]),
-      nom:new FormControl("",[Validators.required]),
       societe:new FormControl("",[Validators.required]),
       company:new FormControl("",[Validators.required]),
-      prenom:new FormControl("",[Validators.required]),
-      genre:new FormControl("",[Validators.required]),
       siret:new FormControl("",null),
       rue:new FormControl("",[Validators.required]),
       postal:new FormControl("",[Validators.required]),
@@ -141,16 +136,15 @@ export class AddEntrepriseComponent implements OnInit {
   }
 
   filterPays(value:string){
+    let filterPays = this.countries.find(element => element.name == value);
+    if(filterPays != undefined){
+       console.log("pays filter", filterPays);
+       this.code=filterPays.dial_code;
+    }
     const filtre = value.toLowerCase();
     return this.countries.filter(option=> option.name.toLocaleLowerCase().includes(filtre));
   }
 
-  checkEmail(){
-    const email = this.signupForm.get('email').value;
-    this.authService.checkEmail(email).subscribe((response:{exists:boolean})=>{
-      this.emailExists = response.exists;
-    })
-  }
 
   checkSociete(){
     const societe = this.signupForm.get('societe').value;
@@ -212,6 +206,7 @@ export class AddEntrepriseComponent implements OnInit {
       (data)=>{
         this.countries = data;
         this.indicatifs = data;
+        console.log("countries", this.countries);
       },
       (error)=>{
         console.log(error);

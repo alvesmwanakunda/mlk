@@ -47,9 +47,6 @@ export class UpdateEntrepriseComponent implements OnInit {
      });
      this.entrepriseFormError={
       societe:{},
-      prenom:{},
-      genre:{},
-      nom:{},
       email:{},
       telephone:{},
       indicatif:{},
@@ -100,8 +97,6 @@ export class UpdateEntrepriseComponent implements OnInit {
     });
     this.secondFormGroup=this._formBuilder.group({
       pays:['',null],
-      adresse:['',null],
-      ville:['',null],
       rue:['',null],
       numero:['',null],
       postal:['',null],
@@ -109,9 +104,9 @@ export class UpdateEntrepriseComponent implements OnInit {
       email:['',Validators.required],
       indicatif:['',Validators.required],
       telephone:['',Validators.required],
-      genre:['',Validators.required],
-      nom:['',Validators.required],
-      prenom:['',Validators.required]
+      genre:[''],
+      nom:[''],
+      prenom:['']
     });
     this.threeFormGroup=this._formBuilder.group({
       corps_act:['',null],

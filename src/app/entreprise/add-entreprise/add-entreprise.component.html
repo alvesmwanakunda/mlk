@@ -20,36 +20,6 @@
         <div class="col">
 
           <form [formGroup]="signupForm" novalidate>
-            <div style="margin-bottom: 5px;">
-              <p style="font-weight: bold;">Civilité*</p>
-              <mat-radio-group aria-label="Select an option" formControlName="genre" required>
-                <mat-radio-button value="Mr">Monsieur</mat-radio-button>
-                <mat-radio-button value="Mme">Madame</mat-radio-button>
-              </mat-radio-group>
-              <div *ngIf="signupForm.get('genre').hasError(account_validation.input[0].type) && ((signupForm.get('genre').dirty || signupForm.get('genre').touched) ||  (submitted))">
-                <p class="error_field">{{account_validation.input[0].message}}</p>
-              </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                  <mat-form-field class="example-full-width">
-                    <mat-label>Nom</mat-label>
-                    <input matInput formControlName="nom" required>
-                  </mat-form-field>
-                  <div *ngIf="signupForm.get('nom').hasError(account_validation.input[0].type) && ((signupForm.get('nom').dirty || signupForm.get('nom').touched) ||  (submitted))">
-                    <p class="error_field">{{account_validation.input[0].message}}</p>
-                  </div>
-                </div>
-                <div class="col">
-                  <mat-form-field class="example-full-width">
-                    <mat-label>Prénom</mat-label>
-                    <input matInput formControlName="prenom" required>
-                  </mat-form-field>
-                  <div *ngIf="signupForm.get('prenom').hasError(account_validation.input[0].type) && ((signupForm.get('prenom').dirty || signupForm.get('prenom').touched) ||  (submitted))">
-                    <p class="error_field">{{account_validation.input[0].message}}</p>
-                  </div>
-                </div>
-            </div>
             <div class="row">
               <div class="col">
                 <mat-form-field class="example-full-width">
@@ -62,12 +32,54 @@
                 <div *ngIf="signupForm.get('company').hasError(account_validation.input[0].type) && ((signupForm.get('company').dirty || signupForm.get('company').touched) ||  (submitted))">
                   <p class="error_field">{{account_validation.input[0].message}}</p>
                 </div>
-                <div style="margin-bottom: 15px;">
-                   <button mat-button type="button" (click)="openDialogSearch()" style="color:#04189f;font-weight: normal;">Si l'entreprise se trouve en France, veuillez cliquer ici pour la chercher.</button>
-                </div>
               </div>
           </div>
-            <div class="row">
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-label>Pays</mat-label>
+                <input  matInput type="text" formControlName="pays" [(ngModel)]="pays" [matAutocomplete]="auto" required>
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let pays of paysFiltres | async" [value]="pays.name">
+                    {{pays?.emoji}} {{pays?.name}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+              <div *ngIf="signupForm.get('pays').hasError(account_validation.input[0].type) && ((signupForm.get('pays').dirty || signupForm.get('pays').touched) ||  (submitted))">
+                <p class="error_field">{{account_validation.input[0].message}}</p>
+              </div>
+              <div style="margin-bottom: 15px;" *ngIf="pays=='France'">
+                <button mat-raised-button color="primary" type="button" (click)="openDialogSearch()" style="font-weight: normal;">Rechercher l'entreprise</button>
+             </div>
+            </div>
+
+            <div class="col-2">
+              <mat-form-field class="example-full-width">
+                <input type="text" matInput formControlName="indicatif" [(ngModel)]="code" [matAutocomplete]="autoCode" required>
+                <mat-autocomplete #autoCode="matAutocomplete">
+                  <mat-option *ngFor="let code of codeFiltres | async" [value]="code?.dial_code">
+                    {{code?.dial_code}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+              <div *ngIf="signupForm.get('indicatif').hasError(account_validation.input[0].type) && ((signupForm.get('indicatif').dirty || signupForm.get('indicatif').touched) ||  (submitted))">
+                <p class="error_field">{{account_validation.input[0].message}}</p>
+              </div>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-label>Téléphone</mat-label>
+                <input matInput formControlName="telephone" appPhoneMask required>
+              </mat-form-field>
+              <div *ngIf="signupForm.get('telephone').hasError(account_validation.telephone[0].type) && ((signupForm.get('telephone').dirty || signupForm.get('telephone').touched) || (submitted))">
+                <p class="error_field">{{account_validation.telephone[0].message}}</p>
+              </div>
+              <div *ngIf="signupForm.get('telephone').hasError(account_validation.telephone[1].type) && ((signupForm.get('telephone').dirty || signupForm.get('telephone').touched) || (submitted))">
+                <p class="error_field">{{account_validation.telephone[1].message}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
               <div class="col">
                 <mat-form-field class="example-full-width">
                   <mat-label>Sociéte</mat-label>
@@ -118,52 +130,11 @@
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col">
-                <mat-form-field class="example-full-width">
-                  <mat-label>Pays</mat-label>
-                  <input  matInput type="text" formControlName="pays" [(ngModel)]="pays" [matAutocomplete]="auto" required>
-                  <mat-autocomplete #auto="matAutocomplete">
-                    <mat-option *ngFor="let pays of paysFiltres | async" [value]="pays.name">
-                      {{pays?.emoji}} {{pays?.name}}
-                    </mat-option>
-                  </mat-autocomplete>
-                </mat-form-field>
-                <div *ngIf="signupForm.get('pays').hasError(account_validation.input[0].type) && ((signupForm.get('pays').dirty || signupForm.get('pays').touched) ||  (submitted))">
-                  <p class="error_field">{{account_validation.input[0].message}}</p>
-                </div>
-              </div>
 
-              <div class="col-2">
-                <mat-form-field class="example-full-width">
-                  <input type="text" matInput formControlName="indicatif" [(ngModel)]="code" [matAutocomplete]="autoCode" required>
-                  <mat-autocomplete #autoCode="matAutocomplete">
-                    <mat-option *ngFor="let code of codeFiltres | async" [value]="code?.dial_code">
-                      {{code?.dial_code}}
-                    </mat-option>
-                  </mat-autocomplete>
-                </mat-form-field>
-                <div *ngIf="signupForm.get('indicatif').hasError(account_validation.input[0].type) && ((signupForm.get('indicatif').dirty || signupForm.get('indicatif').touched) ||  (submitted))">
-                  <p class="error_field">{{account_validation.input[0].message}}</p>
-                </div>
-              </div>
-              <div class="col">
-                <mat-form-field class="example-full-width">
-                  <mat-label>Téléphone</mat-label>
-                  <input matInput formControlName="telephone" appPhoneMask required>
-                </mat-form-field>
-                <div *ngIf="signupForm.get('telephone').hasError(account_validation.telephone[0].type) && ((signupForm.get('telephone').dirty || signupForm.get('telephone').touched) || (submitted))">
-                  <p class="error_field">{{account_validation.telephone[0].message}}</p>
-                </div>
-                <div *ngIf="signupForm.get('telephone').hasError(account_validation.telephone[1].type) && ((signupForm.get('telephone').dirty || signupForm.get('telephone').touched) || (submitted))">
-                  <p class="error_field">{{account_validation.telephone[1].message}}</p>
-                </div>
-              </div>
-            </div>
             <div>
               <mat-form-field class="example-full-width">
                 <mat-label>Email</mat-label>
-                <input matInput type="email" formControlName="email" (input)="checkEmail()" required>
+                <input matInput type="email" formControlName="email"  required>
               </mat-form-field>
               <div *ngIf="signupForm.get('email').hasError(account_validation.email[0].type) && ((signupForm.get('email').dirty || signupForm.get('email').touched) ||  (submitted))">
                 <p class="error_field">{{account_validation.email[0].message}}</p>
@@ -171,7 +142,6 @@
               <div *ngIf="signupForm.get('email').hasError(account_validation.email[1].type) && ((signupForm.get('email').dirty || signupForm.get('email').touched) ||  (submitted))">
                 <p class="error_field">{{account_validation.email[1].message}}</p>
               </div>
-              <div *ngIf="emailExists" class="error_field">Cet email est déjà utilisé.</div>
             </div>
 
             <div class="text-center">

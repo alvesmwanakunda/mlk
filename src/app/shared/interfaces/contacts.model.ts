@@ -5,7 +5,10 @@ export interface Contacts {
   email: string;
   phone: string;
   indicatif: string;
-  projet:[];
-  entreprise:[];
+  projet:string;
+  entreprise:{
+    societe: string,
+    _id:string
+  };
   poste:string;
 }

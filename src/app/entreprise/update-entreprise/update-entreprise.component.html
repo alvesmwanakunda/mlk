@@ -28,7 +28,7 @@
 
                       <div style="margin-bottom: 15px;">
                         <label class="label-entreprise">Entreprise <small class="error_field">*</small></label>
-                        <input type="text" formControlName="societe" [(ngModel)]="entreprise.societe" class="form-control input-entreprise" required>
+                        <input type="text" formControlName="societe" [(ngModel)]="entreprise.societe" class="form-control input-entreprise" readonly required>
                         <div *ngIf="firstFormGroup.get('societe').hasError(champ_validation.input[0].type) && (firstFormGroup.get('societe').dirty || firstFormGroup.get('societe').touched)">
                           <p class="error_field">{{champ_validation.input[0].message}}</p>
                         </div>
@@ -52,7 +52,7 @@
                       </div><!--div-->
                       <div style="margin-bottom: 15px;">
                         <label class="label-entreprise">Nº SIRET</label>
-                        <input type="text" formControlName="siret" [(ngModel)]="entreprise.siret" class="form-control input-entreprise">
+                        <input type="text" formControlName="siret" [(ngModel)]="entreprise.siret"  class="form-control input-entreprise">
                       </div><!--div-->
                       <div style="margin-bottom: 15px;">
                         <label class="label-entreprise">Nº TVA</label>
@@ -86,10 +86,7 @@
                           </mat-option>
                         </mat-autocomplete>
                       </div><!--div-->
-                      <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Ville de l'entreprise</label>
-                        <input type="text" formControlName="ville" [(ngModel)]="entreprise.ville" class="form-control input-entreprise">
-                      </div><!--div-->
+
                       <div style="margin-bottom: 15px;">
                         <label class="label-entreprise">Code Postal</label>
                         <input type="text" formControlName="postal" [(ngModel)]="entreprise.postal" class="form-control input-entreprise">
@@ -109,12 +106,9 @@
                     </div><!--col-->
                     <div class="col">
 
+
                       <div style="margin-bottom: 15px;">
                         <label class="label-entreprise">Adresse de l'entreprise</label>
-                        <input type="text" formControlName="adresse" [(ngModel)]="entreprise.adresse" class="form-control input-entreprise">
-                      </div><!--div-->
-                      <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Rue de l'entreprise</label>
                         <input type="text" formControlName="rue" [(ngModel)]="entreprise.rue" class="form-control input-entreprise">
                       </div><!--div-->
 
@@ -152,24 +146,24 @@
                   </div>
                   <div class="row" style="margin-bottom: 15px;">
                     <div class="col-2">
-                      <label class="label-entreprise">Genre <small class="error_field">*</small></label>
+                      <label class="label-entreprise">Genre</label>
                       <select class="form-select input-entreprise" formControlName="genre" [(ngModel)]="entreprise.genre" aria-label="Default select example">
                         <option value="Mr">Mr</option>
                         <option value="Mme">Mme</option>
                       </select>
-                      <div *ngIf="secondFormGroup.get('genre').hasError(champ_validation.input[0].type) && (secondFormGroup.get('genre').dirty || secondFormGroup.get('genre').touched)">
+                      <!--<div *ngIf="secondFormGroup.get('genre').hasError(champ_validation.input[0].type) && (secondFormGroup.get('genre').dirty || secondFormGroup.get('genre').touched)">
                         <p class="error_field">{{champ_validation.input[0].message}}</p>
-                      </div>
+                      </div>-->
                     </div>
                     <div class="col">
-                      <label class="label-entreprise">Nom responsable <small class="error_field">*</small></label>
+                      <label class="label-entreprise">Nom responsable</label>
                       <input type="text" formControlName="nom" [(ngModel)]="entreprise.nom" class="form-control input-entreprise">
                       <div *ngIf="secondFormGroup.get('nom').hasError(champ_validation.input[0].type) && (secondFormGroup.get('nom').dirty || secondFormGroup.get('nom').touched)">
                         <p class="error_field">{{champ_validation.input[0].message}}</p>
                       </div>
                     </div>
                     <div class="col">
-                      <label class="label-entreprise">Prénom responsable <small class="error_field">*</small></label>
+                      <label class="label-entreprise">Prénom responsable</label>
                     <input type="text" formControlName="prenom" [(ngModel)]="entreprise.prenom" class="form-control input-entreprise">
                     <div *ngIf="secondFormGroup.get('prenom').hasError(champ_validation.input[0].type) && (secondFormGroup.get('prenom').dirty || secondFormGroup.get('prenom').touched)">
                       <p class="error_field">{{champ_validation.input[0].message}}</p>

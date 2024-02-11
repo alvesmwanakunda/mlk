@@ -8,6 +8,7 @@ import { ProjetsService } from 'src/app/shared/services/projets.service';
 import { EntreprisesService } from 'src/app/shared/services/entreprises.service';
 import { ContactsService } from 'src/app/shared/services/contacts.service';
 import { Contacts } from 'src/app/shared/interfaces/contacts.model';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 
 
@@ -30,15 +31,17 @@ export class AddContactComponent implements OnInit {
   contact:Contacts;
   message:any;
   user:any;
+  emailExists: boolean;
+
 
   constructor(
     private _formBuilder:FormBuilder,
     private countryService:CountriesService,
     private router: Router,
     private _snackBar:MatSnackBar,
-    private projetService:ProjetsService,
     private entrepriseService:EntreprisesService,
-    private contactService: ContactsService
+    private contactService: ContactsService,
+    private authService: AuthService,
   ){
     this.contactFormError={
       nom:{},
@@ -46,32 +49,50 @@ export class AddContactComponent implements OnInit {
     this.user = JSON.parse(localStorage.getItem('user'));
   }
   champ_validation={
-    nom:[
+    email:[
+      {
+        type: "required",
+        message: "Adresse E-mail est obligatoire",
+      },{
+        type:"pattern",
+        message: "Veuillez respecter le format email.",
+      }
+    ],
+    type:[
       {
         type:"required",
         message:"Ce champ est obligatoire"
+      }
+    ],
+    phone:[
+      {
+        type:"required",
+        message:"Veuillez indiquer votre téléphone"
+      },
+      {
+        type:"pattern",
+        message:"Numéro de téléphone incorrect"
       }
     ],
   }
 
   ngOnInit(){
 
-    this.contactFormGroup=this._formBuilder.group({
-      nom:['',Validators.required],
-      prenom:[''],
-      email:[''],
-      phone:[''],
-      indicatif:[''],
-      projet:[[]],
-      entreprise:[[]],
-      poste:[''],
+    this.contactFormGroup=new FormGroup({
+      nom:new FormControl("",[Validators.required]),
+      prenom:new FormControl("",[Validators.required]),
+      genre:new FormControl("",[Validators.required]),
+      email:new FormControl("",[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
+      phone:new FormControl("",[Validators.required,Validators.pattern("[0-9 ]{9}")]),
+      indicatif:new FormControl("",[Validators.required]),
+      entreprise:new FormControl("",[Validators.required]),
+      poste:new FormControl("",null),
     });
     this.codeFiltres = this.contactFormGroup.get('indicatif').valueChanges.pipe(
       startWith(''),
       map((val) => this.filterCode(val))
     );
     this.getAllEntreprises();
-    this.getAllProjet();
     this.getContry();
   }
 
@@ -90,19 +111,16 @@ export class AddContactComponent implements OnInit {
     })
   }
 
-  getAllProjet(){
-    this.projetService.getAllProjet().subscribe((data:any)=>{
-       this.projets = data.message;
-    },
-    (error) => {
-      console.log("Erreur lors de la récupération des données", error);
-    }
-    );
-  }
-
   openSnackBar(message){
     this._snackBar.open(message, 'Fermer',{
       duration:6000,
+    })
+  }
+
+  checkEmail(){
+    const email = this.contactFormGroup.get('email').value;
+    this.authService.checkEmail(email).subscribe((response:{exists:boolean})=>{
+      this.emailExists = response.exists;
     })
   }
 
@@ -119,10 +137,8 @@ export class AddContactComponent implements OnInit {
 
   addContact():void{
    this.onLoadForm=true;
-
-   if(this.contactFormGroup.valid){
+   if(!this.contactFormGroup.invalid){
       this.contact = this.contactFormGroup.value;
-      if(this.user?.user?.role=="admin"){
         this.contactService.addContact(this.contact).subscribe((res:any)=>{
           this.onLoadForm=false;
           this.message='Contact a été ajouté avec succès';
@@ -134,22 +150,9 @@ export class AddContactComponent implements OnInit {
           this.openSnackBar(this.message);
           console.log(error);
         })
-      }else{
-        this.contactService.addContactEntreprise(this.contact, this.user?.user?.entreprise).subscribe((res:any)=>{
-          this.onLoadForm=false;
-          this.message='Contact a été ajouté avec succès';
-          this.openSnackBar(this.message);
-          this.router.navigate(["contact"]);
-        },(error)=>{
-          this.onLoadForm=false;
-          this.message="Une erreur s'est produite veuillez réessayer.";
-          this.openSnackBar(this.message);
-          console.log(error);
-        })
-      }
-
    }
-
+    else{
+      console.log("Erreur validation",  this.contactFormGroup.value);
+    }
   }
-
 }

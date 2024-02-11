@@ -49,10 +49,20 @@ export class UpdateContactComponent implements OnInit {
     this.user = JSON.parse(localStorage.getItem('user'));
   }
   champ_validation={
-    nom:[
+    type:[
       {
         type:"required",
         message:"Ce champ est obligatoire"
+      }
+    ],
+    phone:[
+      {
+        type:"required",
+        message:"Veuillez indiquer votre téléphone"
+      },
+      {
+        type:"pattern",
+        message:"Numéro de téléphone incorrect"
       }
     ],
   }
@@ -69,15 +79,14 @@ export class UpdateContactComponent implements OnInit {
       this.contact=data.message;
       if(this.contact){
 
-        this.contactFormGroup=this._formBuilder.group({
-          nom:[this.contact.nom,Validators.required],
-          prenom:[this.contact.prenom,null],
-          email:[this.contact.email,null],
-          phone:[this.contact.phone,null],
-          indicatif:[this.contact.indicatif,null],
-          projet:[this.contact.projet,null],
-          entreprise:[this.contact.entreprise,null],
-          poste:[this.contact.poste, null],
+        this.contactFormGroup=new FormGroup({
+          nom:new FormControl(this.contact.nom,[Validators.required]),
+          prenom:new FormControl(this.contact.prenom,[Validators.required]),
+          //email:new FormControl(this.contact.email,[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
+          phone:new FormControl(this.contact.phone,[Validators.required,Validators.pattern("[0-9 ]{9}")]),
+          indicatif:new FormControl(this.contact.indicatif,[Validators.required]),
+          //entreprise:new FormControl("",[Validators.required]),
+          poste:new FormControl(this.contact.poste,null),
         });
         this.codeFiltres = this.contactFormGroup.get('indicatif').valueChanges.pipe(
           startWith(''),
