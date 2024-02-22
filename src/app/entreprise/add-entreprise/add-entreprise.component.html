@@ -130,6 +130,47 @@
                 </div>
               </div>
             </div>
+            <div class="row">
+              <div class="col">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Type entreprise</mat-label>
+                  <mat-select matInput formControlName="type_entreprise">
+                     <mat-option value="Privé">Privé</mat-option>
+                     <mat-option value="Public">Public</mat-option>
+                     <mat-option value="Association">Association</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="col">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Source</mat-label>
+                  <mat-select matInput formControlName="source">
+                    <mat-option value="Plateforme Référencement">Plateforme Référencement</mat-option>
+                    <mat-option value="Partenaires">Partenaires</mat-option>
+                    <mat-option value="Bouche à l'oreille">Bouche à l'oreille</mat-option>
+                    <mat-option value="Réseau professionnel">Réseau professionnel</mat-option>
+                    <mat-option value="Salons & Evenements">Salons & Evenements</mat-option>
+                    <mat-option value="Digital">Digital</mat-option>
+                    <mat-option value="Emailing">Emailing</mat-option>
+                    <mat-option value="Containex">Containex</mat-option>
+                    <mat-option value="Tepe">Tepe</mat-option>
+                 </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Categorie societe</mat-label>
+                  <mat-select matInput formControlName="categorie_societe">
+                    <mat-option value="Prospect">Prospect</mat-option>
+                    <mat-option value="Fournisseur">Fournisseur</mat-option>
+                    <mat-option value="Partenaire">Partenaire</mat-option>
+                    <mat-option value="Client">Client</mat-option>
+                    <mat-option value="Autre">Autre</mat-option>
+                 </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
 
             <div>
               <mat-form-field class="example-full-width">
