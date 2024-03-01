@@ -1,0 +1,35 @@
+<form [formGroup]="contactFormGroup">
+
+  <div class="row">
+    <div class="col">
+      <div style="margin-bottom: 15px;">
+        <label class="label-entreprise">Adresse <small class="error_field">*</small></label>
+        <input type="text" formControlName="rue"  [(ngModel)]="contact.rue" class="form-control input-entreprise" required>
+        <div *ngIf="contactFormGroup.get('rue').hasError(champ_validation.type[0].type) && (contactFormGroup.get('rue').dirty || contactFormGroup.get('rue').touched)">
+          <p class="error_field">{{champ_validation.type[0].message}}</p>
+        </div>
+      </div><!--div-->
+    </div><!--col-->
+    <div class="col">
+      <div style="margin-bottom: 15px;">
+        <label class="label-entreprise">Ville <small class="error_field">*</small></label>
+        <input type="text" formControlName="numero"  [(ngModel)]="contact.numero" class="form-control input-entreprise" required>
+        <div *ngIf="contactFormGroup.get('numero').hasError(champ_validation.type[0].type) && (contactFormGroup.get('numero').dirty || contactFormGroup.get('numero').touched)">
+          <p class="error_field">{{champ_validation.type[0].message}}</p>
+        </div>
+      </div><!--div-->
+    </div>
+    <div class="col">
+      <div style="margin-bottom: 15px;">
+        <label class="label-entreprise">Code Postal  <small class="error_field">*</small></label>
+        <input type="text" formControlName="postal" [(ngModel)]="contact.postal"  class="form-control input-entreprise" required>
+        <div *ngIf="contactFormGroup.get('postal').hasError(champ_validation.type[0].type) && (contactFormGroup.get('postal').dirty || contactFormGroup.get('postal').touched)">
+          <p class="error_field">{{champ_validation.type[0].message}}</p>
+        </div>
+      </div><!--div-->
+    </div><!--col-->
+  </div><!--col-->
+</form>
+<div>
+  <button mat-button  class="btn-entreprise" (click)="updateContact()" [disabled]="contactFormGroup.invalid">Enregistrer</button>
+</div>

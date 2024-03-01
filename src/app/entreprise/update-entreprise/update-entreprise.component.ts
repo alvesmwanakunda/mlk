@@ -93,7 +93,10 @@ export class UpdateEntrepriseComponent implements OnInit {
       juridique:['',null],
       siret:['',null],
       tva:['',null],
-      activite:['',null]
+      activite:['',null],
+      type_entreprise:['',null],
+      source:['',null],
+      categorie_societe:['',null],
     });
     this.secondFormGroup=this._formBuilder.group({
       pays:['',null],
@@ -168,6 +171,9 @@ export class UpdateEntrepriseComponent implements OnInit {
      formData.append("numero", this.entreprise.numero);
      formData.append("genre", this.entreprise.genre);
      formData.append("nom", this.entreprise.nom);
+     formData.append("type_entreprise", this.entreprise.type_entreprise);
+     formData.append("source", this.entreprise.source);
+     formData.append("categorie_societe", this.entreprise.categorie_societe);
      formData.append("prenom", this.entreprise.prenom);
      formData.append("commercial", this.entreprise.commercial);
      formData.append("siren", this.entreprise.siren);

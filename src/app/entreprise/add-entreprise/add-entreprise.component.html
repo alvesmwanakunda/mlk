@@ -113,7 +113,7 @@
 
               <div class="col">
                 <mat-form-field class="example-full-width">
-                  <mat-label>Numéro</mat-label>
+                  <mat-label>Ville</mat-label>
                   <input matInput formControlName="numero" [(ngModel)]="searchObject.numero">
                 </mat-form-field>
                 <div *ngIf="signupForm.get('numero').hasError(account_validation.input[0].type) && ((signupForm.get('numero').dirty || signupForm.get('numero').touched) ||  (submitted))">
@@ -155,6 +155,9 @@
                     <mat-option value="Emailing">Emailing</mat-option>
                     <mat-option value="Containex">Containex</mat-option>
                     <mat-option value="Tepe">Tepe</mat-option>
+                    <mat-option value="Autres fournisseurs">Autres fournisseurs</mat-option>
+                    <mat-option value="David BAERT">David BAERT</mat-option>
+                    <mat-option value="Autres">Autres</mat-option>
                  </mat-select>
                 </mat-form-field>
               </div>
@@ -175,7 +178,7 @@
             <div>
               <mat-form-field class="example-full-width">
                 <mat-label>Email</mat-label>
-                <input matInput type="email" formControlName="email"  required>
+                <input matInput type="email" formControlName="email" required>
               </mat-form-field>
               <div *ngIf="signupForm.get('email').hasError(account_validation.email[0].type) && ((signupForm.get('email').dirty || signupForm.get('email').touched) ||  (submitted))">
                 <p class="error_field">{{account_validation.email[0].message}}</p>

@@ -11,4 +11,7 @@ export interface Contacts {
     _id:string
   };
   poste:string;
+  rue:string;
+  numero:string;
+  postal:string;
 }

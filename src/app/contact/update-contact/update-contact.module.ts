@@ -10,6 +10,8 @@ import { EntreprisesService } from 'src/app/shared/services/entreprises.service'
 import { ContactsService } from 'src/app/shared/services/contacts.service';
 import { UpdateContactComponent } from './update-contact.component';
 import { NavbarUserModule } from 'src/app/navbar-user/navbar-user.module';
+import { AdresseFactureModule } from '../adresse-facture/adresse-facture.module';
+import { AdresseLivraisonModule } from '../adresse-livraison/adresse-livraison.module';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import { NavbarUserModule } from 'src/app/navbar-user/navbar-user.module';
     NavbarModule,
     ReactiveFormsModule,
     FormsModule,
-    NavbarUserModule
+    NavbarUserModule,
+    AdresseFactureModule,
+    AdresseLivraisonModule
   ],
   providers:[CountriesService,ProjetsService,EntreprisesService,ContactsService]
 })

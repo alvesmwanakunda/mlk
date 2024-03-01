@@ -8,6 +8,7 @@ import { ProjetsService } from 'src/app/shared/services/projets.service';
 import { EntreprisesService } from 'src/app/shared/services/entreprises.service';
 import { ContactsService } from 'src/app/shared/services/contacts.service';
 import { Contacts } from 'src/app/shared/interfaces/contacts.model';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-update-contact',
@@ -28,6 +29,7 @@ export class UpdateContactComponent implements OnInit {
   message:any;
   idContact:any;
   user:any;
+  emailExists: boolean;
 
   constructor(
     private _formBuilder:FormBuilder,
@@ -37,7 +39,8 @@ export class UpdateContactComponent implements OnInit {
     private projetService:ProjetsService,
     private entrepriseService:EntreprisesService,
     private contactService: ContactsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService,
   ){
     this.route.params.subscribe((data:any)=>{
       this.idContact = data.id
@@ -49,6 +52,15 @@ export class UpdateContactComponent implements OnInit {
     this.user = JSON.parse(localStorage.getItem('user'));
   }
   champ_validation={
+    email:[
+      {
+        type: "required",
+        message: "Adresse E-mail est obligatoire",
+      },{
+        type:"pattern",
+        message: "Veuillez respecter le format email.",
+      }
+    ],
     type:[
       {
         type:"required",
@@ -82,7 +94,7 @@ export class UpdateContactComponent implements OnInit {
         this.contactFormGroup=new FormGroup({
           nom:new FormControl(this.contact.nom,[Validators.required]),
           prenom:new FormControl(this.contact.prenom,[Validators.required]),
-          //email:new FormControl(this.contact.email,[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
+          email:new FormControl(this.contact.email,[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
           phone:new FormControl(this.contact.phone,[Validators.required,Validators.pattern("[0-9 ]{9}")]),
           indicatif:new FormControl(this.contact.indicatif,[Validators.required]),
           //entreprise:new FormControl("",[Validators.required]),
@@ -114,6 +126,13 @@ export class UpdateContactComponent implements OnInit {
       } catch (error) {
          console.log("Erreur entreprise", error);
       }
+    })
+  }
+
+  checkEmail(){
+    const email = this.contactFormGroup.get('email').value;
+    this.authService.checkEmail(email).subscribe((response:{exists:boolean})=>{
+      this.emailExists = response.exists;
     })
   }
 

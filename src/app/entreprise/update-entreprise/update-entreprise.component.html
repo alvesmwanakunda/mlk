@@ -58,7 +58,46 @@
                         <label class="label-entreprise">Nº TVA</label>
                         <input type="text" formControlName="tva" [(ngModel)]="entreprise.tva" class="form-control input-entreprise">
                       </div><!--div-->
+                    </div>
                   </div>
+                  <div class="row">
+                    <div class="col">
+                      <div style="margin-bottom: 15px;">
+                        <label class="label-entreprise">Type entreprise</label>
+                        <select formControlName="type_entreprise"  [(ngModel)]="entreprise.type_entreprise" class="form-control input-entreprise">
+                          <option value="Privé">Privé</option>
+                          <option value="Public">Public</option>
+                          <option value="Association">Association</option>
+                       </select>
+                      </div><!--div-->
+                      <div style="margin-bottom: 15px;">
+                        <label class="label-entreprise">Source</label>
+                        <select  formControlName="source" [(ngModel)]="entreprise.source"  class="form-control input-entreprise">
+                          <option value="Plateforme Référencement">Plateforme Référencement</option>
+                          <option value="Partenaires">Partenaires</option>
+                          <option value="Bouche à l'oreille">Bouche à l'oreille</option>
+                          <option value="Réseau professionnel">Réseau professionnel</option>
+                          <option value="Salons & Evenements">Salons & Evenements</option>
+                          <option value="Digital">Digital</option>
+                          <option value="Emailing">Emailing</option>
+                          <option value="Containex">Containex</option>
+                          <option value="Tepe">Tepe</option>
+                          <option value="Autres fournisseurs">Autres fournisseurs</option>
+                          <option value="David BAERT">David BAERT</option>
+                          <option value="Autres">Autres</option>
+                       </select>
+                      </div><!--div-->
+                      <div style="margin-bottom: 15px;">
+                        <label class="label-entreprise">Categorie societe</label>
+                        <select formControlName="categorie_societe" [(ngModel)]="entreprise.categorie_societe" class="form-control input-entreprise">
+                          <option value="Prospect">Prospect</option>
+                          <option value="Fournisseur">Fournisseur</option>
+                          <option value="Partenaire">Partenaire</option>
+                          <option value="Client">Client</option>
+                          <option value="Autre">Autre</option>
+                       </select>
+                      </div><!--div-->
+                    </div>
                   </div>
                   <div style="margin-bottom: 15px;">
                     <label class="label-entreprise">Activité Principale</label>

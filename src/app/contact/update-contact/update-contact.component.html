@@ -11,7 +11,7 @@
            </div>
         </div>
       </div><!--row-->
-      <div class="row">
+      <div class="row"  style="margin-bottom:30px;">
         <div class="col">
           <hr class="entreprise">
         </div>
@@ -19,67 +19,95 @@
 
       <div class="row" *ngIf="contact">
         <div class="col">
-          <div class="row">
-             <div class="col"><p>Entreprise : {{contact?.entreprise?.societe}}</p></div>
-             <div class="col"><p>E-mail : {{contact?.email}}</div>
-          </div>
-          <mat-divider style="margin-bottom: 25px;"></mat-divider>
 
-          <form [formGroup]="contactFormGroup">
+          <mat-tab-group backgroundColor="primary">
+            <mat-tab label="Contact">
+               <div style="padding-top: 40px;">
+                <form [formGroup]="contactFormGroup">
 
-            <div class="row">
-              <div class="col">
-                <div style="margin-bottom: 15px;">
-                  <label class="label-entreprise">Nom <small class="error_field">*</small></label>
-                  <input type="text" formControlName="nom"  [(ngModel)]="contact.nom" class="form-control input-entreprise" required>
-                  <div *ngIf="contactFormGroup.get('nom').hasError(champ_validation.type[0].type) && (contactFormGroup.get('nom').dirty || contactFormGroup.get('nom').touched)">
-                    <p class="error_field">{{champ_validation.type[0].message}}</p>
-                  </div>
-                </div><!--div-->
-                <div style="margin-bottom: 15px;">
-                  <label class="label-entreprise">Poste</label>
-                  <input type="text" formControlName="poste" [(ngModel)]="contact.poste"  class="form-control input-entreprise" required>
-                </div><!--div-->
-              </div><!--col-->
-              <div class="col">
-                <div style="margin-bottom: 15px;">
-                  <label class="label-entreprise">Prénom  <small class="error_field">*</small></label>
-                  <input type="text" formControlName="prenom" [(ngModel)]="contact.prenom"  class="form-control input-entreprise" required>
-                  <div *ngIf="contactFormGroup.get('prenom').hasError(champ_validation.type[0].type) && (contactFormGroup.get('prenom').dirty || contactFormGroup.get('prenom').touched)">
-                    <p class="error_field">{{champ_validation.type[0].message}}</p>
-                  </div>
-                </div><!--div-->
-                <div class="row" style="margin-bottom: 15px;">
-                  <div class="col-4">
-                    <label class="label-entreprise">Indicatif  <small class="error_field">*</small></label>
-                    <input type="text" formControlName="indicatif" [(ngModel)]="contact.indicatif" [matAutocomplete]="autoCode" class="form-control input-entreprise" required>
-                    <mat-autocomplete #autoCode="matAutocomplete">
-                      <mat-option *ngFor="let code of codeFiltres | async" [value]="code?.dial_code">
-                        {{code?.dial_code}}
-                      </mat-option>
-                    </mat-autocomplete>
-                    <div *ngIf="contactFormGroup.get('indicatif').hasError(champ_validation.type[0].type) && (contactFormGroup.get('indicatif').dirty || contactFormGroup.get('indicatif').touched)">
-                      <p class="error_field">{{champ_validation.type[0].message}}</p>
+                  <div class="row">
+                    <div class="col"><p>Entreprise : {{contact?.entreprise?.societe}}</p></div>
+                    <div class="col">
+                     <div style="margin-bottom: 15px;">
+                       <label class="label-entreprise">E-mail  <small class="error_field">*</small></label>
+                       <input type="text" formControlName="email" [(ngModel)]="contact.email" (input)="checkEmail()"  class="form-control input-entreprise" required>
+                       <div *ngIf="contactFormGroup.get('email').hasError(champ_validation.email[0].type) && (contactFormGroup.get('email').dirty || contactFormGroup.get('email').touched)">
+                         <p class="error_field">{{champ_validation.email[0].message}}</p>
+                       </div>
+                       <div *ngIf="contactFormGroup.get('email').hasError(champ_validation.email[1].type) && (contactFormGroup.get('email').dirty || contactFormGroup.get('email').touched)">
+                         <p class="error_field">{{champ_validation.email[1].message}}</p>
+                       </div>
+                       <div *ngIf="emailExists" class="error_field">Cet email est déjà utilisé.</div>
+                     </div><!--div-->
                     </div>
-                  </div>
-                  <div class="col">
-                    <label class="label-entreprise">Nº Tel  <small class="error_field">*</small></label>
-                    <input type="text" formControlName="phone" [(ngModel)]="contact.phone" class="form-control input-entreprise" appPhoneMask required>
-                    <div *ngIf="contactFormGroup.get('phone').hasError(champ_validation.phone[0].type) && (contactFormGroup.get('phone').dirty || contactFormGroup.get('phone').touched)">
-                      <p class="error_field">{{champ_validation.phone[0].message}}</p>
-                    </div>
-                    <div *ngIf="contactFormGroup.get('phone').hasError(champ_validation.phone[1].type) && (contactFormGroup.get('phone').dirty || contactFormGroup.get('phone').touched)">
-                      <p class="error_field">{{champ_validation.phone[1].message}}</p>
-                    </div>
-                  </div>
-                </div><!--div-->
+                 </div>
+                  <div class="row">
+                    <div class="col">
+                      <div style="margin-bottom: 15px;">
+                        <label class="label-entreprise">Nom <small class="error_field">*</small></label>
+                        <input type="text" formControlName="nom"  [(ngModel)]="contact.nom" class="form-control input-entreprise" required>
+                        <div *ngIf="contactFormGroup.get('nom').hasError(champ_validation.type[0].type) && (contactFormGroup.get('nom').dirty || contactFormGroup.get('nom').touched)">
+                          <p class="error_field">{{champ_validation.type[0].message}}</p>
+                        </div>
+                      </div><!--div-->
+                      <div style="margin-bottom: 15px;">
+                        <label class="label-entreprise">Poste</label>
+                        <input type="text" formControlName="poste" [(ngModel)]="contact.poste"  class="form-control input-entreprise" required>
+                      </div><!--div-->
+                    </div><!--col-->
+                    <div class="col">
+                      <div style="margin-bottom: 15px;">
+                        <label class="label-entreprise">Prénom  <small class="error_field">*</small></label>
+                        <input type="text" formControlName="prenom" [(ngModel)]="contact.prenom"  class="form-control input-entreprise" required>
+                        <div *ngIf="contactFormGroup.get('prenom').hasError(champ_validation.type[0].type) && (contactFormGroup.get('prenom').dirty || contactFormGroup.get('prenom').touched)">
+                          <p class="error_field">{{champ_validation.type[0].message}}</p>
+                        </div>
+                      </div><!--div-->
+                      <div class="row" style="margin-bottom: 15px;">
+                        <div class="col-4">
+                          <label class="label-entreprise">Indicatif  <small class="error_field">*</small></label>
+                          <input type="text" formControlName="indicatif" [(ngModel)]="contact.indicatif" [matAutocomplete]="autoCode" class="form-control input-entreprise" required>
+                          <mat-autocomplete #autoCode="matAutocomplete">
+                            <mat-option *ngFor="let code of codeFiltres | async" [value]="code?.dial_code">
+                              {{code?.dial_code}}
+                            </mat-option>
+                          </mat-autocomplete>
+                          <div *ngIf="contactFormGroup.get('indicatif').hasError(champ_validation.type[0].type) && (contactFormGroup.get('indicatif').dirty || contactFormGroup.get('indicatif').touched)">
+                            <p class="error_field">{{champ_validation.type[0].message}}</p>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <label class="label-entreprise">Nº Tel  <small class="error_field">*</small></label>
+                          <input type="text" formControlName="phone" [(ngModel)]="contact.phone" class="form-control input-entreprise" appPhoneMask required>
+                          <div *ngIf="contactFormGroup.get('phone').hasError(champ_validation.phone[0].type) && (contactFormGroup.get('phone').dirty || contactFormGroup.get('phone').touched)">
+                            <p class="error_field">{{champ_validation.phone[0].message}}</p>
+                          </div>
+                          <div *ngIf="contactFormGroup.get('phone').hasError(champ_validation.phone[1].type) && (contactFormGroup.get('phone').dirty || contactFormGroup.get('phone').touched)">
+                            <p class="error_field">{{champ_validation.phone[1].message}}</p>
+                          </div>
+                        </div>
+                      </div><!--div-->
 
-              </div><!--col-->
-            </div><!--col-->
-          </form>
-          <div align="right">
-            <button mat-button  class="btn-entreprise" (click)="updateContact()" [disabled]="contactFormGroup.invalid">VALIDER</button>
-          </div>
+                    </div><!--col-->
+                  </div><!--col-->
+                </form>
+                <div align="right">
+                  <button mat-button  class="btn-entreprise" (click)="updateContact()" [disabled]="contactFormGroup.invalid || emailExists">Enregistrer</button>
+                </div>
+               </div>
+            </mat-tab>
+            <mat-tab label="Adresse de facturation">
+              <div style="padding-top: 40px;">
+                <app-adresse-facture></app-adresse-facture>
+              </div>
+
+            </mat-tab>
+            <mat-tab label="Adresse de livraison">
+              <div style="padding-top: 40px;">
+                <app-adresse-livraison></app-adresse-livraison>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
         </div><!--row-->
       </div>
     </div>

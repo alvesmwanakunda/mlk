@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import {HttpClient} from "@angular/common/http";
 import { map, startWith } from "rxjs/operators";
 import { Observable } from "rxjs";
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -38,6 +39,7 @@ export class AddDevisComponent implements OnInit {
     private projetService: ProjetsService,
     private entrepresiService: EntreprisesService,
     private http: HttpClient,
+    private route: Router
   ){
     this.user = JSON.parse(localStorage.getItem('user'));
   }
@@ -223,7 +225,8 @@ export class AddDevisComponent implements OnInit {
     if(!this.devisForm.invalid){
       this.projetService.addDevis(payload).subscribe((res:any)=>{
         this.message='Devis a été ajouté avec succès';
-        this.openSnackBar(this.message)
+        this.openSnackBar(this.message);
+        this.route.navigate(['/devis']);
         this.onLoadForm=false;
       },(error)=>{
         console.log(error);
