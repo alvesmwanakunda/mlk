@@ -50,6 +50,7 @@ export class UpdateModuleComponent implements OnInit {
   user:any;
   url:any;
   urlMessage:any;
+  qrcode:any;
 
 
   constructor(
@@ -105,6 +106,7 @@ export class UpdateModuleComponent implements OnInit {
     this.projetService.getModule(this.idModule).subscribe((res:any)=>{
 
       this.module = res.message;
+      this.getQrcodeModule();
       this.projet = res.message?.project;
       console.log("Module", res);
       if(this.module.chemin){
@@ -127,6 +129,19 @@ export class UpdateModuleComponent implements OnInit {
       console.log("Erreur lors de la récupération des données", error);
     })
   }
+
+  getQrcodeModule(){
+    this.projetService.getQrcodeModule(this.idModule).subscribe((res:any)=>{
+
+      this.qrcode = res?.message;
+      console.log("Qrcode",res);
+
+    },(error) => {
+      console.log("Erreur lors de la récupération des données", error);
+    })
+  }
+
+
 
   onFileSelectedImage(event){
     let image = event.target.files[0];

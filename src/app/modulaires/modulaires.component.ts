@@ -18,7 +18,7 @@ import { DeleteModuleComponent } from './delete-module/delete-module.component';
 })
 export class ModulairesComponent  implements OnInit,AfterViewInit {
 
-  displayedColumns:string[]=['nom','photo','projet','hauteur','largeur','longueur','action'];
+  displayedColumns:string[]=['numero','nom','projet','hauteur','largeur','longueur','action'];
   dataSource =new MatTableDataSource<Modules>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   modules:any=[];
@@ -64,6 +64,7 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
           hauteur:data?.hauteur,
           largeur:data?.largeur,
           longueur:data?.longueur,
+          numero:data?.numero_serie,
           photo:this.getSafeUrl(data?.photo) || null,
          })) as Modules[]
       },
@@ -85,6 +86,7 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
         hauteur:data?.hauteur,
         largeur:data?.largeur,
         longueur:data?.longueur,
+        numero:data?.numero_serie,
         photo:this.getSafeUrl(data?.photo) || null,
        })) as Modules[]
     },

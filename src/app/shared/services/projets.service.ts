@@ -58,6 +58,10 @@ export class ProjetsService {
     return this.httpClient.get(`${environment.BASE_API_URL}/module/${idModule}`);
   }
 
+  public getQrcodeModule(idModule){
+    return this.httpClient.get(`${environment.BASE_API_URL}/module/qrcode/${idModule}`);
+  }
+
   public getAllModule(){
     return this.httpClient.get(`${environment.BASE_API_URL}/modules`);
   }

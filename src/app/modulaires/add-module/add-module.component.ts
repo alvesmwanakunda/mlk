@@ -123,13 +123,12 @@ export class AddModuleComponent implements OnInit {
 
      this.onLoadForm=true;
      this.form={};
-     this.progress=1;
+
 
      const formData:FormData=new FormData();
      Object.assign(this.form, this.moduleForm.value);
      formData.append("planFile", this.file);
      formData.append("imageFile", this.image);
-     formData.append("nom_photo", this.imageName);
      formData.append("nom", this.form.nom);
      formData.append("position", this.form.position);
      formData.append("type", this.form.type);
@@ -146,14 +145,23 @@ export class AddModuleComponent implements OnInit {
     })
     .pipe(
       map((event:any)=>{
-        if (event.type === HttpEventType.UploadProgress){
-          this.progress = Math.round((75/event.total)*event.loaded);
-        }else if(event.type==HttpEventType.Response){
-          this.message='Module a été ajouté avec succès';
-          this.openSnackBar(this.message)
-          //this.progress=null;
-          this.progress = 100;
+        if(this.file || this.image){
+          this.progress=1;
+          if (event.type === HttpEventType.UploadProgress){
+            this.progress = Math.round((75/event.total)*event.loaded);
+          }else if(event.type==HttpEventType.Response){
+            this.message='Module a été ajouté avec succès';
+            this.openSnackBar(this.message)
+            //this.progress=null;
+            this.progress = 100;
+          }
+        }else{
+          if(event.type==HttpEventType.Response){
+            this.message='Module a été ajouté avec succès';
+            this.openSnackBar(this.message)
+          }
         }
+
       }),
       catchError((err:any)=>{
         this.progress=null;

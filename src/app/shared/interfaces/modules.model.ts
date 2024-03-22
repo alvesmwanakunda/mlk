@@ -15,4 +15,6 @@ export interface Modules {
   longueur:string;
   marque:string;
   batiment:string;
+  numero:string;
+  qrcode:string;
 }
