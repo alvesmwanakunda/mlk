@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjetsService } from '../shared/services/projets.service';
 import { ActivatedRoute } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Component({
@@ -12,10 +13,13 @@ export class QrcodeModuleComponent implements OnInit {
 
  module:any;
  idModule:any;
+ src:any;
 
   constructor(
     private projetService:ProjetsService,
     public route:ActivatedRoute,
+    private sanitizer: DomSanitizer,
+
   ){
     this.route.params.subscribe((data:any)=>{
       this.idModule = data.id
@@ -29,9 +33,16 @@ export class QrcodeModuleComponent implements OnInit {
   getModule(){
     this.projetService.getQrcodeInfo(this.idModule).subscribe((res:any)=>{
        this.module = res.message;
+       if(this.module.chemin){
+        this.src=this.getSafeUrl(this.module.chemin);
+      }
     },(error)=>{
       console.log(error);
     })
+  }
+
+  getSafeUrl(url){
+    return  this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
 }

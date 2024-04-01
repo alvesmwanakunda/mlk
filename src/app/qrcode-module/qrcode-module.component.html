@@ -9,8 +9,11 @@
             <h2 class="content-title">Module - {{module?.nom}}</h2>
              <div class="row">
                <div class="col">
-                <p *ngIf="module?.nom_photo">
+                <p *ngIf="module?.nom_photo" style="margin-bottom: 10px;">
                   <img [src]="module.photo" alt="" style="width: 90%;">
+                </p>
+                <p *ngIf="module?.plan">
+                  <iframe [src]="src" style="width: 90%;"></iframe>
                 </p>
                </div>
                <div class="col">
