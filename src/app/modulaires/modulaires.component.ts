@@ -8,6 +8,7 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteModuleComponent } from './delete-module/delete-module.component';
+import { MatTabGroup } from '@angular/material/tabs';
 
 
 
@@ -20,7 +21,17 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
 
   displayedColumns:string[]=['numero','nom','hauteur','largeur','longueur','action'];
   dataSource =new MatTableDataSource<Modules>();
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  dataSourcePreparation = new MatTableDataSource<Modules>();
+  dataSourcePartir = new MatTableDataSource<Modules>();
+  dataSourceSite = new MatTableDataSource<Modules>();
+  @ViewChild('paginatorStock') paginatorStock: MatPaginator;
+  @ViewChild('paginatorPreparation') paginatorPreparation: MatPaginator;
+  @ViewChild('paginatorPartir') paginatorPartir: MatPaginator;
+  @ViewChild('paginatorSite') paginatorSite: MatPaginator;
+  @ViewChild(MatTabGroup) tabGroup: MatTabGroup;
+  selectedIndex:number=0;
+
+
   modules:any=[];
   type="Stock";
   user:any;
@@ -47,7 +58,12 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
 
   ngAfterViewInit() {
     this.getAllModules(this.type);
-    this.dataSource.paginator=this.paginator;
+    this.dataSource.paginator=this.paginatorStock;
+    this.dataSourcePreparation.paginator=this.paginatorPreparation;
+    this.dataSourcePartir.paginator=this.paginatorPartir;
+    this.dataSourceSite.paginator=this.paginatorSite;
+
+
   }
 
   getAllModules(type){
@@ -56,7 +72,12 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
       this.projectService.getAllModuleByEntreprise(this.user?.user?.entreprise).subscribe((data:any)=>{
         console.log("data",data);
          this.modules = data.message.filter(item=>item.type===type);
-         this.dataSource.data = this.modules.map((data)=>({
+         const filteredDataStock = data.message.filter(item=>item.type==="Stock");
+         const filteredDataPreparation = data.message.filter(item=>item.type==="En préparation");
+         const filteredDataPartir = data.message.filter(item=>item.type==="Prêt à partir");
+         const filteredDataSite = data.message.filter(item=>item.type==="Site");
+
+         this.dataSource.data = filteredDataStock.map((data)=>({
           id:data?._id,
           nom:data?.nom,
           projet:data?.project?.projet,
@@ -67,6 +88,43 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
           numero:data?.numero_serie,
           photo:this.getSafeUrl(data?.photo) || null,
          })) as Modules[]
+
+         this.dataSourcePreparation.data = filteredDataPreparation.map((data)=>({
+          id:data?._id,
+          nom:data?.nom,
+          projet:data?.project?.projet,
+          position:data?.position,
+          hauteur:data?.hauteur,
+          largeur:data?.largeur,
+          longueur:data?.longueur,
+          numero:data?.numero_serie,
+          photo:this.getSafeUrl(data?.photo) || null,
+         })) as Modules[]
+
+         this.dataSourcePartir.data = filteredDataPartir.map((data)=>({
+          id:data?._id,
+          nom:data?.nom,
+          projet:data?.project?.projet,
+          position:data?.position,
+          hauteur:data?.hauteur,
+          largeur:data?.largeur,
+          longueur:data?.longueur,
+          numero:data?.numero_serie,
+          photo:this.getSafeUrl(data?.photo) || null,
+         })) as Modules[]
+
+         this.dataSourceSite.data = filteredDataSite.map((data)=>({
+          id:data?._id,
+          nom:data?.nom,
+          projet:data?.project?.projet,
+          position:data?.position,
+          hauteur:data?.hauteur,
+          largeur:data?.largeur,
+          longueur:data?.longueur,
+          numero:data?.numero_serie,
+          photo:this.getSafeUrl(data?.photo) || null,
+         })) as Modules[]
+
       },
       (error) => {
         console.log("Erreur lors de la récupération des données", error);
@@ -78,7 +136,48 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
     this.projectService.getAllModule().subscribe((data:any)=>{
       console.log("data",data);
        this.modules = data.message.filter(item=>item.type===type);
-       this.dataSource.data = this.modules.map((data)=>({
+       const filteredDataStock = data.message.filter(item=>item.type==="Stock");
+       const filteredDataPreparation = data.message.filter(item=>item.type==="En préparation");
+       const filteredDataPartir = data.message.filter(item=>item.type==="Prêt à partir");
+       const filteredDataSite = data.message.filter(item=>item.type==="Site");
+
+       this.dataSource.data = filteredDataStock.map((data)=>({
+        id:data?._id,
+        nom:data?.nom,
+        projet:data?.project?.projet,
+        position:data?.position,
+        hauteur:data?.hauteur,
+        largeur:data?.largeur,
+        longueur:data?.longueur,
+        numero:data?.numero_serie,
+        photo:this.getSafeUrl(data?.photo) || null,
+       })) as Modules[]
+
+       this.dataSourcePreparation.data = filteredDataPreparation.map((data)=>({
+        id:data?._id,
+        nom:data?.nom,
+        projet:data?.project?.projet,
+        position:data?.position,
+        hauteur:data?.hauteur,
+        largeur:data?.largeur,
+        longueur:data?.longueur,
+        numero:data?.numero_serie,
+        photo:this.getSafeUrl(data?.photo) || null,
+       })) as Modules[]
+
+       this.dataSourcePartir.data = filteredDataPartir.map((data)=>({
+        id:data?._id,
+        nom:data?.nom,
+        projet:data?.project?.projet,
+        position:data?.position,
+        hauteur:data?.hauteur,
+        largeur:data?.largeur,
+        longueur:data?.longueur,
+        numero:data?.numero_serie,
+        photo:this.getSafeUrl(data?.photo) || null,
+       })) as Modules[]
+
+       this.dataSourceSite.data = filteredDataSite.map((data)=>({
         id:data?._id,
         nom:data?.nom,
         projet:data?.project?.projet,
@@ -141,6 +240,12 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
       this.type="Site";
       this.getAllModules('Site');
     }
+  }
+
+  // Méthode pour basculer l'index du tab
+  switchTab(index: number) {
+    this.selectedIndex = index;
+    this.tabGroup.selectedIndex = index; // Sélectionner le tab correspondant
   }
 
   openDialogDelete(idModule){

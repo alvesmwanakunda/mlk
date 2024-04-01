@@ -9,7 +9,7 @@
         <h2 style="margin-bottom: 15px;">Total modules : {{countModules?.module}}</h2>
         <div class="row">
            <div class="col">
-              <mat-card style="background-color: #28628B !important">
+              <mat-card style="background-color: #28628B !important;cursor: pointer;" (click)="switchTab(0)">
                 <mat-card-content>
                     <p style="color: #fff;text-align: center;">Stock</p>
                     <p style="color: #fff;text-align: center;">{{countModules?.stock}}</p>
@@ -17,7 +17,7 @@
               </mat-card>
            </div>
            <div class="col">
-            <mat-card style="background-color: #48ae4d !important">
+            <mat-card style="background-color: #48ae4d !important;cursor: pointer;" (click)="switchTab(1)">
               <mat-card-content>
                   <p style="color: #fff;text-align: center;">En préparation</p>
                   <p style="color: #fff;text-align: center;">{{countModules?.preparation}}</p>
@@ -25,7 +25,7 @@
             </mat-card>
            </div>
            <div class="col">
-            <mat-card style="background-color: #53a3db !important">
+            <mat-card style="background-color: #53a3db !important;cursor: pointer;" (click)="switchTab(2)">
               <mat-card-content>
                   <p style="color: #fff;text-align: center;">Prêt à partir</p>
                   <p style="color: #fff;text-align: center;">{{countModules?.pret}}</p>
@@ -33,7 +33,7 @@
             </mat-card>
            </div>
            <div class="col">
-            <mat-card style="background-color: rgb(201, 36, 129) !important">
+            <mat-card style="background-color: rgb(201, 36, 129) !important;cursor: pointer;" (click)="switchTab(3)">
               <mat-card-content>
                   <p style="color: #fff;text-align: center;">Site</p>
                   <p style="color: #fff;text-align: center;">{{countModules?.site}}</p>
@@ -51,7 +51,7 @@
           <button type="button" class="btn btn-projet" routerLink="/modulaire" *ngIf="user?.user?.role=='admin'"><i class="fa-solid fa-plus"></i> Nouveau module</button>
         </div>
       </div>
-      <mat-tab-group (selectedIndexChange)="onTabChange($event)">
+      <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedIndexChange)="onTabChange($event)">
         <mat-tab label="Stock">
           <div style="padding-top: 40px;">
             <table mat-table [dataSource]="dataSource">
@@ -107,7 +107,7 @@
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
 
-            <mat-paginator [pageSizeOptions]="[10, 20]"
+            <mat-paginator #paginatorStock [pageSizeOptions]="[10, 20]"
                           showFirstLastButtons
                           aria-label="Select page of periodic elements"
                           >
@@ -116,7 +116,7 @@
         </mat-tab>
         <mat-tab label="En préparation">
           <div style="padding-top: 40px;">
-            <table mat-table [dataSource]="dataSource">
+            <table mat-table [dataSource]="dataSourcePreparation">
 
               <ng-container matColumnDef="numero">
                 <th mat-header-cell *matHeaderCellDef> Numéro </th>
@@ -178,7 +178,7 @@
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
 
-            <mat-paginator [pageSizeOptions]="[10, 20]"
+            <mat-paginator #paginatorPreparation [pageSizeOptions]="[10, 20]"
                           showFirstLastButtons
                           aria-label="Select page of periodic elements"
                           >
@@ -187,7 +187,7 @@
         </mat-tab>
         <mat-tab label="Prêt à partir">
           <div style="padding-top: 40px;">
-            <table mat-table [dataSource]="dataSource">
+            <table mat-table [dataSource]="dataSourcePartir">
 
               <ng-container matColumnDef="numero">
                 <th mat-header-cell *matHeaderCellDef> Numéro </th>
@@ -249,7 +249,7 @@
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
 
-            <mat-paginator [pageSizeOptions]="[10, 20]"
+            <mat-paginator #paginatorPartir [pageSizeOptions]="[10, 20]"
                           showFirstLastButtons
                           aria-label="Select page of periodic elements"
                           >
@@ -258,7 +258,7 @@
         </mat-tab>
         <mat-tab label="Site">
           <div style="padding-top: 40px;">
-            <table mat-table [dataSource]="dataSource">
+            <table mat-table [dataSource]="dataSourceSite">
 
               <ng-container matColumnDef="numero">
                 <th mat-header-cell *matHeaderCellDef> Numéro </th>
@@ -321,7 +321,7 @@
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
 
-            <mat-paginator [pageSizeOptions]="[10, 20]"
+            <mat-paginator #paginatorSite [pageSizeOptions]="[10, 20]"
                           showFirstLastButtons
                           aria-label="Select page of periodic elements"
                           >
