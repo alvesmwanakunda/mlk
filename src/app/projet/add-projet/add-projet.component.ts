@@ -80,7 +80,6 @@ export class AddProjetComponent implements OnInit {
     this.firstFormGroup=this._formBuilder.group({
       projet:['',Validators.required],
       entreprise:['',Validators.required],
-      service:['',Validators.required],
       nom:['',null],
       prenom:['',null],
       genre:['',null],
@@ -190,7 +189,6 @@ export class AddProjetComponent implements OnInit {
      formData.append("nom", this.form1.nom);
      formData.append("prenom", this.form1.prenom);
      formData.append("entreprise", this.form1.entreprise);
-     formData.append("service", this.form1.service);
      formData.append("etat", this.form1.etat);
      formData.append("responsable", this.form1.responsable);
      formData.append("pays", this.form2.pays);

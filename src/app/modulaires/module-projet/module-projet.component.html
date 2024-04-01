@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="row" style="margin-bottom: 20px;">
+    <form [formGroup]="moduleForm">
+      <div class="row">
+         <div class="col">
+          <div>
+            <label class="label-entreprise">Projet <small class="error_field">*</small></label>
+            <select formControlName="projet" class="form-control input-entreprise" required>
+               <option *ngFor="let p of projets" [value]="p?._id" >{{p?.projet}}</option>
+            </select>
+            <div *ngIf="moduleForm.get('projet').hasError(champ_validation.input[0].type) && (moduleForm.get('projet').dirty || moduleForm.get('projet').touched)">
+              <p class="error_field">{{champ_validation.input[0].message}}</p>
+            </div>
+          </div>
+         </div>
+         <div class="col">
+          <div style="padding-top: 31px;">
+            <button mat-button  class="btn-entreprise" (click)="addModule()"  [disabled]="moduleForm.invalid">VALIDER</button>
+          </div>
+         </div>
+      </div>
+    </form>
+ </div>
+
+ <div>
+  <mat-card>
+    <mat-card-content>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th style="font-weight: normal;">Projet</th>
+            <th style="font-weight: normal;">Date</th>
+            <th style="font-weight: normal;">Supprimer</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let m of modules">
+            <td>{{m?.projet?.projet}}</td>
+            <td>{{m?.dateLastUpdate | date:'d MMM y à HH:mm' }}</td>
+            <td>
+              <button type="button" class="btn btn-projet-action" matTooltip="Supprimer" (click)="deleteModule(m?._id)"><i class="fa-solid fa-trash btn-icon-projet-delete"></i></button>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </mat-card-content>
+  </mat-card>
+
+ </div>
+</div>

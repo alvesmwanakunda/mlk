@@ -83,7 +83,6 @@ export class UpdateUserProjetComponent implements OnInit {
 
     this.firstFormGroup=this._formBuilder.group({
       projet:['',Validators.required],
-      service:['',Validators.required],
       etat:['',null],
       genre:['',null],
       nom:['',null],
@@ -191,7 +190,6 @@ export class UpdateUserProjetComponent implements OnInit {
      formData.append("prenom", this.projet.prenom);
      formData.append("genre", this.projet.genre);
      formData.append("projet", this.projet.projet);
-     formData.append("service", this.projet.service);
      formData.append("etat", this.projet.etat);
      formData.append("plan", this.projet.plan);
      formData.append("responsable", this.projet.responsable);

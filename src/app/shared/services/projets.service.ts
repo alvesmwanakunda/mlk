@@ -82,6 +82,22 @@ export class ProjetsService {
     return this.httpClient.get(`${environment.BASE_API_URL}/count/modules`);
   }
 
+  public affectModule(body,id){
+    return this.httpClient.post(`${environment.BASE_API_URL}/projet/module/${id}`, body);
+  }
+
+  public getProjetModule(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/projet/module/${id}`);
+  }
+
+  public deleteProjetModule(id){
+    return this.httpClient.delete(`${environment.BASE_API_URL}/projet/module/${id}`);
+  }
+
+  public getQrcodeInfo(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/module/qrcode/infos/${id}`)
+  }
+
   // Historique
 
   public addHistorique(id, body){

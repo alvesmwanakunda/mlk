@@ -38,6 +38,7 @@ export class AddEntrepriseComponent implements OnInit {
   searchObject={
     societe:"",
     siret:"",
+    siren:"",
     rue:"",
     postal:"",
     numero:""
@@ -105,12 +106,15 @@ export class AddEntrepriseComponent implements OnInit {
     this.getContry();
 
     this.signupForm = new FormGroup({
-      email: new FormControl("",[Validators.required,
+
+      /*email: new FormControl("",[Validators.required,
         Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")
-      ]),
+      ]),*/
+      email:new FormControl("",null),
       societe:new FormControl("",[Validators.required]),
       company:new FormControl("",[Validators.required]),
       siret:new FormControl("",null),
+      seren:new FormControl("",null),
       type_entreprise:new FormControl("",null),
       source:new FormControl("",null),
       categorie_societe:new FormControl("",null),
@@ -119,7 +123,8 @@ export class AddEntrepriseComponent implements OnInit {
       numero:new FormControl("",null),
       pays:new FormControl("",[Validators.required]),
       indicatif:new FormControl("",[Validators.required]),
-      telephone:new FormControl("",[Validators.required, Validators.pattern("[0-9 ]{9}")]),
+      telephone:new FormControl("",null),
+      //telephone:new FormControl("",[Validators.required, Validators.pattern("[0-9 ]{9}")]),
 
     });
     this.codeFiltres = this.signupForm.get('indicatif').valueChanges.pipe(

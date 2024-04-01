@@ -1,0 +1,37 @@
+<app-navbar-user></app-navbar-user>
+
+<div class="container" style="padding-top: 130px;">
+
+  <div class="row justify-content-md-center">
+    <div class="col-lg-10 col-md-10 col-md-auto">
+        <mat-card style="border-radius: 28px !important;box-shadow: none !important;">
+          <mat-card-content style="padding-top: 50px !important;padding-bottom: 50px !important;">
+            <h2 class="content-title">Module - {{module?.nom}}</h2>
+             <div class="row">
+               <div class="col">
+                <p *ngIf="module?.nom_photo">
+                  <img [src]="module.photo" alt="" style="width: 90%;">
+                </p>
+               </div>
+               <div class="col">
+                 <p style="margin-bottom: 20px;">Numéro série : {{module?.numero_serie}}</p>
+                 <p style="margin-bottom: 20px;">Propriétaire : {{module?.entreprise?.societe}}</p>
+                 <p style="margin-bottom: 20;">Fabricant : {{module?.marque}}</p>
+                 <p style="margin-bottom: 20px;">Etat : {{module?.type}}</p>
+                 <p style="margin-bottom: 20px;">Hauteur : {{module?.hauteur}} (mm)</p>
+                 <p style="margin-bottom: 20px;">Longueur : {{module?.longueur}} (mm)</p>
+                 <p style="margin-bottom: 40px;">Largeur : {{module?.largeur}} (mm)</p>
+                 <div>
+                  <button mat-button routerLink="/signup" color="primary" style="margin-right: 10px;">Créer un compte</button>
+                  <button mat-flat-button routerLink="/login" color="primary">Se connecter</button>
+                 </div>
+               </div>
+             </div>
+          </mat-card-content>
+          <mat-card-footer>
+
+          </mat-card-footer>
+        </mat-card>
+    </div>
+  </div>
+</div>

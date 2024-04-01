@@ -16,5 +16,12 @@ export interface Modules {
   marque:string;
   batiment:string;
   numero:string;
+  numero_serie:string;
   qrcode:string;
+  dateFabrication:Date;
+  entreprise:{
+    _id:string,
+    societe:string,
+  };
+
 }

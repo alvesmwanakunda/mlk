@@ -76,7 +76,6 @@ export class ProjetUserComponent {
 
     this.firstFormGroup=this._formBuilder.group({
       projet:['',Validators.required],
-      service:['',Validators.required],
       nom:['',null],
       prenom:['',null],
       genre:['',null],
@@ -178,7 +177,6 @@ export class ProjetUserComponent {
      formData.append("genre", this.form1.genre);
      formData.append("nom", this.form1.nom);
      formData.append("prenom", this.form1.prenom);
-     formData.append("service", this.form1.service);
      formData.append("etat", this.form1.etat);
      formData.append("responsable", this.form1.responsable);
      formData.append("pays", this.form2.pays);

@@ -9,6 +9,7 @@ import { ViewerStandarModule } from 'src/app/viewer-standar/viewer-standar.modul
 import { PositionModule } from '../position/position.module';
 import { HistoriqueModuleModule } from '../historique-module/historique-module.module';
 import { PlanModuleModule } from '../plan-module/plan-module.module';
+import { ModuleProjetModule } from '../module-projet/module-projet.module';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { PlanModuleModule } from '../plan-module/plan-module.module';
     ViewerStandarModule,
     PositionModule,
     HistoriqueModuleModule,
-    PlanModuleModule
+    PlanModuleModule,
+    ModuleProjetModule
   ]
 })
 export class UpdateModuleModule { }

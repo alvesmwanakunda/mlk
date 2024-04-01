@@ -12,6 +12,7 @@ import { map, catchError } from "rxjs/operators";
 import { throwError } from "rxjs";
 import { environment} from 'src/environments/environment';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { Router } from '@angular/router';
 
 
 
@@ -44,7 +45,8 @@ export class AddModuleComponent implements OnInit {
     public snackbar:MatSnackBar,
     private projetService: ProjetsService,
     private entrepriseService: EntreprisesService,
-    private http: HttpClient
+    private http: HttpClient,
+    private route:Router
   ){}
 
 
@@ -63,13 +65,13 @@ export class AddModuleComponent implements OnInit {
     this.moduleForm=this._formBuilder.group({
       nom:['',Validators.required],
       type:['',Validators.required],
+      entreprise:['',null],
       position:['',null],
-      projet:['',null],
-      batiment:['',null],
       largeur:['',null],
       hauteur:['',null],
       longueur:['',null],
       marque:['',null],
+      dateFabrication:['',null]
     });
   }
 
@@ -132,12 +134,12 @@ export class AddModuleComponent implements OnInit {
      formData.append("nom", this.form.nom);
      formData.append("position", this.form.position);
      formData.append("type", this.form.type);
-     formData.append("projet", this.form.projet);
      formData.append("marque", this.form.marque);
      formData.append("hauteur", this.form.hauteur);
      formData.append("largeur", this.form.largeur);
      formData.append("longueur", this.form.longueur);
-     formData.append("batiment",this.form.batiment);
+     formData.append("dateFabrication",this.form.dateFabrication)
+     formData.append("entreprise",this.form.entreprise)
 
      return this.http.post(`${environment.BASE_API_URL}/module`,formData,{
       reportProgress:true,
@@ -154,6 +156,7 @@ export class AddModuleComponent implements OnInit {
             this.openSnackBar(this.message)
             //this.progress=null;
             this.progress = 100;
+            this.route.navigate(["modulaires"]);
           }
         }else{
           if(event.type==HttpEventType.Response){

@@ -18,7 +18,7 @@ import { DeleteModuleComponent } from './delete-module/delete-module.component';
 })
 export class ModulairesComponent  implements OnInit,AfterViewInit {
 
-  displayedColumns:string[]=['numero','nom','projet','hauteur','largeur','longueur','action'];
+  displayedColumns:string[]=['numero','nom','hauteur','largeur','longueur','action'];
   dataSource =new MatTableDataSource<Modules>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   modules:any=[];

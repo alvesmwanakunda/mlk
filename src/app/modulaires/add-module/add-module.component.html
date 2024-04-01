@@ -43,8 +43,24 @@
             </div><!--div-->
             <div class="row" style="margin-bottom: 15px;">
               <div class="col">
-                <label class="label-entreprise">Marque</label>
-                <input type="text" formControlName="marque" class="form-control input-entreprise">
+                <label class="label-entreprise">Propriétaire</label>
+                <select  formControlName="entreprise" class="form-control input-entreprise">
+                   <option *ngFor="let ent of entreprises" [value]="ent?._id">{{ent?.societe}}</option>
+                </select>
+              </div><!--div-->
+              <div class="col">
+                <label class="label-entreprise">Fabricant</label>
+                <select type="text" formControlName="marque" class="form-control input-entreprise">
+                  <option value="ALGECO">ALGECO</option>
+                  <option value="COUGNAUD">COUGNAUD</option>
+                  <option value="TEPE PREFABRIK">TEPE PREFABRIK</option>
+                  <option value="CONTAINEX">CONTAINEX</option>
+                  <option value="AUTRES">AUTRES</option>
+                </select>
+              </div><!--div-->
+              <div class="col">
+                <label class="label-entreprise">Date de fabrication</label>
+                <input type="date" formControlName="dateFabrication" class="form-control input-entreprise">
               </div><!--div-->
             </div>
             <div class="row" style="margin-bottom: 15px;">
@@ -62,23 +78,6 @@
               </div>
             </div>
 
-
-            <div class="row" style="margin-bottom: 15px;">
-              <div class="col">
-                <label class="label-entreprise">Projet</label>
-                <select formControlName="projet" class="form-control input-entreprise">
-                   <option [value]="p?._id" *ngFor="let p of projets">{{p?.projet}}</option>
-                </select>
-              </div><!--div-->
-              <div class="col">
-                <label class="label-entreprise">Bâtiment</label>
-                <input type="text" formControlName="batiment" class="form-control input-entreprise">
-              </div>
-              <!--<div class="col">
-                <label class="label-entreprise">Position</label>
-                <input type="text" formControlName="position" class="form-control input-entreprise">
-              </div>-->
-           </div>
 
            <div class="row" style="margin-bottom: 15px;">
             <div class="col">

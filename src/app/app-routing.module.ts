@@ -189,6 +189,10 @@ const routes: Routes = [
   {
     path:'conditions',
     loadChildren:()=>import('./conditions/conditions.module').then(m=>m.ConditionsModule)
+  },
+  {
+    path:'modules/:id',
+    loadChildren:()=>import('./qrcode-module/qrcode-module.module').then(m=>m.QrcodeModuleModule)
   }
 ];
 

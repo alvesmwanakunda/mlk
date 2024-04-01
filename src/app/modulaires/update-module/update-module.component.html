@@ -23,10 +23,28 @@
                             <p style="font-size: 13px;">{{module?.nom}}</p>
                           </div>
                          </div>
+                         <div class="col">
+                          <div class="bloc-info">
+                            <p class="title-info">Numéro</p>
+                            <p style="font-size: 13px;">{{module?.numero_serie}}</p>
+                          </div>
+                         </div>
+                         <div class="col">
+                          <div class="bloc-info">
+                            <p class="title-info">Date de fabrication</p>
+                            <p style="font-size: 13px;">{{module?.dateFabrication | date:'dd/MM/yyyy' }}</p>
+                          </div>
+                         </div>
                          <mat-divider></mat-divider>
                        </div>
 
                        <div class="row" style="margin-bottom: 15px;">
+                        <div class="col">
+                          <div class="bloc-info">
+                            <p class="title-info">Entreprise</p>
+                            <p style="font-size: 13px;">{{module?.entreprise?.societe}}</p>
+                          </div>
+                        </div>
                         <div class="col">
                           <div class="bloc-info">
                             <p class="title-info">Marque</p>
@@ -39,12 +57,6 @@
                             <p style="font-size: 13px;">{{module?.type}}</p>
                           </div>
                          </div>
-                        <!--<div class="col">
-                          <div class="bloc-info">
-                            <p class="title-info">Position <button mat-icon-button color="primary" matTooltip="Ouvrir" (click)="openDialogPosition()"><i class="fa-solid fa-map-pin"></i></button>
-                            </p>
-                          </div>
-                        </div>-->
                         <mat-divider></mat-divider>
                       </div>
 
@@ -63,26 +75,6 @@
                         <mat-divider></mat-divider>
                       </div>
 
-                      <div class="bloc-info">
-                        <div class="row">
-                           <div class="col">
-                            <p class="title-info">
-                              Image principale
-                            </p>
-                           </div>
-                           <div class="col">
-                            <div align="right" style="position:relative;bottom:17px;">
-                              <button mat-icon-button color="primary" matTooltip="Ouvrir" *ngIf="module?.nom_photo" (click)="openDialogFile(module.photo,'png')"><mat-icon fontIcon="attach_file"></mat-icon></button>
-                              <input type="file" class="file-input" accept='image/*' (change)="onFileSelectedPlanImage($event,'image')" #fileUpload2>
-                              <button mat-icon-button color="warn" matTooltip="Supprimer" (click)="fileUpload2.click()"  *ngIf="module?.nom_photo"><mat-icon fontIcon="delete_forever"></mat-icon></button>
-                            </div>
-                           </div>
-                        </div>
-                        <p *ngIf="module?.nom_photo" style="text-align: center;">
-                          <img [src]="module.photo" alt="" width="200px" height="150px"/>
-                        </p>
-                        <p *ngIf="!module?.nom_photo" style="font-size: 13px;">Pas d'image</p>
-                      </div>
                     </div>
                     <div class="col-2">
                       <div class="vl"></div>
@@ -111,23 +103,6 @@
                         <mat-divider></mat-divider>
                       </div>
 
-                      <div class="row" style="margin-bottom: 15px;">
-                        <div class="col">
-                          <div class="bloc-info">
-                            <p class="title-info">Projet</p>
-                            <p style="font-size: 13px;"><span *ngIf="projet">{{projet?.projet}}</span> <span *ngIf="!projet">Non affecté</span></p>
-                          </div>
-                        </div>
-
-                        <div class="col">
-                          <div class="bloc-info">
-                            <p class="title-info">Bâtiment</p>
-                            <p style="font-size: 13px;">{{module?.batiment}}</p>
-                          </div>
-                        </div>
-                        <mat-divider></mat-divider>
-                      </div>
-
                       <div class="bloc-info">
                         <div class="row">
                           <div class="col">
@@ -148,11 +123,39 @@
                         </p>
                         <p *ngIf="!module?.plan" style="font-size: 13px;">Pas de plan</p>
 
+                        <mat-divider></mat-divider>
+
+                      </div>
+
+                      <div class="bloc-info">
+                        <div class="row">
+                           <div class="col">
+                            <p class="title-info">
+                              Image principale
+                            </p>
+                           </div>
+                           <div class="col">
+                            <div align="right" style="position:relative;bottom:17px;">
+                              <button mat-icon-button color="primary" matTooltip="Ouvrir" *ngIf="module?.nom_photo" (click)="openDialogFile(module.photo,'png')"><mat-icon fontIcon="attach_file"></mat-icon></button>
+                              <input type="file" class="file-input" accept='image/*' (change)="onFileSelectedPlanImage($event,'image')" #fileUpload2>
+                              <button mat-icon-button color="warn" matTooltip="Supprimer" (click)="fileUpload2.click()"  *ngIf="module?.nom_photo"><mat-icon fontIcon="delete_forever"></mat-icon></button>
+                            </div>
+                           </div>
+                        </div>
+                        <p *ngIf="module?.nom_photo" style="text-align: center;">
+                          <img [src]="module.photo" alt="" width="200px" height="150px"/>
+                        </p>
+                        <p *ngIf="!module?.nom_photo" style="font-size: 13px;">Pas d'image</p>
                       </div>
                     </div>
                   </div>
                 </mat-card-content>
               </mat-card>
+            </div>
+          </mat-tab>
+          <mat-tab label="Projets"  *ngIf="user?.user?.role!='user'">
+            <div style="padding-top: 20px;">
+              <app-module-projet></app-module-projet>
             </div>
           </mat-tab>
           <mat-tab label="Position">
@@ -189,8 +192,24 @@
 
                     <div class="row" style="margin-bottom: 15px;">
                       <div class="col">
-                        <label class="label-entreprise">Marque</label>
-                        <input type="text" formControlName="marque" [(ngModel)]="module.marque" class="form-control input-entreprise">
+                        <label class="label-entreprise">Propriétaire</label>
+                        <select  formControlName="entreprise" [(ngModel)]="moduleEntreprise" class="form-control input-entreprise">
+                           <option *ngFor="let ent of entreprises" [value]="ent?._id">{{ent?.societe}}</option>
+                        </select>
+                      </div><!--div-->
+                      <div class="col">
+                        <label class="label-entreprise">Fabricant</label>
+                        <select type="text" formControlName="marque" [(ngModel)]="module.marque" class="form-control input-entreprise">
+                          <option value="ALGECO">ALGECO</option>
+                          <option value="COUGNAUD">COUGNAUD</option>
+                          <option value="TEPE PREFABRIK">TEPE PREFABRIK</option>
+                          <option value="CONTAINEX">CONTAINEX</option>
+                          <option value="AUTRES">AUTRES</option>
+                        </select>
+                      </div><!--div-->
+                      <div class="col">
+                        <label class="label-entreprise">Date de fabrication</label>
+                        <input type="date" formControlName="dateFabrication" [(ngModel)]="dateFabricaton" class="form-control input-entreprise">
                       </div><!--div-->
                     </div>
                     <div class="row" style="margin-bottom: 15px;">
@@ -207,27 +226,6 @@
                         <input type="text" formControlName="longueur" [(ngModel)]="module.longueur" class="form-control input-entreprise">
                       </div>
                     </div>
-
-                    <div class="row" style="margin-bottom: 15px;">
-                      <div class="col">
-                        <label class="label-entreprise">Projet</label>
-                        <select formControlName="projet" [(ngModel)]="projet._id" class="form-control input-entreprise" *ngIf="projet?._id">
-                           <option [value]="p?._id" *ngFor="let p of projets">{{p?.projet}}</option>
-                        </select>
-                        <select formControlName="projet" class="form-control input-entreprise" *ngIf="!projet?._id">
-                          <option [value]="p?._id" *ngFor="let p of projets">{{p?.projet}}</option>
-                       </select>
-                      </div><!--div-->
-                      <div class="col">
-                        <label class="label-entreprise">Bâtiment</label>
-                        <input type="text" formControlName="batiment" [(ngModel)]="module.batiment" class="form-control input-entreprise">
-                      </div>
-                      <div class="col">
-                        <label class="label-entreprise">Position</label>
-                        <input type="text" formControlName="position" [(ngModel)]="module.position" class="form-control input-entreprise">
-                      </div>
-                   </div>
-
                    <div class="row" style="margin-bottom: 15px;">
                     <div class="col">
                      <label class="label-entreprise">Image principale <span *ngIf="imageName">({{imageName}})</span></label>

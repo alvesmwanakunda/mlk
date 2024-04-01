@@ -51,6 +51,8 @@ export class UpdateModuleComponent implements OnInit {
   url:any;
   urlMessage:any;
   qrcode:any;
+  dateFabricaton:any;
+  moduleEntreprise:any;
 
 
   constructor(
@@ -106,6 +108,15 @@ export class UpdateModuleComponent implements OnInit {
     this.projetService.getModule(this.idModule).subscribe((res:any)=>{
 
       this.module = res.message;
+      if(this.module.entreprise){
+        this.moduleEntreprise = res.message?.entreprise?._id
+      }
+      if(this.module.dateFabrication){
+        let fabrication = new Date(this.module.dateFabrication);
+        // Obtenir la date au format ISO (YYYY-MM-DD)
+        this.dateFabricaton = fabrication.toISOString().split('T')[0];
+      }
+
       this.getQrcodeModule();
       this.projet = res.message?.project;
       console.log("Module", res);
@@ -117,12 +128,12 @@ export class UpdateModuleComponent implements OnInit {
           nom:[this.module.nom,Validators.required],
           type:[this.module.type,Validators.required],
           position:[this.module.position,null],
-          projet:[this.projet?._id,null],
-          batiment:[this.module.batiment,null],
           largeur:[this.module.largeur,null],
           hauteur:[this.module.hauteur,null],
           longueur:[this.module.longueur,null],
           marque:[this.module.marque,null],
+          entreprise:[this.moduleEntreprise,null],
+          dateFabrication:[this.module.dateFabrication,null]
         });
       }
     },(error) => {
@@ -202,12 +213,13 @@ export class UpdateModuleComponent implements OnInit {
     formData.append("nom", this.form.nom);
     formData.append("position", this.form.position);
     formData.append("type", this.form.type);
-    formData.append("projet", this.form.projet);
     formData.append("marque", this.form.marque);
     formData.append("hauteur", this.form.hauteur);
     formData.append("largeur", this.form.largeur);
     formData.append("longueur", this.form.longueur);
-    formData.append("batiment",this.form.batiment);
+    formData.append("entreprise",this.form.entreprise);
+    formData.append("dateFabrication",this.form.dateFabrication);
+
 
     return this.http.put(`${environment.BASE_API_URL}/module/${this.idModule}`,formData,{
      reportProgress:true,
