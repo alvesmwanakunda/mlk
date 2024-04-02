@@ -1,6 +1,6 @@
 <app-navbar-user></app-navbar-user>
 
-<div class="container" style="padding-top: 130px;">
+<div class="container" style="padding-top: 90px;">
 
   <div class="row justify-content-md-center">
     <div class="col-lg-10 col-md-10 col-md-auto">
@@ -17,16 +17,15 @@
                 </p>
                </div>
                <div class="col">
-                 <p style="margin-bottom: 20px;">Numéro série : {{module?.numero_serie}}</p>
-                 <p style="margin-bottom: 20px;">Propriétaire : {{module?.entreprise?.societe}}</p>
-                 <p style="margin-bottom: 20;">Fabricant : {{module?.marque}}</p>
-                 <p style="margin-bottom: 20px;">Etat : {{module?.type}}</p>
-                 <p style="margin-bottom: 20px;">Hauteur : {{module?.hauteur}} (mm)</p>
-                 <p style="margin-bottom: 20px;">Longueur : {{module?.longueur}} (mm)</p>
-                 <p style="margin-bottom: 40px;">Largeur : {{module?.largeur}} (mm)</p>
+                 <p style="margin-bottom: 20px;"><b>Numéro série</b> : {{module?.numero_serie}}</p>
+                 <p style="margin-bottom: 20px;"><b>Propriétaire</b> : {{module?.entreprise?.societe}}</p>
+                 <p style="margin-bottom: 20;"><b>Fabricant</b> : {{module?.marque}}</p>
+                 <p style="margin-bottom: 20px;"><b>Etat</b> : {{module?.type}}</p>
+                 <p style="margin-bottom: 20px;"><b>Hauteur</b> : {{module?.hauteur}} (mm)</p>
+                 <p style="margin-bottom: 20px;"><b>Longueur</b> : {{module?.longueur}} (mm)</p>
+                 <p style="margin-bottom: 40px;"><b>Largeur</b> : {{module?.largeur}} (mm)</p>
                  <div>
-                  <button mat-button routerLink="/signup" color="primary" style="margin-right: 10px;">Créer un compte</button>
-                  <button mat-flat-button routerLink="/login" color="primary">Se connecter</button>
+                  <button mat-button routerLink="/login" color="primary" style="margin-right: 10px;">Si vous avez un compte connecté vous sur le web.</button>
                  </div>
                </div>
              </div>
@@ -35,6 +34,10 @@
 
           </mat-card-footer>
         </mat-card>
+        <p style="text-align: center;">
+          <button mat-button color="primary" style="margin-right: 10px;"><a href="https://mlka-groupe.fr" style="color:#25446B !important;">Visitez notre site MLKA.</a></button>
+
+        </p>
     </div>
   </div>
 </div>
