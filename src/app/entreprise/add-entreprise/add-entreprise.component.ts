@@ -114,7 +114,7 @@ export class AddEntrepriseComponent implements OnInit {
       societe:new FormControl("",[Validators.required]),
       company:new FormControl("",[Validators.required]),
       siret:new FormControl("",null),
-      seren:new FormControl("",null),
+      siren:new FormControl("",null),
       type_entreprise:new FormControl("",null),
       source:new FormControl("",null),
       categorie_societe:new FormControl("",null),

@@ -52,7 +52,7 @@ export class DevisComponent implements OnInit, AfterViewInit {
         id:data?._id,
         projet:data?.projet?.projet,
         numero:data?.numero,
-        total:data?.total,
+        total:(Math.round(data?.total * 100) / 100).toFixed(2),
         date:data?.dateLastUpdate,
         })) as Devis[]
     },
@@ -66,7 +66,7 @@ export class DevisComponent implements OnInit, AfterViewInit {
           id:data?._id,
           projet:data?.projet?.projet,
           numero:data?.numero,
-          total:data?.total,
+          total:(Math.round(data?.total * 100) / 100).toFixed(2),
           date:data?.dateLastUpdate,
           })) as Devis[]
       },

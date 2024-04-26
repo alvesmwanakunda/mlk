@@ -193,7 +193,20 @@ const routes: Routes = [
   {
     path:'modules/:id',
     loadChildren:()=>import('./qrcode-module/qrcode-module.module').then(m=>m.QrcodeModuleModule)
-  }
+  },
+  {
+    path:'produit',
+    loadChildren:()=>import('./produits/produits.module').then(m=>m.ProduitsModule)
+  },
+  {
+    path:'produits',
+    loadChildren:()=>import('./produits/list-produits/list-produits.module').then(m=>m.ListProduitsModule)
+  },
+  {
+    path:'produit/:id',
+    loadChildren:()=>import('./produits/detail-produit/detail-produit.module').then(m=>m.DetailProduitModule)
+  },
+
 ];
 
 @NgModule({

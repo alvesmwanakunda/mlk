@@ -1,6 +1,6 @@
 <mat-dialog-content class="mat-typography">
   <div class="row" style="padding-top: 10px;">
-    <div class="col"><h3 style="color:#000;">Confirmer la commande</h3></div>
+    <div class="col"><h3 style="color:#000;">E-mail</h3></div>
     <div class="col" style="position: relative;bottom: 12px;">
        <div align="right">
         <button mat-icon-button mat-dialog-close>
@@ -11,6 +11,20 @@
   </div>
   <div style="margin-bottom: 10px;"><mat-divider></mat-divider></div>
   <div>
+    <form [formGroup]="devisForm" novalidate>
+      <editor 
+      apiKey="yimjymys4ncgnyjba52651rzyas8c049jditk61x087va3yn"
+      [init]="{
+        skin: 'borderless',
+        plugins: 'wordcount',
+        menubar: true,
+        height: '250',
+        language: 'fr_FR'
+      }"
+      formControlName="message" [(ngModel)]="body"></editor>
+    </form>
+  </div>
+  <!--<div>
     <p style="color:#000;">En signant ce devis, j'accepte les conditions suivantes :</p>
     <ul>
       <li style="color:#000;font-size: 13px;"> Accepté au nom de : {{devis?.entreprise?.societe}}</li>
@@ -19,9 +33,13 @@
   </div>
   <div>
     <canvas #canvas width="600" height="200"></canvas>
-  </div>
+  </div>-->
 </mat-dialog-content>
-<mat-dialog-actions align="center">
+<mat-dialog-actions>
+   <button mat-raised-button mat-dialog-close  style="margin-right: 10px;">Fermer</button>
+   <button mat-raised-button color="primary" (click)="generatePDF()"  cdkFocusInitial>Envoyer</button>
+</mat-dialog-actions>
+<!--<mat-dialog-actions align="center">
    <button mat-raised-button (click)="clear()" style="margin-right: 10px;">Effacer</button>
    <button mat-raised-button color="primary" (click)="saveSignature()"  cdkFocusInitial>Accepter & Signer</button>
-</mat-dialog-actions>
+</mat-dialog-actions>-->

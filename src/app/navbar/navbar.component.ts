@@ -79,11 +79,13 @@ export class NavbarComponent implements OnInit {
   }
 
   getEntrepriseId(){
-    this.entrepriseService.getEntreprise(this.user?.user?.entreprise).subscribe((res:any)=>{
-       this.company = res.message
-    },(error)=>{
-        console.log("Une erreur", error);
-    })
+    if(this.user?.user?.entreprise){
+      this.entrepriseService.getEntreprise(this.user?.user?.entreprise).subscribe((res:any)=>{
+        this.company = res.message
+     },(error)=>{
+         console.log("Une erreur", error);
+     })
+    }
   }
 
   getChatClient(){

@@ -226,7 +226,7 @@ export class AddDevisComponent implements OnInit {
       this.projetService.addDevis(payload).subscribe((res:any)=>{
         this.message='Devis a été ajouté avec succès';
         this.openSnackBar(this.message);
-        this.route.navigate(['/devis']);
+        this.route.navigate(['/devis', res?.message?._id]);
         this.onLoadForm=false;
       },(error)=>{
         console.log(error);

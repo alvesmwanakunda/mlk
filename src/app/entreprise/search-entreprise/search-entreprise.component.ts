@@ -59,11 +59,12 @@ export class SearchEntrepriseComponent implements OnInit {
 
   selectEntreprise(index){
     this.entreprise = this.listEntreprise[index];
+    console.log("entreprise", this.entreprise);
     if(this.entreprise){
        let playload={
         societe:this.entreprise?.nom_complet,
         siret:this.entreprise?.siege?.siret,
-        siren:this.entreprise?.siege?.siren,
+        siren:this.entreprise?.siren,
         rue:this.entreprise?.siege?.numero_voie+" "+this.entreprise?.siege?.type_voie+" "+this.entreprise?.siege?.libelle_voie,
         postal:this.entreprise?.siege?.code_postal,
         numero:this.entreprise?.siege?.libelle_commune

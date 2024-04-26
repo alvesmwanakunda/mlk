@@ -35,6 +35,7 @@ export class UpdateDevisComponent implements OnInit {
   user:any;
   entreprise:any;
   ProduitDevis:ProduitDevis;
+  total:any;
 
 
 
@@ -84,7 +85,8 @@ export class UpdateDevisComponent implements OnInit {
 
   getDevis(){
     this.projetService.getDevis(this.idDevis).subscribe((res:any)=>{
-        this.devis = res.message
+        this.devis = res.message;
+        this.total = (Math.round(this.devis?.total * 100) / 100).toFixed(2);
     },(error)=>{
       console.log(error);
     })
@@ -235,7 +237,7 @@ export class UpdateDevisComponent implements OnInit {
   }
 
   openDialogSigne(id){
-    const dialogRef = this.dialog.open(DevisSigneComponent,{width:'50%',data:{id:id}});
+    const dialogRef = this.dialog.open(DevisSigneComponent,{width:'55%',data:{id:id}});
     dialogRef.afterClosed().subscribe((result:any)=>{
        if(result){
           this.getDevis();

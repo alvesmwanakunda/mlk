@@ -201,6 +201,10 @@ export class ProjetsService {
       return this.httpClient.put(`${environment.BASE_API_URL}/devis/produits/unite/${id}`,body);
     }
 
+    public sendDevis(id, body){
+      return this.httpClient.post(`${environment.BASE_API_URL}/send/devis/${id}`,body);
+    }
+
    // Factures
    public addFacture(idDevis, body){
     return this.httpClient.put(`${environment.BASE_API_URL}/devis/facture/${idDevis}`,body);

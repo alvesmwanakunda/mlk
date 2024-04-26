@@ -3,13 +3,13 @@
     <div class="content-top">
       <div class="row">
         <div class="col">
-          <h2 class="content-title">Devis</h2>
+          <h2 class="content-title">Demande de Devis</h2>
         </div>
         <div class="col">
            <div align="right" *ngIf="devis">
-            <button mat-raised-button color="primary" style="margin-right: 10px;" *ngIf="!devis?.isFacture" (click)="convertToFacture()">Facture</button>
-            <button mat-raised-button style="margin-right: 10px;" [routerLink]="'/devis/' + devis?._id+'/devis'">Aperçu</button>
-            <button mat-raised-button color="accent" (click)="openDialogSigne(devis?._id)" *ngIf="!devis?.signature">Accepter & Signer</button>
+            <!--<button mat-raised-button color="primary" style="margin-right: 10px;" *ngIf="!devis?.isFacture" (click)="convertToFacture()">Facture</button>-->
+            <button mat-raised-button color="accent" style="margin-right: 10px;"  (click)="openDialogSigne(devis?._id)" *ngIf="!devis?.signature">Envoyer par mail</button>
+            <button mat-raised-button [routerLink]="'/devis/' + devis?._id+'/devis'">Aperçu</button>
            </div>
         </div>
       </div>
@@ -48,7 +48,7 @@
             <p style="font-weight: bold;">TOTAL</p>
           </div>
           <div class="col-10">
-              <p>{{devis?.total}} €</p>
+              <p>{{total}} €</p>
           </div>
        </div>
         </div>

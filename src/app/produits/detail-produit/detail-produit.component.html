@@ -1,0 +1,60 @@
+<app-navbar>
+    <div class="container">
+  
+      <div class="content-top">
+        <div class="row">
+            <div class="col">
+                <h2 class="content-title">Produit</h2>
+            </div>
+            <div class="col">
+                <div align="right" *ngIf="produit">
+                    <button mat-raised-button color="primary" (click)="generatePDF()">La fiche technique</button>
+                   </div>
+            </div>
+        </div>
+        <br/>
+        <mat-divider></mat-divider>
+      </div><!--content-->
+
+       <div *ngIf="!produit">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+       </div>
+
+       <div *ngIf="produit">
+        <div class="row" style="margin-bottom: 25px;">
+            <div class="col">
+                <ng-image-slider
+                [images]="images"
+                [imageSize]="{width:'100%', height:500}"
+                >
+                </ng-image-slider>
+            </div>
+            <div class="col">
+                <h1 class="name_details">{{produit?.name}}</h1>
+                <div>
+                    <h5 class="priceht" *ngIf="produit?.priceunit">€ {{produit?.priceunit | number:'1.0-0'}} HT</h5>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <span class="pricettc" *ngIf="produit?.price">{{produit?.price | number:'1.0-0'}} € TTC</span>
+                </div>
+                <div class="product_detail">
+                    <p [innerHTML]="produit?.resume"></p>
+                </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+                <mat-tab-group color="primary" backgroundColor="primary">
+                    <mat-tab label="Description">
+
+                       <div style="padding-top: 20px;">
+                        <p [innerHTML]="produit?.description"></p>
+                       </div>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+          </div>
+       </div>
+    
+    </div>
+</app-navbar>
