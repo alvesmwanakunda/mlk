@@ -5,25 +5,34 @@
     <form [formGroup]="agendaFormGroup">
 
       <div style="margin-bottom: 8px;">
-        <label class="label-entreprise">Titre</label>
-        <input type="text" formControlName="title"  [(ngModel)]="agenda.title" class="form-control input-entreprise">
+        <mat-form-field class="example-full-width">
+          <mat-label>Titre</mat-label>
+          <input matInput  formControlName="title" [(ngModel)]="agenda.title">
+        </mat-form-field>
       </div><!--div-->
 
       <div class="row" style="margin-bottom: 8px;">
         <div class="col">
-          <label class="label-entreprise">Début</label>
-          <input type="datetime-local" formControlName="start"  [(ngModel)]="agenda.start"  class="form-control input-entreprise">
+          <mat-form-field class="example-full-width">
+            <mat-label>Début</mat-label>
+            <input matInput  type="datetime-local" formControlName="start" [(ngModel)]="agenda.start">
+          </mat-form-field>
           <p>{{start}}</p>
+          
         </div>
         <div class="col">
-          <label class="label-entreprise">Fin</label>
-          <input type="datetime-local" formControlName="end"  [(ngModel)]="agenda.end"  class="form-control input-entreprise">
+          <mat-form-field class="example-full-width">
+            <mat-label>Fin</mat-label>
+            <input matInput  type="datetime-local" formControlName="end" [(ngModel)]="agenda.end">
+          </mat-form-field>
           <p>{{end}}</p>
         </div>
       </div><!--div-->
       <div style="margin-bottom: 8px;">
-        <label class="label-entreprise">Couleur</label>
-        <input type="color" formControlName="color"  [(ngModel)]="agenda.color"  class="form-control input-entreprise">
+        <mat-form-field class="example-full-width">
+          <mat-label>Couleur</mat-label>
+          <input matInput type="color" formControlName="color"  [(ngModel)]="agenda.color">
+        </mat-form-field>
       </div><!--div-->
 
     </form>

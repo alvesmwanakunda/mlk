@@ -6,6 +6,8 @@ import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import * as htmlToPdfMake from 'html-to-pdfmake';
 (pdfMake as any).vfs=pdfFonts.pdfMake.vfs;
+import { CountriesService } from 'src/app/shared/services/countries.service';
+
 
 @Component({
   selector: 'app-detail-produit',
@@ -29,12 +31,14 @@ export class DetailProduitComponent implements OnInit {
   pageOrientation:any;
   pageSize:any;
   footer:any;
+  background:any;
   pdfContent:any;
   tableContent:any;
   tableImages:any;
   prixUnitaire:any;
   prixTotal:any;
   tableRows:any = [];
+  backgroudImage:any;
   styles= {
     header:{
       fontSize:12,
@@ -56,7 +60,8 @@ export class DetailProduitComponent implements OnInit {
   constructor(
     private router: ActivatedRoute,
     private produitService: ProduitsService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private imageService: CountriesService
   ){
     this.router.params.subscribe((data:any)=>{
       this.idProduit = data.id
@@ -66,6 +71,7 @@ export class DetailProduitComponent implements OnInit {
   ngOnInit(){
     this.getProduit();
     this.getImage();
+    this.getBackground();
   }
 
   getProduit(){
@@ -105,24 +111,25 @@ export class DetailProduitComponent implements OnInit {
     this.pageMargins= [40, 110, 40, 60];
     this.pageSize= 'A4'
     this.header= {
-      margin: 8,
+      margin: [0, 25, 0, 8]as [number, number, number, number],
       columns: [
           {
               table: {
                   widths: [ '50%','50%'],
                   body: [
                       [
-                          { image: `data:image/jpeg;base64,${this.image}`,width: 99
+                          { 
+                            //image: `data:image/jpeg;base64,${this.image}`,width: 99
                           },
 
                           { 
-                            stack: [
+                            /*stack: [
                               { text: 'MLKA', style: 'header',bold:true},
                               { text: '18 Place des Nymphéas 93420 Villepinte', style: 'header'},
                               { text: 'Immeuble LE TROPICAL - HQ', style: 'header' },
                               { text: 'TVA N° FR26832632905', style: 'header' },
                               { text: 'Email : info@mlka.fr', style: 'header' }
-                            ],margin: 20
+                            ],margin: 20*/
                           }
                       ]
                   ]
@@ -192,6 +199,13 @@ export class DetailProduitComponent implements OnInit {
     };
     let docDefinition = {
       pageSize:this.pageSize,
+      background: [
+        {
+            image:  `data:image/jpeg;base64,${this.backgroudImage}`,
+            width: 595.28, // Largeur de la page A4 en points
+            height: 841.89 // Hauteur de la page A4 en points
+        }
+      ],
       //pageOrientation:this.pageOrientation,
       pageMargins:this.pageMargins,
       header: this.header,
@@ -216,6 +230,15 @@ export class DetailProduitComponent implements OnInit {
       this.image = res;
     }).catch((error:any)=>{
         console.log("Error", error)
+    })
+  }
+
+  getBackground(){
+    this.imageService.getImage().subscribe((res:any)=>{
+       this.backgroudImage = res?.image;
+       //console.log("Background", this.backgroudImage);
+    },(error:any)=>{
+       console.log("Erreur background", error);
     })
   }
 

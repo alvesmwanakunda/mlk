@@ -4,17 +4,19 @@
       <div class="row">
          <div class="col">
           <div>
-            <label class="label-entreprise">Projet <small class="error_field">*</small></label>
-            <select formControlName="projet" class="form-control input-entreprise" required>
-               <option *ngFor="let p of projets" [value]="p?._id" >{{p?.projet}}</option>
-            </select>
+            <mat-form-field class="example-full-width">
+              <mat-label>Projet</mat-label>
+              <mat-select  formControlName="entreprise">
+                <mat-option *ngFor="let p of projets" [value]="p?._id">{{p?.projet}}</mat-option>
+             </mat-select>
+            </mat-form-field> 
             <div *ngIf="moduleForm.get('projet').hasError(champ_validation.input[0].type) && (moduleForm.get('projet').dirty || moduleForm.get('projet').touched)">
               <p class="error_field">{{champ_validation.input[0].message}}</p>
             </div>
           </div>
          </div>
          <div class="col">
-          <div style="padding-top: 31px;">
+          <div style="padding-top: 13px;">
             <button mat-button  class="btn-entreprise" (click)="addModule()"  [disabled]="moduleForm.invalid">VALIDER</button>
           </div>
          </div>

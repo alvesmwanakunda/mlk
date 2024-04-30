@@ -5,8 +5,10 @@
     <form [formGroup]="boxFormGroup">
 
       <div style="margin-bottom: 8px;">
-        <label class="label-entreprise">Dossier</label>
-        <input type="text" formControlName="nom"  class="form-control input-entreprise">
+        <mat-form-field class="example-full-width">
+          <mat-label>Dossier</mat-label>
+          <input matInput  formControlName="nom">
+        </mat-form-field>
       </div><!--div-->
     </form>
   </div>

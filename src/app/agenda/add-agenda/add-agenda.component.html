@@ -5,23 +5,32 @@
     <form [formGroup]="agendaFormGroup">
 
       <div style="margin-bottom: 8px;">
-        <label class="label-entreprise">Titre</label>
-        <input type="text" formControlName="title"  class="form-control input-entreprise">
+        <mat-form-field class="example-full-width">
+          <mat-label>Titre</mat-label>
+          <input matInput  formControlName="title">
+        </mat-form-field>
       </div><!--div-->
 
       <div class="row" style="margin-bottom: 8px;">
         <div class="col">
-          <label class="label-entreprise">Début</label>
-          <input type="datetime-local" formControlName="start"  class="form-control input-entreprise">
+          <mat-form-field class="example-full-width">
+            <mat-label>Début</mat-label>
+            <input matInput  type="datetime-local" formControlName="start">
+          </mat-form-field>
+          
         </div>
         <div class="col">
-          <label class="label-entreprise">Fin</label>
-          <input type="datetime-local" formControlName="end"  class="form-control input-entreprise">
+          <mat-form-field class="example-full-width">
+            <mat-label>Fin</mat-label>
+            <input matInput  type="datetime-local" formControlName="end">
+          </mat-form-field>
         </div>
       </div><!--div-->
       <div style="margin-bottom: 8px;">
-        <label class="label-entreprise">Couleur</label>
-        <input type="color" formControlName="color" [(ngModel)]="color"  class="form-control input-entreprise">
+        <mat-form-field class="example-full-width">
+          <mat-label>Couleur</mat-label>
+          <input matInput type="color" formControlName="color" [(ngModel)]="color">
+        </mat-form-field>
       </div><!--div-->
 
     </form>

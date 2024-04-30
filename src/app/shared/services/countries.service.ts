@@ -16,4 +16,8 @@ export class CountriesService {
   getDevises():Observable<any>{
     return this.http.get<any>('assets/devis.json')
   }
+
+  getImage():Observable<any>{
+    return this.http.get<any>('assets/image.json')
+  }
 }

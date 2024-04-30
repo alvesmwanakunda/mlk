@@ -27,81 +27,103 @@
                     <div class="col">
 
                       <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Entreprise <small class="error_field">*</small></label>
-                        <input type="text" formControlName="societe" [(ngModel)]="entreprise.societe" class="form-control input-entreprise" readonly required>
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Sociéte</mat-label>
+                          <input matInput formControlName="societe" [(ngModel)]="entreprise.societe" readonly required>
+                        </mat-form-field>
                         <div *ngIf="firstFormGroup.get('societe').hasError(champ_validation.input[0].type) && (firstFormGroup.get('societe').dirty || firstFormGroup.get('societe').touched)">
                           <p class="error_field">{{champ_validation.input[0].message}}</p>
                         </div>
                       </div><!--div-->
 
                       <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Nº SIREN</label>
-                        <input type="text" formControlName="siren" [(ngModel)]="entreprise.siren" class="form-control input-entreprise">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Nº SIREN</mat-label>
+                          <input matInput formControlName="siren" [(ngModel)]="entreprise.siren">
+                        </mat-form-field>
                       </div><!--div-->
                       <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Forme Juridique</label>
-                        <input type="text" formControlName="juridique" [(ngModel)]="entreprise.juridique" class="form-control input-entreprise">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Forme Juridique</mat-label>
+                          <input matInput formControlName="juridique" [(ngModel)]="entreprise.juridique">
+                        </mat-form-field>
                       </div><!--div-->
 
                     </div><!--col-->
                     <div class="col">
 
                       <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Nom Commercial</label>
-                        <input type="text" formControlName="commercial" [(ngModel)]="entreprise.commercial" class="form-control input-entreprise">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Nom Commercial</mat-label>
+                          <input matInput formControlName="commercial" [(ngModel)]="entreprise.commercial">
+                        </mat-form-field>
                       </div><!--div-->
                       <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Nº SIRET</label>
-                        <input type="text" formControlName="siret" [(ngModel)]="entreprise.siret"  class="form-control input-entreprise">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Nº SIRET</mat-label>
+                          <input matInput formControlName="siret" [(ngModel)]="entreprise.siret">
+                        </mat-form-field>
                       </div><!--div-->
                       <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Nº TVA</label>
-                        <input type="text" formControlName="tva" [(ngModel)]="entreprise.tva" class="form-control input-entreprise">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Nº TVA</mat-label>
+                          <input matInput formControlName="tva" [(ngModel)]="entreprise.tva">
+                        </mat-form-field>
                       </div><!--div-->
                     </div>
                   </div>
                   <div class="row">
                     <div class="col">
                       <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Type entreprise</label>
-                        <select formControlName="type_entreprise"  [(ngModel)]="entreprise.type_entreprise" class="form-control input-entreprise">
-                          <option value="Privé">Privé</option>
-                          <option value="Public">Public</option>
-                          <option value="Association">Association</option>
-                       </select>
+                       <mat-form-field class="example-full-width">
+                        <mat-label>Type d'entreprise</mat-label>
+                        <mat-select matInput formControlName="type_entreprise"  [(ngModel)]="entreprise.type_entreprise">
+                          <mat-option value="Privé">Privé</mat-option>
+                          <mat-option value="Public">Public</mat-option>
+                          <mat-option value="Association">Association</mat-option>
+                        </mat-select>
+                      </mat-form-field>
                       </div><!--div-->
                       <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Source</label>
-                        <select  formControlName="source" [(ngModel)]="entreprise.source"  class="form-control input-entreprise">
-                          <option value="Plateforme Référencement">Plateforme Référencement</option>
-                          <option value="Partenaires">Partenaires</option>
-                          <option value="Bouche à l'oreille">Bouche à l'oreille</option>
-                          <option value="Réseau professionnel">Réseau professionnel</option>
-                          <option value="Salons & Evenements">Salons & Evenements</option>
-                          <option value="Digital">Digital</option>
-                          <option value="Emailing">Emailing</option>
-                          <option value="Containex">Containex</option>
-                          <option value="Tepe">Tepe</option>
-                          <option value="Autres fournisseurs">Autres fournisseurs</option>
-                          <option value="David BAERT">David BAERT</option>
-                          <option value="Autres">Autres</option>
-                       </select>
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Source</mat-label>
+                          <mat-select matInput formControlName="source" [(ngModel)]="entreprise.source">
+                          <mat-option value="Plateforme Référencement">Plateforme Référencement</mat-option>
+                          <mat-option value="Partenaires">Partenaires</mat-option>
+                          <mat-option value="Bouche à l'oreille">Bouche à l'oreille</mat-option>
+                          <mat-option value="Réseau professionnel">Réseau professionnel</mat-option>
+                          <mat-option value="Salons & Evenements">Salons & Evenements</mat-option>
+                          <mat-option value="Digital">Digital</mat-option>
+                          <mat-option value="Emailing">Emailing</mat-option>
+                          <mat-option value="Containex">Containex</mat-option>
+                          <mat-option value="Tepe">Tepe</mat-option>
+                          <mat-option value="Autres fournisseurs">Autres fournisseurs</mat-option>
+                          <mat-option value="David BAERT">David BAERT</mat-option>
+                          <mat-option value="Autres">Autres</mat-option>
+                         </mat-select>
+                        </mat-form-field>
+                          
                       </div><!--div-->
                       <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Categorie societe</label>
-                        <select formControlName="categorie_societe" [(ngModel)]="entreprise.categorie_societe" class="form-control input-entreprise">
-                          <option value="Prospect">Prospect</option>
-                          <option value="Fournisseur">Fournisseur</option>
-                          <option value="Partenaire">Partenaire</option>
-                          <option value="Client">Client</option>
-                          <option value="Autre">Autre</option>
-                       </select>
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Categorie societe</mat-label>
+                          <mat-select formControlName="categorie_societe" [(ngModel)]="entreprise.categorie_societe">
+                            <mat-option value="Prospect">Prospect</mat-option>
+                            <mat-option value="Fournisseur">Fournisseur</mat-option>
+                            <mat-option value="Partenaire">Partenaire</mat-option>
+                            <mat-option value="Client">Client</mat-option>
+                            <mat-option value="Autre">Autre</mat-option>
+                         </mat-select>
+                        </mat-form-field>
+                       
                       </div><!--div-->
                     </div>
                   </div>
                   <div style="margin-bottom: 15px;">
-                    <label class="label-entreprise">Activité Principale</label>
-                    <input type="text" formControlName="activite" [(ngModel)]="entreprise.activite" class="form-control input-entreprise">
+                    <mat-form-field class="example-full-width">
+                      <mat-label>Activité Principale</mat-label>
+                      <input matInput  formControlName="activite" [(ngModel)]="entreprise.activite">
+                    </mat-form-field>
                   </div><!--div-->
                   <div align="right">
                     <button mat-button matStepperNext class="btn-entreprise">Suivant <i class="fa-solid fa-chevron-right"></i></button>
@@ -117,23 +139,29 @@
                     <div class="col">
 
                       <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Pays de l'entreprise</label>
-                        <input type="text" [(ngModel)]="entreprise.pays" formControlName="pays" [matAutocomplete]="auto" class="form-control input-entreprise">
-                        <mat-autocomplete #auto="matAutocomplete">
-                          <mat-option *ngFor="let pays of paysFiltres | async" [value]="pays.name">
-                            {{pays?.emoji}} {{pays?.name}}
-                          </mat-option>
-                        </mat-autocomplete>
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Activité Principale</mat-label>
+                          <input matInput  [(ngModel)]="entreprise.pays" formControlName="pays" [matAutocomplete]="auto">
+                          <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option *ngFor="let pays of paysFiltres | async" [value]="pays.name">
+                              {{pays?.emoji}} {{pays?.name}}
+                            </mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field> 
                       </div><!--div-->
 
                       <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Code Postal</label>
-                        <input type="text" formControlName="postal" [(ngModel)]="entreprise.postal" class="form-control input-entreprise">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Code Postal</mat-label>
+                          <input matInput formControlName="postal" [(ngModel)]="entreprise.postal">
+                        </mat-form-field>
                       </div><!--div-->
 
                       <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Email de l'entreprise <small class="error_field">*</small></label>
-                        <input type="text" formControlName="email" [(ngModel)]="entreprise.email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control input-entreprise" required>
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Email de l'entreprise</mat-label>
+                          <input matInput  formControlName="email" [(ngModel)]="entreprise.email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
+                        </mat-form-field>
                         <div *ngIf="secondFormGroup.get('email').hasError(champ_validation.email[0].type) && (secondFormGroup.get('email').dirty || secondFormGroup.get('email').touched)">
                           <p class="error_field">{{champ_validation.email[0].message}}</p>
                         </div>
@@ -147,26 +175,34 @@
 
 
                       <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Adresse de l'entreprise</label>
-                        <input type="text" formControlName="rue" [(ngModel)]="entreprise.rue" class="form-control input-entreprise">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Adresse de l'entreprise</mat-label>
+                          <input matInput formControlName="rue" [(ngModel)]="entreprise.rue">
+                        </mat-form-field>
                       </div><!--div-->
 
                       <div class="row" style="margin-bottom: 15px;">
                         <div class="col">
-                            <label class="label-entreprise">Numéro</label>
-                            <input type="text" formControlName="numero" [(ngModel)]="entreprise.numero" class="form-control input-entreprise">
+                            <mat-form-field class="example-full-width">
+                              <mat-label>Numéro</mat-label>
+                              <input matInput formControlName="numero" [(ngModel)]="entreprise.numero">
+                            </mat-form-field>
                         </div>
                         <div class="col">
-                            <label class="label-entreprise">Site Web</label>
-                            <input type="text" formControlName="site" [(ngModel)]="entreprise.site" class="form-control input-entreprise">
+                            <mat-form-field class="example-full-width">
+                              <mat-label>Site Web</mat-label>
+                              <input matInput formControlName="site" [(ngModel)]="entreprise.site">
+                            </mat-form-field>
                         </div>
                       </div>
 
 
                       <div class="row" style="margin-bottom: 15px;">
                         <div class="col-4">
-                          <label class="label-entreprise">Indicatif <small class="error_field">*</small></label>
-                          <input type="text"  [(ngModel)]="entreprise.indicatif" formControlName="indicatif" [matAutocomplete]="autoCode" class="form-control input-entreprise">
+                         <mat-form-field class="example-full-width">
+                            <mat-label>Indicatif</mat-label>
+                            <input matInput [(ngModel)]="entreprise.indicatif" formControlName="indicatif" [matAutocomplete]="autoCode">
+                          </mat-form-field>
                           <mat-autocomplete #autoCode="matAutocomplete">
                             <mat-option *ngFor="let code of codeFiltres | async" [value]="code?.dial_code">
                               {{code?.dial_code}}
@@ -174,8 +210,10 @@
                           </mat-autocomplete>
                         </div>
                         <div class="col">
-                          <label class="label-entreprise">Nº Tel <small class="error_field">*</small></label>
-                          <input type="text" formControlName="telephone" [(ngModel)]="entreprise.telephone" class="form-control input-entreprise">
+                          <mat-form-field class="example-full-width">
+                            <mat-label>Nº Tel</mat-label>
+                            <input matInput formControlName="telephone" [(ngModel)]="entreprise.telephone">
+                          </mat-form-field>
                           <div *ngIf="secondFormGroup.get('telephone').hasError(champ_validation.telephone[0].type) && (secondFormGroup.get('telephone').dirty || secondFormGroup.get('telephone').touched)">
                             <p class="error_field">{{champ_validation.telephone[0].message}}</p>
                           </div>
@@ -185,25 +223,31 @@
                   </div>
                   <div class="row" style="margin-bottom: 15px;">
                     <div class="col-2">
-                      <label class="label-entreprise">Genre</label>
-                      <select class="form-select input-entreprise" formControlName="genre" [(ngModel)]="entreprise.genre" aria-label="Default select example">
-                        <option value="Mr">Mr</option>
-                        <option value="Mme">Mme</option>
-                      </select>
+                      <mat-form-field class="example-full-width">
+                        <mat-label>Genre</mat-label>
+                        <mat-select  formControlName="genre" [(ngModel)]="entreprise.genre" aria-label="Default select example">
+                          <mat-option value="Mr">Mr</mat-option>
+                          <mat-option value="Mme">Mme</mat-option>
+                        </mat-select>
+                      </mat-form-field>                     
                       <!--<div *ngIf="secondFormGroup.get('genre').hasError(champ_validation.input[0].type) && (secondFormGroup.get('genre').dirty || secondFormGroup.get('genre').touched)">
                         <p class="error_field">{{champ_validation.input[0].message}}</p>
                       </div>-->
                     </div>
                     <div class="col">
-                      <label class="label-entreprise">Nom responsable</label>
-                      <input type="text" formControlName="nom" [(ngModel)]="entreprise.nom" class="form-control input-entreprise">
+                      <mat-form-field class="example-full-width">
+                        <mat-label>Nom responsable</mat-label>
+                        <input matInput formControlName="nom" [(ngModel)]="entreprise.nom">
+                      </mat-form-field>
                       <div *ngIf="secondFormGroup.get('nom').hasError(champ_validation.input[0].type) && (secondFormGroup.get('nom').dirty || secondFormGroup.get('nom').touched)">
                         <p class="error_field">{{champ_validation.input[0].message}}</p>
                       </div>
                     </div>
                     <div class="col">
-                      <label class="label-entreprise">Prénom responsable</label>
-                    <input type="text" formControlName="prenom" [(ngModel)]="entreprise.prenom" class="form-control input-entreprise">
+                    <mat-form-field class="example-full-width">
+                      <mat-label>Prénom responsable</mat-label>
+                      <input matInput formControlName="prenom" [(ngModel)]="entreprise.prenom">
+                    </mat-form-field>
                     <div *ngIf="secondFormGroup.get('prenom').hasError(champ_validation.input[0].type) && (secondFormGroup.get('prenom').dirty || secondFormGroup.get('prenom').touched)">
                       <p class="error_field">{{champ_validation.input[0].message}}</p>
                     </div>
@@ -244,19 +288,25 @@
                 </div><!--row-->
                 <div>
                   <div style="margin-bottom: 15px;">
-                    <label class="label-entreprise">Corps d'activité</label>
-                    <input type="text" formControlName="corps_act" [(ngModel)]="entreprise.corps_act" class="form-control input-entreprise">
+                    <mat-form-field class="example-full-width">
+                      <mat-label>Corps d'activité</mat-label>
+                      <input matInput formControlName="corps_act" [(ngModel)]="entreprise.corps_act">
+                    </mat-form-field>
                   </div><!--div-->
                   <div style="margin-bottom: 15px;">
-                    <label class="label-entreprise">Corps Etat</label>
-                    <input type="text" formControlName="corps_etat" [(ngModel)]="entreprise.corps_etat" class="form-control input-entreprise">
+                    <mat-form-field class="example-full-width">
+                      <mat-label>Corps Etat</mat-label>
+                      <input matInput  formControlName="corps_etat" [(ngModel)]="entreprise.corps_etat">
+                    </mat-form-field>
                   </div><!--div-->
                   <div style="margin-bottom: 15px;">
-                    <label class="label-entreprise">Fournisseur</label>
-                    <select class="form-select input-entreprise" formControlName="fournisseur" [(ngModel)]="entreprise.fournisseur" aria-label="Default select example">
-                      <option value="Oui">Oui</option>
-                      <option value="Non">Non</option>
-                    </select>
+                    <mat-form-field class="example-full-width">
+                      <mat-label>Fournisseur</mat-label>
+                      <mat-select  formControlName="fournisseur" [(ngModel)]="entreprise.fournisseur" aria-label="Default select example">
+                        <mat-option value="Oui">Oui</mat-option>
+                        <mat-option value="Non">Non</mat-option>
+                      </mat-select>
+                    </mat-form-field>                    
                   </div><!--div-->
                 </div>
               </form>

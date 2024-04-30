@@ -28,46 +28,47 @@
                     <div class="col">
 
                       <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Nom du projet <small class="error_field">*</small></label>
-                        <input type="text" formControlName="nom"  [(ngModel)]="projet.nom" class="form-control input-entreprise" required>
-                        <div *ngIf="firstFormGroup.get('nom').hasError(champ_validation.nom[0].type) && (firstFormGroup.get('nom').dirty || firstFormGroup.get('nom').touched)">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Nom du projet</mat-label>
+                          <input  matInput type="text" formControlName="projet"  [(ngModel)]="projet.projet"  required>
+                        </mat-form-field>
+                        <div *ngIf="firstFormGroup.get('projet').hasError(champ_validation.nom[0].type) && (firstFormGroup.get('projet').dirty || firstFormGroup.get('projet').touched)">
                           <p class="error_field">{{champ_validation.nom[0].message}}</p>
                         </div>
                       </div><!--div-->
-                    </div><!--col-->
-                    <!--<div class="col">
-                      <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Type Service <small class="error_field">*</small></label>
-                        <select formControlName="service"  [(ngModel)]="projet.service" class="form-select input-entreprise" aria-label="Default select example" required>
-                          <option value="Installation">Installation</option>
-                          <option value="Désinstallation">Désinstallation</option>
-                          <option value="Remise aux normes">Remise aux normes</option>
-                        </select>
-                        <div *ngIf="firstFormGroup.get('service').hasError(champ_validation.service[0].type) && (firstFormGroup.get('service').dirty || firstFormGroup.get('service').touched)">
-                          <p class="error_field">{{champ_validation.service[0].message}}</p>
-                        </div>
-                      </div>
 
-                   </div>-->
+                    </div><!--col-->
                   </div>
+                  
                   <div class="row" style="margin-bottom: 15px;">
                     <div class="col-2">
-                      <label class="label-entreprise">Genre</label>
-                      <select class="form-select input-entreprise" formControlName="genre" [(ngModel)]="projet.genre" aria-label="Default select example">
-                        <option value="Mr">Mr</option>
-                        <option value="Mme">Mme</option>
-                      </select>
+                      <mat-form-field class="example-full-width">
+                        <mat-label>Genre</mat-label>
+                        <mat-select formControlName="genre"  [(ngModel)]="projet.genre" aria-label="Default select example">
+                          <mat-option value="Mr">Mr</mat-option>
+                          <mat-option value="Mme">Mme</mat-option>
+                        </mat-select>
+                      </mat-form-field>                      
                     </div>
                     <div class="col">
-                      <label class="label-entreprise">Nom du responsable</label>
-                      <input type="text" formControlName="nom"  [(ngModel)]="projet.nom" class="form-control input-entreprise">
+                       <mat-form-field class="example-full-width">
+                        <mat-label>Nom du responsable</mat-label>
+                        <input  matInput type="text" formControlName="nom"  [(ngModel)]="projet.nom">
+                      </mat-form-field>
                     </div>
                     <div class="col">
-                      <label class="label-entreprise">Prénom du responsable</label>
-                      <input type="text" formControlName="prenom"  [(ngModel)]="projet.prenom" class="form-control input-entreprise">
+                      <mat-form-field class="example-full-width">
+                        <mat-label>Prénom du responsable</mat-label>
+                        <input  matInput type="text" formControlName="prenom"  [(ngModel)]="projet.prenom">
+                      </mat-form-field>
                     </div>
                   </div>
-
+                  <div style="margin-bottom: 15px;">
+                   <mat-form-field class="example-full-width">
+                      <mat-label>Url du plan</mat-label>
+                      <input  matInput type="text" formControlName="plan"  [(ngModel)]="projet.plan">
+                    </mat-form-field>
+                  </div><!--div-->
                   <div align="right">
                     <button mat-button matStepperNext class="btn-entreprise">Suivant <i class="fa-solid fa-chevron-right"></i></button>
                   </div>
@@ -82,33 +83,43 @@
                     <div class="col">
 
                       <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Pays</label>
-                        <input type="text" formControlName="pays"  [(ngModel)]="projet.pays" [matAutocomplete]="auto" class="form-control input-entreprise">
-                        <mat-autocomplete #auto="matAutocomplete">
-                          <mat-option *ngFor="let pays of paysFiltres | async" [value]="pays.name">
-                            {{pays?.emoji}} {{pays?.name}}
-                          </mat-option>
-                        </mat-autocomplete>
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Url du plan</mat-label>
+                          <input  matInput type="text" formControlName="pays"  [(ngModel)]="projet.pays" [matAutocomplete]="auto">
+                          <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option *ngFor="let pays of paysFiltres | async" [value]="pays.name">
+                              {{pays?.emoji}} {{pays?.name}}
+                            </mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field>
                       </div><!--div-->
                       <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Ville</label>
-                        <input type="text" formControlName="ville"  [(ngModel)]="projet.ville" class="form-control input-entreprise">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Ville</mat-label>
+                          <input  matInput type="text" formControlName="ville"  [(ngModel)]="projet.ville">
+                        </mat-form-field>
                       </div><!--div-->
                       <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Code Postal</label>
-                        <input type="text" formControlName="postal"  [(ngModel)]="projet.postal" class="form-control input-entreprise">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Code Postal</mat-label>
+                          <input  matInput type="text" formControlName="postal"  [(ngModel)]="projet.postal">
+                        </mat-form-field>
                       </div><!--div-->
 
                     </div><!--col-->
                     <div class="col">
 
                       <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Numéro</label>
-                        <input type="text" formControlName="adresse"  [(ngModel)]="projet.adresse" class="form-control input-entreprise">
+                       <mat-form-field class="example-full-width">
+                          <mat-label>Numéro</mat-label>
+                          <input  matInput type="text" formControlName="adresse"  [(ngModel)]="projet.adresse">
+                        </mat-form-field>
                       </div><!--div-->
                       <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Rue</label>
-                        <input type="text" formControlName="rue"  [(ngModel)]="projet.rue" class="form-control input-entreprise">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Rue</mat-label>
+                          <input  matInput type="text" formControlName="rue"  [(ngModel)]="projet.rue">
+                        </mat-form-field>
                       </div><!--div-->
                    </div>
                   </div>
@@ -121,20 +132,21 @@
             </mat-step>
             <mat-step [stepControl]="threeFormGroup">
               <form [formGroup]="threeFormGroup">
+
               <ng-template matStepLabel>Information Supplémentaires du projet</ng-template>
               <div class="row" style="padding-top: 13px;margin-bottom: 5px;">
                 <div class="col-md-3">
                   <div class="card card-dot-blue" style="margin-bottom: 10px;" *ngIf="!selectedImage">
-                      <div class="card card-dot-blue" *ngIf="!projet?.photo">
-                        <div class="card-body">
-                          <img src="assets/images/galerie.png">
-                        </div>
-                      </div><!--card-->
-                      <img [src]="image" *ngIf="projet?.photo" class="card-img-projet">
-                   </div>
-                   <div *ngIf="selectedImage"  style="margin-bottom: 10px;">
-                      <img [src]="selectedImage" class="card-img-projet">
-                   </div>
+                    <div class="card card-dot-blue" *ngIf="!projet?.photo">
+                      <div class="card-body">
+                        <img src="assets/images/galerie.png">
+                      </div>
+                    </div><!--card-->
+                    <img [src]="image" *ngIf="projet?.photo" class="card-img-projet">
+                 </div>
+                 <div *ngIf="selectedImage"  style="margin-bottom: 10px;">
+                    <img [src]="selectedImage" class="card-img-projet">
+                 </div>
                   <div align="right">
                     <input type="file" class="file-input" accept='image/*' (change)="onFileSelected($event)" #fileUpload>
                     <button type="button" (click)="fileUpload.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> charger</button>
@@ -144,29 +156,39 @@
               </div><!--row-->
               <div>
                 <div style="margin-bottom: 15px;">
-                  <label class="label-entreprise">Budget Prévisionnel du projet</label>
-                  <input type="text" formControlName="budget"  [(ngModel)]="projet.budget" class="form-control input-entreprise">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Budget Prévisionnel du projet</mat-label>
+                    <input  matInput type="text" formControlName="budget" [(ngModel)]="projet.budget">
+                  </mat-form-field>
                 </div><!--div-->
                 <div style="margin-bottom: 15px;">
-                  <label class="label-entreprise">Devise du projet</label>
-                  <input type="text" formControlName="devise" [(ngModel)]="projet.devise" [matAutocomplete]="auto" class="form-control input-entreprise">
-                  <mat-autocomplete #auto="matAutocomplete">
-                    <mat-option *ngFor="let dev of devisFiltres | async" [value]="dev.symbole">
-                      {{dev.nom}}
-                    </mat-option>
-                  </mat-autocomplete>
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Devise du projet</mat-label>
+                    <input  matInput type="text" formControlName="devise" [(ngModel)]="projet.devis" [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete">
+                      <mat-option *ngFor="let dev of devisFiltres | async" [value]="dev.symbole">
+                        {{dev.nom}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
                 </div><!--div-->
                 <div style="margin-bottom: 15px;">
-                  <label class="label-entreprise">Site d'offre</label>
-                  <input type="text" formControlName="site_offre"  [(ngModel)]="projet.site_offre" class="form-control input-entreprise">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Site d'offre</mat-label>
+                    <input  matInput type="text" formControlName="site_offre" [(ngModel)]="projet.site_offre">
+                  </mat-form-field>
                 </div><!--div-->
                 <div style="margin-bottom: 15px;">
-                  <label class="label-entreprise">Numéro d'offre</label>
-                  <input type="text" formControlName="numero_offre"  [(ngModel)]="projet.numero_offre" class="form-control input-entreprise">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Numéro d'offre</mat-label>
+                    <input  matInput type="text" formControlName="numero_offre" [(ngModel)]="projet.numero_offre">
+                  </mat-form-field>
                 </div><!--div-->
                 <div style="margin-bottom: 15px;">
-                  <label class="label-entreprise">Date limite remise d'offre</label>
-                  <input type="date" formControlName="date_limite"  [(ngModel)]="jours" class="form-control input-entreprise">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Date limite remise d'offre</mat-label>
+                    <input  matInput type="date" formControlName="date_limite"  [(ngModel)]="jours">
+                  </mat-form-field>
                 </div><!--div-->
               </div>
 
@@ -177,6 +199,7 @@
               </div>
             </mat-step>
           </mat-stepper>
+
 
         </div><!--col-->
       </div><!--row-->

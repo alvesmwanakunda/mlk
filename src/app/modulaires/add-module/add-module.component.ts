@@ -162,6 +162,7 @@ export class AddModuleComponent implements OnInit {
           if(event.type==HttpEventType.Response){
             this.message='Module a été ajouté avec succès';
             this.openSnackBar(this.message)
+            this.route.navigate(["modulaires"]);
           }
         }
 

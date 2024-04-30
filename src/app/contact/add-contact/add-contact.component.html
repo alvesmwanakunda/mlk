@@ -33,15 +33,19 @@
             <div class="row">
               <div class="col">
                 <div style="margin-bottom: 15px;">
-                  <label class="label-entreprise">Nom <small class="error_field">*</small></label>
-                  <input type="text" formControlName="nom"  class="form-control input-entreprise" required>
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Nom</mat-label>
+                    <input matInput formControlName="nom" required>
+                  </mat-form-field>
                   <div *ngIf="contactFormGroup.get('nom').hasError(champ_validation.type[0].type) && (contactFormGroup.get('nom').dirty || contactFormGroup.get('nom').touched)">
                     <p class="error_field">{{champ_validation.type[0].message}}</p>
                   </div>
                 </div><!--div-->
                 <div style="margin-bottom: 15px;">
-                  <label class="label-entreprise">E-mail  <small class="error_field">*</small></label>
-                  <input type="text" formControlName="email" (input)="checkEmail()"  class="form-control input-entreprise" required>
+                  <mat-form-field class="example-full-width">
+                    <mat-label>E-mail</mat-label>
+                    <input matInput formControlName="email"  (input)="checkEmail()" required>
+                  </mat-form-field>
                   <div *ngIf="contactFormGroup.get('email').hasError(champ_validation.email[0].type) && (contactFormGroup.get('email').dirty || contactFormGroup.get('email').touched)">
                     <p class="error_field">{{champ_validation.email[0].message}}</p>
                   </div>
@@ -54,16 +58,20 @@
               </div><!--col-->
               <div class="col">
                 <div style="margin-bottom: 15px;">
-                  <label class="label-entreprise">Prénom  <small class="error_field">*</small></label>
-                  <input type="text" formControlName="prenom"  class="form-control input-entreprise" required>
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Prénom</mat-label>
+                    <input matInput formControlName="prenom"   required>
+                  </mat-form-field>
                   <div *ngIf="contactFormGroup.get('prenom').hasError(champ_validation.type[0].type) && (contactFormGroup.get('prenom').dirty || contactFormGroup.get('prenom').touched)">
                     <p class="error_field">{{champ_validation.type[0].message}}</p>
                   </div>
                 </div><!--div-->
                 <div class="row" style="margin-bottom: 15px;">
                   <div class="col-4">
-                    <label class="label-entreprise">Indicatif  <small class="error_field">*</small></label>
-                    <input type="text" formControlName="indicatif" [matAutocomplete]="autoCode" class="form-control input-entreprise" required>
+                    <mat-form-field class="example-full-width">
+                      <mat-label>Indicatif</mat-label>
+                      <input matInput formControlName="indicatif" [matAutocomplete]="autoCode" required>
+                    </mat-form-field>
                     <mat-autocomplete #autoCode="matAutocomplete">
                       <mat-option *ngFor="let code of codeFiltres | async" [value]="code?.dial_code">
                         {{code?.dial_code}}
@@ -74,8 +82,10 @@
                     </div>
                   </div>
                   <div class="col">
-                    <label class="label-entreprise">Nº Tel  <small class="error_field">*</small></label>
-                    <input type="text" formControlName="phone" class="form-control input-entreprise" appPhoneMask required>
+                    <mat-form-field class="example-full-width">
+                      <mat-label>Nº Tel</mat-label>
+                      <input matInput formControlName="phone" appPhoneMask required>
+                    </mat-form-field>
                     <div *ngIf="contactFormGroup.get('phone').hasError(champ_validation.phone[0].type) && (contactFormGroup.get('phone').dirty || contactFormGroup.get('phone').touched)">
                       <p class="error_field">{{champ_validation.phone[0].message}}</p>
                     </div>
@@ -91,10 +101,12 @@
             <div class="row">
               <div class="col">
                 <div style="margin-bottom: 15px;">
-                  <label class="label-entreprise">Entreprises <small class="error_field">*</small></label>
-                  <select formControlName="entreprise" class="form-control input-entreprise" required>
-                    <option *ngFor="let en of entreprises" [value]="en._id">{{en.societe}}</option>
-                  </select>
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Entreprises</mat-label>
+                    <mat-select matInput formControlName="type_entreprise" required>
+                       <mat-option *ngFor="let en of entreprises" [value]="en._id">{{en.societe}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
                   <div *ngIf="contactFormGroup.get('entreprise').hasError(champ_validation.type[0].type) && (contactFormGroup.get('entreprise').dirty || contactFormGroup.get('entreprise').touched)">
                     <p class="error_field">{{champ_validation.type[0].message}}</p>
                   </div>
@@ -102,8 +114,10 @@
               </div>
               <div class="col">
                 <div style="margin-bottom: 15px;">
-                  <label class="label-entreprise">Poste</label>
-                  <input type="text" formControlName="poste"  class="form-control input-entreprise" required>
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Poste</mat-label>
+                    <input matInput formControlName="poste">
+                  </mat-form-field>
                 </div><!--div-->
               </div>
             </div>

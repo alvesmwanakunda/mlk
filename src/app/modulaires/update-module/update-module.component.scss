@@ -14,3 +14,8 @@
   //border-bottom: 1px dotted #28628b;
   padding-bottom: 15px;
 }
+
+::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: #fff !important;
+}
+
