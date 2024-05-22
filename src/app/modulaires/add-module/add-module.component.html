@@ -3,7 +3,7 @@
     <div class="content-top">
       <div class="row">
         <div class="col">
-          <p class="title-projet-page">Nouveau module <button class="btn" type="button" [routerLink]="['/modulaires']"><i class="fa-solid fa-arrow-left" style="color:#28628B;"></i></button></p>
+          <p class="title-projet-page">Nouvel article <button class="btn" type="button" [routerLink]="['/modulaires']"><i class="fa-solid fa-arrow-left" style="color:#28628B;"></i></button></p>
         </div>
         <div class="col">
            <div align="right">
@@ -23,7 +23,7 @@
             <div class="row" style="margin-bottom: 15px;">
               <div class="col">
                 <mat-form-field class="example-full-width">
-                  <mat-label>Nom du module</mat-label>
+                  <mat-label>Nom d'article</mat-label>
                   <input matInput  formControlName="nom" required>
                 </mat-form-field>
                 <div *ngIf="moduleForm.get('nom').hasError(champ_validation.input[0].type) && (moduleForm.get('nom').dirty || moduleForm.get('nom').touched)">
@@ -43,6 +43,12 @@
                 <div *ngIf="moduleForm.get('type').hasError(champ_validation.input[0].type) && (moduleForm.get('type').dirty || moduleForm.get('type').touched)">
                   <p class="error_field">{{champ_validation.input[0].message}}</p>
                 </div>
+              </div>
+              <div class="col">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Catégorie</mat-label>
+                  <input matInput  formControlName="categorie">
+                </mat-form-field>
               </div>
             </div><!--div-->
             <div class="row" style="margin-bottom: 15px;">

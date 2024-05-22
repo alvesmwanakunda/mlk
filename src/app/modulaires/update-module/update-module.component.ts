@@ -132,6 +132,7 @@ export class UpdateModuleComponent implements OnInit {
           hauteur:[this.module.hauteur,null],
           longueur:[this.module.longueur,null],
           marque:[this.module.marque,null],
+          categorie:[this.module.categorie,null],
           entreprise:[this.moduleEntreprise,null],
           dateFabrication:[this.module.dateFabrication,null]
         });
@@ -214,6 +215,7 @@ export class UpdateModuleComponent implements OnInit {
     formData.append("position", this.form.position);
     formData.append("type", this.form.type);
     formData.append("marque", this.form.marque);
+    formData.append("categorie", this.form.categorie);
     formData.append("hauteur", this.form.hauteur);
     formData.append("largeur", this.form.largeur);
     formData.append("longueur", this.form.longueur);

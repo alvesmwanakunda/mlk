@@ -67,6 +67,7 @@ export class AddModuleComponent implements OnInit {
       type:['',Validators.required],
       entreprise:['',null],
       position:['',null],
+      categorie:['',null],
       largeur:['',null],
       hauteur:['',null],
       longueur:['',null],
@@ -135,6 +136,7 @@ export class AddModuleComponent implements OnInit {
      formData.append("position", this.form.position);
      formData.append("type", this.form.type);
      formData.append("marque", this.form.marque);
+     formData.append("categorie", this.form.categorie);
      formData.append("hauteur", this.form.hauteur);
      formData.append("largeur", this.form.largeur);
      formData.append("longueur", this.form.longueur);

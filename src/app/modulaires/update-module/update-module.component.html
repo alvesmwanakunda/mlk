@@ -2,7 +2,7 @@
   <div class="container">
 
     <div class="content-top">
-      <h2 class="content-title">Module - {{module?.nom}}</h2>
+      <h2 class="content-title">Article - {{module?.nom}}</h2>
       <mat-divider></mat-divider>
     </div><!--content-->
 
@@ -19,8 +19,8 @@
                        <div class="row" style="margin-bottom: 15px;">
                          <div class="col">
                           <div class="bloc-info">
-                            <p class="title-info">Module</p>
-                            <p style="font-size: 13px;">{{module?.nom}}</p>
+                            <p class="title-info">Catégorie</p>
+                            <p style="font-size: 13px;">{{module?.categorie}}</p>
                           </div>
                          </div>
                          <div class="col">
@@ -171,7 +171,7 @@
                     <div class="row" style="margin-bottom: 15px;">
                       <div class="col">
                         <mat-form-field class="example-full-width">
-                          <mat-label>Nom du module</mat-label>
+                          <mat-label>Nom d'article</mat-label>
                           <input matInput  formControlName="nom" [(ngModel)]="module.nom" required>
                         </mat-form-field>
                         <div *ngIf="moduleForm.get('nom').hasError(champ_validation.input[0].type) && (moduleForm.get('nom').dirty || moduleForm.get('nom').touched)">
@@ -191,6 +191,12 @@
                         <div *ngIf="moduleForm.get('type').hasError(champ_validation.input[0].type) && (moduleForm.get('type').dirty || moduleForm.get('type').touched)">
                           <p class="error_field">{{champ_validation.input[0].message}}</p>
                         </div>
+                      </div>
+                      <div class="col">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Catégorie</mat-label>
+                          <input matInput  formControlName="categorie" [(ngModel)]="module.categorie">
+                        </mat-form-field>
                       </div>
                     </div><!--div-->
 

@@ -8,6 +8,7 @@ export interface Modules {
   plan:string;
   chemin:string;
   position:string;
+  categorie:string;
   project:object;
   nom_photo:string;
   hauteur:string;
