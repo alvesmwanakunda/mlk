@@ -103,7 +103,7 @@
                 <div style="margin-bottom: 15px;">
                   <mat-form-field class="example-full-width">
                     <mat-label>Entreprises</mat-label>
-                    <mat-select matInput formControlName="type_entreprise" required>
+                    <mat-select matInput formControlName="entreprise" required>
                        <mat-option *ngFor="let en of entreprises" [value]="en._id">{{en.societe}}</mat-option>
                     </mat-select>
                   </mat-form-field>
