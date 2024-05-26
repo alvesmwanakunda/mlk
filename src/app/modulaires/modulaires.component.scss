@@ -1,0 +1,15 @@
+.custom-chart {
+    border-radius: 9px;
+  }
+
+  .canvasjs-chart-credit{
+    display: none !important;
+  }
+
+
+  [matBadgeColor=stock]{
+    .mat-badge-content{
+        background: #28628B !important; 
+        color: #fff !important
+    }
+}

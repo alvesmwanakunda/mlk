@@ -53,12 +53,17 @@
             </div><!--div-->
             <div class="row" style="margin-bottom: 15px;">
               <div class="col">
-                <mat-form-field class="example-full-width">
+                <mat-form-field class="example-full-width" *ngIf="user?.user.role!='user'">
                   <mat-label>Propriétaire</mat-label>
                   <mat-select  formControlName="entreprise">
                     <mat-option *ngFor="let ent of entreprises" [value]="ent?._id">{{ent?.societe}}</mat-option>
                  </mat-select>
-                </mat-form-field>                  
+                </mat-form-field> 
+                
+                <mat-form-field class="example-full-width" *ngIf="user?.user.role=='user'">
+                  <mat-label>Propriétaire</mat-label>
+                  <input matInput [(ngModel)]="company.societe"  formControlName="entreprise" readonly>
+                </mat-form-field>
               </div><!--div-->
               <div class="col">
                 <mat-form-field class="example-full-width">

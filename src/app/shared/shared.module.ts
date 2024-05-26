@@ -30,6 +30,7 @@ import {ClipboardModule} from '@angular/cdk/clipboard';
 import { FileSizeConvertPipe } from './pipes/file-size-convert.pipe';
 import { DataAsAgoPipe } from './pipes/data-as-ago.pipe';
 import {MatBadgeModule} from '@angular/material/badge';
+import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 
 
 
@@ -71,7 +72,8 @@ import {MatBadgeModule} from '@angular/material/badge';
     MatAutocompleteModule,
     MatToolbarModule,
     ClipboardModule,
-    MatBadgeModule
+    MatBadgeModule,
+    CanvasJSAngularChartsModule
   ],
   exports:[
     MatCardModule,
@@ -102,7 +104,8 @@ import {MatBadgeModule} from '@angular/material/badge';
     ClipboardModule,
     FileSizeConvertPipe,
     DataAsAgoPipe,
-    MatBadgeModule
+    MatBadgeModule,
+    CanvasJSAngularChartsModule
   ],
 })
 export class SharedModule { }

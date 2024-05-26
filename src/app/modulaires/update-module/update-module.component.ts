@@ -53,6 +53,7 @@ export class UpdateModuleComponent implements OnInit {
   qrcode:any;
   dateFabricaton:any;
   moduleEntreprise:any;
+  societe:any;
 
 
   constructor(
@@ -109,7 +110,8 @@ export class UpdateModuleComponent implements OnInit {
 
       this.module = res.message;
       if(this.module.entreprise){
-        this.moduleEntreprise = res.message?.entreprise?._id
+        this.moduleEntreprise = res.message?.entreprise?._id;
+        this.societe = res.message?.entreprise?.societe
       }
       if(this.module.dateFabrication){
         let fabrication = new Date(this.module.dateFabrication);
@@ -219,8 +221,12 @@ export class UpdateModuleComponent implements OnInit {
     formData.append("hauteur", this.form.hauteur);
     formData.append("largeur", this.form.largeur);
     formData.append("longueur", this.form.longueur);
-    formData.append("entreprise",this.form.entreprise);
-    formData.append("dateFabrication",this.form.dateFabrication);
+    formData.append("dateFabrication",this.form.dateFabrication); 
+    if(this.user?.user?.role=="user"){
+      formData.append("entreprise",this.moduleEntreprise)
+     }else{
+      formData.append("entreprise",this.form.entreprise)
+     }
 
 
     return this.http.put(`${environment.BASE_API_URL}/module/${this.idModule}`,formData,{

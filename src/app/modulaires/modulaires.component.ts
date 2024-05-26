@@ -1,4 +1,4 @@
-import { Component, OnInit,AfterViewInit,ViewChild } from '@angular/core';
+import { Component, OnInit,AfterViewInit,ViewChild, Renderer2, ElementRef } from '@angular/core';
 import { ProjetsService } from '../shared/services/projets.service';
 import { Modules } from '../shared/interfaces/modules.model';
 import { MatPaginator } from '@angular/material/paginator';
@@ -36,13 +36,23 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
   type="Stock";
   user:any;
   countModules:any;
-
+  dataCount:any;
+  colorMapping = {
+    'Stock': '#28628B',
+    'En préparation': '#48ae4d',
+    'Prêt à partir': '#53a3db',
+    'Site': '#c92481'
+    // Ajoutez d'autres mappings de couleurs en fonction de vos besoins
+  };
+  
   constructor(
     private projectService :ProjetsService,
     public router:Router,
     private matPaginatorIntl:MatPaginatorIntl,
     private sanitizer: DomSanitizer,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private renderer: Renderer2,
+    private elementRef: ElementRef
   ){
     this.user = JSON.parse(localStorage.getItem('user'));
   }
@@ -53,7 +63,7 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
     }else{
        this.countModule();
     }
-    this.matPaginatorIntl.itemsPerPageLabel="Modules par page";
+    this.matPaginatorIntl.itemsPerPageLabel="Modules par page"; 
   }
 
   ngAfterViewInit() {
@@ -62,8 +72,13 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
     this.dataSourcePreparation.paginator=this.paginatorPreparation;
     this.dataSourcePartir.paginator=this.paginatorPartir;
     this.dataSourceSite.paginator=this.paginatorSite;
+  }
 
-
+  hideCanvasJsCredit() {
+    const creditElement = this.elementRef.nativeElement.querySelector('.canvasjs-chart-credit');
+    if (creditElement) {
+      this.renderer.setStyle(creditElement, 'display', 'none');
+    }
   }
 
   getAllModules(type){
@@ -199,7 +214,12 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
   countModule(){
     this.projectService.countModule().subscribe((res:any)=>{
       this.countModules = res.message;
-      console.log("count", this.countModule);
+      this.dataCount = res.data;
+      this.chartOptions.data[0].dataPoints=res.data.map(item => ({
+        y:parseInt(item.y),
+        name: item.name,
+        color: this.colorMapping[item.name] || '#000000'
+      }));;
     },(error) => {
         console.log("Erreur lors de la récupération des données", error);
     })
@@ -208,6 +228,13 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
   countModuleEntreprise(){
     this.projectService.countModuleByEntreprise(this.user?.user?.entreprise).subscribe((res:any)=>{
       this.countModules = res.message;
+      this.dataCount = res.data;
+      this.chartOptions.data[0].dataPoints=res.data.map(item => ({
+        y: parseInt(item.y),
+        name: item.name,
+        color: this.colorMapping[item.name] || '#000000'
+      }));
+      //console.log("count", this.chartOptions);
     },(error) => {
         console.log("Erreur lors de la récupération des données", error);
     })
@@ -258,8 +285,20 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
     })
   }
 
-
   getModule(id){
     this.router.navigate(['modulaires', id]);
   }
+
+  chartOptions = {
+	  animationEnabled: true,
+    creditText:"",
+    creditHref:"",
+    backgroundColor:"#e9e9e9",
+	  data: [{
+		type: "doughnut",
+		yValueFormatString: "#,###.##'%'",
+		indexLabel: "{name}",
+		dataPoints: []
+	  }]
+	}
 }

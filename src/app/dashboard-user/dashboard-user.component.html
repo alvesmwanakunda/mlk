@@ -13,7 +13,7 @@
                <mat-card class="card1">
                 <mat-card-content>
                   <div align="center" style="margin-bottom: 35px">
-                    <a href="https://mlka-market.com/" target="_blank">
+                    <a href="https://mlka-market.com/" target="_blank" *ngIf="user?.user.email!='demo@mlka.fr'">
                      <button mat-stroked-button class="btncard1"><i class="fa-solid fa-store"></i> Produits</button>
                     </a>
                   </div>
@@ -25,7 +25,7 @@
                   </p>
                 </mat-card-content>
                </mat-card>
-             </div><!--col-->
+             </div>
              <div class="col">
               <mat-card class="card2">
                 <mat-card-content>
@@ -45,7 +45,7 @@
               <mat-card class="card3">
                 <mat-card-content>
                   <div align="center" style="margin-bottom: 35px">
-                    <a href="https://mlka-hld.fr/" target="_blank">
+                    <a href="https://mlka-hld.fr/" target="_blank" *ngIf="user?.user.email!='demo@mlka.fr'">
                      <button mat-stroked-button class="btncard2"><i class="fa-solid fa-lightbulb"></i> Services</button>
                     </a>
                   </div>
@@ -57,7 +57,7 @@
                   </p>
                 </mat-card-content>
                </mat-card>
-             </div><!--col-->
+             </div>
            </div>
         </mat-card-content>
       </mat-card>

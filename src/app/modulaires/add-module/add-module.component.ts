@@ -38,6 +38,8 @@ export class AddModuleComponent implements OnInit {
   croppedImage:any;
   imageChangedEvent:any;
   isSize:any;
+  user:any;
+  company:any;
 
 
   constructor(
@@ -47,7 +49,10 @@ export class AddModuleComponent implements OnInit {
     private entrepriseService: EntreprisesService,
     private http: HttpClient,
     private route:Router
-  ){}
+  ){
+    this.user = JSON.parse(localStorage.getItem('user'));
+    //console.log("User", this.user);
+  }
 
 
   champ_validation={
@@ -62,6 +67,7 @@ export class AddModuleComponent implements OnInit {
   ngOnInit(): void {
     this.getAllProjet();
     this.getAllEntreprise();
+    this.getEntrepriseId();
     this.moduleForm=this._formBuilder.group({
       nom:['',Validators.required],
       type:['',Validators.required],
@@ -74,6 +80,14 @@ export class AddModuleComponent implements OnInit {
       marque:['',null],
       dateFabrication:['',null]
     });
+  }
+
+  getEntrepriseId(){
+    this.entrepriseService.getEntreprise(this.user?.user?.entreprise).subscribe((res:any)=>{
+       this.company = res.message
+    },(error)=>{
+        console.log("Une erreur", error);
+    })
   }
 
   getAllProjet(){
@@ -141,7 +155,12 @@ export class AddModuleComponent implements OnInit {
      formData.append("largeur", this.form.largeur);
      formData.append("longueur", this.form.longueur);
      formData.append("dateFabrication",this.form.dateFabrication)
-     formData.append("entreprise",this.form.entreprise)
+     if(this.user?.user?.role=="user"){
+      formData.append("entreprise",this.user?.user?.entreprise)
+     }else{
+      formData.append("entreprise",this.form.entreprise)
+     }
+    
 
      return this.http.post(`${environment.BASE_API_URL}/module`,formData,{
       reportProgress:true,
