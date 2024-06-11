@@ -249,7 +249,7 @@
                       </a>
                     </div>
                   </div>
-                  <div *ngIf="user?.user?.role!='user'">
+                  <div *ngIf="user?.user?.role=='admin'">
                     <div style="position:relative;">
                       <a class="mlka-menuBtn mlka-menuBtn1" [routerLink]="['/entreprises']" [routerLinkActive]="['activeMenus']">
                         <span class="mlka-menuspan">
@@ -264,6 +264,20 @@
                     </div>
                   </div>
                   <div *ngIf="user?.user?.role!='user'">
+                    <div style="position:relative;">
+                      <a class="mlka-menuBtn mlka-menuBtn1" [routerLink]="['/conges']" [routerLinkActive]="['activeMenus']">
+                        <span class="mlka-menuspan">
+                          <div class="mlka-menuspan1">
+                            <div>
+                              <i class="fa-solid fa-id-badge mlka-menuspanIcon" [routerLinkActive]="['activeIcon']"></i>
+                            </div>
+                            <span class="mlka-menuspanTitle">Congés</span>
+                          </div>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                  <div *ngIf="user?.user?.role=='admin'">
                     <div style="position:relative;">
                       <a class="mlka-menuBtn mlka-menuBtn1"  [routerLink]="['/contact']" [routerLinkActive]="['activeMenus']">
                         <span class="mlka-menuspan">
@@ -314,6 +328,20 @@
                               <i class="fa-regular fa-building mlka-menuspanIcon" [routerLinkActive]="['activeIcon']"></i>
                             </div>
                             <span class="mlka-menuspanTitle">Entreprise</span>
+                          </div>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                  <div *ngIf="user?.user?.role=='admin'">
+                    <div style="position:relative;">
+                      <a class="mlka-menuBtn mlka-menuBtn1" [routerLink]="['/users']" [routerLinkActive]="['activeMenus']">
+                        <span class="mlka-menuspan">
+                          <div class="mlka-menuspan1">
+                            <div>
+                              <i class="fa-solid fa-users mlka-menuspanIcon" [routerLinkActive]="['activeIcon']"></i>
+                            </div>
+                            <span class="mlka-menuspanTitle">Employées</span>
                           </div>
                         </span>
                       </a>

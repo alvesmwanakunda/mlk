@@ -71,4 +71,30 @@ export class AuthService {
     localStorage.clear();
     this.router.navigate(["/"]);
   }
+
+  // Employées
+
+  listEmployes(){
+    return this.httpClient.get(`${environment.BASE_API_URL}/employe`,);
+  }
+
+  addEmploye(data){
+    return this.httpClient.post(`${environment.BASE_API_URL}/employe`,data);
+  }
+
+  updateEmploye(data,id){
+    return this.httpClient.put(`${environment.BASE_API_URL}/employe/${id}`,data);
+  }
+
+  getEmploye(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/employe/${id}`);
+  }
+
+  activeEmploye(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/active/employe/${id}`);
+  }
+
+  dissableEmploye(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/dissable/employe/${id}`);
+  }
 }

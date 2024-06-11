@@ -1,0 +1,84 @@
+<app-navbar>
+    <div class="container">
+      <div class="content-top">
+        <div class="row">
+          <div class="col">
+            <h2 class="content-title">Nouveau congé <button class="btn" type="button" [routerLink]="['/conges']"><i class="fa-solid fa-arrow-left" style="color:#28628B;"></i></button></h2>
+          </div>
+          <div class="col">
+            <div align="right" *ngIf="!isSave">
+              <button type="button" class="btn btn-projet" (click)="saveConge()" [disabled]="congeForm.invalid || !isSigne"><i class="fa-solid fa-plus"></i> Enregistrer</button>
+            </div>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+      </div><!--content-->
+    </div>
+          
+    <div class="row justify-content-md-center" style="margin-bottom: 30px;">
+      <div class="col-lg-11 col-md-11 col-md-auto">
+        <form [formGroup]="congeForm">
+          <p style="font-weight: 600;">Type de congés</p>
+          <div style="margin-bottom: 15px;">
+            <mat-form-field class="example-full-width">
+              <mat-label>Type de congés</mat-label>
+              <mat-select formControlName="types" required>
+                <mat-option value="Congés payés">Congés payés</mat-option>
+                <mat-option value="Congés sans solde">Congés sans solde</mat-option>
+                <mat-option value="Récupération">Récupération</mat-option>
+             </mat-select>
+            </mat-form-field>               
+            <div *ngIf="congeForm.get('types').hasError(champ_validation.input[0].type) && ((congeForm.get('types').dirty || congeForm.get('types').touched))">
+              <p class="error_field">{{champ_validation.input[0].message}}</p>
+            </div>
+          </div>
+          <p style="font-weight: 600;">Date & Durée</p>
+          <div class="row" style="margin-bottom: 15px;">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-label>A partir de</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="debut" required>
+                <mat-datepicker-toggle matIconSuffix [for]="picker">
+                  <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+              <div *ngIf="congeForm.get('debut').hasError(champ_validation.input[0].type) && (congeForm.get('debut').dirty || congeForm.get('debut').touched)">
+                <p class="error_field">{{champ_validation.input[0].message}}</p>
+              </div>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-label>À</mat-label>
+                <input matInput [matDatepicker]="picker1" formControlName="fin" required>
+                <mat-datepicker-toggle matIconSuffix [for]="picker1">
+                  <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+              </mat-form-field>
+              <div *ngIf="congeForm.get('fin').hasError(champ_validation.input[0].type) && (congeForm.get('fin').dirty || congeForm.get('fin').touched)">
+                <p class="error_field">{{champ_validation.input[0].message}}</p>
+              </div>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-label>Jours</mat-label>
+                <input type="number" matInput formControlName="jours" required>
+              </mat-form-field>
+              <div *ngIf="congeForm.get('jours').hasError(champ_validation.input[0].type) && (congeForm.get('jours').dirty || congeForm.get('jours').touched)">
+                <p class="error_field">{{champ_validation.input[0].message}}</p>
+              </div>
+            </div>
+          </div>         
+          <p style="font-weight: 600;">Signature <small style="color: #c80425;">* (Obligatoire)</small></p>
+          <div style="margin-bottom: 10px;">
+            <canvas #canvas style="background: white;"></canvas>
+          </div>
+          <div *ngIf="!isSave">
+            <button mat-raised-button (click)="clear()" style="margin-right: 10px;">Effacer</button>
+            <button mat-raised-button color="primary" (click)="saveSignature()"  cdkFocusInitial>Valider la signature</button>
+          </div>
+        </form>
+      </div>
+    </div>
+</app-navbar>

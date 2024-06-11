@@ -16,11 +16,9 @@ import localeFr from '@angular/common/locales/fr';
 registerLocaleData(localeFr,'fr');
 
 
-
 @NgModule({
   declarations: [
     AppComponent
-    
   ],
   imports: [
     BrowserModule,

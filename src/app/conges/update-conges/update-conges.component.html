@@ -1,0 +1,156 @@
+<app-navbar>
+    <div class="container">
+      <div class="content-top">
+        <div class="row">
+          <div class="col">
+            <h2 class="content-title">Détail congé <button class="btn" type="button" [routerLink]="['/conges']"><i class="fa-solid fa-arrow-left" style="color:#28628B;"></i></button></h2>
+          </div>
+          <div class="col">
+            <div align="right">
+              <button mat-raised-button color="primary" (click)="getPDF()">Télécharger</button>
+            </div>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+      </div><!--content-->
+    </div>
+    <div>
+
+      <div style="padding-top: 20px;" [hidden]="user?.user?.role!='admin'">
+        <div class="row justify-content-md-center">
+          <div class="col-lg-11 col-md-11 col-md-auto">
+            <div class="row" style="margin-bottom: 15px;">
+              <div class="col">
+                <p style="font-weight: 600;color: #0477c9;">Status : {{conge?.status}}</p>
+                <p style="font-weight: 600;color: #c90442;" *ngIf="conge?.status=='Refusée'">Motif : {{conge?.motif}}</p>
+              </div>
+              <div class="col">
+                <div align="right" *ngIf="isSigne">
+                  <button type="button" class="btn btn-projet" style="margin-right: 15px;" (click)="valide()" *ngIf="conge?.status!='Validé'"><i class="fa-solid fa-check"></i> Valider</button>
+                  <button type="button" class="btn btn-cl" (click)="getIsRefus()" *ngIf="conge?.status!='Refusée'"><i class="fa-solid fa-close"></i> Refuser</button>
+                </div>
+              </div>
+            </div>
+            <mat-divider style="margin-bottom: 30px;"></mat-divider>
+            <div class="row">
+              <div class="col">
+                <p>Nom et prénom du salarié : {{conge?.user?.prenom}} {{conge?.user?.nom}}</p>
+                <p>Date du début du congé : {{conge?.debut |date :'dd MMMM yyyy'}}</p>
+                <p> Date de fin du congé : {{conge?.fin |date :'dd MMMM yyyy'}}</p>
+                <p>Nombre de jours pris : {{conge?.jours}}</p>
+                <p>Type de congés : {{conge?.types}}</p>
+                <p>Date de la demande :  {{conge?.date_demande |date :'dd MMMM yyyy'}}</p> 
+              </div>
+              <div class="col">
+                <div *ngIf="!conge?.signature_entreprise">
+                  <p>Veuillez signer avant de valider ou de refuser</p>
+                  <mat-divider style="margin-bottom: 10px;"></mat-divider>
+                </div>
+                <div *ngIf="isRefus">
+                  <p style="color: #c90442;">Veuillez remplir le motif.</p>
+                  <mat-divider style="margin-bottom: 10px;"></mat-divider>
+                  <form [formGroup]="motifForm">
+                    <div *ngIf="conge">
+                      <mat-form-field class="example-full-width">
+                        <mat-label>Mofif</mat-label>
+                        <textarea matInput placeholder="motif..." formControlName="motif" required></textarea>
+                      </mat-form-field>
+                      <div>
+                        <button mat-raised-button color="warn" (click)="getCloseRefus()" style="margin-right: 10px;">Annuler</button>
+                        <button mat-raised-button type="button" color="primary" [disabled]="motifForm.invalid"  (click)="statusConge()">Confirmer</button>
+                      </div>
+                    </div>
+                  </form>
+                </div> 
+                <div [hidden]="conge?.signature_entreprise">
+                    <div style="margin-bottom: 10px;">
+                      <canvas #canvas style="background: white;"></canvas>
+                    </div>
+                    <div>
+                      <button mat-raised-button (click)="clear()" style="margin-right: 10px;">Effacer</button>
+                      <button mat-raised-button  color="primary" (click)="saveSignature()"   cdkFocusInitial>Enregister</button>
+                    </div>
+                  </div> 
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> 
+
+      <div style="padding-top:20px;" [hidden]="user?.user?.role=='admin'">
+        <div class="row justify-content-md-center">
+          <div class="col-lg-11 col-md-11 col-md-auto">
+            <div class="row" style="margin-bottom: 15px;">
+               <div class="col">
+                <p style="font-weight: 600;color: #0477c9;">Status : {{conge?.status}}</p>
+                <p style="font-weight: 600;color: #c90442;" *ngIf="conge?.status=='Refusée'">Motif : {{conge?.motif}}</p>
+               </div>
+               <div class="col">
+                <div align="right" *ngIf="conge?.status=='En attente de validation'">
+                  <button type="button" class="btn btn-projet" (click)="updateConge()" [disabled]="congeForm.invalid"><i class="fa-solid fa-plus"></i> Modifier</button>
+                </div>
+               </div>
+            </div>
+            <mat-divider style="margin-bottom: 30px;"></mat-divider>
+
+            <form [formGroup]="congeForm" *ngIf="conge">
+              <p style="font-weight: 600;">Type de congés</p>
+              <div style="margin-bottom: 15px;">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Type de congés</mat-label>
+                  <mat-select formControlName="types" [(ngModel)]="conge.types" required>
+                    <mat-option value="Congés payés">Congés payés</mat-option>
+                    <mat-option value="Congés sans solde">Congés sans solde</mat-option>
+                    <mat-option value="Récupération">Récupération</mat-option>
+                 </mat-select>
+                </mat-form-field>               
+                <div *ngIf="congeForm.get('types').hasError(champ_validation.input[0].type) && ((congeForm.get('types').dirty || congeForm.get('types').touched))">
+                  <p class="error_field">{{champ_validation.input[0].message}}</p>
+                </div>
+              </div>
+              <p style="font-weight: 600;">Date & Durée</p>
+              <div class="row" style="margin-bottom: 15px;">
+                <div class="col">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>A partir de</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="debut" [(ngModel)]="dateDebut" required>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker">
+                      <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                  <div *ngIf="congeForm.get('debut').hasError(champ_validation.input[0].type) && (congeForm.get('debut').dirty || congeForm.get('debut').touched)">
+                    <p class="error_field">{{champ_validation.input[0].message}}</p>
+                  </div>
+                </div>
+                <div class="col">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>À</mat-label>
+                    <input matInput [matDatepicker]="picker1" [(ngModel)]="dateFin" formControlName="fin" required>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker1">
+                      <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                  </mat-form-field>
+                  <div *ngIf="congeForm.get('fin').hasError(champ_validation.input[0].type) && (congeForm.get('fin').dirty || congeForm.get('fin').touched)">
+                    <p class="error_field">{{champ_validation.input[0].message}}</p>
+                  </div>
+                </div>
+                <div class="col">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Jours</mat-label>
+                    <input type="number"  [(ngModel)]="conge.jours" matInput formControlName="jours" required>
+                  </mat-form-field>
+                  <div *ngIf="congeForm.get('jours').hasError(champ_validation.input[0].type) && (congeForm.get('jours').dirty || congeForm.get('jours').touched)">
+                    <p class="error_field">{{champ_validation.input[0].message}}</p>
+                  </div>
+                </div>
+              </div>                 
+            </form>
+          </div>
+        </div>
+      </div>  
+ 
+    </div>
+</app-navbar>

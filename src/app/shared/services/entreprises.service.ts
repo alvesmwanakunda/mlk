@@ -48,5 +48,40 @@ export class EntreprisesService {
     return this.httpClient.get(`${environment.BASE_API_URL}/api-search/${body}`)
   }
 
+  // Conge
+
+  public listConges(){
+    return this.httpClient.get(`${environment.BASE_API_URL}/conge`)
+  }
+
+  public listCongesUser(){
+    return this.httpClient.get(`${environment.BASE_API_URL}/conge/user`)
+  }
+
+  public addConge(data){
+    return this.httpClient.post(`${environment.BASE_API_URL}/conge`,data)
+  }
+
+  public updateConge(data, id){
+    return this.httpClient.put(`${environment.BASE_API_URL}/conge/${id}`,data)
+  }
+
+  public getConge(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/conge/${id}`)
+  }
+
+  public statusConge(data, id){
+    return this.httpClient.put(`${environment.BASE_API_URL}/conge/status/${id}`,data)
+  }
+
+  public valideConge(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/conge/valider/${id}`)
+  }
+
+  public refuseConge(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/conge/refuser/${id}`)
+  }
+
+
 
 }

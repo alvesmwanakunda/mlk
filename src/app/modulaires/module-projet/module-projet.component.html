@@ -6,7 +6,7 @@
           <div>
             <mat-form-field class="example-full-width">
               <mat-label>Projet</mat-label>
-              <mat-select  formControlName="entreprise">
+              <mat-select  formControlName="projet" required>
                 <mat-option *ngFor="let p of projets" [value]="p?._id">{{p?.projet}}</mat-option>
              </mat-select>
             </mat-form-field> 

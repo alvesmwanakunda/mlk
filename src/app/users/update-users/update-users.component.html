@@ -1,0 +1,65 @@
+<app-navbar>
+    <div class="container">
+      <div class="content-top">
+        <div class="row" style="margin-bottom: 10px;">
+          <div class="col">
+            <h2 class="content-title">Editer employé</h2>
+          </div>
+          <div class="col">
+            <div align="right" *ngIf="employe">
+              <button type="button" class="btn btn-projet" (click)="updateUser()" [disabled]="userFormGroup.invalid"><i class="fa-solid fa-plus"></i> Modifier</button>
+            </div>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+      </div><!--content-->
+    </div>
+      <div class="row justify-content-md-center">
+        <div class="col-lg-11 col-md-11 col-md-auto">
+          <form [formGroup]="userFormGroup" *ngIf="employe">
+            <div class="row">
+              <div class="col">
+                <div style="margin-bottom: 15px;">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Nom</mat-label>
+                    <input matInput formControlName="nom" [(ngModel)]="employe.nom" required>
+                  </mat-form-field>
+                  <div *ngIf="userFormGroup.get('nom').hasError(champ_validation.type[0].type) && (userFormGroup.get('nom').dirty || userFormGroup.get('nom').touched)">
+                    <p class="error_field">{{champ_validation.type[0].message}}</p>
+                  </div>
+                </div><!--div-->
+                <div style="margin-bottom: 15px;">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>E-mail</mat-label>
+                    <input matInput formControlName="email" [(ngModel)]="employe.email"  (input)="checkEmail()" required>
+                  </mat-form-field>
+                  <div *ngIf="userFormGroup.get('email').hasError(champ_validation.email[0].type) && (userFormGroup.get('email').dirty || userFormGroup.get('email').touched)">
+                    <p class="error_field">{{champ_validation.email[0].message}}</p>
+                  </div>
+                  <div *ngIf="userFormGroup.get('email').hasError(champ_validation.email[1].type) && (userFormGroup.get('email').dirty || userFormGroup.get('email').touched)">
+                    <p class="error_field">{{champ_validation.email[1].message}}</p>
+                  </div>
+                  <div *ngIf="emailExists" class="error_field">Cet email est déjà utilisé.</div>
+                </div><!--div-->
+    
+              </div><!--col-->
+              <div class="col">
+                <div style="margin-bottom: 15px;">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Prénom</mat-label>
+                    <input matInput formControlName="prenom" [(ngModel)]="employe.prenom" required>
+                  </mat-form-field>
+                  <div *ngIf="userFormGroup.get('prenom').hasError(champ_validation.type[0].type) && (userFormGroup.get('prenom').dirty || userFormGroup.get('prenom').touched)">
+                    <p class="error_field">{{champ_validation.type[0].message}}</p>
+                  </div>
+                </div><!--div-->
+              
+              </div><!--col-->
+            </div><!--col-->
+          </form>
+          <div *ngIf="onLoadForm">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          </div>
+        </div>
+      </div>
+</app-navbar>

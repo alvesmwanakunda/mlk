@@ -206,7 +206,30 @@ const routes: Routes = [
     path:'produit/:id',
     loadChildren:()=>import('./produits/detail-produit/detail-produit.module').then(m=>m.DetailProduitModule)
   },
-
+  {
+    path:'conges',
+    loadChildren:()=>import('./conges/conges.module').then(m=>m.CongesModule)
+  },
+  {
+    path:'conge',
+    loadChildren:()=>import('./conges/add-conges/add-conges.module').then(m=>m.AddCongesModule)
+  },
+  {
+    path:'conge/:id',
+    loadChildren:()=>import('./conges/update-conges/update-conges.module').then(m=>m.UpdateCongesModule)
+  },
+  {
+    path:'users',
+    loadChildren:()=>import('./users/users.module').then(m=>m.UsersModule)
+  },
+  {
+    path:'users/nouveau',
+    loadChildren:()=>import('./users/add-users/add-users.module').then(m=>m.AddUsersModule)
+  },
+  {
+    path:'users/detail/:id',
+    loadChildren:()=>import('./users/update-users/update-users.module').then(m=>m.UpdateUsersModule)
+  }
 ];
 
 @NgModule({
