@@ -116,16 +116,16 @@ export class UpdateCongesComponent implements OnInit {
         });
         let debut = new Date(this.conge.debut);
         this.dateDebut = debut.toISOString().split('T')[0];
-        this.dateDebutPdf = debut.getDate()+"/"+(debut.getMonth())+1+"/"+debut.getFullYear();
+        this.dateDebutPdf = debut.getDate()+"/"+(debut.getMonth()+1)+"/"+debut.getFullYear();
         let fin = new Date(this.conge.fin);
         this.dateFin = fin.toISOString().split('T')[0];
-        this.dateFinPdf = fin.getDate()+"/"+(fin.getMonth())+1+"/"+fin.getFullYear();
+        this.dateFinPdf = fin.getDate()+"/"+(fin.getMonth()+1)+"/"+fin.getFullYear();
         let dated = new Date(this.conge.date_demande);
         let dates = new Date(this.conge.date_signature);
         if(this.conge.date_demande){
-          this.dateD = dated.getDate()+"/"+(dated.getMonth())+1+"/"+dated.getFullYear();
+          this.dateD = dated.getDate()+"/"+(dated.getMonth()+1)+"/"+dated.getFullYear();
         }if(this.conge.date_signature){
-          this.dateV = dates.getDate()+"/"+(dates.getMonth())+1+"/"+dates.getFullYear();
+          this.dateV = dates.getDate()+"/"+(dates.getMonth()+1)+"/"+dates.getFullYear();
         }if(this.conge?.signature_entreprise){
           this.isSigne=true;
         }
