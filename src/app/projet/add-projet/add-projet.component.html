@@ -51,7 +51,7 @@
                             </mat-form-field>-->
                             <mat-form-field class="example-full-width">
                               <mat-label style="font-size: 13px !important;color: #000 !important;">Entreprise</mat-label>
-                              <input  matInput type="text"  formControlName="entreprise" [matAutocomplete]="auto1" required style="font-size: 13px;">
+                              <input  matInput  formControlName="entreprise" [matAutocomplete]="auto1" required style="font-size: 13px;">
                               <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="onOptionClientSelected($event)">
                                 <mat-option *ngFor="let p of entrepriseFiltres | async" [value]="p?.societe">
                                   {{p?.societe}}
@@ -95,7 +95,7 @@
                     <div class="col">
                       <mat-form-field class="example-full-width">
                         <mat-label>Url du plan</mat-label>
-                        <input  matInput type="text" formControlName="plan">
+                        <input  matInput formControlName="plan">
                       </mat-form-field>
                     </div>
                   </div>
@@ -115,7 +115,7 @@
                       <div style="margin-bottom: 15px;">
                         <mat-form-field class="example-full-width">
                           <mat-label>Pays</mat-label>
-                          <input  matInput type="text" formControlName="pays" [matAutocomplete]="auto">
+                          <input  matInput  formControlName="pays" [matAutocomplete]="auto">
                           <mat-autocomplete #auto="matAutocomplete">
                             <mat-option *ngFor="let pays of paysFiltres | async" [value]="pays.name">
                               {{pays?.emoji}} {{pays?.name}}
@@ -126,13 +126,13 @@
                       <div style="margin-bottom: 15px;">
                         <mat-form-field class="example-full-width">
                           <mat-label>Ville</mat-label>
-                          <input  matInput type="text" formControlName="ville">
+                          <input  matInput  formControlName="ville">
                         </mat-form-field>
                       </div><!--div-->
                       <div style="margin-bottom: 15px;">
                         <mat-form-field class="example-full-width">
                           <mat-label>Code Postal</mat-label>
-                          <input  matInput type="text" formControlName="postal">
+                          <input  matInput  formControlName="postal">
                         </mat-form-field>
                       </div><!--div-->
 
@@ -142,13 +142,13 @@
                       <div style="margin-bottom: 15px;">
                        <mat-form-field class="example-full-width">
                           <mat-label>Numéro</mat-label>
-                          <input  matInput type="text" formControlName="adresse">
+                          <input  matInput  formControlName="adresse">
                         </mat-form-field>
                       </div><!--div-->
                       <div style="margin-bottom: 15px;">
                         <mat-form-field class="example-full-width">
                           <mat-label>Rue</mat-label>
-                          <input  matInput type="text" formControlName="rue">
+                          <input  matInput formControlName="rue">
                         </mat-form-field>
                       </div><!--div-->
                    </div>
@@ -185,13 +185,13 @@
                 <div style="margin-bottom: 15px;">
                   <mat-form-field class="example-full-width">
                     <mat-label>Budget Prévisionnel du projet</mat-label>
-                    <input  matInput type="text" formControlName="budget">
+                    <input  matInput type="number" formControlName="budget">
                   </mat-form-field>
                 </div><!--div-->
                 <div style="margin-bottom: 15px;">
                   <mat-form-field class="example-full-width">
                     <mat-label>Devise du projet</mat-label>
-                    <input  matInput type="text" formControlName="devise" [matAutocomplete]="auto">
+                    <input  matInput formControlName="devise"  [matAutocomplete]="auto">
                     <mat-autocomplete #auto="matAutocomplete">
                       <mat-option *ngFor="let dev of devisFiltres | async" [value]="dev.symbole">
                         {{dev.nom}}
@@ -202,20 +202,39 @@
                 <div style="margin-bottom: 15px;">
                   <mat-form-field class="example-full-width">
                     <mat-label>Site d'offre</mat-label>
-                    <input  matInput type="text" formControlName="site_offre">
+                    <input  matInput  formControlName="site_offre">
                   </mat-form-field>
                 </div><!--div-->
                 <div style="margin-bottom: 15px;">
                   <mat-form-field class="example-full-width">
                     <mat-label>Numéro d'offre</mat-label>
-                    <input  matInput type="text" formControlName="numero_offre">
+                    <input  matInput formControlName="numero_offre">
                   </mat-form-field>
                 </div><!--div-->
                 <div style="margin-bottom: 15px;">
-                  <mat-form-field class="example-full-width">
-                    <mat-label>Date limite remise d'offre</mat-label>
-                    <input  matInput type="date" formControlName="date_limite">
-                  </mat-form-field>
+                  <div class="row">
+                    <div class="col">
+                      <mat-form-field class="example-full-width">
+                        <mat-label>Date limite remise d'offre</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="date_limite">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker">
+                          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                    <div class="col">
+                      <mat-form-field class="example-full-width">
+                        <mat-label>Fin du contrat </mat-label>
+                        <input matInput [matDatepicker]="picker1" formControlName="date_fin_contrat">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker1">
+                          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                 
                 </div><!--div-->
               </div>
 

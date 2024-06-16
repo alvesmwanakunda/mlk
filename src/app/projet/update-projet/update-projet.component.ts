@@ -36,6 +36,7 @@ export class UpdateProjetComponent implements OnInit {
   paysFiltres:Observable<any[]>;
   image:any;
   jours:any;
+  fin:any;
   devis:any=[];
   devisFiltres:Observable<any[]>;
   contacts:any;
@@ -90,6 +91,8 @@ export class UpdateProjetComponent implements OnInit {
 
     this.getProjet();
     this.getAllEntreprises();
+    this.getContry();
+    this.getDevis();
 
     this.firstFormGroup=this._formBuilder.group({
       projet:['',Validators.required],
@@ -113,6 +116,7 @@ export class UpdateProjetComponent implements OnInit {
       devise:[''],
       site_offre:[''],
       date_limite:[''],
+      date_fin_contrat:[''],
       numero_offre:[''],
     });
 
@@ -125,9 +129,6 @@ export class UpdateProjetComponent implements OnInit {
       startWith(''),
       map((val)=> this.filterDevis(val))
     )
-
-    this.getContry();
-    this.getDevis();
   }
 
   getProjet(){
@@ -138,6 +139,7 @@ export class UpdateProjetComponent implements OnInit {
       }
       this.image = this.sanitizer.bypassSecurityTrustResourceUrl(`data:image/png;base64, ${res.message.photo}`);
       this.jours = new Date(res.message.date_limite).toISOString().split('T')[0];
+      this.fin = new Date(res.message.date_fin_contrat).toISOString().split('T')[0];
     },(error) => {
       console.log("Erreur lors de la récupération des données", error);
     })
@@ -184,6 +186,7 @@ export class UpdateProjetComponent implements OnInit {
     this.countryService.getDevises().subscribe(
       (data)=>{
        this.devis = data;
+       //console.log("devis", this.devis);
       },
       (error)=>{
         console.log(error);
@@ -226,6 +229,8 @@ export class UpdateProjetComponent implements OnInit {
      formData.append("site_offre", this.projet.site_offre);
      formData.append("numero_offre", this.projet.numero_offre);
      formData.append("date_limite", this.projet.date_limite);
+     formData.append("date_fin_contrat", this.projet.date_fin_contrat);
+
 
      this.projetService.updateProjet(this.idProjet,formData).subscribe((res:any)=>{
 

@@ -20,6 +20,7 @@ export interface Modules {
   numero_serie:string;
   qrcode:string;
   dateFabrication:Date;
+  module_type:string;
   entreprise:{
     _id:string,
     societe:string,

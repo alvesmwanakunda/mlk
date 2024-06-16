@@ -13,6 +13,7 @@ import { DevisProjetModule } from '../devis/devis-projet/devis-projet.module';
 import { FactureProjetModule } from '../factures/facture-projet/facture-projet.module';
 import { ChatProjetModule } from '../chat-projet/chat-projet.module';
 import { PreparationModule } from './preparation/preparation.module';
+import { ModuleProjetModule } from './module-projet/module-projet.module';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { PreparationModule } from './preparation/preparation.module';
     DevisProjetModule,
     FactureProjetModule,
     ChatProjetModule,
-    PreparationModule
+    PreparationModule,
+    ModuleProjetModule
   ],
   providers:[ProjetsService]
 })

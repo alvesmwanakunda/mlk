@@ -19,7 +19,7 @@ import { MatTabGroup } from '@angular/material/tabs';
 })
 export class ModulairesComponent  implements OnInit,AfterViewInit {
 
-  displayedColumns:string[]=['numero','nom','hauteur','largeur','longueur','action'];
+  displayedColumns:string[]=['numero','nom','type','hauteur','largeur','longueur','action'];
   dataSource =new MatTableDataSource<Modules>();
   dataSourcePreparation = new MatTableDataSource<Modules>();
   dataSourcePartir = new MatTableDataSource<Modules>();
@@ -101,6 +101,7 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
           largeur:data?.largeur,
           longueur:data?.longueur,
           numero:data?.numero_serie,
+          type:data?.module_type,
           photo:this.getSafeUrl(data?.photo) || null,
          })) as Modules[]
 
@@ -113,6 +114,7 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
           largeur:data?.largeur,
           longueur:data?.longueur,
           numero:data?.numero_serie,
+          type:data?.module_type,
           photo:this.getSafeUrl(data?.photo) || null,
          })) as Modules[]
 
@@ -125,6 +127,7 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
           largeur:data?.largeur,
           longueur:data?.longueur,
           numero:data?.numero_serie,
+          type:data?.module_type,
           photo:this.getSafeUrl(data?.photo) || null,
          })) as Modules[]
 
@@ -136,6 +139,7 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
           hauteur:data?.hauteur,
           largeur:data?.largeur,
           longueur:data?.longueur,
+          type:data?.module_type,
           numero:data?.numero_serie,
           photo:this.getSafeUrl(data?.photo) || null,
          })) as Modules[]
@@ -165,6 +169,7 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
         largeur:data?.largeur,
         longueur:data?.longueur,
         numero:data?.numero_serie,
+        type:data?.module_type,
         photo:this.getSafeUrl(data?.photo) || null,
        })) as Modules[]
 
@@ -177,6 +182,7 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
         largeur:data?.largeur,
         longueur:data?.longueur,
         numero:data?.numero_serie,
+        type:data?.module_type,
         photo:this.getSafeUrl(data?.photo) || null,
        })) as Modules[]
 
@@ -189,6 +195,7 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
         largeur:data?.largeur,
         longueur:data?.longueur,
         numero:data?.numero_serie,
+        type:data?.module_type,
         photo:this.getSafeUrl(data?.photo) || null,
        })) as Modules[]
 
@@ -201,6 +208,7 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
         largeur:data?.largeur,
         longueur:data?.longueur,
         numero:data?.numero_serie,
+        type:data?.module_type,
         photo:this.getSafeUrl(data?.photo) || null,
        })) as Modules[]
     },
@@ -216,7 +224,7 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
       this.countModules = res.message;
       this.dataCount = res.data;
       this.chartOptions.data[0].dataPoints=res.data.map(item => ({
-        y:parseInt(item.y),
+        y:(parseInt(item.y)*100)/res.message?.module,
         name: item.name,
         color: this.colorMapping[item.name] || '#000000'
       }));;
@@ -230,7 +238,7 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
       this.countModules = res.message;
       this.dataCount = res.data;
       this.chartOptions.data[0].dataPoints=res.data.map(item => ({
-        y: parseInt(item.y),
+        y:(parseInt(item.y)*100)/res.message?.module,
         name: item.name,
         color: this.colorMapping[item.name] || '#000000'
       }));
@@ -242,10 +250,30 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
 
   applyFilter(event: Event) {
       const filterValue = (event.target as HTMLInputElement).value;
-      this.dataSource.filter = filterValue.trim().toLowerCase();
-      if (this.dataSource.paginator) {
-        this.dataSource.paginator.firstPage();
+      if(this.type=='En préparation'){
+        this.dataSourcePreparation.filter = filterValue.trim().toLowerCase();
+        if (this.dataSourcePreparation.paginator) {
+          this.dataSourcePreparation.paginator.firstPage();
+        }
       }
+      if(this.type=='Prêt à partir'){
+        this.dataSourcePartir.filter = filterValue.trim().toLowerCase();
+        if (this.dataSourcePartir.paginator) {
+          this.dataSourcePartir.paginator.firstPage();
+        }
+      }
+      if(this.type=='Site'){
+        this.dataSourceSite.filter = filterValue.trim().toLowerCase();
+        if (this.dataSourceSite.paginator) {
+          this.dataSourceSite.paginator.firstPage();
+        }
+      }else{
+        this.dataSource.filter = filterValue.trim().toLowerCase();
+        if (this.dataSource.paginator) {
+          this.dataSource.paginator.firstPage();
+        }
+      }
+     
   }
 
   getSafeUrl(url){
@@ -261,7 +289,7 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
       this.type="En préparation";
       this.getAllModules('En préparation');
     }else if ((event === 2)) {
-      this.type="'Prêt à partir";
+      this.type="Prêt à partir";
       this.getAllModules('Prêt à partir');
     }else if ((event === 3)) {
       this.type="Site";

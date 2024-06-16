@@ -138,7 +138,8 @@ export class UpdateModuleComponent implements OnInit {
           marque:[this.module.marque,null],
           categorie:[this.module.categorie,null],
           entreprise:[this.moduleEntreprise,null],
-          dateFabrication:[this.module.dateFabrication,null]
+          dateFabrication:[this.module.dateFabrication,null],
+          module_type:[this.module.module_type,null],
         });
       }
     },(error) => {
@@ -223,7 +224,8 @@ export class UpdateModuleComponent implements OnInit {
     formData.append("hauteur", this.form.hauteur);
     formData.append("largeur", this.form.largeur);
     formData.append("longueur", this.form.longueur);
-    formData.append("dateFabrication",this.form.dateFabrication); 
+    formData.append("dateFabrication",this.form.dateFabrication);
+    formData.append("module_type",this.form.module_type); 
     if(this.user?.user?.role=="user"){
       formData.append("entreprise",this.moduleEntreprise)
      }else{

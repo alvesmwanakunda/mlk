@@ -1,0 +1,60 @@
+<div class="container">
+    <div class="content-top-child">
+  
+      <div>
+  
+        <div class="row" style="margin-bottom: 30px;">
+          <div class="col-4">
+            <input (keyup)="applyFilter($event)" type="text" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher par nom">
+          </div><!--col-->
+        </div><!--row-->
+
+        <table mat-table [dataSource]="dataSource">
+            <!-- Position Column -->
+            <ng-container matColumnDef="numero">
+              <th mat-header-cell *matHeaderCellDef> Numéro </th>
+              <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;" (click)="getModule(element.id)"> {{element?.numero}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="nom">
+              <th mat-header-cell *matHeaderCellDef> Article </th>
+              <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;" (click)="getModule(element.id)"> {{element?.nom}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="type">
+              <th mat-header-cell *matHeaderCellDef> Type </th>
+              <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;" (click)="getModule(element.id)"> {{element?.type}} </td>
+            </ng-container>
+
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="hauteur">
+              <th mat-header-cell *matHeaderCellDef>Hauteur</th>
+              <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.hauteur}}  </td>
+            </ng-container>
+
+            <ng-container matColumnDef="largeur">
+              <th mat-header-cell *matHeaderCellDef>Largeur</th>
+              <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.largeur}}  </td>
+            </ng-container>
+
+            <ng-container matColumnDef="longueur">
+              <th mat-header-cell *matHeaderCellDef>Longueur</th>
+              <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.longueur}}  </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+
+          <mat-paginator #paginatorStock [pageSizeOptions]="[10, 20]"
+                        showFirstLastButtons
+                        aria-label="Select page of periodic elements"
+                        >
+          </mat-paginator>
+        
+  
+      </div><!--box-->
+    </div>
+  </div>
+  

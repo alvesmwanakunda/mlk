@@ -54,8 +54,7 @@
   <ng-container matColumnDef="action">
     <th mat-header-cell *matHeaderCellDef>Actions</th>
     <td mat-cell *matCellDef="let element">
-      <button mat-icon-button color="accent"  matTooltip="Supprimer" (click)="deletePlan(element?.id)"><mat-icon>delete</mat-icon></button>
-
+      <button mat-icon-button color="accent"  matTooltip="Supprimer" (click)="deletePlan(element?.id)" *ngIf="user?.user?.role!='user'"><mat-icon>delete</mat-icon></button>
     </td>
   </ng-container>
 

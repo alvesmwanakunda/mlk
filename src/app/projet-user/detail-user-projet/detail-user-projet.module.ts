@@ -13,6 +13,7 @@ import { DevisProjetModule } from 'src/app/devis/devis-projet/devis-projet.modul
 import { FactureProjetModule } from 'src/app/factures/facture-projet/facture-projet.module';
 import { ChatProjetModule } from '../../chat-projet/chat-projet.module';
 import { PreparationModule } from 'src/app/projet/preparation/preparation.module';
+import { ModuleProjetModule } from 'src/app/projet/module-projet/module-projet.module';
 
 
 
@@ -30,7 +31,8 @@ import { PreparationModule } from 'src/app/projet/preparation/preparation.module
     DevisProjetModule,
     FactureProjetModule,
     ChatProjetModule,
-    PreparationModule
+    PreparationModule,
+    ModuleProjetModule
   ],
   providers:[ProjetsService]
 })

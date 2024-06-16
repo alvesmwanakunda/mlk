@@ -34,6 +34,7 @@ export class BoxProjetComponent implements OnInit,AfterViewInit {
   showDetailBox:boolean=false;
   //@Input() idProjet?:any;
   idProjet:any;
+  user:any;
 
   constructor(
     private boxService :BoxService,
@@ -42,6 +43,8 @@ export class BoxProjetComponent implements OnInit,AfterViewInit {
     private router: Router,
     public route:ActivatedRoute,
   ){
+    this.user = JSON.parse(localStorage.getItem('user'));
+
     this.route.params.subscribe((data:any)=>{
       this.idProjet = data.id
      })
@@ -72,8 +75,9 @@ export class BoxProjetComponent implements OnInit,AfterViewInit {
     this.boxService.getFolderByProjet(this.idProjet).subscribe((res:any)=>{
 
       console.log("Projet", this.idProjet);
+      let dossiers = res.message.dossiers.filter(item=> item.nom!=='PV de réception' && item.nom!=='Etat de lieu')
 
-      this.fichiers = res.message.dossiers.concat(res.message.fichiers);
+      this.fichiers = dossiers.concat(res.message.fichiers);
       this.dataSource.data = this.fichiers.map((data)=>({
         id:data._id,
         nom:data.nom,

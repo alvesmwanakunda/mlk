@@ -9,9 +9,9 @@
     <div class="content-top">
       <div class="row">
          <div class="col" align="right">
-          <button type="button" class="btn btn-projet-action" style="margin-right: 5px;" matTooltip="Modifier" (click)="updateEntreprise(entreprise._id)"><i class="fa-regular fa-pen-to-square btn-icon-projet-update"></i></button>
+          <button type="button" class="btn btn-projet-action" style="margin-right: 5px;" matTooltip="Modifier" (click)="updateEntreprise(entreprise._id)" *ngIf="this.user?.user?.role!='user'"><i class="fa-regular fa-pen-to-square btn-icon-projet-update"></i></button>
           <button type="button" class="btn btn-projet-action" style="margin-right: 5px;" matTooltip="Supprimer" (click)="openDialogDelete(entreprise._id)" *ngIf="this.user?.user?.role=='admin'"><i class="fa-solid fa-trash btn-icon-projet-delete"></i></button>
-          <button type="button" class="btn btn-projet" [routerLink]="['/add/entreprise']" *ngIf="this.user?.user?.role=='admin'"><i class="fa-solid fa-plus"></i> Nouveau Entreprise</button>
+          <button type="button" class="btn btn-projet" [routerLink]="['/add/entreprise']" *ngIf="this.user?.user?.role!='user'"><i class="fa-solid fa-plus"></i> Nouveau Entreprise</button>
          </div><!--col-->
       </div><!--row-->
     </div><!--content-->

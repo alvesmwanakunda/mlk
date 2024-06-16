@@ -20,7 +20,7 @@
         <div class="col">
 
         
-          <mat-stepper orientation="vertical">
+          <mat-stepper orientation="vertical"  *ngIf="projet">
             <mat-step [stepControl]="firstFormGroup" errorMessage="Veuillez remplir les champs est obligatoire.">
               <form [formGroup]="firstFormGroup">
                 <ng-template matStepLabel>Informations Primaires du projet</ng-template>
@@ -31,7 +31,7 @@
                       <div style="margin-bottom: 15px;">
                         <mat-form-field class="example-full-width">
                           <mat-label>Nom du projet</mat-label>
-                          <input  matInput type="text" formControlName="projet"  [(ngModel)]="projet.projet"  required>
+                          <input  matInput  formControlName="projet"  [(ngModel)]="projet.projet"  required>
                         </mat-form-field>
                         <div *ngIf="firstFormGroup.get('projet').hasError(champ_validation.nom[0].type) && (firstFormGroup.get('projet').dirty || firstFormGroup.get('projet').touched)">
                           <p class="error_field">{{champ_validation.nom[0].message}}</p>
@@ -76,7 +76,7 @@
                     <div class="col">
                       <mat-form-field class="example-full-width">
                         <mat-label>Url du plan</mat-label>
-                        <input  matInput type="text" formControlName="plan"  [(ngModel)]="projet.plan">
+                        <input  matInput  formControlName="plan"  [(ngModel)]="projet.plan">
                       </mat-form-field>
                     </div>
                   </div>
@@ -95,8 +95,8 @@
 
                       <div style="margin-bottom: 15px;">
                         <mat-form-field class="example-full-width">
-                          <mat-label>Url du plan</mat-label>
-                          <input  matInput type="text" formControlName="pays"  [(ngModel)]="projet.pays" [matAutocomplete]="auto">
+                          <mat-label>Pays</mat-label>
+                          <input  matInput  formControlName="pays"  [(ngModel)]="projet.pays" [matAutocomplete]="auto">
                           <mat-autocomplete #auto="matAutocomplete">
                             <mat-option *ngFor="let pays of paysFiltres | async" [value]="pays.name">
                               {{pays?.emoji}} {{pays?.name}}
@@ -107,13 +107,13 @@
                       <div style="margin-bottom: 15px;">
                         <mat-form-field class="example-full-width">
                           <mat-label>Ville</mat-label>
-                          <input  matInput type="text" formControlName="ville"  [(ngModel)]="projet.ville">
+                          <input  matInput  formControlName="ville"  [(ngModel)]="projet.ville">
                         </mat-form-field>
                       </div><!--div-->
                       <div style="margin-bottom: 15px;">
                         <mat-form-field class="example-full-width">
                           <mat-label>Code Postal</mat-label>
-                          <input  matInput type="text" formControlName="postal"  [(ngModel)]="projet.postal">
+                          <input  matInput  formControlName="postal"  [(ngModel)]="projet.postal">
                         </mat-form-field>
                       </div><!--div-->
 
@@ -123,13 +123,13 @@
                       <div style="margin-bottom: 15px;">
                        <mat-form-field class="example-full-width">
                           <mat-label>Numéro</mat-label>
-                          <input  matInput type="text" formControlName="adresse"  [(ngModel)]="projet.adresse">
+                          <input  matInput  formControlName="adresse"  [(ngModel)]="projet.adresse">
                         </mat-form-field>
                       </div><!--div-->
                       <div style="margin-bottom: 15px;">
                         <mat-form-field class="example-full-width">
                           <mat-label>Rue</mat-label>
-                          <input  matInput type="text" formControlName="rue"  [(ngModel)]="projet.rue">
+                          <input  matInput  formControlName="rue"  [(ngModel)]="projet.rue">
                         </mat-form-field>
                       </div><!--div-->
                    </div>
@@ -169,16 +169,16 @@
                 <div style="margin-bottom: 15px;">
                   <mat-form-field class="example-full-width">
                     <mat-label>Budget Prévisionnel du projet</mat-label>
-                    <input  matInput type="text" formControlName="budget" [(ngModel)]="projet.budget">
+                    <input  matInput type="number" formControlName="budget" [(ngModel)]="projet.budget">
                   </mat-form-field>
                 </div><!--div-->
                 <div style="margin-bottom: 15px;">
                   <mat-form-field class="example-full-width">
                     <mat-label>Devise du projet</mat-label>
-                    <input  matInput type="text" formControlName="devise" [(ngModel)]="projet.devis" [matAutocomplete]="auto">
+                    <input matInput  formControlName="devise" [(ngModel)]="projet.devise" [matAutocomplete]="auto">
                     <mat-autocomplete #auto="matAutocomplete">
                       <mat-option *ngFor="let dev of devisFiltres | async" [value]="dev.symbole">
-                        {{dev.nom}}
+                        {{dev.symbole}}
                       </mat-option>
                     </mat-autocomplete>
                   </mat-form-field>
@@ -186,20 +186,39 @@
                 <div style="margin-bottom: 15px;">
                   <mat-form-field class="example-full-width">
                     <mat-label>Site d'offre</mat-label>
-                    <input  matInput type="text" formControlName="site_offre" [(ngModel)]="projet.site_offre">
+                    <input  matInput  formControlName="site_offre" [(ngModel)]="projet.site_offre">
                   </mat-form-field>
                 </div><!--div-->
                 <div style="margin-bottom: 15px;">
                   <mat-form-field class="example-full-width">
                     <mat-label>Numéro d'offre</mat-label>
-                    <input  matInput type="text" formControlName="numero_offre" [(ngModel)]="projet.numero_offre">
+                    <input  matInput  formControlName="numero_offre" [(ngModel)]="projet.numero_offre">
                   </mat-form-field>
                 </div><!--div-->
                 <div style="margin-bottom: 15px;">
-                  <mat-form-field class="example-full-width">
-                    <mat-label>Date limite remise d'offre</mat-label>
-                    <input  matInput type="date" formControlName="date_limite"  [(ngModel)]="jours">
-                  </mat-form-field>
+                  <div class="row">
+                    <div class="col">
+                      <mat-form-field class="example-full-width">
+                        <mat-label>Date limite remise d'offre</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="date_limite"  [(ngModel)]="jours">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker">
+                          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                    <div class="col">
+                      <mat-form-field class="example-full-width">
+                        <mat-label>Fin du contrat </mat-label>
+                        <input matInput [matDatepicker]="picker1" formControlName="date_fin_contrat" [(ngModel)]="fin">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker1">
+                          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                 
                 </div><!--div-->
               </div>
 

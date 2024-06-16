@@ -105,6 +105,7 @@ export class AddProjetComponent implements OnInit {
       devise:[''],
       site_offre:[''],
       date_limite:[''],
+      date_fin_contrat:[''],
       numero_offre:[''],
     });
 
@@ -214,6 +215,7 @@ export class AddProjetComponent implements OnInit {
      formData.append("site_offre", this.form3.site_offre);
      formData.append("numero_offre", this.form3.numero_offre);
      formData.append("date_limite", this.form3.date_limite);
+     formData.append("date_fin_contrat", this.form3.date_fin_contrat);
 
      this.projetService.addProjet(formData).subscribe((res:any)=>{
 

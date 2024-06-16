@@ -26,7 +26,7 @@
       <div class="col-lg-10 col-md-10 col-md-auto">
         <div class="row">
           <div class="col">
-            <p class="title-col">Service Koonda</p>
+            <p class="title-col">Service</p>
             <p class="infos-col">MLKA</p>
           </div>
           <div class="col">
@@ -42,8 +42,12 @@
     </div><!--row-->
     <div><hr class="fiche"></div>
     <div class="row justify-content-md-center" style="margin-bottom: 50px;">
-      <div class="col-lg-6 col-md-6 col-md-auto">
+      <div class="col-lg-10 col-md-10 col-md-auto">
         <div class="row">
+          <div class="col">
+            <p class="title-col">Fin contrat</p>
+            <p class="infos-col">{{projet?.date_fin_contrat |date :'dd MMMM yyyy'}}</p>
+          </div>
           <div class="col">
             <p class="title-col">Pays</p>
             <p class="infos-col">{{projet?.pays}}</p>
@@ -156,9 +160,9 @@
       </div>-->
     </div>
 
-    <div align="right">
+    <!--<div align="right">
       <p><img src="assets/images/userp.png" style="margin-right: 10px;"> <span class="infos-resp">{{projet?.genre}} {{projet?.nom}} {{projet?.prenom}}</span></p>
-    </div>
+    </div>-->
   </div><!--content-top-->
 
 </div><!--container-->

@@ -41,8 +41,8 @@ export class ProjetComponent implements OnInit {
   getProjet(){
     this.projetService.getProjet(this.idProjet).subscribe((res:any)=>{
         this.projet = res.message;
-        if(this.projet){
-          this.getResponsable(this.projet.contact)
+        if(this.projet?.contact){
+          this.getResponsable(this.projet?.contact)
         }
     },(error) => {
       console.log("Erreur lors de la récupération des données", error);

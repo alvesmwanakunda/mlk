@@ -20,6 +20,7 @@ export interface Projets {
   budget:string;
   devise:string;
   date_limite:Date;
+  date_fin_contrat:Date;
   code_projet:string;
   code_client:string;
   createdDate:Date;

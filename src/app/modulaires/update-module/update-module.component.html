@@ -53,28 +53,35 @@
                         </div>
                         <div class="col">
                           <div class="bloc-info">
-                            <p class="title-info">Etat</p>
-                            <p style="font-size: 13px;">{{module?.type}}</p>
-                            <div *ngIf="module?.type=='Site'">
-                               <p>Projet : {{site?.projet}}</p>
-                               <p>{{site?.rue}} {{site?.postal}} {{site?.ville}} {{site?.pays}}</p>
-                            </div>
+                            <p class="title-info">Type</p>
+                            <p style="font-size: 13px;">{{module?.module_type}}</p>
                           </div>
-                         </div>
+                        </div>
                         <mat-divider></mat-divider>
                       </div>
 
                       <div class="bloc-info">
                         <div class="row">
+                          <div class="col">
+                            <div class="bloc-info">
+                              <p class="title-info">Etat</p>
+                              <p style="font-size: 13px;">{{module?.type}}</p>
+                              <div *ngIf="module?.type=='Site'">
+                                 <p>Projet : {{site?.projet}}</p>
+                                 <p>{{site?.rue}} {{site?.postal}} {{site?.ville}} {{site?.pays}}</p>
+                              </div>
+                            </div>
+                           </div>
                            <div class="col">
                             <p class="title-info">
                               QRCODE
                             </p>
+                            <p>
+                              <img [src]="qrcode" alt=""/>
+                            </p>
                            </div>
                         </div>
-                        <p style="text-align: center;">
-                          <img [src]="qrcode" alt=""/>
-                        </p>
+                       
 
                         <mat-divider></mat-divider>
                       </div>
@@ -229,10 +236,22 @@
                           </mat-select>
                         </mat-form-field>
                       </div><!--div-->
+                    </div>
+                    <div class="row" style="margin-bottom: 15px;">
+                      <div class="col">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Type</mat-label>
+                          <input matInput formControlName="module_type" [(ngModel)]="module.module_type">
+                        </mat-form-field>
+                      </div>
                       <div class="col">
                         <mat-form-field class="example-full-width">
                           <mat-label>Date de fabrication</mat-label>
-                          <input matInput type="date" formControlName="dateFabrication" [(ngModel)]="dateFabricaton">
+                          <input matInput [matDatepicker]="picker" formControlName="dateFabrication" [(ngModel)]="dateFabricaton">
+                          <mat-datepicker-toggle matIconSuffix [for]="picker">
+                            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                          </mat-datepicker-toggle>
+                          <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field>
                       </div><!--div-->
                     </div>

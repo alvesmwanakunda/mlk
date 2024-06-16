@@ -35,6 +35,7 @@ export class PlanModuleComponent implements OnInit,AfterViewInit {
   displayedColumns:string[]=['name','size','modified','modifiedby','action'];
   dataSource =new MatTableDataSource<Fichiers>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  user:any;
 
 
 
@@ -48,6 +49,7 @@ export class PlanModuleComponent implements OnInit,AfterViewInit {
     this.route.params.subscribe((data:any)=>{
       this.idModule = data.id
      });
+     this.user = JSON.parse(localStorage.getItem('user'));
   }
 
   ngOnInit() {

@@ -70,6 +70,11 @@ export class ProjetsService {
     return this.httpClient.get(`${environment.BASE_API_URL}/modules/entreprise/${id}`);
   }
 
+  public getAllModuleByProjet(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/projet/module/list/${id}`);
+  }
+
+
   public deleteModule(idModule){
     return this.httpClient.delete(`${environment.BASE_API_URL}/module/${idModule}`);
   }
