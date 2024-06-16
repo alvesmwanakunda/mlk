@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { startWith, map, Observable } from 'rxjs';
 import { ProjetsService } from 'src/app/shared/services/projets.service';
 import { EntreprisesService } from 'src/app/shared/services/entreprises.service';
+import { ContactsService } from 'src/app/shared/services/contacts.service';
 
 @Component({
   selector: 'app-add-projet',
@@ -32,7 +33,11 @@ export class AddProjetComponent implements OnInit {
   entreprises:any=[]
   selectedImage: string;
   paysFiltres:Observable<any[]>;
-  devisFiltres:Observable<any[]>
+  devisFiltres:Observable<any[]>;
+  contacts:any;
+  entrepriseFiltres:Observable<any[]>;
+  entreprise:any;
+
 
 
   constructor(
@@ -41,7 +46,8 @@ export class AddProjetComponent implements OnInit {
     private router :Router,
     private countryService:CountriesService,
     private projetService:ProjetsService,
-    private entrepriseService:EntreprisesService
+    private entrepriseService:EntreprisesService,
+    private contactService:ContactsService
   ) {
     this.projetFormError={
       nom:{},
@@ -83,7 +89,8 @@ export class AddProjetComponent implements OnInit {
       nom:['',null],
       prenom:['',null],
       genre:['',null],
-      plan:['',null]
+      plan:['',null],
+      contact:['',null]
     });
     this.secondFormGroup=this._formBuilder.group({
       pays:[''],
@@ -109,7 +116,12 @@ export class AddProjetComponent implements OnInit {
     this.devisFiltres = this.threeFormGroup.get('devise').valueChanges.pipe(
       startWith(''),
       map((val)=> this.filterDevis(val))
-    )
+    );
+
+    this.entrepriseFiltres = this.firstFormGroup.get('entreprise').valueChanges.pipe(
+      startWith(''),
+      map((val)=> this.filterEntreprise(val))
+    );
 
     this.getContry();
     this.getDevis();
@@ -185,10 +197,11 @@ export class AddProjetComponent implements OnInit {
 
      formData.append("uploadfile", this.file);
      formData.append("projet", this.form1.projet);
+     formData.append("contact", this.form1.contact);
      formData.append("genre", this.form1.genre);
      formData.append("nom", this.form1.nom);
      formData.append("prenom", this.form1.prenom);
-     formData.append("entreprise", this.form1.entreprise);
+     formData.append("entreprise", this.entreprise?._id);
      formData.append("etat", this.form1.etat);
      formData.append("responsable", this.form1.responsable);
      formData.append("pays", this.form2.pays);
@@ -217,5 +230,36 @@ export class AddProjetComponent implements OnInit {
 
      })
  }
+
+ /*doSomething(event:any){
+   //console.log("Event", event.value);
+   this.getContact(event?.value);
+ }*/
+
+ getContact(idEntreprise){
+   this.contactService.getContactAllEntreprise(idEntreprise).subscribe((res:any)=>{
+      //console.log("contact", res);
+      this.contacts=res?.message;
+   },(error)=>{
+    console.log(error);
+  })
+ }
+
+ filterEntreprise(value:string){
+  const filtre = value ? value.toLowerCase() : '';
+  return this.entreprises.filter(option => {
+    console.log("Option entre", option);
+    return option && option.societe && option.societe.toLowerCase().includes(filtre);
+  });
+}
+
+onOptionClientSelected(event) {
+  const selectedName = event.option.value;
+  if(selectedName){
+    this.entreprise = this.entreprises.filter(item=> item.societe==selectedName)[0];
+    //console.log("Entre", this.entreprise);
+    this.getContact(this.entreprise?._id);
+  }
+}
 
 }

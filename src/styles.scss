@@ -1707,21 +1707,24 @@ hr.entreprise{
 }
 
 .card1{
-  background-color: #28628B !important;
+  //background-color: #28628B !important;
+  background:linear-gradient(rgb(40 98 139), rgb(40 98 139 / 62%)) center / cover no-repeat, url(/assets/images/s3.png);
   border-radius: 9px !important;
   box-shadow: none !important;
   height: 300px !important;
 }
 
 .card2{
-  background-color: #48ae4d !important;
+  //background-color: #48ae4d !important;
+  background:linear-gradient(rgb(72 174 77), rgb(72 174 77/ 62%)) center / cover no-repeat, url(/assets/images/s2.png);
   border-radius: 9px !important;
   box-shadow: none !important;
   height: 300px !important;
 }
 
 .card3{
-  background-color: #53a3db !important;
+  //background-color: #53a3db !important;
+  background:linear-gradient(rgb(83 163 219), rgb(83 163 219 / 62%)) center / cover no-repeat, url(/assets/images/s1.png);
   border-radius: 9px !important;
   box-shadow: none !important;
   height: 300px !important;

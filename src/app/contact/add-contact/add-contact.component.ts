@@ -26,12 +26,14 @@ export class AddContactComponent implements OnInit {
   onLoadForm:boolean=false;
   countries: any=[];
   codeFiltres:Observable<any[]>;
-  entreprises:any;
+  entreprises:any=[];
   projets:any;
   contact:Contacts;
   message:any;
   user:any;
   emailExists: boolean;
+  entrepriseFiltres:Observable<any[]>;
+  entreprise:any;
 
 
   constructor(
@@ -77,6 +79,8 @@ export class AddContactComponent implements OnInit {
   }
 
   ngOnInit(){
+    this.getAllEntreprises();
+    this.getContry();
 
     this.contactFormGroup=new FormGroup({
       nom:new FormControl("",[Validators.required]),
@@ -92,14 +96,26 @@ export class AddContactComponent implements OnInit {
       startWith(''),
       map((val) => this.filterCode(val))
     );
-    this.getAllEntreprises();
-    this.getContry();
+    this.entrepriseFiltres = this.contactFormGroup.get('entreprise').valueChanges.pipe(
+      startWith(''),
+      map((val)=> this.filterEntreprise(val))
+    );
+    
   }
 
   filterCode(value:string){
     const filtre = value.toLowerCase();
     return this.countries.filter(option=> option.dial_code.toLocaleLowerCase().includes(filtre));
   }
+
+  filterEntreprise(value:string){
+    const filtre = value ? value.toLowerCase() : '';
+    return this.entreprises.filter(option => {
+      //console.log("Option entre", option);
+      return option && option.societe && option.societe.toLowerCase().includes(filtre);
+    });
+  }
+  
 
   getAllEntreprises(){
     this.entrepriseService.getAllEntreprise().subscribe((res:any)=>{
@@ -138,6 +154,7 @@ export class AddContactComponent implements OnInit {
   addContact():void{
    this.onLoadForm=true;
    if(!this.contactFormGroup.invalid){
+      this.contactFormGroup.get('entreprise').setValue(this.entreprise._id);
       this.contact = this.contactFormGroup.value;
         this.contactService.addContact(this.contact).subscribe((res:any)=>{
           this.onLoadForm=false;
@@ -153,6 +170,15 @@ export class AddContactComponent implements OnInit {
    }
     else{
       console.log("Erreur validation",  this.contactFormGroup.value);
+    }
+  }
+
+  onOptionClientSelected(event) {
+    const selectedName = event.option.value;
+    if(selectedName){
+      this.entreprise = this.entreprises.filter(item=> item.societe==selectedName)[0];
+      //console.log("Entreprise", this.entreprise);
+      //this.contactFormGroup.get('entreprise').setValue(this.entreprise._id);
     }
   }
 }

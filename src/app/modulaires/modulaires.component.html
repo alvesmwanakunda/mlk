@@ -52,8 +52,7 @@
           <input type="text"  (keyup)="applyFilter($event)" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher">
         </div>
         <div class="col"  align="right">
-          <!--<button type="button" class="btn btn-projet" routerLink="/modulaire" *ngIf="user?.user?.role=='admin'"><i class="fa-solid fa-plus"></i> Nouvel article</button>-->
-          <button type="button" class="btn btn-projet" routerLink="/modulaire"><i class="fa-solid fa-plus"></i> Nouvel article</button>
+          <button type="button" class="btn btn-projet" routerLink="/modulaire" *ngIf="user?.user?.role!='user'"><i class="fa-solid fa-plus"></i> Nouvel article</button>
         </div>
       </div>
       <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedIndexChange)="onTabChange($event)">

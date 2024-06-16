@@ -20,13 +20,16 @@ export class IntervenantComponent implements OnInit {
   project:any;
   @Input() idProjet?:any;
   @Input() idEntreprise?:any;
+  user:any;
 
   constructor(
     private contactService :ContactsService,
     public router :Router,
     public route:ActivatedRoute,
     private projetService:ProjetsService
-  ){}
+  ){
+    this.user = JSON.parse(localStorage.getItem('user'));
+  }
 
   ngOnInit(){
 

@@ -1,6 +1,9 @@
 <div class="container">
   <div class="content-top-child">
-    <div class="row">
+    <div *ngIf="user?.user?.role=='user'">
+      <p style="text-align: center;font-weight: 700;font-size: 18px;color: #29628B;">Option</p>
+    </div>
+    <div class="row" *ngIf="user?.user?.role!='user'">
       <div class="col">
         <div class="card card-etude">
           <div class="card-body">

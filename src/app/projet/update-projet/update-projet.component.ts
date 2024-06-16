@@ -7,6 +7,7 @@ import { startWith, map, Observable } from 'rxjs';
 import { ProjetsService } from 'src/app/shared/services/projets.service';
 import { EntreprisesService } from 'src/app/shared/services/entreprises.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ContactsService } from 'src/app/shared/services/contacts.service';
 
 
 @Component({
@@ -36,7 +37,9 @@ export class UpdateProjetComponent implements OnInit {
   image:any;
   jours:any;
   devis:any=[];
-  devisFiltres:Observable<any[]>
+  devisFiltres:Observable<any[]>;
+  contacts:any;
+
 
 
   constructor(
@@ -47,7 +50,8 @@ export class UpdateProjetComponent implements OnInit {
     private projetService:ProjetsService,
     private entrepriseService:EntreprisesService,
     private route: ActivatedRoute,
-    private sanitizer :DomSanitizer
+    private sanitizer :DomSanitizer,
+    private contactService:ContactsService
   ) {
     this.route.params.subscribe((data:any)=>{
       this.idProjet = data.id
@@ -95,6 +99,7 @@ export class UpdateProjetComponent implements OnInit {
       nom:['',null],
       prenom:['',null],
       plan:['',null],
+      contact:['',null]
     });
     this.secondFormGroup=this._formBuilder.group({
       pays:[''],
@@ -128,6 +133,9 @@ export class UpdateProjetComponent implements OnInit {
   getProjet(){
     this.projetService.getProjet(this.idProjet).subscribe((res:any)=>{
       this.projet = res.message;
+      if(this.projet){
+        this.getContact(this.projet.entreprise);
+      }
       this.image = this.sanitizer.bypassSecurityTrustResourceUrl(`data:image/png;base64, ${res.message.photo}`);
       this.jours = new Date(res.message.date_limite).toISOString().split('T')[0];
     },(error) => {
@@ -201,6 +209,7 @@ export class UpdateProjetComponent implements OnInit {
      formData.append("uploadfile", this.file);
      formData.append("nom", this.projet.nom);
      formData.append("prenom", this.projet.prenom);
+     formData.append("contact", this.projet.contact);
      formData.append("genre", this.projet.genre);
      formData.append("projet", this.projet.projet);
      formData.append("entreprise", this.projet.entreprise);
@@ -233,5 +242,16 @@ export class UpdateProjetComponent implements OnInit {
 
      })
  }
+
+doSomething(event:any){
+  this.getContact(event?.value);
+}
+getContact(idEntreprise){
+  this.contactService.getContactAllEntreprise(idEntreprise).subscribe((res:any)=>{
+     this.contacts=res?.message;
+  },(error)=>{
+   console.log(error);
+ })
+}
 
 }

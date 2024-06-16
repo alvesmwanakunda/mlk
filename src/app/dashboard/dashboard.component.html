@@ -21,7 +21,7 @@
                   <div align="center" style="margin-bottom: 40px">
                     <img src="assets/images/d1.png">
                   </div>
-                  <p style="color: #fff;text-align: center;">
+                  <p style="color: #fff;text-align: center;font-weight: 800;">
                     Réalisez vos projets de construction, bloc par bloc, avec MLKA MARKET.
                   </p>
                 </mat-card-content>
@@ -36,7 +36,7 @@
                   <div align="center" style="margin-bottom: 40px">
                     <img src="assets/images/d2.png">
                   </div>
-                  <p style="color: #fff;text-align: center;">
+                  <p style="color: #fff;text-align: center;font-weight: 800;">
                     Du neuf à la rénovation, créez l'espace parfait avec MLKA INNOVATION.
                   </p>
                 </mat-card-content>
@@ -53,7 +53,7 @@
                   <div align="center" style="margin-bottom: 40px">
                     <img src="assets/images/d4.png">
                   </div>
-                  <p style="color: #fff;text-align: center;">
+                  <p style="color: #fff;text-align: center;font-weight: 800;">
                     Construisez l'avenir, modulez vos rêves, et réinventez l'espace avec MLKA.
                   </p>
                 </mat-card-content>
@@ -160,9 +160,9 @@
           <div class="card card-projet">
             <img src="data:image/png;base64,{{projet?.photo}}" *ngIf="projet?.photo" class="card-img-projet" alt="...">
             <img src="assets/images/pr.png" *ngIf="!projet?.photo" class="card-img-projet" alt="...">
-            <div class="etat-projet">
+            <!--<div class="etat-projet">
               <span class="label-projet">{{projet?.devise}}</span>
-            </div>
+            </div>-->
             <div class="progress progress-projet" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
               <div class="progress-bar" [ngStyle]="{'width': (projet?.etat=='En attente') ? '0%' : (projet?.etat=='En cours') ? '50%' : (projet?.etat=='Clôturé') ? '100%' : '0%'}"></div>
             </div>

@@ -46,7 +46,7 @@
                            <div class="col-8">
                             <mat-form-field class="example-full-width">
                               <mat-label>Entreprise</mat-label>
-                              <mat-select  formControlName="entreprise"  [(ngModel)]="projet.entreprise"  aria-label="Default select example" required>
+                              <mat-select  formControlName="entreprise"  [(ngModel)]="projet.entreprise" (selectionChange)="doSomething($event)"   aria-label="Default select example" required>
                                 <mat-option *ngFor="let entre of entreprises " [value]="entre._id">{{entre?.societe}}</mat-option>
                               </mat-select>
                             </mat-form-field>
@@ -65,34 +65,21 @@
                   </div>
                   
                   <div class="row" style="margin-bottom: 15px;">
-                    <div class="col-2">
+                    <div class="col">
                       <mat-form-field class="example-full-width">
-                        <mat-label>Genre</mat-label>
-                        <mat-select formControlName="genre"  [(ngModel)]="projet.genre" aria-label="Default select example">
-                          <mat-option value="Mr">Mr</mat-option>
-                          <mat-option value="Mme">Mme</mat-option>
+                        <mat-label>Responsable</mat-label>
+                        <mat-select  formControlName="contact" [(ngModel)]="projet.contact" aria-label="Default select example">
+                          <mat-option *ngFor="let cont of contacts " [value]="cont._id">{{cont?.nom}} {{cont?.prenom}}</mat-option>
                         </mat-select>
-                      </mat-form-field>                      
-                    </div>
-                    <div class="col">
-                       <mat-form-field class="example-full-width">
-                        <mat-label>Nom du responsable</mat-label>
-                        <input  matInput type="text" formControlName="nom"  [(ngModel)]="projet.nom">
-                      </mat-form-field>
+                      </mat-form-field>                  
                     </div>
                     <div class="col">
                       <mat-form-field class="example-full-width">
-                        <mat-label>Prénom du responsable</mat-label>
-                        <input  matInput type="text" formControlName="prenom"  [(ngModel)]="projet.prenom">
+                        <mat-label>Url du plan</mat-label>
+                        <input  matInput type="text" formControlName="plan"  [(ngModel)]="projet.plan">
                       </mat-form-field>
                     </div>
                   </div>
-                  <div style="margin-bottom: 15px;">
-                   <mat-form-field class="example-full-width">
-                      <mat-label>Url du plan</mat-label>
-                      <input  matInput type="text" formControlName="plan"  [(ngModel)]="projet.plan">
-                    </mat-form-field>
-                  </div><!--div-->
                   <div align="right">
                     <button mat-button matStepperNext class="btn-entreprise">Suivant <i class="fa-solid fa-chevron-right"></i></button>
                   </div>

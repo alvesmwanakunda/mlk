@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DeleteProjetComponent } from './delete-projet/delete-projet.component';
 import { ChatProjetComponent } from '../chat-projet/chat-projet.component';
 import { ChatService } from '../shared/services/chat.service';
-
+import { ContactsService } from '../shared/services/contacts.service';
 
 @Component({
   selector: 'app-projet',
@@ -18,6 +18,7 @@ export class ProjetComponent implements OnInit {
   projet:Projets;
   idProjet:any;
   numberMessage:number=0;
+  contact:any;
 
   constructor(
     private projetService: ProjetsService,
@@ -25,6 +26,7 @@ export class ProjetComponent implements OnInit {
     public route:ActivatedRoute,
     public dialog: MatDialog,
     private chatService: ChatService,
+    private contactService: ContactsService
   ) {
     this.route.params.subscribe((data:any)=>{
       this.idProjet = data.id
@@ -39,6 +41,17 @@ export class ProjetComponent implements OnInit {
   getProjet(){
     this.projetService.getProjet(this.idProjet).subscribe((res:any)=>{
         this.projet = res.message;
+        if(this.projet){
+          this.getResponsable(this.projet.contact)
+        }
+    },(error) => {
+      console.log("Erreur lors de la récupération des données", error);
+    })
+  }
+
+  getResponsable(id){
+    this.contactService.getContact(id).subscribe((res:any)=>{
+       this.contact = res?.message;
     },(error) => {
       console.log("Erreur lors de la récupération des données", error);
     })

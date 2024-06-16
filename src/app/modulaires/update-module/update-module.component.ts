@@ -54,6 +54,7 @@ export class UpdateModuleComponent implements OnInit {
   dateFabricaton:any;
   moduleEntreprise:any;
   societe:any;
+  site:any;
 
 
   constructor(
@@ -109,6 +110,7 @@ export class UpdateModuleComponent implements OnInit {
     this.projetService.getModule(this.idModule).subscribe((res:any)=>{
 
       this.module = res.message;
+      this.site = res?.projet;
       if(this.module.entreprise){
         this.moduleEntreprise = res.message?.entreprise?._id;
         this.societe = res.message?.entreprise?.societe

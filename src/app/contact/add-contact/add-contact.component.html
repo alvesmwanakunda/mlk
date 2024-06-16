@@ -101,11 +101,20 @@
             <div class="row">
               <div class="col">
                 <div style="margin-bottom: 15px;">
-                  <mat-form-field class="example-full-width">
+                  <!--<mat-form-field class="example-full-width">
                     <mat-label>Entreprises</mat-label>
                     <mat-select matInput formControlName="entreprise" required>
                        <mat-option *ngFor="let en of entreprises" [value]="en._id">{{en.societe}}</mat-option>
                     </mat-select>
+                  </mat-form-field>-->
+                  <mat-form-field class="example-full-width">
+                    <mat-label style="font-size: 13px !important;color: #000 !important;">Entreprise</mat-label>
+                    <input  matInput type="text"  formControlName="entreprise" [matAutocomplete]="auto1" required style="font-size: 13px;">
+                    <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="onOptionClientSelected($event)">
+                      <mat-option *ngFor="let p of entrepriseFiltres | async" [value]="p?.societe">
+                        {{p?.societe}}
+                      </mat-option>
+                    </mat-autocomplete>
                   </mat-form-field>
                   <div *ngIf="contactFormGroup.get('entreprise').hasError(champ_validation.type[0].type) && (contactFormGroup.get('entreprise').dirty || contactFormGroup.get('entreprise').touched)">
                     <p class="error_field">{{champ_validation.type[0].message}}</p>

@@ -12,6 +12,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class PreparationComponent implements OnInit {
 
   idProjet:any;
+  user:any;
 
   constructor(
     public router :Router,
@@ -19,7 +20,8 @@ export class PreparationComponent implements OnInit {
   ){
     this.route.params.subscribe((data:any)=>{
       this.idProjet = data.id
-     })
+     });
+     this.user = JSON.parse(localStorage.getItem('user'));
   }
   ngOnInit(){
 
