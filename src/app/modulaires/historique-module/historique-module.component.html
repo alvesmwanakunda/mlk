@@ -17,7 +17,7 @@
               </span>
              </p>
              <div class="alert alert-secondary"  role="alert">
-               {{m?.observation}}
+               <p [innerHTML]="m?.observation"></p>
              </div>
           </div>
        </div>
@@ -32,16 +32,29 @@
        <div class="card-body">
 
          <div class="row">
-           <div class="col-10">
+           <div class="col-12">
              <form [formGroup]="historiqueForm">
-               <input class="form-control shadow-none chat-input" formControlName="observation" placeholder="Observation"/>
+               <!--<input class="form-control shadow-none chat-input" formControlName="observation" placeholder="Observation"/>-->
+               <editor 
+                apiKey="yimjymys4ncgnyjba52651rzyas8c049jditk61x087va3yn"
+                [init]="{
+                  skin: 'borderless',
+                  plugins: 'wordcount',
+                  menubar: true,
+                  height: '180',
+                  language: 'fr_FR'
+                }"
+                formControlName="observation"></editor>
              </form>
+             <div style="padding-top: 5px;">
+              <button  mat-stroked-button color="primary"  (click)="addHistorique()" [disabled]="historiqueForm.invalid" style="width: 100%;">Envoyer</button>
+            </div>
            </div>
-           <div class="col-2">
+           <!--<div class="col-2">
              <div align="right" style="padding-top: 5px;">
                <button  mat-stroked-button color="primary"  (click)="addHistorique()" [disabled]="historiqueForm.invalid">Envoyer</button>
              </div>
-           </div>
+           </div>-->
          </div>
 
        </div>

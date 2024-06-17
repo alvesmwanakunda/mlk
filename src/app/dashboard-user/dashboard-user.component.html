@@ -123,18 +123,6 @@
             <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.entreprise}}</td>
           </ng-container>
 
-          <!-- Weight Column -->
-          <ng-container matColumnDef="etat">
-            <th mat-header-cell *matHeaderCellDef> Statut </th>
-            <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">  {{element?.etat}}  </td>
-          </ng-container>
-
-          <!-- Symbol Column -->
-          <ng-container matColumnDef="limite">
-            <th mat-header-cell *matHeaderCellDef>Date limite</th>
-            <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"> {{element?.limite |date: 'dd/MM/YYYY'}} </td>
-          </ng-container>
-
           <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef>Détail</th>
             <td mat-cell *matCellDef="let element">  <button type="button" class="btn btn-outline-secondary btn-detail-projet" (click)="getProjet(element?.id)">Détail</button> </td>

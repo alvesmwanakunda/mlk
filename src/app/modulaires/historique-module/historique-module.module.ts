@@ -5,6 +5,8 @@ import { SharedModule } from '../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DeleteHistoriqueModule } from '../delete-historique/delete-historique.module';
 import { UpdateHistoriqueModule } from '../update-historique/update-historique.module';
+import { EditorModule } from '@tinymce/tinymce-angular';
+
 
 
 
@@ -17,7 +19,8 @@ import { UpdateHistoriqueModule } from '../update-historique/update-historique.m
     FormsModule,
     ReactiveFormsModule,
     DeleteHistoriqueModule,
-    UpdateHistoriqueModule
+    UpdateHistoriqueModule,
+    EditorModule
   ],
   exports:[HistoriqueModuleComponent]
 })

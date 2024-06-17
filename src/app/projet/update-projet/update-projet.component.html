@@ -160,7 +160,8 @@
                  </div>
                   <div align="right">
                     <input type="file" class="file-input" accept='image/*' (change)="onFileSelected($event)" #fileUpload>
-                    <button type="button" (click)="fileUpload.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> charger</button>
+                    <button type="button" (click)="fileUpload.click()" class="btn btn-projet" style="margin-right: 15px;"><i class="fa-solid fa-cloud-arrow-down"></i> charger</button>
+                    <button type="button" (click)="deletePhoto()" class="btn btn-cl" *ngIf="projet?.photo"><i class="fa-solid fa-trash"></i> supprimer</button>
                   </div>
                 </div><!--col-->
                 <div class="col-md-9"></div>

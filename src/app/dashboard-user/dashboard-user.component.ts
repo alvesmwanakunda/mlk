@@ -15,7 +15,7 @@ import { EntreprisesService } from '../shared/services/entreprises.service';
 export class DashboardUserComponent implements OnInit, AfterViewInit {
 
 
-  displayedColumns:string[]=['nom','entreprise','etat','limite','action'];
+  displayedColumns:string[]=['nom','entreprise','action'];
   dataSource =new MatTableDataSource<Projets>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   projets:any=[];
@@ -58,7 +58,7 @@ export class DashboardUserComponent implements OnInit, AfterViewInit {
        this.dataSource.data = data.message.map((data)=>({
         id:data._id,
         nom:data.projet,
-        entreprise:data?.entreprise?.nom,
+        entreprise:data?.entreprise?.societe,
         etat:data.etat,
         limite:data.date_limite,
        })) as Projets[]
@@ -80,9 +80,7 @@ export class DashboardUserComponent implements OnInit, AfterViewInit {
         this.getAllProjet();
       }else{
         this.projets = this.projets.filter(projet => {
-          return (
-            projet.nom.toLowerCase().includes(filterValue)
-          );
+          return projet.projet.trim().toLowerCase().includes(filterValue.trim().toLowerCase());
         });
       }
 

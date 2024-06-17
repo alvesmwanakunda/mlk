@@ -7,6 +7,7 @@ import { DeleteProjetComponent } from './delete-projet/delete-projet.component';
 import { ChatProjetComponent } from '../chat-projet/chat-projet.component';
 import { ChatService } from '../shared/services/chat.service';
 import { ContactsService } from '../shared/services/contacts.service';
+import { EntreprisesService } from '../shared/services/entreprises.service';
 
 @Component({
   selector: 'app-projet',
@@ -19,6 +20,7 @@ export class ProjetComponent implements OnInit {
   idProjet:any;
   numberMessage:number=0;
   contact:any;
+  entreprise:any;
 
   constructor(
     private projetService: ProjetsService,
@@ -26,7 +28,8 @@ export class ProjetComponent implements OnInit {
     public route:ActivatedRoute,
     public dialog: MatDialog,
     private chatService: ChatService,
-    private contactService: ContactsService
+    private contactService: ContactsService,
+    private entrepriseService: EntreprisesService
   ) {
     this.route.params.subscribe((data:any)=>{
       this.idProjet = data.id
@@ -41,9 +44,21 @@ export class ProjetComponent implements OnInit {
   getProjet(){
     this.projetService.getProjet(this.idProjet).subscribe((res:any)=>{
         this.projet = res.message;
+        if(res.message?.entreprise){
+          this.getEntreprise(res.message?.entreprise);
+        }
+        
         if(this.projet?.contact){
           this.getResponsable(this.projet?.contact)
         }
+    },(error) => {
+      console.log("Erreur lors de la récupération des données", error);
+    })
+  }
+
+  getEntreprise(id){
+    this.entrepriseService.getEntreprise(id).subscribe((res:any)=>{
+        this.entreprise=res?.message;
     },(error) => {
       console.log("Erreur lors de la récupération des données", error);
     })

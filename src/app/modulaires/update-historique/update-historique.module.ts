@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UpdateHistoriqueComponent } from './update-historique.component';
+import { EditorModule } from '@tinymce/tinymce-angular';
+
 
 
 @NgModule({
@@ -11,7 +13,8 @@ import { UpdateHistoriqueComponent } from './update-historique.component';
     CommonModule,
     SharedModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    EditorModule
   ]
 })
 export class UpdateHistoriqueModule { }

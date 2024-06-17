@@ -37,6 +37,8 @@ export class AddProjetComponent implements OnInit {
   contacts:any;
   entrepriseFiltres:Observable<any[]>;
   entreprise:any;
+  pays="France";
+  code="+33"
 
 
 

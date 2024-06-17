@@ -201,6 +201,15 @@ export class UpdateProjetComponent implements OnInit {
     })
   }
 
+  deletePhoto(){
+    this.projetService.deletePhoto(this.idProjet).subscribe((res:any)=>{
+      console.log("res",res);
+      this.getProjet()
+    },(error)=>{
+      console.log(error);
+    })
+  }
+
   updateProjet():void{
 
     this.onLoadForm=true;
