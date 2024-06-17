@@ -24,6 +24,7 @@
     "@canvasjs/angular-charts": "^1.2.0",
     "@ckeditor/ckeditor5-angular": "^7.0.1",
     "@ckeditor/ckeditor5-build-classic": "^40.1.0",
+    "@kolkov/angular-editor": "^3.0.0-beta.0",
     "@ng-bootstrap/ng-bootstrap": "^14.1.1",
     "@ng-select/ng-select": "^10.0.4",
     "@popperjs/core": "^2.11.6",

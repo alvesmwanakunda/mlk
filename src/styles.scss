@@ -1806,6 +1806,13 @@ hr.entreprise{
   overflow-x: hidden;
 }
 
+.scrollable-block {
+  height: 300px; /* Ajustez la hauteur selon vos besoins */
+  padding: 10px; /* Optionnel : espace intérieur */
+  overflow: auto; /* Permet de défiler si le contenu dépasse */
+  /* Vous pouvez également utiliser overflow-y: auto; ou overflow-x: auto; pour spécifier seulement un axe */
+}
+
 .th-chat{
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, "Noto Sans", Arial, "Odoo Unicode Support Noto", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }

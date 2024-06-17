@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UpdateHistoriqueComponent } from './update-historique.component';
-import { EditorModule } from '@tinymce/tinymce-angular';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 
 
@@ -14,7 +14,7 @@ import { EditorModule } from '@tinymce/tinymce-angular';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    EditorModule
+    AngularEditorModule
   ]
 })
 export class UpdateHistoriqueModule { }

@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { ProjetsService } from 'src/app/shared/services/projets.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HistoriqueModuleComponent } from '../historique-module/historique-module.component';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+
 
 
 
@@ -16,6 +18,30 @@ export class UpdateHistoriqueComponent implements OnInit {
 
   historique:any;
   historiqueForm : FormGroup;
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    placeholder: 'Note...',
+    translate: 'yes',
+    defaultParagraphSeparator: 'p',
+    defaultFontName: 'Arial',
+    toolbarHiddenButtons: [['bold']],
+    customClasses: [
+      {
+        name: 'quote',
+        class: 'quote',
+      },
+      {
+        name: 'redText',
+        class: 'redText',
+      },
+      {
+        name: 'titleText',
+        class: 'titleText',
+        tag: 'h1',
+      },
+    ],
+  };
 
   constructor(
     private _formBuilder :FormBuilder,

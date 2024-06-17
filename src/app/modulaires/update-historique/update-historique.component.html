@@ -5,17 +5,8 @@
         <mat-label>Commentaire</mat-label>
         <textarea matInput formControlName="observation" [(ngModel)]="historique.observation"></textarea>
       </mat-form-field>-->
-      <editor 
-                apiKey="yimjymys4ncgnyjba52651rzyas8c049jditk61x087va3yn"
-                [init]="{
-                  skin: 'borderless',
-                  plugins: 'wordcount',
-                  menubar: true,
-                  height: '250',
-                  language: 'fr_FR'
-                }"
-                formControlName="observation" [(ngModel)]="historique.observation">
-      </editor>
+      <angular-editor formControlName="observation"  [(ngModel)]="historique.observation" [config]="editorConfig"></angular-editor>
+
     </form>
   </div>
 </mat-dialog-content>

@@ -5,6 +5,7 @@ import { ProjetsService } from 'src/app/shared/services/projets.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteHistoriqueComponent } from '../delete-historique/delete-historique.component';
 import { UpdateHistoriqueComponent } from '../update-historique/update-historique.component';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 
 
@@ -21,6 +22,30 @@ export class HistoriqueModuleComponent implements OnInit {
   historiques:any=[];
   idModule:any;
   user:any;
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    placeholder: 'Note...',
+    translate: 'yes',
+    defaultParagraphSeparator: 'p',
+    defaultFontName: 'Arial',
+    toolbarHiddenButtons: [['bold']],
+    customClasses: [
+      {
+        name: 'quote',
+        class: 'quote',
+      },
+      {
+        name: 'redText',
+        class: 'redText',
+      },
+      {
+        name: 'titleText',
+        class: 'titleText',
+        tag: 'h1',
+      },
+    ],
+  };
 
 
   constructor(
