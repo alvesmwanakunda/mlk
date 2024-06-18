@@ -55,8 +55,10 @@
                         </div>
                       </div><!--div-->
                       <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Poste</label>
-                        <input type="text" formControlName="poste" [(ngModel)]="contact.poste"  class="form-control input-entreprise" required>
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Poste</mat-label>
+                          <input matInput formControlName="prenom" formControlName="poste" [(ngModel)]="contact.poste">
+                        </mat-form-field>
                       </div><!--div-->
                     </div><!--col-->
                     <div class="col">

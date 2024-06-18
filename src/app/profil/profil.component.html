@@ -47,7 +47,7 @@
           </mat-card>
         </div>
 
-        <div>
+        <!--<div>
           <mat-card class="example-card">
             <mat-card-header style="margin-bottom: 50px;">
               <mat-card-title style="font-weight: normal !important;">Adresse</mat-card-title>
@@ -59,40 +59,53 @@
               </mat-list>
             </mat-card-content>
           </mat-card>
-        </div>
+        </div>-->
 
       </div><!--col-->
       <div class="row justify-content-md-center" *ngIf="isEditer">
+        <div class="content-top">
+          <div class="row">
+            <div class="col">
+              <h2 class="content-title">Editer mes informations personnelles</h2>
+            </div>
+            <div class="col">
+              <div align="right">
+                <button mat-raised-button color="primary" [routerLink]="'/profil'"><mat-icon>edit</mat-icon> Mon profile</button>
+              </div>
+            </div>
+          </div>
+        </div><!--content-->
         <div class="col-lg-8 col-md-auto">
 
           <mat-card class="example-card">
-            <mat-card-header style="margin-bottom: 50px;">
-              <mat-card-title style="font-weight: normal !important;">Editer Profile</mat-card-title>
-            </mat-card-header>
             <mat-card-content>
               <form [formGroup]="userFormGroup">
                 <div style="margin-bottom: 15px;">
-                  <label class="label-entreprise">Nom</label>
-                  <input type="text" formControlName="nom" [(ngModel)]="user.nom"  class="form-control input-entreprise">
+                  <mat-form-field  class="example-full-width">
+                    <mat-label style="font-size: 13px;">Nom</mat-label>
+                    <input matInput   formControlName="nom" [(ngModel)]="user.nom">
+                  </mat-form-field>
                 </div><!--div-->
                 <div style="margin-bottom: 15px;">
-                  <label class="label-entreprise">Prénom</label>
-                  <input type="text" formControlName="prenom" [(ngModel)]="user.prenom"  class="form-control input-entreprise">
+                  <mat-form-field  class="example-full-width">
+                    <mat-label style="font-size: 13px;">Prénom</mat-label>
+                    <input matInput formControlName="prenom" [(ngModel)]="user.prenom">
+                  </mat-form-field>
                 </div><!--div-->
                 <div style="margin-bottom: 15px;">
-                  <label class="label-entreprise">Genre</label>
-                  <select  formControlName="genre" [(ngModel)]="user.genre"  class="form-control input-entreprise">
-                    <option value="Mr">Homme</option>
-                    <option value="Mlle">Femme</option>
-                  </select>
+                  <mat-form-field  class="example-full-width">
+                    <mat-label style="font-size: 13px;">Genre</mat-label>
+                    <mat-select formControlName="genre" [(ngModel)]="user.genre">
+                      <mat-option value="Mr">Homme</mat-option>
+                      <mat-option value="Mlle">Femme</mat-option>
+                    </mat-select>
+                  </mat-form-field>
                 </div><!--div-->
                 <div style="margin-bottom: 15px;">
-                  <label class="label-entreprise">Téléphone</label>
-                  <input type="text" formControlName="phone" [(ngModel)]="user.phone"  class="form-control input-entreprise">
-                </div><!--div-->
-                <div style="margin-bottom: 15px;">
-                  <label class="label-entreprise">Adresse</label>
-                  <input type="text" formControlName="adresse" [(ngModel)]="user.adresse"  class="form-control input-entreprise">
+                  <mat-form-field  class="example-full-width">
+                    <mat-label style="font-size: 13px;">Téléphone</mat-label>
+                    <input matInput formControlName="phone" [(ngModel)]="user.phone">
+                  </mat-form-field>
                 </div><!--div-->
               </form>
             </mat-card-content>
