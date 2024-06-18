@@ -1,9 +1,18 @@
 <app-navbar>
   <div class="container">
     <div class="content-top">
-      <h2 class="content-title">Projet : {{projet?.projet}}</h2>
-      <mat-divider></mat-divider>
+      <div class="row">
+        <div class="col">
+          <h2 class="content-title">Projet : {{projet?.projet}}</h2>
+        </div>
+        <div class="col">
+           <div align="right">
+            <button mat-raised-button [routerLink]="'/dashboard'">Retour aux projets</button>
+           </div>
+        </div>
+      </div>
     </div><!--content-->
+    <mat-divider style="margin-bottom: 30px;"></mat-divider>
     <div>
       <div class="row">
          <div class="col" align="right">

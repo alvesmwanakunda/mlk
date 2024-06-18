@@ -68,6 +68,17 @@ export class BoxProjetComponent implements OnInit,AfterViewInit {
   }
 
   ngAfterViewInit(){
+    this.boxService.listDossier.subscribe((message:any)=>{
+      console.log("liste des documents", message );
+      this.getAllFiles();
+    });
+    this.boxService.PrevieusBox.subscribe((message:any)=>{
+      if(message?.idProjet){
+        this.idProjet = message.idProjet;
+        console.log("Ici", message);
+        this.showBoxView(this.idProjet);
+      }
+    });
     this.dataSource.paginator=this.paginator;
   }
 
@@ -159,8 +170,8 @@ export class BoxProjetComponent implements OnInit,AfterViewInit {
     this.showBox = true;
     this.showDetailBox = false;
     this.boxService.getFolderByProjet(id).subscribe((res:any)=>{
-
-      this.fichiers = res.message.dossiers.concat(res.message.fichiers);
+      let dossiers = res.message.dossiers.filter(item=> item.nom!=='PV de réception' && item.nom!=='Etat de lieu')
+      this.fichiers = dossiers.concat(res.message.fichiers);
       this.dataSource.data = this.fichiers.map((data)=>({
         id:data._id,
         nom:data.nom,

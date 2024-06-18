@@ -47,7 +47,8 @@ export class MoveFolderProjetComponent implements OnInit {
   getAllFiles(){
     this.boxService.getFolderByProjet(this.data.idProjet).subscribe((res:any)=>{
       if(this.data.extension){
-        this.folders = res.message.dossiers;
+        this.folders  = res.message.dossiers.filter(item=> item.nom!=='PV de réception' && item.nom!=='Etat de lieu')
+
       }else{
         this.folders = res.message.dossiers.filter(item=> item._id!==this.data.id);
       }
