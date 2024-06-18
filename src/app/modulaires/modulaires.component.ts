@@ -87,10 +87,10 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
       this.projectService.getAllModuleByEntreprise(this.user?.user?.entreprise).subscribe((data:any)=>{
         console.log("data",data);
          this.modules = data.message.filter(item=>item.type===type);
-         const filteredDataStock = data.message.filter(item=>item.type==="Stock");
-         const filteredDataPreparation = data.message.filter(item=>item.type==="En préparation");
-         const filteredDataPartir = data.message.filter(item=>item.type==="Prêt à partir");
-         const filteredDataSite = data.message.filter(item=>item.type==="Site");
+         const filteredDataStock = data.message.filter(item=>item.type==="Stock").reverse();
+         const filteredDataPreparation = data.message.filter(item=>item.type==="En préparation").reverse();
+         const filteredDataPartir = data.message.filter(item=>item.type==="Prêt à partir").reverse();
+         const filteredDataSite = data.message.filter(item=>item.type==="Site").reverse();
 
          this.dataSource.data = filteredDataStock.map((data)=>({
           id:data?._id,
@@ -155,10 +155,10 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
     this.projectService.getAllModule().subscribe((data:any)=>{
       console.log("data",data);
        this.modules = data.message.filter(item=>item.type===type);
-       const filteredDataStock = data.message.filter(item=>item.type==="Stock");
-       const filteredDataPreparation = data.message.filter(item=>item.type==="En préparation");
-       const filteredDataPartir = data.message.filter(item=>item.type==="Prêt à partir");
-       const filteredDataSite = data.message.filter(item=>item.type==="Site");
+       const filteredDataStock = data.message.filter(item=>item.type==="Stock").reverse();
+       const filteredDataPreparation = data.message.filter(item=>item.type==="En préparation").reverse();
+       const filteredDataPartir = data.message.filter(item=>item.type==="Prêt à partir").reverse();
+       const filteredDataSite = data.message.filter(item=>item.type==="Site").reverse();
 
        this.dataSource.data = filteredDataStock.map((data)=>({
         id:data?._id,
