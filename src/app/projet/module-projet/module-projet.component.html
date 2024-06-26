@@ -7,6 +7,11 @@
           <div class="col-4">
             <input (keyup)="applyFilter($event)" type="text" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher par nom">
           </div><!--col-->
+          <div class="col">
+            <div align="right">
+               <h2>Total matériels : {{dataSource.data.length}}</h2>
+            </div>
+          </div>
         </div><!--row-->
 
         <table mat-table [dataSource]="dataSource">
@@ -47,7 +52,7 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
           </table>
 
-          <mat-paginator #paginatorStock [pageSizeOptions]="[10, 20]"
+          <mat-paginator #paginator [pageSizeOptions]="[10, 20]"
                         showFirstLastButtons
                         aria-label="Select page of periodic elements"
                         >

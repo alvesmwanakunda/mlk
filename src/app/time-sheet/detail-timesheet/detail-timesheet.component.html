@@ -1,0 +1,95 @@
+<app-navbar>
+    <div class="container">
+      <div class="content-top">
+        <h2 class="content-title">Feuille de temps : {{user?.nom}} {{user?.prenom}}</h2>
+        <mat-divider></mat-divider>
+      </div><!--content-->
+    </div>
+    <div>
+       <div>
+        <form [formGroup]="timesheetForm">
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-label>Date</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="createdAt" required>
+                <mat-datepicker-toggle matIconSuffix [for]="picker">
+                  <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+              <div *ngIf="timesheetForm.get('createdAt').hasError(champ_validation.input[0].type) && (timesheetForm.get('createdAt').dirty || timesheetForm.get('createdAt').touched)">
+                <p class="error_field">{{champ_validation.input[0].message}}</p>
+              </div>
+            </div>
+            <div class="col-4">
+              <mat-form-field class="example-full-width">
+                <mat-label>Tâche</mat-label>
+                <input matInput formControlName="tache" required>
+              </mat-form-field>
+              <div *ngIf="timesheetForm.get('tache').hasError(champ_validation.input[0].type) && (timesheetForm.get('tache').dirty || timesheetForm.get('tache').touched)">
+                <p class="error_field">{{champ_validation.input[0].message}}</p>
+              </div>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-label>Heure</mat-label>
+                <input type="number" matInput formControlName="heure" required>
+              </mat-form-field>
+              <div *ngIf="timesheetForm.get('heure').hasError(champ_validation.input[0].type) && (timesheetForm.get('heure').dirty || timesheetForm.get('heure').touched)">
+                <p class="error_field">{{champ_validation.input[0].message}}</p>
+              </div>
+            </div>
+            <div class="col-2">
+              <div style="padding-top:21px;">
+                <button mat-raised-button color="primary" (click)="saveTime();timesheetForm.reset()" [disabled]="timesheetForm.invalid"  cdkFocusInitial>Nouveau</button>
+              </div>
+            </div>
+          </div>
+        </form>
+       </div>
+       <mat-divider style="margin-bottom: 15px;"></mat-divider>
+        <div class="row" style="margin-bottom: 25px;">
+          <div class="col">
+            <input type="text"  (keyup)="applyFilter($event)" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher">
+          </div>
+        </div>
+        <table mat-table [dataSource]="dataSource">
+          <!-- Position Column -->
+    
+           <!-- Symbol Column -->
+           <ng-container matColumnDef="month">
+            <th mat-header-cell *matHeaderCellDef>Mois</th>
+            <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"> {{element?.month}}</td>
+          </ng-container>
+    
+           <!-- Weight Column -->
+           <ng-container matColumnDef="year">
+            <th mat-header-cell *matHeaderCellDef>Année</th>
+            <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.year}}  </td>
+          </ng-container>
+    
+          <!-- Name Column -->
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>Voir</th>
+            <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">
+              <button mat-mini-fab color="primary" matTooltip="Détail" (click)="getTimesheet(user?._id, element?.monthInt, element?.year)">
+                <mat-icon>visibility</mat-icon> 
+              </button>
+            </td>
+          </ng-container>
+    
+    
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    
+        <mat-paginator [pageSizeOptions]="[10, 20]"
+                      showFirstLastButtons
+                      aria-label="Select page of periodic elements"
+                      >
+        </mat-paginator>
+    
+    
+    </div>
+</app-navbar>

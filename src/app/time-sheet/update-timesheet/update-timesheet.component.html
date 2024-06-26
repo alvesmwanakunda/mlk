@@ -1,0 +1,108 @@
+<app-navbar>
+    <div class="container">
+      <div class="content-top">
+        <h2 class="content-title">Feuille de temps : {{user?.nom}} {{user?.prenom}} - {{month}}/{{year}}</h2>
+        <mat-divider></mat-divider>
+      </div><!--content-->
+    </div>
+    <div>
+       <div>
+        <form [formGroup]="timesheetForm">
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-label>Date</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="createdAt" required>
+                <mat-datepicker-toggle matIconSuffix [for]="picker">
+                  <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+              <div *ngIf="timesheetForm.get('createdAt').hasError(champ_validation.input[0].type) && (timesheetForm.get('createdAt').dirty || timesheetForm.get('createdAt').touched)">
+                <p class="error_field">{{champ_validation.input[0].message}}</p>
+              </div>
+            </div>
+            <div class="col-4">
+              <mat-form-field class="example-full-width">
+                <mat-label>Tâche</mat-label>
+                <input matInput formControlName="tache" required>
+              </mat-form-field>
+              <div *ngIf="timesheetForm.get('tache').hasError(champ_validation.input[0].type) && (timesheetForm.get('tache').dirty || timesheetForm.get('tache').touched)">
+                <p class="error_field">{{champ_validation.input[0].message}}</p>
+              </div>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-label>Heure</mat-label>
+                <input type="number" matInput formControlName="heure" required>
+              </mat-form-field>
+              <div *ngIf="timesheetForm.get('heure').hasError(champ_validation.input[0].type) && (timesheetForm.get('heure').dirty || timesheetForm.get('heure').touched)">
+                <p class="error_field">{{champ_validation.input[0].message}}</p>
+              </div>
+            </div>
+            <div class="col-2">
+              <div style="padding-top:21px;">
+                <button mat-raised-button color="primary" (click)="saveTime();timesheetForm.reset()" [disabled]="timesheetForm.invalid"  cdkFocusInitial>Nouveau</button>
+              </div>
+            </div>
+          </div>
+        </form>
+       </div>
+       <mat-divider style="margin-bottom: 15px;"></mat-divider>
+
+       <div>
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col" class="th-devis" style="text-align: center;">Date</th>
+                <th scope="col" class="th-devis" style="text-align: center;">Tâche</th>
+                <th scope="col" class="th-devis" style="text-align: right;">Heure</th>
+                <th scope="col" class="th-devis" style="text-align: right;">Action</th>
+              </tr>
+            </thead>
+        </table>
+        <div>
+            <form [formGroup]="updatetimesheetForm">
+                <div [formArrayName]="'formArrayName'">
+                    <div *ngFor="let m of timesheet; let i=index">
+                        <div [formGroupName]="i">
+                            <div class="row">
+                                <div class="col-2">
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Date</mat-label>
+                                        <input matInput [matDatepicker]="picker1" formControlName="createdAt" id="m.date"  value="{{m.date}}" required>
+                                        <mat-datepicker-toggle matIconSuffix [for]="picker1">
+                                          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker #picker1></mat-datepicker>
+                                      </mat-form-field>
+                                </div>
+                                <div class="col">
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Tâche</mat-label>
+                                        <input matInput formControlName="tache" id="m.tache"  value="{{m.tache}}" required>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-2">
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Heure</mat-label>
+                                        <input type="number" matInput formControlName="heure" id="m.heure"  value="{{m.heure}}"  required>
+                                      </mat-form-field>
+                                </div>
+                                <div class="col-2">
+                                  <div align="right" style="padding-top: 20px;">
+                                    <button type="button" mat-raised-button color="primary" style="margin-right: 5px;" (click)="onSubmit(i,m?.id)">Editer</button>
+                                    <button type="button" mat-raised-button color="warn" (click)="openDialogDelete(m?.id,i)">Supprimer</button>
+                                  </div>
+                                </div>
+                            </div>
+    
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+            
+       </div>
+    </div>
+</app-navbar>

@@ -229,6 +229,26 @@ const routes: Routes = [
   {
     path:'users/detail/:id',
     loadChildren:()=>import('./users/update-users/update-users.module').then(m=>m.UpdateUsersModule)
+  },
+  {
+    path:'timesheet',
+    loadChildren:()=>import('./time-sheet/time-sheet.module').then(m=>m.TimeSheetModule)
+  },
+  {
+    path:'timesheet/:id',
+    loadChildren:()=>import('./time-sheet/detail-timesheet/detail-timesheet.module').then(m=>m.DetailTimesheetModule)
+  },
+  {
+    path:'timesheet/:id/:month/:year',
+    loadChildren:()=>import('./time-sheet/update-timesheet/update-timesheet.module').then(m=>m.UpdateTimesheetModule)
+  },
+  {
+    path:'agent/timesheet',
+    loadChildren:()=>import('./time-sheet/agent-timesheet/agent-timesheet.module').then(m=>m.AgentTimesheetModule)
+  },
+  {
+    path:'agent/timesheet/:month/:year',
+    loadChildren:()=>import('./time-sheet/agent-detail-timesheet/agent-detail-timesheet.module').then(m=>m.AgentDetailTimesheetModule)
   }
 ];
 

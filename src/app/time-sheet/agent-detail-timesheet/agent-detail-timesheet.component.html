@@ -1,0 +1,30 @@
+<app-navbar>
+    <div class="container">
+      <div class="content-top">
+        <h2 class="content-title">Feuille de temps : {{month}}/{{year}}</h2>
+        <mat-divider></mat-divider>
+      </div><!--content-->
+    </div>
+    <div>
+       
+       <div>
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col" class="th-devis">Date</th>
+                <th scope="col" class="th-devis">Tâche</th>
+                <th scope="col" class="th-devis">Heure</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let m of timesheet">
+                  <td class="td-chat"><p class="info-tab">{{m?.createdAt | date : 'dd/MM/yyyy'}}</p></td>
+                  <td class="td-chat"><p class="info-tab">{{m?.tache}}</p></td>
+                  <td class="td-chat"><p class="info-tab">{{m?.heure}}</p></td>
+                </tr>
+              </tbody>
+        </table>
+            
+       </div>
+    </div>
+</app-navbar>
