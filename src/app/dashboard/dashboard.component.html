@@ -106,13 +106,13 @@
        </div>
       </div><!--new-projet-->
   
-      <div class="bloc-projets" *ngIf="!projets.length">
+      <div class="bloc-projets" [hidden]="dataSource.data.length">
         <p class="notdata">Aucune donnée(s)</p>
       </div>
   
-      <div class="bloc-projets" *ngIf="projets.length">
+      <div class="bloc-projets" [hidden]="!dataSource.data.length">
   
-        <div class="row" *ngIf="!isListe">
+        <div class="row" [hidden]="isListe">
           <div class="col-3" *ngFor="let projet of projets" style="margin-bottom: 15px;">
             <div class="card card-projet">
               <img src="data:image/png;base64,{{projet?.photo}}" *ngIf="projet?.photo" class="card-img-projet" alt="...">
@@ -134,10 +134,18 @@
           </div><!--col-->
         </div><!--row-->
   
-        <div  *ngIf="isListe">
+        <div [hidden]="!isListe">
   
           <table mat-table [dataSource]="dataSource">
-  
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="photo">
+              <th mat-header-cell *matHeaderCellDef> Photo </th>
+              <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;">  
+                <img src="data:image/png;base64,{{element?.photo}}" *ngIf="element?.photo" style="width: 24px;height: 24px" alt="...">
+                <img src="assets/images/ppr.png" *ngIf="!element?.photo" style="width: 24px;height: 24px" alt="...">
+              </td>
+            </ng-container>
             <!-- Position Column -->
             <ng-container matColumnDef="nom">
               <th mat-header-cell *matHeaderCellDef> Projet </th>
@@ -161,7 +169,7 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
           </table>
   
-          <mat-paginator [pageSizeOptions]="[10, 20]"
+          <mat-paginator #paginator [pageSizeOptions]="[10, 20]"
                         showFirstLastButtons
                         aria-label="Select page of periodic elements">
           </mat-paginator>

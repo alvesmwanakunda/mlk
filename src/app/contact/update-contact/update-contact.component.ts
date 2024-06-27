@@ -99,6 +99,7 @@ export class UpdateContactComponent implements OnInit {
           indicatif:new FormControl(this.contact.indicatif,[Validators.required]),
           //entreprise:new FormControl("",[Validators.required]),
           poste:new FormControl(this.contact.poste,null),
+          genre:new FormControl(this.contact.genre,null)
         });
         this.codeFiltres = this.contactFormGroup.get('indicatif').valueChanges.pipe(
           startWith(''),

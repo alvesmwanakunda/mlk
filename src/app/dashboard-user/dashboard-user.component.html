@@ -80,13 +80,13 @@
       </div>
     </div>
 
-    <div class="bloc-projets" *ngIf="!projets.length">
+    <div class="bloc-projets" [hidden]="dataSource.data.length">
       <p class="notdata">Aucune donnée(s)</p>
     </div>
 
-    <div class="bloc-projets" *ngIf="projets.length">
+    <div class="bloc-projets" [hidden]="!dataSource.data.length">
 
-      <div class="row" *ngIf="!isListe">
+      <div class="row" [hidden]="isListe">
         <div class="col-3" *ngFor="let projet of projets" style="margin-bottom: 15px;">
           <div class="card card-projet">
             <img src="data:image/png;base64,{{projet?.photo}}" *ngIf="projet?.photo" class="card-img-projet" alt="...">
@@ -107,7 +107,7 @@
         </div><!--col-->
       </div><!--row-->
 
-      <div  *ngIf="isListe">
+      <div  [hidden]="!isListe">
 
         <table mat-table [dataSource]="dataSource">
 
@@ -133,7 +133,7 @@
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
 
-        <mat-paginator [pageSizeOptions]="[10, 20]"
+        <mat-paginator #paginator [pageSizeOptions]="[10, 20]"
                       showFirstLastButtons
                       aria-label="Select page of periodic elements">
         </mat-paginator>

@@ -47,27 +47,27 @@
                     <div class="col">
                       <div style="margin-bottom: 15px;">
                         <mat-form-field class="example-full-width">
-                          <mat-label>Nom</mat-label>
-                          <input matInput formControlName="nom"  [(ngModel)]="contact.nom" required>
+                          <mat-label>Civilité</mat-label>
+                          <mat-select matInput formControlName="genre" [(ngModel)]="contact.genre">
+                            <mat-option value="Mr">Monsieur</mat-option>
+                            <mat-option value="Mme">Madame</mat-option>
+                          </mat-select>
                         </mat-form-field>
-                        <div *ngIf="contactFormGroup.get('nom').hasError(champ_validation.type[0].type) && (contactFormGroup.get('nom').dirty || contactFormGroup.get('nom').touched)">
-                          <p class="error_field">{{champ_validation.type[0].message}}</p>
-                        </div>
-                      </div><!--div-->
-                      <div style="margin-bottom: 15px;">
+                       </div><!--div-->
+                       <div style="margin-bottom: 15px;">
                         <mat-form-field class="example-full-width">
                           <mat-label>Poste</mat-label>
                           <input matInput formControlName="prenom" formControlName="poste" [(ngModel)]="contact.poste">
                         </mat-form-field>
                       </div><!--div-->
-                    </div><!--col-->
+                    </div>
                     <div class="col">
                       <div style="margin-bottom: 15px;">
                         <mat-form-field class="example-full-width">
-                          <mat-label>Prénom</mat-label>
-                          <input matInput formControlName="prenom" [(ngModel)]="contact.prenom"   required>
+                          <mat-label>Nom</mat-label>
+                          <input matInput formControlName="nom"  [(ngModel)]="contact.nom" required>
                         </mat-form-field>
-                        <div *ngIf="contactFormGroup.get('prenom').hasError(champ_validation.type[0].type) && (contactFormGroup.get('prenom').dirty || contactFormGroup.get('prenom').touched)">
+                        <div *ngIf="contactFormGroup.get('nom').hasError(champ_validation.type[0].type) && (contactFormGroup.get('nom').dirty || contactFormGroup.get('nom').touched)">
                           <p class="error_field">{{champ_validation.type[0].message}}</p>
                         </div>
                       </div><!--div-->
@@ -100,6 +100,19 @@
                         </div>
                       </div><!--div-->
 
+                     
+                    </div><!--col-->
+                    <div class="col">
+                      <div style="margin-bottom: 15px;">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Prénom</mat-label>
+                          <input matInput formControlName="prenom" [(ngModel)]="contact.prenom"   required>
+                        </mat-form-field>
+                        <div *ngIf="contactFormGroup.get('prenom').hasError(champ_validation.type[0].type) && (contactFormGroup.get('prenom').dirty || contactFormGroup.get('prenom').touched)">
+                          <p class="error_field">{{champ_validation.type[0].message}}</p>
+                        </div>
+                      </div><!--div-->
+                    
                     </div><!--col-->
                   </div><!--col-->
                 </form>

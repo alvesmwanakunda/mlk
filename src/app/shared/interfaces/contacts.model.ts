@@ -14,4 +14,5 @@ export interface Contacts {
   rue:string;
   numero:string;
   postal:string;
+  genre:string;
 }

@@ -15,11 +15,11 @@ import { EntreprisesService } from '../shared/services/entreprises.service';
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
 
-  displayedColumns:string[]=['nom','entreprise','action'];
+  displayedColumns:string[]=['photo','nom','entreprise','action'];
   dataSource =new MatTableDataSource<Projets>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   projets:any=[];
-  isListe:boolean=false;
+  isListe:boolean=true;
   user:any;
   company:any;
 
@@ -62,6 +62,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         entreprise:data?.entreprise?.societe,
         etat:data.etat,
         limite:data.date_limite,
+        photo:data.photo
        })) as Projets[]
     },
     (error) => {
