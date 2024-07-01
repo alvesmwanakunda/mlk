@@ -1,5 +1,10 @@
 <div class="container">
-  <div class="scrollable-block">
+  <!--class="scrollable-block"-->
+  <div>
+    <div align="right">
+      <button mat-stroked-button color="primary" matTooltip="Noter" *ngIf="!isWrite" (click)="OnWrite()"><mat-icon style="font-size:19px;">edit</mat-icon> Noter</button>
+      <button mat-stroked-button color="accent"  matTooltip="Fermer" *ngIf="isWrite" (click)="OnWrite()"><mat-icon style="font-size:19px;">close</mat-icon> Fermer</button>
+    </div>
     <div class="row">
       <div class="col-8">
          <div class="row" *ngFor="let m of historiques" style="margin-bottom: 15px;">
@@ -27,7 +32,7 @@
     </div>
   </div>
 </div>
-<div class="chat-box">
+<div class="chat-box" *ngIf="isWrite">
  <div class="row">
    <div class="col">
      <div class="card" style="border: 1px solid #f2f4f9!important;border-radius: 7px!important;">
@@ -38,11 +43,11 @@
              <form [formGroup]="historiqueForm">
                <!--  language: 'fr_FR'<input class="form-control shadow-none chat-input" formControlName="observation" placeholder="Observation"/>-->
              
-               <angular-editor formControlName="observation" [config]="editorConfig"></angular-editor>
+               <angular-editor formControlName="observation" [config]="editorConfig" (ngModelChange)="OnContentChange($event)"></angular-editor>
 
              </form>
              <div style="padding-top: 5px;">
-              <button  mat-stroked-button color="primary"  (click)="addHistorique()" [disabled]="historiqueForm.invalid" style="width: 100%;">Envoyer</button>
+              <button  mat-stroked-button color="primary"  (click)="onsubmit()" [disabled]="historiqueForm.invalid" style="width: 100%;">Envoyer</button>
             </div>
            </div>
            <!--<div class="col-2">

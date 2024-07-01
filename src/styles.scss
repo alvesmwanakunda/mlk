@@ -1931,6 +1931,23 @@ hr.entreprise{
   display: none !important;
 }
 
+.editor img {
+  width: 200px;
+  height: 150px;
+}
+
+/*.error-snackbar {
+  background: #a9022c;
+}*/
+
+.mat-mdc-snack-bar-container {
+  &.error-snackbar {
+    --mdc-snackbar-container-color: #a9022c;
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+}
+
 
 
 

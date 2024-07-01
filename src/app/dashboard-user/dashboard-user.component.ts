@@ -35,12 +35,12 @@ export class DashboardUserComponent implements OnInit, AfterViewInit {
     }
 
   ngOnInit() {
+    this.getAllProjet();
+    this.getEntrepriseId();
     this.matPaginatorIntl.itemsPerPageLabel="Projet par page";
   }
 
   ngAfterViewInit() {
-    this.getAllProjet();
-    this.getEntrepriseId();
     this.dataSource.paginator=this.paginator;
   }
 

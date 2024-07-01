@@ -15,7 +15,7 @@ import { EntreprisesService } from '../shared/services/entreprises.service';
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
 
-  displayedColumns:string[]=['photo','nom','entreprise','action'];
+  displayedColumns:string[]=['nom','entreprise','action'];
   dataSource =new MatTableDataSource<Projets>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   projets:any=[];
@@ -34,12 +34,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     }
 
   ngOnInit() {
+    this.getAllProjet();
+    this.getEntrepriseId();
     this.matPaginatorIntl.itemsPerPageLabel="Projet par page";
   }
 
   ngAfterViewInit() {
-    this.getAllProjet();
-    this.getEntrepriseId();
     this.dataSource.paginator=this.paginator;
   }
 
@@ -62,7 +62,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         entreprise:data?.entreprise?.societe,
         etat:data.etat,
         limite:data.date_limite,
-        photo:data.photo
        })) as Projets[]
     },
     (error) => {

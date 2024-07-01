@@ -80,11 +80,11 @@
       </div>
     </div>
 
-    <div class="bloc-projets" [hidden]="dataSource.data.length">
+    <div class="bloc-projets" [hidden]="projets.length">
       <p class="notdata">Aucune donnée(s)</p>
     </div>
 
-    <div class="bloc-projets" [hidden]="!dataSource.data.length">
+    <div class="bloc-projets" [hidden]="!projets.length">
 
       <div class="row" [hidden]="isListe">
         <div class="col-3" *ngFor="let projet of projets" style="margin-bottom: 15px;">

@@ -106,11 +106,11 @@
        </div>
       </div><!--new-projet-->
   
-      <div class="bloc-projets" [hidden]="dataSource.data.length">
+      <div class="bloc-projets" [hidden]="projets.length">
         <p class="notdata">Aucune donnée(s)</p>
       </div>
   
-      <div class="bloc-projets" [hidden]="!dataSource.data.length">
+      <div class="bloc-projets" [hidden]="!projets.length">
   
         <div class="row" [hidden]="isListe">
           <div class="col-3" *ngFor="let projet of projets" style="margin-bottom: 15px;">
@@ -139,13 +139,13 @@
           <table mat-table [dataSource]="dataSource">
 
             <!-- Position Column -->
-            <ng-container matColumnDef="photo">
+            <!--<ng-container matColumnDef="photo">
               <th mat-header-cell *matHeaderCellDef> Photo </th>
               <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;">  
                 <img src="data:image/png;base64,{{element?.photo}}" *ngIf="element?.photo" style="width: 24px;height: 24px" alt="...">
                 <img src="assets/images/ppr.png" *ngIf="!element?.photo" style="width: 24px;height: 24px" alt="...">
               </td>
-            </ng-container>
+            </ng-container>-->
             <!-- Position Column -->
             <ng-container matColumnDef="nom">
               <th mat-header-cell *matHeaderCellDef> Projet </th>

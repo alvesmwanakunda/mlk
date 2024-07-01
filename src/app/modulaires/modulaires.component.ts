@@ -9,6 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteModuleComponent } from './delete-module/delete-module.component';
 import { MatTabGroup } from '@angular/material/tabs';
+import { MatSort } from '@angular/material/sort';
 
 
 
@@ -25,6 +26,7 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
   dataSourcePartir = new MatTableDataSource<Modules>();
   dataSourceSite = new MatTableDataSource<Modules>();
   @ViewChild('paginatorStock') paginatorStock: MatPaginator;
+  @ViewChild('matSort') matSort: MatSort;
   @ViewChild('paginatorPreparation') paginatorPreparation: MatPaginator;
   @ViewChild('paginatorPartir') paginatorPartir: MatPaginator;
   @ViewChild('paginatorSite') paginatorSite: MatPaginator;
@@ -69,9 +71,13 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
   ngAfterViewInit() {
     this.getAllModules(this.type);
     this.dataSource.paginator=this.paginatorStock;
+    this.dataSource.sort=this.matSort;
     this.dataSourcePreparation.paginator=this.paginatorPreparation;
+    this.dataSourcePreparation.sort=this.matSort;
     this.dataSourcePartir.paginator=this.paginatorPartir;
+    this.dataSourcePartir.sort=this.matSort;
     this.dataSourceSite.paginator=this.paginatorSite;
+    this.dataSourceSite.sort=this.matSort;
   }
 
   hideCanvasJsCredit() {

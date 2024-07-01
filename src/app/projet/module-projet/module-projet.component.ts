@@ -6,6 +6,8 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
 import { ProjetsService } from 'src/app/shared/services/projets.service';
 import { Modules } from 'src/app/shared/interfaces/modules.model';
 import { DomSanitizer } from '@angular/platform-browser';
+import { MatSort } from '@angular/material/sort';
+
 
 
 @Component({
@@ -18,6 +20,7 @@ export class ModuleProjetComponent implements OnInit, AfterViewInit {
   idProjet:any
   displayedColumns:string[]=['numero','nom','type','hauteur','largeur','longueur'];
   dataSource =new MatTableDataSource<Modules>();
+  @ViewChild('matSort') matSort: MatSort;
   @ViewChild('paginator') paginator: MatPaginator;
 
 
@@ -40,6 +43,7 @@ export class ModuleProjetComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.getAllModules();
     this.dataSource.paginator=this.paginator;
+    this.dataSource.sort=this.matSort;
   }
 
   getAllModules(){

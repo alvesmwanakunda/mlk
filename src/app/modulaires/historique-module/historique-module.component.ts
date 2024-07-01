@@ -22,14 +22,17 @@ export class HistoriqueModuleComponent implements OnInit {
   historiques:any=[];
   idModule:any;
   user:any;
+  isWrite:boolean=false;
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
+    height:'15rem',
+    minHeight:'5rem',
     placeholder: 'Note...',
-    translate: 'yes',
+    translate: 'no',
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
-    toolbarHiddenButtons: [['bold']],
+    toolbarHiddenButtons: [['bold','insertVideo']],
     customClasses: [
       {
         name: 'quote',
@@ -46,7 +49,6 @@ export class HistoriqueModuleComponent implements OnInit {
       },
     ],
   };
-
 
   constructor(
     private _formBuilder :FormBuilder,
@@ -69,6 +71,14 @@ export class HistoriqueModuleComponent implements OnInit {
     ]
   }
 
+  OnWrite(){
+    if(this.isWrite){
+      this.isWrite=false;
+    }else{
+      this.isWrite=true;
+    }
+  }
+
   ngOnInit() {
     this.getAllHbyModule();
     this.historiqueForm=this._formBuilder.group({
@@ -84,12 +94,22 @@ export class HistoriqueModuleComponent implements OnInit {
     })
   }
 
-  addHistorique(){
+  onsubmit(){
+    const formValue = this.historiqueForm.value;
+    const htmlContent = formValue.observation;
+    this.projetService.processImagesInHtml(htmlContent,(processedHtml)=>{
+      formValue.observation = processedHtml;
+      this.addHistorique(formValue);
+    })
+  }
+
+  addHistorique(formValue:any){
     if (this.historiqueForm.valid){
-      this.projetService.addHistorique(this.idModule, this.historiqueForm.value).subscribe((res:any)=>{
+      this.projetService.addHistorique(this.idModule, formValue).subscribe((res:any)=>{
         console.log("message",res);
         this.getAllHbyModule();
         this.historiqueForm.reset();
+        this.isWrite=false;
       },(error)=>{
         console.log(error);
       })
@@ -118,4 +138,8 @@ export class HistoriqueModuleComponent implements OnInit {
     })
   }
 
+  //Size image 
+  OnContentChange(event:any){
+    this.projetService.resizeImages();
+  }
 }

@@ -155,7 +155,7 @@ export class UpdateProjetComponent implements OnInit {
     return this.devis.filter(option=> option.nom.toLocaleLowerCase().includes(filtre));
   }
 
-  onFileSelected(event){
+  /*onFileSelected(event){
     this.file = event.target.files[0];
     this.fileName = this.file.name;
     const reader = new FileReader();
@@ -164,6 +164,33 @@ export class UpdateProjetComponent implements OnInit {
     };
     reader.readAsDataURL(this.file);
 
+  }*/
+
+  onFileSelected(event){
+    this.file = event.target.files[0];
+    if(this.file){
+      const maxSizeInBytes = 25 * 1024 * 1024; // 200 KB
+      const isValid = this.projetService.validateImageSize(this.file, maxSizeInBytes);
+      if(isValid){
+
+        this.fileName = this.file.name;
+        const reader = new FileReader();
+        reader.onload=()=>{
+          this.selectedImage = reader.result as string;
+        };
+        reader.readAsDataURL(this.file);
+      }else{
+          this.message='La taille de l\'image ne doit pas dépasser 200 KB.';
+          this.openSnackBarError(this.message);
+      } 
+    }
+  }
+
+  openSnackBarError(message){
+    this.snackbar.open(message, 'Fermer',{
+      duration:6000,
+      panelClass:['error-snackbar']
+    })
   }
 
   openSnackBar(message){

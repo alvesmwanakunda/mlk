@@ -21,11 +21,13 @@ export class UpdateHistoriqueComponent implements OnInit {
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
+    height:'15rem',
+    minHeight:'5rem',
     placeholder: 'Note...',
-    translate: 'yes',
+    translate: 'no',
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
-    toolbarHiddenButtons: [['bold']],
+    toolbarHiddenButtons: [['bold','insertVideo']],
     customClasses: [
       {
         name: 'quote',
@@ -76,14 +78,28 @@ export class UpdateHistoriqueComponent implements OnInit {
     })
   }
 
-  updateModule(){
+  onsubmit(){
+    const formValue = this.historiqueForm.value;
+    const htmlContent = formValue.observation;
+    this.projetService.processImagesInHtml(htmlContent,(processedHtml)=>{
+      formValue.observation = processedHtml;
+      this.updateModule(formValue);
+    })
+  }
+
+  updateModule(formValue:any){
     if (this.historiqueForm.valid){
-      this.projetService.updateHistorique(this.data.id,this.historiqueForm.value).subscribe((res)=>{
+      this.projetService.updateHistorique(this.data.id,formValue).subscribe((res)=>{
         this.dialogRef.close(res)
       },(error)=>{
         console.log("Erreur lors de la récupération des données", error);
       })
     }
+  }
+
+   //Size image 
+   OnContentChange(event:any){
+    this.projetService.resizeImages();
   }
 
 }

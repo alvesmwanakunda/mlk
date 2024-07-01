@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment} from 'src/environments/environment';
+import imageCompression from 'browser-image-compression';
 
 @Injectable({
   providedIn: 'root'
@@ -230,4 +231,92 @@ export class ProjetsService {
   public getAllFactureProjet(id){
     return this.httpClient.get(`${environment.BASE_API_URL}/facture/projet/${id}`);
   }
+  // resize image angular editor
+  resizeImages(){
+    const editorElement = document.querySelector('.angular-editor');
+    if(editorElement){
+      const images = editorElement.querySelectorAll('img');
+      images.forEach((img:HTMLImageElement)=>{
+        img.style.width='200px';
+        img.style.height='150x';
+        //const base64Str = img.src;
+        /*this.resizeImage(base64Str, 200, 150,(resizedBase64)=>{
+          img.src = resizedBase64;
+        })*/
+      });
+    }
+  }
+
+  resizeImage(base64Str: string, width: number, height: number, callback: (resizedBase64: string) => void) {
+    const img = new Image();
+    img.src = base64Str;
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(img, 0, 0, width, height);
+        const resizedBase64 = canvas.toDataURL();
+        callback(resizedBase64);
+      }
+    };
+  }
+
+  processImagesInHtml(html: string, callback: (processedHtml: string) => void) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const images = doc.querySelectorAll('img');
+    let imagesProcessed = 0;
+
+    images.forEach((img: HTMLImageElement) => {
+      const base64Str = img.src;
+      this.resizeImage(base64Str, 300, 300, (resizedBase64) => {
+        img.src = resizedBase64;
+        imagesProcessed++;
+        if (imagesProcessed === images.length) {
+          callback(doc.body.innerHTML);
+        }
+      });
+    });
+
+    if (images.length === 0) {
+      callback(html);
+    }
+  }
+
+  validateImageSize(file:File, maxSizeInBytes:number):boolean{
+    return file.size <= maxSizeInBytes;
+  }
+
+  // compression des iamges
+
+  async compressImage(base64Str: string, maxSizeMB: number = 1, maxWidthOrHeight: number = 1920): Promise<string> {
+    const file = await this.base64ToFile(base64Str);
+    const options = {
+      maxSizeMB,
+      maxWidthOrHeight,
+      useWebWorker: true
+    };
+    const compressedFile = await imageCompression(file, options);
+    return await this.fileToBase64(compressedFile);
+  }
+
+  base64ToFile(base64Str: string): Promise<File> {
+    return fetch(base64Str)
+      .then(res => res.blob())
+      .then(blob => new File([blob], 'image.jpg', { type: 'image/jpeg' }));
+  }
+
+  fileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+    });
+  }
+
+
+
 }
