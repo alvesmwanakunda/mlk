@@ -20,8 +20,10 @@ export class ModuleProjetComponent implements OnInit, AfterViewInit {
   idProjet:any
   displayedColumns:string[]=['numero','nom','type','hauteur','largeur','longueur'];
   dataSource =new MatTableDataSource<Modules>();
-  @ViewChild('matSort') matSort: MatSort;
+
   @ViewChild('paginator') paginator: MatPaginator;
+  @ViewChild('sort') sort: MatSort;
+  input:any;
 
 
   constructor(
@@ -37,13 +39,13 @@ export class ModuleProjetComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.matPaginatorIntl.itemsPerPageLabel="Modules par page"; 
+    this.getAllModules();
   }
 
   ngAfterViewInit(): void {
-    this.getAllModules();
     this.dataSource.paginator=this.paginator;
-    this.dataSource.sort=this.matSort;
+    this.dataSource.sort=this.sort;
+    this.matPaginatorIntl.itemsPerPageLabel="Modules par page"; 
   }
 
   getAllModules(){
@@ -58,7 +60,9 @@ export class ModuleProjetComponent implements OnInit, AfterViewInit {
         numero:data?.module?.numero_serie,
         type:data?.module?.module_type,
         photo:this.getSafeUrl(data?.module?.photo) || null,
-       })) as Modules[]
+       })) as Modules[];
+       console.log("sort",this.sort);
+       console.log("pagination",this.paginator);
     },
     (error) => {
       console.log("Erreur lors de la récupération des données", error);
@@ -73,6 +77,7 @@ export class ModuleProjetComponent implements OnInit, AfterViewInit {
 
   applyFilter(event: Event) {
       const filterValue = (event.target as HTMLInputElement).value;
+      this.input = (event.target as HTMLInputElement).value;
       this.dataSource.filter = filterValue.trim().toLowerCase();
       if (this.dataSource.paginator) {
         this.dataSource.paginator.firstPage();

@@ -28,8 +28,11 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
   @ViewChild('paginatorStock') paginatorStock: MatPaginator;
   @ViewChild('matSort') matSort: MatSort;
   @ViewChild('paginatorPreparation') paginatorPreparation: MatPaginator;
+  @ViewChild('preparationSort') preparationSort: MatSort;
   @ViewChild('paginatorPartir') paginatorPartir: MatPaginator;
+  @ViewChild('partirSort') partirSort: MatSort;
   @ViewChild('paginatorSite') paginatorSite: MatPaginator;
+  @ViewChild('siteSort') siteSort: MatSort;
   @ViewChild(MatTabGroup) tabGroup: MatTabGroup;
   selectedIndex:number=0;
 
@@ -73,11 +76,11 @@ export class ModulairesComponent  implements OnInit,AfterViewInit {
     this.dataSource.paginator=this.paginatorStock;
     this.dataSource.sort=this.matSort;
     this.dataSourcePreparation.paginator=this.paginatorPreparation;
-    this.dataSourcePreparation.sort=this.matSort;
+    this.dataSourcePreparation.sort=this.preparationSort;
     this.dataSourcePartir.paginator=this.paginatorPartir;
-    this.dataSourcePartir.sort=this.matSort;
+    this.dataSourcePartir.sort=this.partirSort;
     this.dataSourceSite.paginator=this.paginatorSite;
-    this.dataSourceSite.sort=this.matSort;
+    this.dataSourceSite.sort=this.siteSort;
   }
 
   hideCanvasJsCredit() {

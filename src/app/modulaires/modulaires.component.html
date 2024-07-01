@@ -61,7 +61,7 @@
             <span matBadge="{{countModules?.stock}}" matBadgeOverlap="false">Parc</span>
           </ng-template>
           <div style="padding-top: 40px;">
-            <table mat-table [dataSource]="dataSource" matSort>
+            <table mat-table [dataSource]="dataSource" matSort #matSort="matSort">
               <!-- Position Column -->
               <ng-container matColumnDef="numero">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Numéro </th>
@@ -131,7 +131,7 @@
             <span matBadge="{{countModules?.preparation}}" matBadgeOverlap="false">En préparation</span>
           </ng-template>
           <div style="padding-top: 40px;">
-            <table mat-table [dataSource]="dataSourcePreparation" matSort>
+            <table mat-table [dataSource]="dataSourcePreparation" matSort #preparationSort="matSort">
 
               <ng-container matColumnDef="numero">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Numéro </th>
@@ -210,7 +210,7 @@
             <span matBadge="{{countModules?.pret}}" matBadgeOverlap="false">Prêt à partir</span>
           </ng-template>
           <div style="padding-top: 40px;">
-            <table mat-table [dataSource]="dataSourcePartir" matSort>
+            <table mat-table [dataSource]="dataSourcePartir" matSort #partirSort="matSort">
 
               <ng-container matColumnDef="numero">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Numéro </th>
@@ -289,7 +289,7 @@
             <span matBadge="{{countModules?.site}}" matBadgeOverlap="false">Site</span>
           </ng-template>
           <div style="padding-top: 40px;">
-            <table mat-table [dataSource]="dataSourceSite" matSort>
+            <table mat-table [dataSource]="dataSourceSite" matSort #siteSort="matSort">
 
               <ng-container matColumnDef="numero">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Numéro </th>
