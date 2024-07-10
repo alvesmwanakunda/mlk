@@ -36,6 +36,9 @@ export class UpdateCongesComponent implements OnInit {
   user:any
   isSigne:boolean=false;
   isRefus:boolean=false;
+  fileName:any;
+  file:File;
+  form:any;
 
   //PDF
   header:any;
@@ -113,6 +116,8 @@ export class UpdateCongesComponent implements OnInit {
           status: new FormControl(this.conge?.status,null),
           heure_debut:new FormControl(this.conge?.heure_debut,null),
           heure_fin:new FormControl(this.conge?.heure_fin,null),
+          raison:new FormControl(this.conge?.raison,null)
+
         });
         let debut = new Date(this.conge.debut);
         this.dateDebut = debut.toISOString().split('T')[0];
@@ -135,9 +140,30 @@ export class UpdateCongesComponent implements OnInit {
      })
   }
 
+  onFileSelected(event){
+    this.file = event.target.files[0];
+    this.fileName = this.file.name;
+  }
+
   updateConge(){
+
+    this.form ={};
+    const formData:FormData=new FormData();
+    Object.assign(this.form, this.congeForm.value);
+
+    formData.append("uploadfile", this.file);
+    formData.append("debut", this.form.debut);
+    formData.append("fin", this.form.fin);
+    formData.append("jours", this.form.jours);
+    formData.append("types", this.form.types);
+    formData.append("status", this.form.status);
+    formData.append("heure_debut", this.form.heure_debut);
+    formData.append("heure_fin", this.form.heure_fin);
+    formData.append("signature_user", this.form.signature_user);
+    formData.append("raison", this.form.raison);
+
     if (this.congeForm.valid){
-      this.entrepriseService.updateConge(this.congeForm.value, this.id).subscribe((res:any)=>{
+      this.entrepriseService.updateConge(formData, this.id).subscribe((res:any)=>{
         this.message='Demande de congé modifiée avec succès.';
          this.openSnackBar(this.message);
       },(error)=>{
@@ -230,6 +256,10 @@ export class UpdateCongesComponent implements OnInit {
     this._snackBar.open(message, 'Fermer',{
       duration:6000,
     })
+  }
+
+  downloadFile(url){
+    this.entrepriseService.downloadFile(url);
   }
 
   // pdf

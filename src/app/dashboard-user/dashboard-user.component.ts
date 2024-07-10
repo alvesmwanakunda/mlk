@@ -19,7 +19,7 @@ export class DashboardUserComponent implements OnInit, AfterViewInit {
   dataSource =new MatTableDataSource<Projets>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   projets:any=[];
-  isListe:boolean=false;
+  isListe:boolean=true;
   user:any;
   company:any
 

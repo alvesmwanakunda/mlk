@@ -64,7 +64,7 @@
       </mat-card>
     </div>
 
-    <div *ngIf="user?.user?.role=='admin'">
+    <div>
 
       <mat-divider style="margin-bottom: 30px;"></mat-divider>
 
@@ -102,7 +102,7 @@
         <div align="right">
           <button type="button" class="btn" style="margin-right: 10px;" matTooltip="Tableau" *ngIf="!isListe" (click)="getList()"><i class="fa-solid fa-table btn-icon-projet"></i></button>
           <button type="button" class="btn" style="margin-right: 10px;" matTooltip="Liste" *ngIf="isListe" (click)="getList()"><i class="fa-solid fa-grip btn-icon-projet"></i></button>
-          <button type="button" class="btn btn-projet" [routerLink]="['/add/projet']"><i class="fa-solid fa-plus"></i> Nouveau Projet</button>
+          <button type="button" class="btn btn-projet" [routerLink]="['/add/projet']" *ngIf="user?.user?.role=='admin'"><i class="fa-solid fa-plus"></i> Nouveau Projet</button>
        </div>
       </div><!--new-projet-->
   

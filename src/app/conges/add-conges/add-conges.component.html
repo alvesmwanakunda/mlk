@@ -19,18 +19,29 @@
       <div class="col-lg-11 col-md-11 col-md-auto">
         <form [formGroup]="congeForm">
           <p style="font-weight: 600;">Type de congés</p>
-          <div style="margin-bottom: 15px;">
-            <mat-form-field class="example-full-width">
-              <mat-label>Type de congés</mat-label>
-              <mat-select formControlName="types" required>
-                <mat-option value="Congés payés">Congés payés</mat-option>
-                <mat-option value="Congés sans solde">Congés sans solde</mat-option>
-                <mat-option value="Récupération">Récupération</mat-option>
-             </mat-select>
-            </mat-form-field>               
-            <div *ngIf="congeForm.get('types').hasError(champ_validation.input[0].type) && ((congeForm.get('types').dirty || congeForm.get('types').touched))">
-              <p class="error_field">{{champ_validation.input[0].message}}</p>
+          <div class="row" style="margin-bottom: 15px;">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-label>Type de congés & Raison</mat-label>
+                <mat-select formControlName="types" required>
+                  <mat-option value="Congés payés">Congés payés</mat-option>
+                  <mat-option value="Congés sans solde">Congés sans solde</mat-option>
+                  <mat-option value="Récupération">Récupération</mat-option>
+                  <mat-option value="Absence justifiée">Absence justifiée</mat-option>
+                  <mat-option value="Absence non justifiée">Absence non justifiée</mat-option>
+               </mat-select>
+              </mat-form-field>               
+              <div *ngIf="congeForm.get('types').hasError(champ_validation.input[0].type) && ((congeForm.get('types').dirty || congeForm.get('types').touched))">
+                <p class="error_field">{{champ_validation.input[0].message}}</p>
+              </div>
             </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-label>Raison</mat-label>
+                <input matInput formControlName="raison">
+              </mat-form-field>
+            </div>
+           
           </div>
           <p style="font-weight: 600;">Date & Durée</p>
           <div class="row" style="margin-bottom: 15px;">
@@ -69,15 +80,30 @@
                 <p class="error_field">{{champ_validation.input[0].message}}</p>
               </div>
             </div>
-          </div>         
-          <p style="font-weight: 600;">Signature <small style="color: #c80425;">* (Obligatoire)</small></p>
-          <div style="margin-bottom: 10px;">
-            <canvas #canvas style="background: white;"></canvas>
-          </div>
-          <div *ngIf="!isSave">
-            <button mat-raised-button (click)="clear()" style="margin-right: 10px;">Effacer</button>
-            <button mat-raised-button color="primary" (click)="saveSignature()"  cdkFocusInitial>Valider la signature</button>
-          </div>
+          </div>  
+          <div class="row">
+            <div class="col">
+              <p style="font-weight: 600;">Signature <small style="color: #c80425;">* (Obligatoire)</small></p>
+              <div style="margin-bottom: 10px;">
+                <canvas #canvas style="background: white;"></canvas>
+              </div>
+              <div *ngIf="!isSave">
+                <button mat-raised-button (click)="clear()" style="margin-right: 10px;">Effacer</button>
+                <button mat-raised-button color="primary" (click)="saveSignature()"  cdkFocusInitial>Valider la signature</button>
+              </div>
+            </div>
+            <div class="col">
+                  <p style="font-weight: 600;">Charger le document justificatif <small style="color: #054aec;">(Optionel)</small></p>
+                  <div style="margin-bottom: 10px;" *ngIf="file">
+                     <img src="assets/images/pdf1.png">
+                     <p>{{this.fileName}}</p>
+                  </div>
+                  <div style="margin-bottom: 10px;">
+                    <input type="file" class="file-input" accept='.pdf' (change)="onFileSelected($event)" #fileUpload>
+                    <button type="button" (click)="fileUpload.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> Charger</button>
+                  </div>
+            </div>
+          </div>       
         </form>
       </div>
     </div>

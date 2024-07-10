@@ -82,6 +82,16 @@ export class EntreprisesService {
     return this.httpClient.get(`${environment.BASE_API_URL}/conge/refuser/${id}`)
   }
 
+  downloadFile(url){
+    const link = document.createElement('a');
+    link.href = url;
+    link.target = '_blank';
+    link.download = 'file.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
 
 
 }

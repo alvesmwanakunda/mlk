@@ -55,13 +55,13 @@ export class BoxService {
     return this.httpClient.post(`${environment.BASE_API_URL}/dossier/projet/${idProjet}`,folder)
   }
 
-  downloadFile(filePath: string,fileName: string): void {
+  /*downloadFile(filePath: string,fileName: string): void {
     const a = document.createElement('a');
     a.href = filePath;
     a.download = fileName; // Nom du fichier à télécharger
     a.target = '_blank'; // Ouvrir dans un nouvel onglet/fenêtre
     a.click();
-  }
+  }*/
 
   downloadPDF(url: string): Observable<Blob> {
     const options = { responseType: 'blob' as 'json' };
@@ -72,6 +72,16 @@ export class BoxService {
     })
     );
  }
+
+ downloadFile(url){
+  const link = document.createElement('a');
+  link.href = url;
+  link.target = '_blank';
+  link.download = 'file.pdf';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
 
  // move folder and file
 

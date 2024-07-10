@@ -15,5 +15,8 @@ export interface Conges {
     date_signature:Date;
     signature_user:string;
     signature_entreprise:string;
-    motif:string
+    motif:string;
+    raison:string;
+    fichier:string;
+    nom_fichier:string
   }

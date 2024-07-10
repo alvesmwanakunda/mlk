@@ -79,7 +79,7 @@ export class ViewerComponent implements OnInit {
   }
 
   download(): void {
-    this.boxService.downloadFile(this.file.chemin, this.file.nom);
+    this.boxService.downloadFile(this.file.chemin);
   }
 
   print(){

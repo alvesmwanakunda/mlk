@@ -68,12 +68,12 @@ export class ViewerStandarComponent implements OnInit {
   }
 
   download(): void {
-    this.boxService.downloadFile(this.file.chemin, this.file.nom);
+    this.boxService.downloadFile(this.data.chemin);
   }
 
   print(){
 
-    this.boxService.downloadPDF(this.file.chemin).subscribe(res => {
+    this.boxService.downloadPDF(this.data.chemin).subscribe(res => {
       const fileURL = URL.createObjectURL(res);
       window.open(fileURL, '_blank');
     });

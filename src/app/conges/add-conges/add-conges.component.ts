@@ -19,6 +19,9 @@ export class AddCongesComponent implements OnInit {
   @ViewChild("canvas",{static:true}) canvas: ElementRef;
   message:any;
   isSave:boolean=false;
+  fileName:any;
+  file:File;
+  form:any;
 
   constructor(
     private _formBuilder :FormBuilder,
@@ -45,6 +48,7 @@ export class AddCongesComponent implements OnInit {
       heure_debut:new FormControl("",null),
       heure_fin:new FormControl("",null),
       signature_user:new FormControl("",null),
+      raison:new FormControl("",null)
     })
     this.signaturePad = new SignaturePad(this.canvas.nativeElement);
   }
@@ -62,9 +66,30 @@ export class AddCongesComponent implements OnInit {
       }
   }
 
+  onFileSelected(event){
+    this.file = event.target.files[0];
+    this.fileName = this.file.name;
+  }
+
   saveConge(){
+
+    this.form ={};
+    const formData:FormData=new FormData();
+    Object.assign(this.form, this.congeForm.value);
+
+    formData.append("uploadfile", this.file);
+    formData.append("debut", this.form.debut);
+    formData.append("fin", this.form.fin);
+    formData.append("jours", this.form.jours);
+    formData.append("types", this.form.types);
+    formData.append("status", this.form.status);
+    formData.append("heure_debut", this.form.heure_debut);
+    formData.append("heure_fin", this.form.heure_fin);
+    formData.append("signature_user", this.form.signature_user);
+    formData.append("raison", this.form.raison);
+
     if (this.congeForm.valid){
-      this.entrepriseService.addConge(this.congeForm.value).subscribe((res:any)=>{
+      this.entrepriseService.addConge(formData).subscribe((res:any)=>{
         this.message='Demande de congé envoyée avec succès.';
          this.openSnackBar(this.message);
          this.isSave=true;

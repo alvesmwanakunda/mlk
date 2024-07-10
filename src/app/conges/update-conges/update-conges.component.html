@@ -40,6 +40,10 @@
                 <p>Nombre de jours pris : {{conge?.jours}}</p>
                 <p>Type de congés : {{conge?.types}}</p>
                 <p>Date de la demande :  {{conge?.date_demande |date :'dd MMMM yyyy'}}</p> 
+                <p *ngIf="conge?.raison">Raison :  {{conge?.raison}}</p>
+                <div *ngIf="conge?.fichier">
+                  <button mat-raised-button color="warn" (click)="downloadFile(conge?.fichier)">Télécharger le document justificatif</button>
+                </div>
               </div>
               <div class="col">
                 <div *ngIf="!conge?.signature_entreprise">
@@ -95,18 +99,28 @@
             <mat-divider style="margin-bottom: 30px;"></mat-divider>
 
             <form [formGroup]="congeForm" *ngIf="conge">
-              <p style="font-weight: 600;">Type de congés</p>
-              <div style="margin-bottom: 15px;">
-                <mat-form-field class="example-full-width">
-                  <mat-label>Type de congés</mat-label>
-                  <mat-select formControlName="types" [(ngModel)]="conge.types" required>
-                    <mat-option value="Congés payés">Congés payés</mat-option>
-                    <mat-option value="Congés sans solde">Congés sans solde</mat-option>
-                    <mat-option value="Récupération">Récupération</mat-option>
-                 </mat-select>
-                </mat-form-field>               
-                <div *ngIf="congeForm.get('types').hasError(champ_validation.input[0].type) && ((congeForm.get('types').dirty || congeForm.get('types').touched))">
-                  <p class="error_field">{{champ_validation.input[0].message}}</p>
+              <p style="font-weight: 600;">Type de congés & Raison</p>
+              <div class="row" style="margin-bottom: 15px;">
+                <div class="col">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Type de congés</mat-label>
+                    <mat-select formControlName="types" [(ngModel)]="conge.types" required>
+                      <mat-option value="Congés payés">Congés payés</mat-option>
+                      <mat-option value="Congés sans solde">Congés sans solde</mat-option>
+                      <mat-option value="Récupération">Récupération</mat-option>
+                      <mat-option value="Absence justifiée">Absence justifiée</mat-option>
+                      <mat-option value="Absence non justifiée">Absence non justifiée</mat-option>  
+                   </mat-select>
+                  </mat-form-field>               
+                  <div *ngIf="congeForm.get('types').hasError(champ_validation.input[0].type) && ((congeForm.get('types').dirty || congeForm.get('types').touched))">
+                    <p class="error_field">{{champ_validation.input[0].message}}</p>
+                  </div>
+                </div>
+                <div class="col">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Raison</mat-label>
+                    <input matInput formControlName="raison" [(ngModel)]="conge.raison">
+                  </mat-form-field>
                 </div>
               </div>
               <p style="font-weight: 600;">Date & Durée</p>
@@ -146,6 +160,25 @@
                     <p class="error_field">{{champ_validation.input[0].message}}</p>
                   </div>
                 </div>
+              </div>
+              <p style="font-weight: 600;">Document justificatif</p>
+              <div class="row" style="margin-bottom: 15px;">
+                 <div class="col">
+                  <div *ngIf="conge?.fichier">
+                    <button mat-raised-button color="warn" (click)="downloadFile(conge?.fichier)">Télécharger le document justificatif</button>
+                  </div>
+                 </div>
+                 <div class="col">
+                  <p style="font-weight: 600;">Charger le document justificatif <small style="color: #054aec;">(Optionel)</small></p>
+                  <div style="margin-bottom: 10px;" *ngIf="file">
+                     <img src="assets/images/pdf1.png">
+                     <p>{{this.fileName}}</p>
+                  </div>
+                  <div style="margin-bottom: 10px;">
+                    <input type="file" class="file-input" accept='.pdf' (change)="onFileSelected($event)" #fileUpload>
+                    <button type="button" (click)="fileUpload.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> Charger</button>
+                  </div>
+                 </div>
               </div>                 
             </form>
           </div>
