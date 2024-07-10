@@ -6,6 +6,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DeleteTimesheetComponent } from '../delete-timesheet/delete-timesheet.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MonthService } from 'src/app/shared/services/month.service';
+
 
 
 
@@ -18,13 +20,20 @@ export class UpdateTimesheetComponent implements OnInit {
 
 user:any;
 month:any;
+monthL:any;
 year:any;
 timesheetForm: FormGroup;
+filterForm: FormGroup;
 updatetimesheetForm: FormGroup;
 message:any;
 idUser:any;
 timesheet:any=[];
-timesheetsControl
+filteredTimes:any = [];
+timesheetsControl;
+fixedDate:any; 
+selected = 'jour';
+isFilter:boolean=false;
+
 constructor(
   private router: Router,
   private authService: AuthService,
@@ -33,11 +42,17 @@ constructor(
   private _snackBar:MatSnackBar,
   private formBuilder: FormBuilder,
   public dialog: MatDialog,
+  private monthService: MonthService
 ){
   this.route.params.subscribe((data:any)=>{
     this.idUser = data?.id;
     this.month = data?.month;
     this.year = data?.year;
+    this.monthL = this.monthService.getMonthName(data?.month);
+    const numberMonth = parseInt(data?.month)-1;
+    console.log("Month", numberMonth);
+    this.fixedDate = new Date(data?.year, numberMonth, 1); // Juin 2024
+
   });
   this.updatetimesheetForm = new FormGroup({
     formArrayName: this.formBuilder.array([])
@@ -64,6 +79,10 @@ ngOnInit(): void {
     heure:new FormControl("",[Validators.required]),
     user: new FormControl(this.idUser,null),
   });
+  this.filterForm = new FormGroup({
+    startDate: new FormControl("",[Validators.required]),
+    endDate: new FormControl("",null),
+  })
   
 }
 
@@ -80,8 +99,9 @@ getAllTimeSheet(){
        this.timesheet = res?.message.map((data)=>({
         id:data._id,
         date: new Date(data?.createdAt).toISOString().split('T')[0],
-        task:data?.task,
+        task:data?.tache,
         hour:data?.heure,
+        createdAt:data?.createdAt
        }));
        this.buildForm(res?.message);        
      },(error) => {
@@ -108,8 +128,9 @@ afterSaveTimesheet(data){
     this.timesheet = res?.message.map((data)=>({
      id:data._id,
      date: new Date(data?.createdAt).toISOString().split('T')[0],
-     task:data?.task,
+     task:data?.tache,
      hour:data?.heure,
+     createdAt:data?.createdAt
     }));
     const controlArray = this.updatetimesheetForm.get('formArrayName') as FormArray;
     controlArray.push(
@@ -130,8 +151,9 @@ afterDeleteTimesheet(index){
     this.timesheet = res?.message.map((data)=>({
      id:data._id,
      date: new Date(data?.createdAt).toISOString().split('T')[0],
-     task:data?.task,
+     task:data?.tache,
      hour:data?.heure,
+     createdAt:data?.createdAt
     }));
     const controlArray = this.updatetimesheetForm.get('formArrayName') as FormArray;
     controlArray.removeAt(index);
@@ -169,6 +191,30 @@ saveTime(){
        this.openSnackBar(this.message);
        console.log(error);
     })
+  }
+}
+
+filterTime(){
+  if (this.filterForm.valid){
+    const startDate = new Date(this.filterForm.get('startDate').value);
+    const endDate = this.filterForm.get('endDate').value ? new Date(this.filterForm.get('endDate').value) : null;
+    this.isFilter = true;
+    this.filteredTimes = this.timesheet.filter(time => {
+      const createdAt = new Date(time.createdAt);
+      if (endDate) {
+        return createdAt >= startDate && createdAt <= endDate;
+      } else {
+        return createdAt >= startDate;
+      }
+    });
+    console.log("Times", this.filteredTimes);
+  }
+}
+
+isCheckAllTime(){
+  if(this.isFilter){
+    this.isFilter=false,
+    this.getAllTimeSheet();
   }
 }
 

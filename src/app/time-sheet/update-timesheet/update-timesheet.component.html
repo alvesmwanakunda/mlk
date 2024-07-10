@@ -51,6 +51,33 @@
        <mat-divider style="margin-bottom: 15px;"></mat-divider>
 
        <div>
+        <form [formGroup]="filterForm">
+          <div class="row" style="margin-bottom: 10px;">
+            <div class="col">
+              <p>
+               <mat-form-field appearance="fill" class="month-field example-full-width">
+                 <mat-label style="color: #000;">{{monthL}} {{year}}</mat-label>
+                 <mat-date-range-input [rangePicker]="dp3">
+                   <input matStartDate formControlName="startDate">
+                   <input matEndDate  formControlName="endDate">
+                 </mat-date-range-input>
+                 <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
+                 <mat-date-range-picker #dp3 disabled="false" [startAt]="fixedDate"></mat-date-range-picker>
+                 <!--<mat-datepicker #dp3 disabled="false" [startAt]="fixedDate"></mat-datepicker>-->
+               </mat-form-field>
+              </p>
+            </div>
+            <div class="col">
+             <div align="right">
+               <div style="padding-top:21px;"> 
+                 <button mat-raised-button color="primary" type="button" (click)="filterTime()" [disabled]="filterForm.invalid" cdkFocusInitial style="margin-right: 10px;">Filtre</button>
+                 <button mat-raised-button color="warn" type="button" (click)="isCheckAllTime()" *ngIf="isFilter">Tous</button>
+
+               </div>
+             </div>
+            </div>
+         </div>
+        </form>
         <table class="table table-striped">
             <thead>
               <tr>
@@ -62,7 +89,7 @@
             </thead>
         </table>
         <div>
-            <form [formGroup]="updatetimesheetForm">
+            <form [formGroup]="updatetimesheetForm" *ngIf="!isFilter">
                 <div [formArrayName]="'formArrayName'">
                     <div *ngFor="let m of timesheet; let i=index">
                         <div [formGroupName]="i">
@@ -90,9 +117,15 @@
                                       </mat-form-field>
                                 </div>
                                 <div class="col-2">
-                                  <div align="right" style="padding-top: 20px;">
-                                    <button type="button" mat-raised-button color="primary" style="margin-right: 5px;" (click)="onSubmit(i,m?.id)">Editer</button>
-                                    <button type="button" mat-raised-button color="warn" (click)="openDialogDelete(m?.id,i)">Supprimer</button>
+                                  <div align="right" style="padding-top: 5px;">
+                                    <button mat-icon-button color="primary"  style="margin-right: 5px;" (click)="onSubmit(i,m?.id)" matTooltip="Modifier">
+                                      <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <button mat-icon-button color="warn" (click)="openDialogDelete(m?.id,i)"  matTooltip="Supprimer">
+                                      <mat-icon>delete</mat-icon>
+                                    </button>
+                                    <!--<button type="button" mat-raised-button color="primary" style="margin-right: 5px;" (click)="onSubmit(i,m?.id)">Editer</button>
+                                    <button type="button" mat-raised-button color="warn" (click)="openDialogDelete(m?.id,i)">Supprimer</button>-->
                                   </div>
                                 </div>
                             </div>
@@ -101,6 +134,52 @@
                     </div>
                 </div>
             </form>
+
+            <form [formGroup]="updatetimesheetForm" *ngIf="isFilter">
+              <div [formArrayName]="'formArrayName'">
+                  <div *ngFor="let m of filteredTimes; let i=index">
+                      <div [formGroupName]="i">
+                          <div class="row">
+                              <div class="col-2">
+                                  <mat-form-field class="example-full-width">
+                                      <mat-label>Date</mat-label>
+                                      <input matInput [matDatepicker]="picker1" formControlName="createdAt" id="m.date"  value="{{m.date}}" required>
+                                      <mat-datepicker-toggle matIconSuffix [for]="picker1">
+                                        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                                      </mat-datepicker-toggle>
+                                      <mat-datepicker #picker1></mat-datepicker>
+                                    </mat-form-field>
+                              </div>
+                              <div class="col">
+                                  <mat-form-field class="example-full-width">
+                                      <mat-label>Tâche</mat-label>
+                                      <input matInput formControlName="tache" id="m.tache"  value="{{m.tache}}" required>
+                                  </mat-form-field>
+                              </div>
+                              <div class="col-2">
+                                  <mat-form-field class="example-full-width">
+                                      <mat-label>Heure</mat-label>
+                                      <input type="number" matInput formControlName="heure" id="m.heure"  value="{{m.heure}}"  required>
+                                    </mat-form-field>
+                              </div>
+                              <div class="col-2">
+                                <div align="right" style="padding-top: 5px;">
+                                  <button mat-icon-button color="primary"  style="margin-right: 5px;" (click)="onSubmit(i,m?.id)" matTooltip="Modifier">
+                                    <mat-icon>edit</mat-icon>
+                                  </button>
+                                  <button mat-icon-button color="warn" (click)="openDialogDelete(m?.id,i)"  matTooltip="Supprimer">
+                                    <mat-icon>delete</mat-icon>
+                                  </button>
+                                  <!--<button type="button" mat-raised-button color="primary" style="margin-right: 5px;" (click)="onSubmit(i,m?.id)">Editer</button>
+                                  <button type="button" mat-raised-button color="warn" (click)="openDialogDelete(m?.id,i)">Supprimer</button>-->
+                                </div>
+                              </div>
+                          </div>
+  
+                      </div>
+                  </div>
+              </div>
+          </form>
         </div>
             
        </div>

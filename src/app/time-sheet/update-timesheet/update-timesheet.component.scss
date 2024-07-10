@@ -1,3 +1,18 @@
+::ng-deep .month-field .mdc-text-field--disabled.mdc-text-field--filled {
+  background-color: #f5f5f5 !important;
+}
+
+::ng-deep .month-select .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: #f5f5f5 !important;
+}
+
 ::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) {
     background-color: #fff !important;
-  }
+}
+
+.demo-inline-calendar-card {
+    width: 300px;
+}
+
+
+
