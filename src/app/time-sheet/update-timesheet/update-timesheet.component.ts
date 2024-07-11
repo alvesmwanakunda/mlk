@@ -77,6 +77,7 @@ ngOnInit(): void {
     createdAt:new FormControl("",[Validators.required]),
     tache:new FormControl("",[Validators.required]),
     heure:new FormControl("",[Validators.required]),
+    projet: new FormControl("", [Validators.required]),
     user: new FormControl(this.idUser,null),
   });
   this.filterForm = new FormGroup({
@@ -101,6 +102,7 @@ getAllTimeSheet(){
         date: new Date(data?.createdAt).toISOString().split('T')[0],
         task:data?.tache,
         hour:data?.heure,
+        projet:data?.projet,
         createdAt:data?.createdAt
        }));
        this.buildForm(res?.message);        
@@ -118,6 +120,7 @@ buildForm(data){
         createdAt:new FormControl(data[i].createdAt,[Validators.required]),
         tache:new FormControl(data[i].tache,[Validators.required]),
         heure:new FormControl(data[i].heure,[Validators.required]),
+        projet: new FormControl(data[i]?.projet, [Validators.required]),
       })
     )
    })
@@ -130,14 +133,16 @@ afterSaveTimesheet(data){
      date: new Date(data?.createdAt).toISOString().split('T')[0],
      task:data?.tache,
      hour:data?.heure,
+     projet:data?.projet,
      createdAt:data?.createdAt
     }));
     const controlArray = this.updatetimesheetForm.get('formArrayName') as FormArray;
     controlArray.push(
       this.formBuilder.group({
-        createdAt:new FormControl(data.createdAt,[Validators.required]),
-        tache:new FormControl(data.tache,[Validators.required]),
-        heure:new FormControl(data.heure,[Validators.required]),
+        createdAt:new FormControl(data?.createdAt,[Validators.required]),
+        tache:new FormControl(data?.tache,[Validators.required]),
+        heure:new FormControl(data?.heure,[Validators.required]),
+        projet: new FormControl(data?.projet, [Validators.required]),
       })
     );  
     //console.log("ArrayName", controlArray);        
@@ -153,6 +158,7 @@ afterDeleteTimesheet(index){
      date: new Date(data?.createdAt).toISOString().split('T')[0],
      task:data?.tache,
      hour:data?.heure,
+     projet:data?.projet,
      createdAt:data?.createdAt
     }));
     const controlArray = this.updatetimesheetForm.get('formArrayName') as FormArray;

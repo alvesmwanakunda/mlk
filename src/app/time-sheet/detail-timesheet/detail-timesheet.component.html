@@ -22,7 +22,16 @@
                 <p class="error_field">{{champ_validation.input[0].message}}</p>
               </div>
             </div>
-            <div class="col-4">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-label>Projet</mat-label>
+                <input matInput formControlName="projet" required>
+              </mat-form-field>
+              <div *ngIf="timesheetForm.get('projet').hasError(champ_validation.input[0].type) && (timesheetForm.get('projet').dirty || timesheetForm.get('projet').touched)">
+                <p class="error_field">{{champ_validation.input[0].message}}</p>
+              </div>
+            </div>
+            <div class="col">
               <mat-form-field class="example-full-width">
                 <mat-label>Tâche</mat-label>
                 <input matInput formControlName="tache" required>
@@ -32,19 +41,32 @@
               </div>
             </div>
             <div class="col">
-              <mat-form-field class="example-full-width">
-                <mat-label>Heure</mat-label>
-                <input type="number" matInput formControlName="heure" required>
-              </mat-form-field>
-              <div *ngIf="timesheetForm.get('heure').hasError(champ_validation.input[0].type) && (timesheetForm.get('heure').dirty || timesheetForm.get('heure').touched)">
-                <p class="error_field">{{champ_validation.input[0].message}}</p>
+              <div class="row">
+                <div class="col-7">
+                  <mat-form-field class="example-full-date">
+                    <mat-label>Heure</mat-label>
+                    <input type="number" matInput formControlName="heure" required>
+                  </mat-form-field>
+                  <div *ngIf="timesheetForm.get('heure').hasError(champ_validation.input[0].type) && (timesheetForm.get('heure').dirty || timesheetForm.get('heure').touched)">
+                    <p class="error_field">{{champ_validation.input[0].message}}</p>
+                  </div>
+                </div>
+                <div class="col-5">
+                  <div style="padding-top:13px;">
+                    <button mat-raised-button color="primary" (click)="saveTime();timesheetForm.reset()" [disabled]="timesheetForm.invalid"  cdkFocusInitial>Nouveau</button>
+                    <!--<button mat-icon-button color="primary" (click)="saveTime();timesheetForm.reset()" [disabled]="timesheetForm.invalid"  cdkFocusInitial matTooltip="Ajouter">
+                      <mat-icon>add</mat-icon>
+                    </button>-->
+                  </div>
+                </div>
               </div>
+              
             </div>
-            <div class="col-2">
+            <!--<div class="col">
               <div style="padding-top:21px;">
                 <button mat-raised-button color="primary" (click)="saveTime();timesheetForm.reset()" [disabled]="timesheetForm.invalid"  cdkFocusInitial>Nouveau</button>
               </div>
-            </div>
+            </div>-->
           </div>
         </form>
        </div>
