@@ -57,6 +57,7 @@ ngOnInit(): void {
     heure:new FormControl("",[Validators.required]),
     user: new FormControl(this.idUser,null),
     projet: new FormControl("", [Validators.required]),
+    deplacement: new FormControl("", null),
   })
 }
 
@@ -78,7 +79,8 @@ getAllTimeSheet(){
         month:data?.month,
         year:data?.year,
         monthInt:data?.monthChiffre,
-        projet:data?.projet
+        projet:data?.projet,
+        deplacement:data?.deplacement
        })) as TimeSheet[]
 
      },(error) => {

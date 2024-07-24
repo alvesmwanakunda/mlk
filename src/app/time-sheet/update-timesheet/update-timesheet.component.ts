@@ -79,6 +79,7 @@ ngOnInit(): void {
     heure:new FormControl("",[Validators.required]),
     projet: new FormControl("", [Validators.required]),
     user: new FormControl(this.idUser,null),
+    deplacement: new FormControl('',null),
   });
   this.filterForm = new FormGroup({
     startDate: new FormControl("",[Validators.required]),
@@ -103,7 +104,8 @@ getAllTimeSheet(){
         task:data?.tache,
         hour:data?.heure,
         projet:data?.projet,
-        createdAt:data?.createdAt
+        createdAt:data?.createdAt,
+        deplacement:data?.deplacement
        }));
        this.buildForm(res?.message);        
      },(error) => {
@@ -121,6 +123,7 @@ buildForm(data){
         tache:new FormControl(data[i].tache,[Validators.required]),
         heure:new FormControl(data[i].heure,[Validators.required]),
         projet: new FormControl(data[i]?.projet, [Validators.required]),
+        deplacement:new FormControl(data[i]?.deplacement, null),
       })
     )
    })
@@ -134,7 +137,8 @@ afterSaveTimesheet(data){
      task:data?.tache,
      hour:data?.heure,
      projet:data?.projet,
-     createdAt:data?.createdAt
+     createdAt:data?.createdAt,
+     deplacement:data?.deplacement
     }));
     const controlArray = this.updatetimesheetForm.get('formArrayName') as FormArray;
     controlArray.push(
@@ -143,6 +147,7 @@ afterSaveTimesheet(data){
         tache:new FormControl(data?.tache,[Validators.required]),
         heure:new FormControl(data?.heure,[Validators.required]),
         projet: new FormControl(data?.projet, [Validators.required]),
+        deplacement: new FormControl(data?.deplacement, null),
       })
     );  
     //console.log("ArrayName", controlArray);        
@@ -159,7 +164,8 @@ afterDeleteTimesheet(index){
      task:data?.tache,
      hour:data?.heure,
      projet:data?.projet,
-     createdAt:data?.createdAt
+     createdAt:data?.createdAt,
+     deplacement:data?.deplacement
     }));
     const controlArray = this.updatetimesheetForm.get('formArrayName') as FormArray;
     controlArray.removeAt(index);

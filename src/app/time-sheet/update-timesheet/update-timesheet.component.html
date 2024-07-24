@@ -41,6 +41,15 @@
               </div>
             </div>
             <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-label>Deplacement</mat-label>
+                <mat-select matInput formControlName="deplacement">
+                   <mat-option value="Oui">Oui</mat-option>
+                   <mat-option value="Non">Non</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col">
               <div class="row">
                 <div class="col-7">
                   <mat-form-field class="example-full-date">
@@ -101,7 +110,8 @@
               <tr>
                 <th scope="col" class="th-devis" style="text-align: center;">Date</th>
                 <th scope="col" class="th-devis" style="text-align: center;">Projet</th>
-                <th scope="col" class="th-devis" style="text-align: center;">Tâche</th>
+                <th scope="col" class="th-devis" style="text-align: right;">Tâche</th>
+                <th scope="col" class="th-devis" style="text-align: right;">Deplacement</th>
                 <th scope="col" class="th-devis" style="text-align: right;">Heure</th>
                 <th scope="col" class="th-devis" style="text-align: right;">Action</th>
               </tr>
@@ -135,24 +145,35 @@
                                         <input matInput formControlName="tache" id="m.tache"  value="{{m.tache}}" required>
                                     </mat-form-field>
                                 </div>
-                                <div class="col-2">
-                                    <mat-form-field class="example-full-width">
-                                        <mat-label>Heure</mat-label>
-                                        <input type="number" matInput formControlName="heure" id="m.heure"  value="{{m.heure}}"  required>
-                                      </mat-form-field>
-                                </div>
-                                <div class="col-2">
-                                  <div align="right" style="padding-top: 5px;">
-                                    <button mat-icon-button color="primary"  style="margin-right: 5px;" (click)="onSubmit(i,m?.id)" matTooltip="Modifier">
-                                      <mat-icon>edit</mat-icon>
-                                    </button>
-                                    <button mat-icon-button color="warn" (click)="openDialogDelete(m?.id,i)"  matTooltip="Supprimer">
-                                      <mat-icon>delete</mat-icon>
-                                    </button>
-                                    <!--<button type="button" mat-raised-button color="primary" style="margin-right: 5px;" (click)="onSubmit(i,m?.id)">Editer</button>
-                                    <button type="button" mat-raised-button color="warn" (click)="openDialogDelete(m?.id,i)">Supprimer</button>-->
-                                  </div>
-                                </div>
+                              <div class="col">
+                                <mat-form-field class="example-full-width">
+                                  <mat-label>Deplacement</mat-label>
+                                  <mat-select matInput formControlName="deplacement" id="m.deplacement"  value="{{m.deplacement}}">
+                                     <mat-option value="Oui">Oui</mat-option>
+                                     <mat-option value="Non">Non</mat-option>
+                                  </mat-select>
+                                </mat-form-field>
+                              </div>
+                              <div class="col">
+                                <div class="row">
+                                  <div class="col-6">
+                                     <mat-form-field class="example-full-date">
+                                         <mat-label>Heure</mat-label>
+                                         <input type="number" matInput formControlName="heure" id="m.heure"  value="{{m.heure}}"  required>
+                                       </mat-form-field>
+                                 </div>
+                                 <div class="col-6">
+                                   <div align="right" style="padding-top: 5px;">
+                                     <button mat-icon-button color="primary"  style="margin-right: 2px;" (click)="onSubmit(i,m?.id)" matTooltip="Modifier">
+                                       <mat-icon>edit</mat-icon>
+                                     </button>
+                                     <button mat-icon-button color="warn" (click)="openDialogDelete(m?.id,i)"  matTooltip="Supprimer">
+                                       <mat-icon>delete</mat-icon>
+                                     </button>
+                                   </div>
+                                 </div>
+                               </div>
+                              </div>
                             </div>
     
                         </div>
@@ -187,24 +208,36 @@
                                       <input matInput formControlName="tache" id="m.tache"  value="{{m.tache}}" required>
                                   </mat-form-field>
                               </div>
-                              <div class="col-2">
-                                  <mat-form-field class="example-full-width">
-                                      <mat-label>Heure</mat-label>
-                                      <input type="number" matInput formControlName="heure" id="m.heure"  value="{{m.heure}}"  required>
-                                    </mat-form-field>
+                              <div class="col">
+                                <mat-form-field class="example-full-width">
+                                  <mat-label>Deplacement</mat-label>
+                                  <mat-select matInput formControlName="deplacement" id="m.deplacement"  value="{{m.deplacement}}">
+                                     <mat-option value="Oui">Oui</mat-option>
+                                     <mat-option value="Non">Non</mat-option>
+                                  </mat-select>
+                                </mat-form-field>
                               </div>
-                              <div class="col-2">
-                                <div align="right" style="padding-top: 5px;">
-                                  <button mat-icon-button color="primary"  style="margin-right: 5px;" (click)="onSubmit(i,m?.id)" matTooltip="Modifier">
-                                    <mat-icon>edit</mat-icon>
-                                  </button>
-                                  <button mat-icon-button color="warn" (click)="openDialogDelete(m?.id,i)"  matTooltip="Supprimer">
-                                    <mat-icon>delete</mat-icon>
-                                  </button>
-                                  <!--<button type="button" mat-raised-button color="primary" style="margin-right: 5px;" (click)="onSubmit(i,m?.id)">Editer</button>
-                                  <button type="button" mat-raised-button color="warn" (click)="openDialogDelete(m?.id,i)">Supprimer</button>-->
-                                </div>
+                              <div class="col">
+                                <div class="row">
+                                  <div class="col-6">
+                                     <mat-form-field class="example-full-date">
+                                         <mat-label>Heure</mat-label>
+                                         <input type="number" matInput formControlName="heure" id="m.heure"  value="{{m.heure}}"  required>
+                                       </mat-form-field>
+                                 </div>
+                                 <div class="col-6">
+                                   <div align="right" style="padding-top: 5px;">
+                                     <button mat-icon-button color="primary"  style="margin-right: 2px;" (click)="onSubmit(i,m?.id)" matTooltip="Modifier">
+                                       <mat-icon>edit</mat-icon>
+                                     </button>
+                                     <button mat-icon-button color="warn" (click)="openDialogDelete(m?.id,i)"  matTooltip="Supprimer">
+                                       <mat-icon>delete</mat-icon>
+                                     </button>
+                                   </div>
+                                 </div>
+                               </div>
                               </div>
+                              
                           </div>
   
                       </div>
