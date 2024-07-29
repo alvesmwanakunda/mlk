@@ -86,7 +86,7 @@
                     <div class="col">
                       <mat-form-field class="example-full-width">
                         <mat-label>Responsable</mat-label>
-                        <mat-select  formControlName="contact" aria-label="Default select example">
+                        <mat-select  formControlName="contact" aria-label="Default select example" required>
                           <mat-option *ngFor="let cont of contacts " [value]="cont._id">{{cont?.nom}} {{cont?.prenom}}</mat-option>
                         </mat-select>
                       </mat-form-field>                    

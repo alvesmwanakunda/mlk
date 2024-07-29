@@ -137,7 +137,8 @@ export class UpdateProjetComponent implements OnInit {
       if(this.projet){
         this.getContact(this.projet.entreprise);
       }
-      this.image = this.sanitizer.bypassSecurityTrustResourceUrl(`data:image/png;base64, ${res.message.photo}`);
+      //this.image = this.sanitizer.bypassSecurityTrustResourceUrl(`data:image/png;base64, ${res.message.photo}`);
+      this.image = this.sanitizer.bypassSecurityTrustResourceUrl(res.message.photo);
       this.jours = new Date(res.message.date_limite).toISOString().split('T')[0];
       this.fin = new Date(res.message.date_fin_contrat).toISOString().split('T')[0];
     },(error) => {

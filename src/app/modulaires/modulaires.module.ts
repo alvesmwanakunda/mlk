@@ -7,6 +7,10 @@ import { NavbarModule } from '../navbar/navbar.module';
 import { DeleteModuleModule } from './delete-module/delete-module.module';
 import { AuthGuardService } from '../shared/services/auth-guard.service';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { StockModuleModule } from './stock-module/stock-module.module';
+import { PrepareModuleModule } from './prepare-module/prepare-module.module';
+import { ReadyModuleModule } from './ready-module/ready-module.module';
+import { SiteModuleModule } from './site-module/site-module.module';
 
 
 export function jwtOptionsFactory() {
@@ -30,6 +34,10 @@ export function jwtOptionsFactory() {
     SharedModule,
     NavbarModule,
     DeleteModuleModule,
+    StockModuleModule,
+    PrepareModuleModule,
+    ReadyModuleModule,
+    SiteModuleModule,
     JwtModule.forRoot({
       jwtOptionsProvider: {
         provide: JWT_OPTIONS,

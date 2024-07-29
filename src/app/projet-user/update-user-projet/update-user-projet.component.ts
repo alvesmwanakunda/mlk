@@ -130,7 +130,7 @@ export class UpdateUserProjetComponent implements OnInit {
       if(this.projet){
         this.getContact(this.projet.entreprise);
       }
-      this.image = this.sanitizer.bypassSecurityTrustResourceUrl(`data:image/png;base64, ${res.message.photo}`);
+      this.image = this.sanitizer.bypassSecurityTrustResourceUrl(res.message.photo);
       this.jours = new Date(res.message.date_limite).toISOString().split('T')[0];
     },(error) => {
       console.log("Erreur lors de la récupération des données", error);

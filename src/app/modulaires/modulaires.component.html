@@ -7,123 +7,28 @@
       <mat-divider></mat-divider>
     </div><!--content-->
     <div style="margin-bottom: 30px;">
-        <h2 style="margin-bottom: 15px;">Total matériels : {{countModules?.module}}</h2>
+        <div class="row" style="margin-bottom: 10px;">
+          <div class="col">
+            <h2 style="margin-bottom: 15px;">Total matériels : {{countModules?.module}}</h2>
+          </div>
+          <div class="col"  align="right">
+            <button type="button" class="btn btn-projet" routerLink="/modulaire" *ngIf="user?.user?.role!='user'"><i class="fa-solid fa-plus"></i> Nouvel article</button>
+          </div>
+        </div>
         <div class="row">
           <div class="col" *ngIf="dataCount">
             <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height:'360px',}"></canvasjs-chart> 
           </div>
-           <!--<div class="col">
-              <mat-card style="background-color: #28628B !important;cursor: pointer;" (click)="switchTab(0)">
-                <mat-card-content>
-                    <p style="color: #fff;text-align: center;">Stock</p>
-                    <p style="color: #fff;text-align: center;">{{countModules?.stock}}</p>
-                </mat-card-content>
-              </mat-card>
-           </div>
-           <div class="col">
-            <mat-card style="background-color: #48ae4d !important;cursor: pointer;" (click)="switchTab(1)">
-              <mat-card-content>
-                  <p style="color: #fff;text-align: center;">En préparation</p>
-                  <p style="color: #fff;text-align: center;">{{countModules?.preparation}}</p>
-              </mat-card-content>
-            </mat-card>
-           </div>
-           <div class="col">
-            <mat-card style="background-color: #53a3db !important;cursor: pointer;" (click)="switchTab(2)">
-              <mat-card-content>
-                  <p style="color: #fff;text-align: center;">Prêt à partir</p>
-                  <p style="color: #fff;text-align: center;">{{countModules?.pret}}</p>
-              </mat-card-content>
-            </mat-card>
-           </div>
-           <div class="col">
-            <mat-card style="background-color: rgb(201, 36, 129) !important;cursor: pointer;" (click)="switchTab(3)">
-              <mat-card-content>
-                  <p style="color: #fff;text-align: center;">Site</p>
-                  <p style="color: #fff;text-align: center;">{{countModules?.site}}</p>
-              </mat-card-content>
-            </mat-card>
-           </div>-->
         </div>
     </div>
     <div>
-      <div class="row" style="margin-bottom: 35px;">
-        <div class="col">
-          <input type="text"  (keyup)="applyFilter($event)" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher">
-        </div>
-        <div class="col"  align="right">
-          <button type="button" class="btn btn-projet" routerLink="/modulaire" *ngIf="user?.user?.role!='user'"><i class="fa-solid fa-plus"></i> Nouvel article</button>
-        </div>
-      </div>
       <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedIndexChange)="onTabChange($event)">
         <mat-tab>
           <ng-template mat-tab-label>
             <span matBadge="{{countModules?.stock}}" matBadgeOverlap="false">Parc</span>
           </ng-template>
           <div style="padding-top: 40px;">
-            <table mat-table [dataSource]="dataSource" matSort #matSort="matSort">
-              <!-- Position Column -->
-              <ng-container matColumnDef="numero">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Numéro </th>
-                <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;" (click)="getModule(element.id)"> {{element?.numero}} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="nom">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Article </th>
-                <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;" (click)="getModule(element.id)"> {{element?.nom}} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="type">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
-                <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;" (click)="getModule(element.id)"> {{element?.type}} </td>
-              </ng-container>
-
-
-              <!-- Weight Column -->
-              <ng-container matColumnDef="hauteur">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Hauteur</th>
-                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.hauteur}}  </td>
-              </ng-container>
-
-              <ng-container matColumnDef="largeur">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Largeur</th>
-                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.largeur}}  </td>
-              </ng-container>
-
-              <ng-container matColumnDef="longueur">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Longueur</th>
-                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.longueur}}  </td>
-              </ng-container>
-
-              <ng-container matColumnDef="action">
-                <th mat-header-cell *matHeaderCellDef>Action</th>
-                <td mat-cell *matCellDef="let element">
-                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                    <mat-icon>more_vert</mat-icon>
-                  </button>
-                  <mat-menu #menu="matMenu">
-                    <button mat-menu-item  (click)="getModule(element.id)">
-                      <mat-icon>edit</mat-icon>
-                      <span>Voir</span>
-                    </button>
-                    <button mat-menu-item  (click)="openDialogDelete(element.id)" *ngIf="user?.user?.role=='admin'">
-                      <mat-icon>delete</mat-icon>
-                      <span>Supprimer</span>
-                    </button>
-                  </mat-menu>
-                </td>
-              </ng-container>
-
-
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
-
-            <mat-paginator #paginatorStock [pageSizeOptions]="[10, 20]"
-                          showFirstLastButtons
-                          aria-label="Select page of periodic elements"
-                          >
-            </mat-paginator>
+            <app-stock-module></app-stock-module>
           </div>
         </mat-tab>
         <mat-tab>
@@ -131,78 +36,7 @@
             <span matBadge="{{countModules?.preparation}}" matBadgeOverlap="false">En préparation</span>
           </ng-template>
           <div style="padding-top: 40px;">
-            <table mat-table [dataSource]="dataSourcePreparation" matSort #preparationSort="matSort">
-
-              <ng-container matColumnDef="numero">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Numéro </th>
-                <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;" (click)="getModule(element.id)"> {{element?.numero}} </td>
-              </ng-container>
-
-              <!-- Position Column -->
-              <ng-container matColumnDef="nom">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Module </th>
-                <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;" (click)="getModule(element.id)"> {{element?.nom}} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="type">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
-                <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;" (click)="getModule(element.id)"> {{element?.type}} </td>
-              </ng-container>
-
-               <!-- Symbol Column -->
-               <!--<ng-container matColumnDef="photo">
-                <th mat-header-cell *matHeaderCellDef>Photo</th>
-                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;" (click)="getModule(element.id)">
-                  <img [src]="element?.photo" style="width: 90px;height: 90px;padding: 10px;" *ngIf="element?.photo!==undefined"/>
-                </td>
-              </ng-container>-->
-
-
-               <!-- Weight Column -->
-               <ng-container matColumnDef="hauteur">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Hauteur</th>
-                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.hauteur}}  </td>
-              </ng-container>
-
-              <ng-container matColumnDef="largeur">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Largeur</th>
-                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.largeur}}  </td>
-              </ng-container>
-
-              <ng-container matColumnDef="longueur">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Longueur</th>
-                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.longueur}}  </td>
-              </ng-container>
-
-              <ng-container matColumnDef="action">
-                <th mat-header-cell *matHeaderCellDef>Action</th>
-                <td mat-cell *matCellDef="let element">
-                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                    <mat-icon>more_vert</mat-icon>
-                  </button>
-                  <mat-menu #menu="matMenu">
-                    <button mat-menu-item  (click)="getModule(element.id)">
-                      <mat-icon>edit</mat-icon>
-                      <span>Voir</span>
-                    </button>
-                    <button mat-menu-item  (click)="openDialogDelete(element.id)" *ngIf="user?.user?.role=='admin'">
-                      <mat-icon>delete</mat-icon>
-                      <span>Supprimer</span>
-                    </button>
-                  </mat-menu>
-                </td>
-              </ng-container>
-
-
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
-
-            <mat-paginator #paginatorPreparation [pageSizeOptions]="[10, 20]"
-                          showFirstLastButtons
-                          aria-label="Select page of periodic elements"
-                          >
-            </mat-paginator>
+           <app-prepare-module></app-prepare-module>
           </div>
         </mat-tab>
         <mat-tab >
@@ -210,78 +44,7 @@
             <span matBadge="{{countModules?.pret}}" matBadgeOverlap="false">Prêt à partir</span>
           </ng-template>
           <div style="padding-top: 40px;">
-            <table mat-table [dataSource]="dataSourcePartir" matSort #partirSort="matSort">
-
-              <ng-container matColumnDef="numero">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Numéro </th>
-                <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;" (click)="getModule(element.id)"> {{element?.numero}} </td>
-              </ng-container>
-
-              <!-- Position Column -->
-              <ng-container matColumnDef="nom">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Module </th>
-                <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;" (click)="getModule(element.id)"> {{element?.nom}} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="type">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
-                <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;" (click)="getModule(element.id)"> {{element?.type}} </td>
-              </ng-container>
-
-               <!-- Symbol Column -->
-               <!--<ng-container matColumnDef="photo">
-                <th mat-header-cell *matHeaderCellDef>Photo</th>
-                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;" (click)="getModule(element.id)">
-                  <img [src]="element?.photo" style="width: 90px;height: 90px;padding: 10px;" *ngIf="element?.photo"/>
-                </td>
-              </ng-container>-->
-
-
-               <!-- Weight Column -->
-               <ng-container matColumnDef="hauteur">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Hauteur</th>
-                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.hauteur}}  </td>
-              </ng-container>
-
-              <ng-container matColumnDef="largeur">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Largeur</th>
-                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.largeur}}  </td>
-              </ng-container>
-
-              <ng-container matColumnDef="longueur">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Longueur</th>
-                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.longueur}}  </td>
-              </ng-container>
-
-              <ng-container matColumnDef="action">
-                <th mat-header-cell *matHeaderCellDef>Action</th>
-                <td mat-cell *matCellDef="let element">
-                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                    <mat-icon>more_vert</mat-icon>
-                  </button>
-                  <mat-menu #menu="matMenu">
-                    <button mat-menu-item  (click)="getModule(element.id)">
-                      <mat-icon>edit</mat-icon>
-                      <span>Voir</span>
-                    </button>
-                    <button mat-menu-item  (click)="openDialogDelete(element.id)" *ngIf="user?.user?.role=='admin'">
-                      <mat-icon>delete</mat-icon>
-                      <span>Supprimer</span>
-                    </button>
-                  </mat-menu>
-                </td>
-              </ng-container>
-
-
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
-
-            <mat-paginator #paginatorPartir [pageSizeOptions]="[10, 20]"
-                          showFirstLastButtons
-                          aria-label="Select page of periodic elements"
-                          >
-            </mat-paginator>
+            <app-ready-module></app-ready-module>
           </div>
         </mat-tab>
         <mat-tab>
@@ -289,79 +52,7 @@
             <span matBadge="{{countModules?.site}}" matBadgeOverlap="false">Site</span>
           </ng-template>
           <div style="padding-top: 40px;">
-            <table mat-table [dataSource]="dataSourceSite" matSort #siteSort="matSort">
-
-              <ng-container matColumnDef="numero">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Numéro </th>
-                <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;" (click)="getModule(element.id)"> {{element?.numero}} </td>
-              </ng-container>
-
-              <!-- Position Column -->
-              <ng-container matColumnDef="nom">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Module </th>
-                <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;" (click)="getModule(element.id)"> {{element?.nom}} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="type">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
-                <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;" (click)="getModule(element.id)"> {{element?.type}} </td>
-              </ng-container>
-
-               <!-- Symbol Column -->
-               <!--<ng-container matColumnDef="photo">
-                <th mat-header-cell *matHeaderCellDef>Photo</th>
-                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;" (click)="getModule(element.id)">
-                  <img [src]="element?.photo" style="width: 90px;height: 90px;padding: 10px;" *ngIf="element?.photo"/>
-                </td>
-              </ng-container>-->
-
-
-
-               <!-- Weight Column -->
-               <ng-container matColumnDef="hauteur">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Hauteur</th>
-                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.hauteur}}  </td>
-              </ng-container>
-
-              <ng-container matColumnDef="largeur">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Largeur</th>
-                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.largeur}}  </td>
-              </ng-container>
-
-              <ng-container matColumnDef="longueur">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Longueur</th>
-                <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.longueur}}  </td>
-              </ng-container>
-
-              <ng-container matColumnDef="action">
-                <th mat-header-cell *matHeaderCellDef>Action</th>
-                <td mat-cell *matCellDef="let element">
-                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                    <mat-icon>more_vert</mat-icon>
-                  </button>
-                  <mat-menu #menu="matMenu">
-                    <button mat-menu-item  (click)="getModule(element.id)">
-                      <mat-icon>edit</mat-icon>
-                      <span>Voir</span>
-                    </button>
-                    <button mat-menu-item  (click)="openDialogDelete(element.id)" *ngIf="user?.user?.role=='admin'">
-                      <mat-icon>delete</mat-icon>
-                      <span>Supprimer</span>
-                    </button>
-                  </mat-menu>
-                </td>
-              </ng-container>
-
-
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
-
-            <mat-paginator #paginatorSite [pageSizeOptions]="[10, 20]"
-                          showFirstLastButtons
-                          aria-label="Select page of periodic elements"
-                          >
-            </mat-paginator>
+            <app-site-module></app-site-module>
           </div>
         </mat-tab>
       </mat-tab-group>

@@ -67,8 +67,40 @@ export class ProjetsService {
     return this.httpClient.get(`${environment.BASE_API_URL}/modules`);
   }
 
+  public getAllModuleStock(){
+    return this.httpClient.get(`${environment.BASE_API_URL}/modules/stock`);
+  }
+
+  public getAllModulePr(){
+    return this.httpClient.get(`${environment.BASE_API_URL}/modules/preparation`);
+  }
+
+  public getAllModulePp(){
+    return this.httpClient.get(`${environment.BASE_API_URL}/modules/partir`);
+  }
+
+  public getAllModuleSite(){
+    return this.httpClient.get(`${environment.BASE_API_URL}/modules/site`);
+  }
+
   public getAllModuleByEntreprise(id){
     return this.httpClient.get(`${environment.BASE_API_URL}/modules/entreprise/${id}`);
+  }
+
+  public getAllModuleByEntrepriseStock(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/modules/entreprise/${id}/stock`);
+  }
+
+  public getAllModuleByEntreprisePr(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/modules/entreprise/${id}/preparation`);
+  }
+
+  public getAllModuleByEntreprisePp(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/modules/entreprise/${id}/partir`);
+  }
+
+  public getAllModuleByEntrepriseSite(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/modules/entreprise/${id}/site`);
   }
 
   public getAllModuleByProjet(id){
