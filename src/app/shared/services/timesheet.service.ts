@@ -25,8 +25,8 @@ export class TimesheetService {
     return this.httpClient.get(`${environment.BASE_API_URL}/timesheet/agent/${month}/${year}`)
   }
   
-  public addTimeSheet(data){
-    return this.httpClient.post(`${environment.BASE_API_URL}/timesheet`, data)
+  public addTimeSheet(data, idUser){
+    return this.httpClient.post(`${environment.BASE_API_URL}/timesheet/${idUser}`, data)
   }
 
   public updateTimeSheet(data,id){

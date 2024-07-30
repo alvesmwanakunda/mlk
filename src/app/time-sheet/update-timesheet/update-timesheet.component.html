@@ -25,20 +25,20 @@
             <div class="col">
               <mat-form-field class="example-full-width">
                 <mat-label>Projet</mat-label>
-                <input matInput formControlName="projet" required>
+                <input matInput formControlName="projet">
               </mat-form-field>
-              <div *ngIf="timesheetForm.get('projet').hasError(champ_validation.input[0].type) && (timesheetForm.get('projet').dirty || timesheetForm.get('projet').touched)">
+              <!--<div *ngIf="timesheetForm.get('projet').hasError(champ_validation.input[0].type) && (timesheetForm.get('projet').dirty || timesheetForm.get('projet').touched)">
                 <p class="error_field">{{champ_validation.input[0].message}}</p>
-              </div>
+              </div>-->
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
                 <mat-label>Tâche</mat-label>
-                <input matInput formControlName="tache" required>
+                <input matInput formControlName="tache">
               </mat-form-field>
-              <div *ngIf="timesheetForm.get('tache').hasError(champ_validation.input[0].type) && (timesheetForm.get('tache').dirty || timesheetForm.get('tache').touched)">
+              <!--<div *ngIf="timesheetForm.get('tache').hasError(champ_validation.input[0].type) && (timesheetForm.get('tache').dirty || timesheetForm.get('tache').touched)">
                 <p class="error_field">{{champ_validation.input[0].message}}</p>
-              </div>
+              </div>-->
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
@@ -136,13 +136,13 @@
                                 <div class="col">
                                   <mat-form-field class="example-full-width">
                                       <mat-label>Projet</mat-label>
-                                      <input matInput formControlName="projet" id="m.projet"  value="{{m.tache}}" required>
+                                      <input matInput formControlName="projet" id="m.projet"  value="{{m.tache}}">
                                   </mat-form-field>
                                 </div>
                                 <div class="col">
                                     <mat-form-field class="example-full-width">
                                         <mat-label>Tâche</mat-label>
-                                        <input matInput formControlName="tache" id="m.tache"  value="{{m.tache}}" required>
+                                        <input matInput formControlName="tache" id="m.tache"  value="{{m.tache}}">
                                     </mat-form-field>
                                 </div>
                               <div class="col">
@@ -199,13 +199,13 @@
                               <div class="col">
                                 <mat-form-field class="example-full-width">
                                     <mat-label>Projet</mat-label>
-                                    <input matInput formControlName="projet" id="m.projet"  value="{{m.tache}}" required>
+                                    <input matInput formControlName="projet" id="m.projet"  value="{{m.tache}}">
                                 </mat-form-field>
                               </div>
                               <div class="col">
                                   <mat-form-field class="example-full-width">
                                       <mat-label>Tâche</mat-label>
-                                      <input matInput formControlName="tache" id="m.tache"  value="{{m.tache}}" required>
+                                      <input matInput formControlName="tache" id="m.tache"  value="{{m.tache}}">
                                   </mat-form-field>
                               </div>
                               <div class="col">

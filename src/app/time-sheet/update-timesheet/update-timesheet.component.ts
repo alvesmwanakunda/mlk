@@ -75,10 +75,10 @@ ngOnInit(): void {
   this.getUser();
   this.timesheetForm = new FormGroup({
     createdAt:new FormControl("",[Validators.required]),
-    tache:new FormControl("",[Validators.required]),
+    tache:new FormControl("",null),
     heure:new FormControl("",[Validators.required]),
-    projet: new FormControl("", [Validators.required]),
-    user: new FormControl(this.idUser,null),
+    projet: new FormControl("",null),
+    //user: new FormControl(this.idUser,null),
     deplacement: new FormControl('',null),
   });
   this.filterForm = new FormGroup({
@@ -194,7 +194,7 @@ onSubmit(data, idTimesheet) {
 
 saveTime(){
   if (this.timesheetForm.valid){
-    this.timesheetService.addTimeSheet(this.timesheetForm.value).subscribe((res:any)=>{
+    this.timesheetService.addTimeSheet(this.timesheetForm.value, this.idUser).subscribe((res:any)=>{
       this.message='Feuille de temps ajoutée avec succès.';
       this.openSnackBar(this.message);
       this.afterSaveTimesheet(res?.message);
