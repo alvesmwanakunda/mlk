@@ -24,6 +24,10 @@ export class TimesheetService {
   public getTimeSheetAgentByDate(month,year){
     return this.httpClient.get(`${environment.BASE_API_URL}/timesheet/agent/${month}/${year}`)
   }
+
+  public getTimeSheetDonwload(month,year){
+    return this.httpClient.get(`${environment.BASE_API_URL}/timesheet/donwload/excel/${month}/${year}`)
+  }
   
   public addTimeSheet(data, idUser){
     return this.httpClient.post(`${environment.BASE_API_URL}/timesheet/${idUser}`, data)

@@ -7,6 +7,7 @@ import { AuthGuardService } from '../shared/services/auth-guard.service';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { NavbarModule } from '../navbar/navbar.module';
 import { SharedModule } from '../shared/shared.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 export function jwtOptionsFactory() {
   return {
@@ -35,6 +36,8 @@ export function jwtOptionsFactory() {
     NavbarUserModule,
     NavbarModule,
     SharedModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [AuthGuardService],
 })

@@ -20,4 +20,8 @@ export class CountriesService {
   getImage():Observable<any>{
     return this.http.get<any>('assets/image.json')
   }
+
+  getMonth():Observable<any>{
+    return this.http.get<any>('assets/month.json')
+  }
 }
