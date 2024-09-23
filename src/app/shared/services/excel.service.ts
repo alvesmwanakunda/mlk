@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { saveAs} from 'file-saver';
+import * as ExcelJS from 'exceljs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +12,99 @@ export class ExcelService {
   constructor() { }
 
 
-
   generateExcelTimeSheet(data: any[], month: number, year: number): void {
+    const workbook = new ExcelJS.Workbook();
+  
+    data.forEach((userGroup) => {
+      // Remplacer "/" par un tiret "-" ou un espace
+      const safeSheetTitle = `Time sheet ${month}-${year} - ${userGroup.user.nom} ${userGroup.user.prenom}`.replace(/[/\\?*:[\]]/g, '');
+      const sheet = workbook.addWorksheet(safeSheetTitle);
+  
+      // Ajouter le titre
+      sheet.addRow([`Time sheet ${month}/${year} pour ${userGroup.user.nom} ${userGroup.user.prenom}`]);
+  
+      // Appliquer le formatage au titre
+      sheet.getCell('A1').font = { bold: true };
+  
+      // Ajouter les en-têtes de colonnes
+      const header = ["Date", "Tâche", "Projet", "Déplacement", "Présence", "Motif", "Type déplacement", "Heures"];
+      sheet.addRow(header).font = { bold: true };
+  
+      // Ajouter les données et appliquer les couleurs selon les motifs
+      userGroup.timesheets.forEach((ts) => {
+        const row = [
+          ts?.dayOfWeek + " " + new Date(ts?.createdAt).toLocaleDateString(),
+          ts?.tache,
+          ts?.projet,
+          ts?.deplacement,
+          ts?.presence,
+          ts?.motifs,
+          ts?.types_deplacement,
+          ts?.heure
+        ];
+        const newRow = sheet.addRow(row);
+  
+        // Appliquer la couleur en fonction du "Motif"
+        if (ts?.motifs) {
+          let fillColor = null;
+          switch (ts.motifs.toLowerCase()) {
+            case 'non justifié':
+              fillColor = 'FFC0CB'; // rose clair
+              break;
+            case 'rcr':
+              fillColor = 'FFFF00'; // jaune
+              break;
+            case 'cp':
+              fillColor = 'ADD8E6'; // bleu clair
+              break;
+            case 'ecole':
+              fillColor = '00FFFF'; // cyan
+              break;
+            case 'arret maladie':
+              fillColor = 'FF69B4'; // rose plus foncé
+              break;
+            case 'enfant malade':
+              fillColor = 'FFD700'; // doré
+              break;
+            case 'déplacement':
+              fillColor = 'FF4500'; // rouge
+              break;
+            default:
+              fillColor = null;
+          }
+          if (fillColor) {
+            newRow.eachCell((cell) => {
+              cell.fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: fillColor }
+              };
+            });
+          }
+        }
+      });
+  
+      // Ajuster la largeur des colonnes pour améliorer la lisibilité
+      sheet.columns.forEach((column) => {
+        let maxColumnWidth = 10; // Largeur minimum par défaut
+        column.eachCell({ includeEmpty: true }, (cell) => {
+          const cellValue = cell.value ? cell.value.toString() : '';
+          maxColumnWidth = Math.max(maxColumnWidth, cellValue.length);
+        });
+        column.width = maxColumnWidth + 2; // Ajouter une marge pour être plus lisible
+      });
+      //console.log(userGroup.timesheets);
+    });
+  
+    // Générer le fichier Excel et l'enregistrer
+   
+    workbook.xlsx.writeBuffer().then((buffer) => {
+      saveAs(new Blob([buffer]), `Timesheets_${month}_${year}.xlsx`);
+    });
+  }
+  
+
+  generateExcelTimeSheets(data: any[], month: number, year: number): void {
     const workbook: XLSX.WorkBook = XLSX.utils.book_new();
 
     data.forEach((userGroup) => {
@@ -19,11 +112,14 @@ export class ExcelService {
       const titleRow = [[sheetTitle]]; // Créer une ligne pour le titre
 
       const sheetData = userGroup.timesheets.map((ts) => ({
-        "Date": new Date(ts.createdAt).toLocaleDateString(),
-        "Tâche": ts.tache,
-        "Heures": ts.heure,
-        "Déplacement": ts.deplacement,
-        "Projet": ts.projet,
+        "Date":ts?.dayOfWeek +" "+new Date(ts?.createdAt).toLocaleDateString(),
+        "Tâche": ts?.tache,
+        "Projet": ts?.projet,
+        "Déplacement": ts?.deplacement,
+        "Présence": ts?.presence,
+        "Motif": ts?.motifs,
+        "Type déplacement": ts?.types_deplacement,
+        "Heures": ts?.heure,
       }));
 
       // Créer une feuille temporaire pour insérer le titre

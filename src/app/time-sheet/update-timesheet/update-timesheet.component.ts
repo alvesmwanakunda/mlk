@@ -33,6 +33,8 @@ timesheetsControl;
 fixedDate:any; 
 selected = 'jour';
 isFilter:boolean=false;
+isPresent:boolean=true;
+isDeplacement:boolean=true
 
 constructor(
   private router: Router,
@@ -78,7 +80,9 @@ ngOnInit(): void {
     tache:new FormControl("",null),
     heure:new FormControl("",[Validators.required]),
     projet: new FormControl("",null),
-    //user: new FormControl(this.idUser,null),
+    motifs:new FormControl("", null),
+    types_deplacement:new FormControl("", null),
+    presence:new FormControl("", null),
     deplacement: new FormControl('',null),
   });
   this.filterForm = new FormGroup({
@@ -105,6 +109,9 @@ getAllTimeSheet(){
         hour:data?.heure,
         projet:data?.projet,
         createdAt:data?.createdAt,
+        motifs:data?.motifs,
+        types_deplacement:data?.types_deplacement,
+        presence:data?.presence,
         deplacement:data?.deplacement
        }));
        this.buildForm(res?.message);        
@@ -124,6 +131,9 @@ buildForm(data){
         heure:new FormControl(data[i].heure,[Validators.required]),
         projet: new FormControl(data[i]?.projet, [Validators.required]),
         deplacement:new FormControl(data[i]?.deplacement, null),
+        motifs:new FormControl(data[i]?.motifs, null),
+        types_deplacement:new FormControl(data[i]?.types_deplacement, null),
+        presence:new FormControl(data[i]?.presence, null),
       })
     )
    })
@@ -138,7 +148,10 @@ afterSaveTimesheet(data){
      hour:data?.heure,
      projet:data?.projet,
      createdAt:data?.createdAt,
-     deplacement:data?.deplacement
+     deplacement:data?.deplacement,
+     motifs:data?.motifs,
+     types_deplacement:data?.types_deplacement,
+     presence:data?.presence,
     }));
     const controlArray = this.updatetimesheetForm.get('formArrayName') as FormArray;
     controlArray.push(
@@ -148,6 +161,9 @@ afterSaveTimesheet(data){
         heure:new FormControl(data?.heure,[Validators.required]),
         projet: new FormControl(data?.projet, [Validators.required]),
         deplacement: new FormControl(data?.deplacement, null),
+        motifs:new FormControl(data?.motifs, null),
+        types_deplacement:new FormControl(data?.types_deplacement, null),
+        presence:new FormControl(data?.presence, null),
       })
     );  
     //console.log("ArrayName", controlArray);        
@@ -165,7 +181,10 @@ afterDeleteTimesheet(index){
      hour:data?.heure,
      projet:data?.projet,
      createdAt:data?.createdAt,
-     deplacement:data?.deplacement
+     deplacement:data?.deplacement,
+     motifs:data?.motifs,
+     types_deplacement:data?.types_deplacement,
+     presence:data?.presence,
     }));
     const controlArray = this.updatetimesheetForm.get('formArrayName') as FormArray;
     controlArray.removeAt(index);
@@ -246,6 +265,23 @@ openDialogDelete(idTime,index){
      }
   })
 }
+
+doSomething(event:any){
+  console.log("Presence", event?.value);
+  if(event?.value=='Présent'){
+   this.isPresent=true;
+  }else{
+   this.isPresent=false;
+  }
+ }
+ doSomethingDeplacement(event:any){
+   console.log("Deplacement", event?.value);
+   if(event?.value=='Non'){
+     this.isDeplacement=true;
+    }else{
+     this.isDeplacement=false;
+    }
+ }
 
 
 }

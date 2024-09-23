@@ -8,6 +8,11 @@
     <div>
        <div>
         <form [formGroup]="timesheetForm">
+          <div style="margin-bottom: 20px;">
+            <div align="right">
+              <button mat-raised-button color="primary" (click)="saveTime();timesheetForm.reset()" [disabled]="timesheetForm.invalid"  cdkFocusInitial>Nouveau</button>
+            </div>
+          </div>
           <div class="row">
             <div class="col">
               <mat-form-field class="example-full-width">
@@ -24,15 +29,6 @@
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <mat-label>Projet</mat-label>
-                <input matInput formControlName="projet">
-              </mat-form-field>
-              <!--<div *ngIf="timesheetForm.get('projet').hasError(champ_validation.input[0].type) && (timesheetForm.get('projet').dirty || timesheetForm.get('projet').touched)">
-                <p class="error_field">{{champ_validation.input[0].message}}</p>
-              </div>-->
-            </div>
-            <div class="col">
-              <mat-form-field class="example-full-width">
                 <mat-label>Tâche</mat-label>
                 <input matInput formControlName="tache">
               </mat-form-field>
@@ -42,36 +38,69 @@
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <mat-label>Deplacement</mat-label>
-                <mat-select matInput formControlName="deplacement">
+                <mat-label>Projet</mat-label>
+                <input matInput formControlName="projet">
+              </mat-form-field>
+              <!--<div *ngIf="timesheetForm.get('projet').hasError(champ_validation.input[0].type) && (timesheetForm.get('projet').dirty || timesheetForm.get('projet').touched)">
+                <p class="error_field">{{champ_validation.input[0].message}}</p>
+              </div>-->
+            </div>
+        
+            <div class="col">
+              <mat-form-field class="example-full-date">
+                <mat-label>Heure</mat-label>
+                <input type="number" matInput formControlName="heure" required>
+              </mat-form-field>
+              <div *ngIf="timesheetForm.get('heure').hasError(champ_validation.input[0].type) && (timesheetForm.get('heure').dirty || timesheetForm.get('heure').touched)">
+                <p class="error_field">{{champ_validation.input[0].message}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-label>Présence</mat-label>
+                <mat-select matInput formControlName="presence" (selectionChange)="doSomething($event)" >
+                  <mat-option value="Présent">Présent</mat-option>
+                  <mat-option value="Absent">Absent</mat-option>
+               </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-label>Déplacement</mat-label>
+                <mat-select matInput formControlName="deplacement" (selectionChange)="doSomethingDeplacement($event)">
                    <mat-option value="Oui">Oui</mat-option>
                    <mat-option value="Non">Non</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
-            <div class="col">
-              <div class="row">
-                <div class="col-7">
-                  <mat-form-field class="example-full-date">
-                    <mat-label>Heure</mat-label>
-                    <input type="number" matInput formControlName="heure" required>
-                  </mat-form-field>
-                  <div *ngIf="timesheetForm.get('heure').hasError(champ_validation.input[0].type) && (timesheetForm.get('heure').dirty || timesheetForm.get('heure').touched)">
-                    <p class="error_field">{{champ_validation.input[0].message}}</p>
-                  </div>
-                </div>
-                <div class="col-5">
-                  <div style="padding-top:13px;">
-                    <button mat-raised-button color="primary" (click)="saveTime();timesheetForm.reset()" [disabled]="timesheetForm.invalid"  cdkFocusInitial>Nouveau</button>
-                  </div>
-                </div>
-              </div>
+            <div class="col" *ngIf="!isPresent">
+              <mat-form-field class="example-full-width" >
+                <mat-label>Motif</mat-label>
+                <mat-select matInput formControlName="motifs">
+                   <mat-option value="Non justifié">Non justifié</mat-option>
+                   <mat-option value="RCR">RCR</mat-option>
+                   <mat-option value="CP">CP</mat-option>
+                   <mat-option value="Ecole">Ecole</mat-option>
+                   <mat-option value="Arret maladie">Arret maladie</mat-option>
+                   <mat-option value="Enfant maladie">Enfant malade</mat-option>
+                   <mat-option value="Déplacement">Déplacement</mat-option>
+                </mat-select>
+              </mat-form-field>
             </div>
-            <!--<div class="col-2">
-              <div style="padding-top:21px;">
-                <button mat-raised-button color="primary" (click)="saveTime();timesheetForm.reset()" [disabled]="timesheetForm.invalid"  cdkFocusInitial>Nouveau</button>
-              </div>
-            </div>-->
+
+            <div class="col" *ngIf="!isDeplacement">
+              <mat-form-field class="example-full-width">
+                <mat-label>Type déplacement</mat-label>
+                <mat-select matInput formControlName="types_deplacement">
+                   <mat-option value="Matin">Matin</mat-option>
+                   <mat-option value="Midi">Midi</mat-option>
+                   <mat-option value="Soir">Soir</mat-option>
+                   <mat-option value="Journée">Journée</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>  
           </div>
         </form>
        </div>
@@ -109,9 +138,9 @@
             <thead>
               <tr>
                 <th scope="col" class="th-devis" style="text-align: center;">Date</th>
-                <th scope="col" class="th-devis" style="text-align: center;">Projet</th>
                 <th scope="col" class="th-devis" style="text-align: right;">Tâche</th>
-                <th scope="col" class="th-devis" style="text-align: right;">Deplacement</th>
+                <th scope="col" class="th-devis" style="text-align: center;">Projet</th>
+                <!--<th scope="col" class="th-devis" style="text-align: right;">Deplacement</th>-->
                 <th scope="col" class="th-devis" style="text-align: right;">Heure</th>
                 <th scope="col" class="th-devis" style="text-align: right;">Action</th>
               </tr>
@@ -135,17 +164,18 @@
                                 </div>
                                 <div class="col">
                                   <mat-form-field class="example-full-width">
+                                      <mat-label>Tâche</mat-label>
+                                      <input matInput formControlName="tache" id="m.tache"  value="{{m.tache}}">
+                                  </mat-form-field>
+                               </div>
+                                <div class="col">
+                                  <mat-form-field class="example-full-width">
                                       <mat-label>Projet</mat-label>
-                                      <input matInput formControlName="projet" id="m.projet"  value="{{m.tache}}">
+                                      <input matInput formControlName="projet" id="m.projet"  value="{{m.projet}}">
                                   </mat-form-field>
                                 </div>
-                                <div class="col">
-                                    <mat-form-field class="example-full-width">
-                                        <mat-label>Tâche</mat-label>
-                                        <input matInput formControlName="tache" id="m.tache"  value="{{m.tache}}">
-                                    </mat-form-field>
-                                </div>
-                              <div class="col">
+                               
+                              <!--<div class="col">
                                 <mat-form-field class="example-full-width">
                                   <mat-label>Deplacement</mat-label>
                                   <mat-select matInput formControlName="deplacement" id="m.deplacement"  value="{{m.deplacement}}">
@@ -153,7 +183,7 @@
                                      <mat-option value="Non">Non</mat-option>
                                   </mat-select>
                                 </mat-form-field>
-                              </div>
+                              </div>-->
                               <div class="col">
                                 <div class="row">
                                   <div class="col-6">
@@ -175,8 +205,53 @@
                                </div>
                               </div>
                             </div>
-    
+                            <div class="row">
+                              <div class="col-2">
+                                <mat-form-field class="example-full-width">
+                                  <mat-label>Présence</mat-label>
+                                  <mat-select matInput formControlName="presence" id="m.projet"  value="{{m.presence}}">
+                                    <mat-option value="Présent">Présent</mat-option>
+                                    <mat-option value="Absent">Absent</mat-option>
+                                 </mat-select>
+                                </mat-form-field>
+                              </div>
+                              <div class="col">
+                                <mat-form-field class="example-full-width">
+                                  <mat-label>Deplacement</mat-label>
+                                  <mat-select matInput formControlName="deplacement" id="m.deplacement"  value="{{m.deplacement}}">
+                                     <mat-option value="Oui">Oui</mat-option>
+                                     <mat-option value="Non">Non</mat-option>
+                                  </mat-select>
+                                </mat-form-field>
+                              </div>
+                              <div class="col">
+                                <mat-form-field class="example-full-width" >
+                                  <mat-label>Motif</mat-label>
+                                  <mat-select matInput formControlName="motifs" id="m.motifs"  value="{{m.motifs}}">
+                                     <mat-option value="Non justifié">Non justifié</mat-option>
+                                     <mat-option value="RCR">RCR</mat-option>
+                                     <mat-option value="CP">CP</mat-option>
+                                     <mat-option value="Ecole">Ecole</mat-option>
+                                     <mat-option value="Arret maladie">Arret maladie</mat-option>
+                                     <mat-option value="Enfant maladie">Enfant malade</mat-option>
+                                     <mat-option value="Déplacement">Déplacement</mat-option>
+                                  </mat-select>
+                                </mat-form-field>
+                              </div>
+                            <div class="col">
+                              <mat-form-field class="example-full-width">
+                                <mat-label>Type déplacement</mat-label>
+                                <mat-select matInput formControlName="types_deplacement" id="m.types_deplacement"  value="{{m.types_deplacement}}">
+                                   <mat-option value="Matin">Matin</mat-option>
+                                   <mat-option value="Midi">Midi</mat-option>
+                                   <mat-option value="Soir">Soir</mat-option>
+                                   <mat-option value="Journée">Journée</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                            </div>
+                            </div>
                         </div>
+                        <mat-divider style="margin-bottom: 10px;"></mat-divider>
                     </div>
                 </div>
             </form>
@@ -185,7 +260,7 @@
               <div [formArrayName]="'formArrayName'">
                   <div *ngFor="let m of filteredTimes; let i=index">
                       <div [formGroupName]="i">
-                          <div class="row">
+                          <!--<div class="row">
                               <div class="col-2">
                                   <mat-form-field class="example-full-width">
                                       <mat-label>Date</mat-label>
@@ -238,9 +313,108 @@
                                </div>
                               </div>
                               
+                          </div>-->
+                          <div class="row">
+                              <div class="col-2">
+                                  <mat-form-field class="example-full-width">
+                                      <mat-label>Date</mat-label>
+                                      <input matInput [matDatepicker]="picker1" formControlName="createdAt" id="m.date"  value="{{m.date}}" required>
+                                      <mat-datepicker-toggle matIconSuffix [for]="picker1">
+                                        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                                      </mat-datepicker-toggle>
+                                      <mat-datepicker #picker1></mat-datepicker>
+                                    </mat-form-field>
+                              </div>
+                              <div class="col">
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Tâche</mat-label>
+                                    <input matInput formControlName="tache" id="m.tache"  value="{{m.tache}}">
+                                </mat-form-field>
+                            </div>
+                              <div class="col">
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Projet</mat-label>
+                                    <input matInput formControlName="projet" id="m.projet"  value="{{m.projet}}">
+                                </mat-form-field>
+                              </div>
+                            
+                            <!--<div class="col">
+                              <mat-form-field class="example-full-width">
+                                <mat-label>Deplacement</mat-label>
+                                <mat-select matInput formControlName="deplacement" id="m.deplacement"  value="{{m.deplacement}}">
+                                  <mat-option value="Oui">Oui</mat-option>
+                                  <mat-option value="Non">Non</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                            </div>-->
+                            <div class="col">
+                              <div class="row">
+                                <div class="col-6">
+                                  <mat-form-field class="example-full-date">
+                                      <mat-label>Heure</mat-label>
+                                      <input type="number" matInput formControlName="heure" id="m.heure"  value="{{m.heure}}"  required>
+                                    </mat-form-field>
+                              </div>
+                              <div class="col-6">
+                                <div align="right" style="padding-top: 5px;">
+                                  <button mat-icon-button color="primary"  style="margin-right: 2px;" (click)="onSubmit(i,m?.id)" matTooltip="Modifier">
+                                    <mat-icon>edit</mat-icon>
+                                  </button>
+                                  <button mat-icon-button color="warn" (click)="openDialogDelete(m?.id,i)"  matTooltip="Supprimer">
+                                    <mat-icon>delete</mat-icon>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            </div>
                           </div>
-  
+                          <div class="row">
+                            <div class="col-2">
+                              <mat-form-field class="example-full-width">
+                                <mat-label>Présence</mat-label>
+                                <mat-select matInput formControlName="presence" id="m.projet"  value="{{m.presence}}">
+                                  <mat-option value="Présent">Présent</mat-option>
+                                  <mat-option value="Absent">Absent</mat-option>
+                              </mat-select>
+                              </mat-form-field>
+                            </div>
+                            <div class="col">
+                              <mat-form-field class="example-full-width">
+                                <mat-label>Deplacement</mat-label>
+                                <mat-select matInput formControlName="deplacement" id="m.deplacement"  value="{{m.deplacement}}">
+                                  <mat-option value="Oui">Oui</mat-option>
+                                  <mat-option value="Non">Non</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                            </div>
+                            <div class="col">
+                              <mat-form-field class="example-full-width" >
+                                <mat-label>Motif</mat-label>
+                                <mat-select matInput formControlName="motifs" id="m.motifs"  value="{{m.motifs}}">
+                                  <mat-option value="Non justifié">Non justifié</mat-option>
+                                  <mat-option value="RCR">RCR</mat-option>
+                                  <mat-option value="CP">CP</mat-option>
+                                  <mat-option value="Ecole">Ecole</mat-option>
+                                  <mat-option value="Arret maladie">Arret maladie</mat-option>
+                                  <mat-option value="Enfant maladie">Enfant malade</mat-option>
+                                  <mat-option value="Déplacement">Déplacement</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                            </div>
+                          <div class="col">
+                            <mat-form-field class="example-full-width">
+                              <mat-label>Type déplacement</mat-label>
+                              <mat-select matInput formControlName="types_deplacement" id="m.types_deplacement"  value="{{m.types_deplacement}}">
+                                <mat-option value="Matin">Matin</mat-option>
+                                <mat-option value="Midi">Midi</mat-option>
+                                <mat-option value="Soir">Soir</mat-option>
+                                <mat-option value="Journée">Journée</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                          </div>
                       </div>
+                      <mat-divider style="margin-bottom: 10px;"></mat-divider>
                   </div>
               </div>
           </form>

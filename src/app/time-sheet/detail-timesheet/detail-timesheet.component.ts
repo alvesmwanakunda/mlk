@@ -24,6 +24,8 @@ dataSource =new MatTableDataSource<TimeSheet>();
 user:any;
 timesheetForm: FormGroup;
 message:any;
+isPresent:boolean=true;
+isDeplacement:boolean=true
 
 constructor(
   private matPaginatorIntl:MatPaginatorIntl,
@@ -56,6 +58,9 @@ ngOnInit(): void {
     tache:new FormControl("",null),
     heure:new FormControl("",[Validators.required]),
     //user: new FormControl(this.idUser,null),
+    motifs:new FormControl("", null),
+    types_deplacement:new FormControl("", null),
+    presence:new FormControl("", null),
     projet: new FormControl("", null),
     deplacement: new FormControl("", null),
   })
@@ -119,6 +124,23 @@ openSnackBar(message){
   this._snackBar.open(message, 'Fermer',{
     duration:6000,
   })
+}
+
+doSomething(event:any){
+ console.log("Presence", event?.value);
+ if(event?.value=='Présent'){
+  this.isPresent=true;
+ }else{
+  this.isPresent=false;
+ }
+}
+doSomethingDeplacement(event:any){
+  console.log("Deplacement", event?.value);
+  if(event?.value=='Non'){
+    this.isDeplacement=true;
+   }else{
+    this.isDeplacement=false;
+   }
 }
 
 }
