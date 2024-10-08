@@ -12,6 +12,9 @@ export class ExcelService {
   constructor() { }
 
 
+  
+
+
   generateExcelTimeSheet(data: any[], month: number, year: number): void {
     const workbook = new ExcelJS.Workbook();
   
@@ -29,6 +32,13 @@ export class ExcelService {
       // Ajouter les en-têtes de colonnes
       const header = ["Date", "Tâche", "Projet", "Déplacement", "Présence", "Motif", "Type déplacement", "Heures"];
       sheet.addRow(header).font = { bold: true };
+
+      // initialiser les compteurs pour les totaux
+      let totalWorkingDays=0;
+      let totalSaturdays=0;
+      let totalSundays=0;
+      let totalTravelYes = 0;
+      let totalTravelNo = 0;
   
       // Ajouter les données et appliquer les couleurs selon les motifs
       userGroup.timesheets.forEach((ts) => {
@@ -82,7 +92,57 @@ export class ExcelService {
             });
           }
         }
+        if(ts?.dayOfWeek){
+          if(["Lundi","Mardi","Mercredi","Jeudi","Vendredi"].includes(ts.dayOfWeek)){
+            totalWorkingDays++;
+            console.log("Jour de travail", totalWorkingDays);
+          }else if (ts.dayOfWeek === "Samedi") {
+            totalSaturdays++;
+            console.log("Samedi", totalSaturdays);
+          } else if (ts.dayOfWeek === "Dimanche") {
+              totalSundays++;
+              console.log("Dimanche", totalSundays);
+          }
+        }
+        if (ts?.deplacement === "Oui") {
+          totalTravelYes++;
+          console.log("D", totalTravelYes);
+        } else if (ts?.deplacement === "Non") {
+            totalTravelNo++;
+            console.log("DN", totalTravelNo);
+        }
       });
+
+      sheet.addRow([]); // Ligne vide avant les totaux
+      sheet.addRow([
+            'Total', 
+            'Jour semaine',
+            totalWorkingDays,
+      ]);
+      sheet.addRow([
+        '', 
+        'Samedi',
+        totalSaturdays,
+      ]);
+
+      sheet.addRow([
+        '', 
+        'Dimanche',
+        totalSundays,
+      ]);
+      //sheet.addRow([]); // Ligne vide avant les totaux
+      sheet.addRow([
+        '', 
+        'En déplacement',
+        totalTravelYes,
+      ]);
+
+      sheet.addRow([
+        '', 
+        'Pas en déplacement',
+        totalTravelNo,
+      ]);
+
   
       // Ajuster la largeur des colonnes pour améliorer la lisibilité
       sheet.columns.forEach((column) => {
