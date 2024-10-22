@@ -167,9 +167,9 @@ buildForm(data){
     controlArray.push(
       this.formBuilder.group({
         createdAt:new FormControl(data[i].createdAt,[Validators.required]),
-        tache:new FormControl(data[i].tache,[Validators.required]),
+        tache:new FormControl(data[i].tache,null),
         heure:new FormControl(data[i].heure,[Validators.required]),
-        projet: new FormControl(data[i]?.projet, [Validators.required]),
+        projet: new FormControl(data[i]?.projet, null),
         deplacement:new FormControl(data[i]?.deplacement, null),
         motifs:new FormControl(data[i]?.motifs, null),
         types_deplacement:new FormControl(data[i]?.types_deplacement, null),
@@ -197,9 +197,9 @@ afterSaveTimesheet(data){
     controlArray.push(
       this.formBuilder.group({
         createdAt:new FormControl(data?.createdAt,[Validators.required]),
-        tache:new FormControl(data?.tache,[Validators.required]),
+        tache:new FormControl(data?.tache,null),
         heure:new FormControl(data?.heure,[Validators.required]),
-        projet: new FormControl(data?.projet, [Validators.required]),
+        projet: new FormControl(data?.projet, null),
         deplacement: new FormControl(data?.deplacement, null),
         motifs:new FormControl(data?.motifs, null),
         types_deplacement:new FormControl(data?.types_deplacement, null),
