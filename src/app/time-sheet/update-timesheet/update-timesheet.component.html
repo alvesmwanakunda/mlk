@@ -106,7 +106,53 @@
        </div>
        <mat-divider style="margin-bottom: 15px;"></mat-divider>
 
-       <div>
+       <div [hidden]="isUpdate">
+        <div style="margin-bottom: 10px;">
+          <div align="right"> 
+            <button mat-raised-button color="accent" type="button" (click)="isCheckingUpdate()" >Modifier les lignes</button>
+          </div>
+        </div>
+          <table mat-table [dataSource]="dataSource">
+            <!-- Name Column -->
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef class="box-header"> Date </th>
+              <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.date}}</td>
+            </ng-container>
+      
+            <!-- Weight Column -->
+            <ng-container matColumnDef="task">
+              <th mat-header-cell *matHeaderCellDef class="box-header"> Tâche </th>
+              <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">  {{element?.task}}  </td>
+            </ng-container>
+      
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="project">
+              <th mat-header-cell *matHeaderCellDef class="box-header">Projet</th>
+              <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"> {{element?.projet}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="deplacement">
+              <th mat-header-cell *matHeaderCellDef class="box-header">Deplacement</th>
+              <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"> {{element?.deplacement}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="user">
+              <th mat-header-cell *matHeaderCellDef class="box-header">Responsable</th>
+              <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"> {{element?.responsable?.nom}} {{element?.responsable?.prenom}} </td>
+            </ng-container>
+      
+      
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+      
+          <mat-paginator [pageSizeOptions]="[10, 20]"
+                        showFirstLastButtons
+                        aria-label="Select page of periodic elements">
+          </mat-paginator>
+       </div>
+
+       <div [hidden]="!isUpdate">
         <form [formGroup]="filterForm">
           <div class="row" style="margin-bottom: 10px;">
             <div class="col">
@@ -128,7 +174,7 @@
                <div style="padding-top:21px;"> 
                  <button mat-raised-button color="primary" type="button" (click)="filterTime()" [disabled]="filterForm.invalid" cdkFocusInitial style="margin-right: 10px;">Filtre</button>
                  <button mat-raised-button color="warn" type="button" (click)="isCheckAllTime()" *ngIf="isFilter">Tous</button>
-
+                 <button mat-raised-button color="accent" type="button" (click)="isCheckingUpdate()">Tableau</button>
                </div>
              </div>
             </div>
@@ -419,7 +465,6 @@
               </div>
           </form>
         </div>
-            
        </div>
     </div>
 </app-navbar>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,AfterViewInit,ViewChild } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
 import { TimesheetService } from 'src/app/shared/services/timesheet.service';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
@@ -7,6 +7,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DeleteTimesheetComponent } from '../delete-timesheet/delete-timesheet.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MonthService } from 'src/app/shared/services/month.service';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { TimeSheet } from 'src/app/shared/interfaces/timeSheet.model';
 
 
 
@@ -16,7 +20,7 @@ import { MonthService } from 'src/app/shared/services/month.service';
   templateUrl: './update-timesheet.component.html',
   styleUrls: ['./update-timesheet.component.scss']
 })
-export class UpdateTimesheetComponent implements OnInit {
+export class UpdateTimesheetComponent implements OnInit, AfterViewInit {
 
 user:any;
 month:any;
@@ -28,13 +32,18 @@ updatetimesheetForm: FormGroup;
 message:any;
 idUser:any;
 timesheet:any=[];
+timesheets:any=[];
 filteredTimes:any = [];
 timesheetsControl;
 fixedDate:any; 
 selected = 'jour';
 isFilter:boolean=false;
 isPresent:boolean=true;
-isDeplacement:boolean=true
+isDeplacement:boolean=true;
+displayedColumns:string[]=['date','task','project','deplacement','user'];
+dataSource =new MatTableDataSource<TimeSheet>();
+@ViewChild(MatPaginator) paginator: MatPaginator;
+isUpdate:boolean=false;
 
 constructor(
   private router: Router,
@@ -44,7 +53,8 @@ constructor(
   private _snackBar:MatSnackBar,
   private formBuilder: FormBuilder,
   public dialog: MatDialog,
-  private monthService: MonthService
+  private monthService: MonthService,
+  private matPaginatorIntl:MatPaginatorIntl,
 ){
   this.route.params.subscribe((data:any)=>{
     this.idUser = data?.id;
@@ -72,8 +82,10 @@ champ_validation={
 }
 
 ngOnInit(): void {
-  
+
+  this.matPaginatorIntl.itemsPerPageLabel="TimeSheet par page";
   this.getAllTimeSheet();
+  this.getAllTimeSheets();
   this.getUser();
   this.timesheetForm = new FormGroup({
     createdAt:new FormControl("",[Validators.required]),
@@ -92,12 +104,40 @@ ngOnInit(): void {
   
 }
 
+ngAfterViewInit(){
+  this.dataSource.paginator=this.paginator;
+}
+
 getUser(){
   this.authService.getEmploye(this.idUser).subscribe((res:any)=>{
      this.user = res?.message;
   },(error) => {
     console.log("Erreur lors de la récupération des données", error);
    })
+}
+
+getAllTimeSheets(){
+  this.timesheetService.getTimeSheetUserByDate(this.idUser,this.month,this.year).subscribe((res:any)=>{
+    this.timesheets = res.message;
+    this.dataSource.data = this.timesheets.map((data)=>({
+      id:data._id,
+      date: new Date(data?.createdAt).toISOString().split('T')[0],
+      task:data?.tache,
+      hour:data?.heure,
+      projet:data?.projet,
+      createdAt:data?.createdAt,
+      motifs:data?.motifs,
+      types_deplacement:data?.types_deplacement,
+      presence:data?.presence,
+      deplacement:data?.deplacement,
+      responsable: data?.responsable,
+     })) as TimeSheet[]
+
+    console.log("Fichiers", this.dataSource.data);
+
+  },(error)=>{
+    console.log("Erreur lors de la récupération des données", error);
+  })
 }
 
 getAllTimeSheet(){
@@ -203,6 +243,7 @@ onSubmit(data, idTimesheet) {
       this.message='Feuille de temps modifée avec succès.';
       this.openSnackBar(this.message);
       this.getAllTimeSheet();
+      this.getAllTimeSheets();
     },(error)=>{
       this.message="Une erreur s'est produite veuillez réessayer.";
        this.openSnackBar(this.message);
@@ -217,6 +258,7 @@ saveTime(){
       this.message='Feuille de temps ajoutée avec succès.';
       this.openSnackBar(this.message);
       this.afterSaveTimesheet(res?.message);
+      this.getAllTimeSheets();
     },(error)=>{
       this.message="Une erreur s'est produite veuillez réessayer.";
        this.openSnackBar(this.message);
@@ -281,6 +323,14 @@ doSomething(event:any){
     }else{
      this.isDeplacement=false;
     }
+ }
+
+ isCheckingUpdate(){
+  if(this.isUpdate){
+      this.isUpdate=false
+  }else{
+      this.isUpdate=true
+  }
  }
 
 

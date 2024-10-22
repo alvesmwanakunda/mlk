@@ -46,6 +46,9 @@
                 </div>
               </div>
               <div class="col">
+                <div *ngIf="conge?.responsable">
+                  <p>Responsable : {{conge?.responsable?.prenom}} {{conge?.responsable?.nom}}</p>
+                </div>
                 <div *ngIf="!conge?.signature_entreprise">
                   <p>Veuillez signer avant de valider ou de refuser</p>
                   <mat-divider style="margin-bottom: 10px;"></mat-divider>
@@ -89,6 +92,8 @@
                <div class="col">
                 <p style="font-weight: 600;color: #0477c9;">Status : {{conge?.status}}</p>
                 <p style="font-weight: 600;color: #c90442;" *ngIf="conge?.status=='Refusée'">Motif : {{conge?.motif}}</p>
+                <p style="font-weight: 600;color: #000000;" *ngIf="conge?.responsable">Responsable : {{conge?.responsable?.prenom}} {{conge?.responsable?.nom}}</p>
+
                </div>
                <div class="col">
                 <div align="right" *ngIf="conge?.status=='En attente de validation'">

@@ -8,6 +8,10 @@ export interface Conges {
       nom:string,
       prenom:string,
     };
+    responsable:{
+      nom:string,
+      prenom:string,
+    };
     types:string;
     status:string;
     jours:string;
