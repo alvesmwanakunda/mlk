@@ -13,7 +13,7 @@ import { EntreprisesService } from '../shared/services/entreprises.service';
 })
 export class CongesComponent implements OnInit, AfterViewInit {
 
-  displayedColumns:string[]=['user','debut','fin','type','status','action'];
+  displayedColumns:string[]=['user','demande','valide','type','status','action'];
   dataSource =new MatTableDataSource<Conges>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   user:any;
@@ -45,6 +45,8 @@ export class CongesComponent implements OnInit, AfterViewInit {
           fin:data?.fin,
           type:data?.types,
           status:data?.status,
+          demande:data?.date_demande,
+          valide:data?.date_signature,
          })) as Conges[]
 
        },(error) => {
