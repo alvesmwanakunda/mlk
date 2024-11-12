@@ -42,11 +42,11 @@
             <div class="col">
               <mat-form-field class="example-full-date">
                 <mat-label>Heure</mat-label>
-                <input type="number" matInput formControlName="heure" required>
+                <input type="number" matInput formControlName="heure">
               </mat-form-field>
-              <div *ngIf="timesheetForm.get('heure').hasError(champ_validation.input[0].type) && (timesheetForm.get('heure').dirty || timesheetForm.get('heure').touched)">
+              <!--<div *ngIf="timesheetForm.get('heure').hasError(champ_validation.input[0].type) && (timesheetForm.get('heure').dirty || timesheetForm.get('heure').touched)">
                 <p class="error_field">{{champ_validation.input[0].message}}</p>
-              </div>
+              </div>-->
             </div>
           </div>
           <div class="row">

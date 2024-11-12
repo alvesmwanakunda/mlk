@@ -90,7 +90,7 @@ ngOnInit(): void {
   this.timesheetForm = new FormGroup({
     createdAt:new FormControl("",[Validators.required]),
     tache:new FormControl("",null),
-    heure:new FormControl("",[Validators.required]),
+    heure:new FormControl("",null),
     projet: new FormControl("",null),
     motifs:new FormControl("", null),
     types_deplacement:new FormControl("", null),
@@ -168,7 +168,7 @@ buildForm(data){
       this.formBuilder.group({
         createdAt:new FormControl(data[i].createdAt,[Validators.required]),
         tache:new FormControl(data[i].tache,null),
-        heure:new FormControl(data[i].heure,[Validators.required]),
+        heure:new FormControl(data[i].heure,null),
         projet: new FormControl(data[i]?.projet, null),
         deplacement:new FormControl(data[i]?.deplacement, null),
         motifs:new FormControl(data[i]?.motifs, null),
@@ -198,7 +198,7 @@ afterSaveTimesheet(data){
       this.formBuilder.group({
         createdAt:new FormControl(data?.createdAt,[Validators.required]),
         tache:new FormControl(data?.tache,null),
-        heure:new FormControl(data?.heure,[Validators.required]),
+        heure:new FormControl(data?.heure,null),
         projet: new FormControl(data?.projet, null),
         deplacement: new FormControl(data?.deplacement, null),
         motifs:new FormControl(data?.motifs, null),

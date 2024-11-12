@@ -56,7 +56,7 @@ ngOnInit(): void {
   this.timesheetForm = new FormGroup({
     createdAt:new FormControl("",[Validators.required]),
     tache:new FormControl("",null),
-    heure:new FormControl("",[Validators.required]),
+    heure:new FormControl("",null),
     //user: new FormControl(this.idUser,null),
     motifs:new FormControl("", null),
     types_deplacement:new FormControl("", null),

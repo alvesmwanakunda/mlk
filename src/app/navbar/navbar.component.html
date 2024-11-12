@@ -206,7 +206,7 @@
                       </a>
                     </div>
                   </div>
-                  <div *ngIf="user?.user?.role=='admin'">
+                  <div *ngIf="user?.user?.role!='agent'">
                     <div style="position:relative;">
                       <a class="mlka-menuBtn mlka-menuBtn1" [routerLink]="['/devis']" [routerLinkActive]="['activeMenus']">
                         <span class="mlka-menuspan">
