@@ -1,0 +1,106 @@
+<mat-dialog-content class="mat-typography">
+    <div class="text-center" style="padding-top: 30px;">
+
+        <form [formGroup]="timesheetForm" *ngIf="timeSheet">
+
+            <div class="row">
+                <div class="col-6">
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Date</mat-label>
+                        <input matInput [matDatepicker]="picker1" formControlName="createdAt" [ngModel]="createdAt" required>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker1">
+                          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                      </mat-form-field>
+                </div>
+                <div class="col-3">
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Début</mat-label>
+                        <input matInput formControlName="heureDebut" [ngModel]="timeSheet.heureDebut">
+                    </mat-form-field>
+                </div>
+                <div class="col-3">
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Fin</mat-label>
+                        <input matInput formControlName="heureFin" [ngModel]="timeSheet.heureFin">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Projet</mat-label>
+                        <input matInput formControlName="projet" [ngModel]="timeSheet.projet">
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Tâche</mat-label>
+                        <input matInput formControlName="tache" [ngModel]="timeSheet.tache">
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Nombre Heure</mat-label>
+                        <input matInput formControlName="heure" [ngModel]="timeSheet.heure">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2">
+                    <mat-form-field class="example-full-width">
+                      <mat-label>Présence</mat-label>
+                      <mat-select matInput formControlName="presence" [ngModel]="timeSheet.presence">
+                        <mat-option value="Présent">Présent</mat-option>
+                        <mat-option value="Absent">Absent</mat-option>
+                     </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field class="example-full-width">
+                      <mat-label>Deplacement</mat-label>
+                      <mat-select matInput formControlName="deplacement" [ngModel]="timeSheet.deplacement">
+                         <mat-option value="Oui">Oui</mat-option>
+                         <mat-option value="Non">Non</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field class="example-full-width" >
+                      <mat-label>Motif</mat-label>
+                      <mat-select matInput formControlName="motifs" [ngModel]="timeSheet.motifs">
+                         <mat-option value="Non justifié">Non justifié</mat-option>
+                         <mat-option value="RCR">RCR</mat-option>
+                         <mat-option value="CP">CP</mat-option>
+                         <mat-option value="Ecole">Ecole</mat-option>
+                         <mat-option value="Arret maladie">Arret maladie</mat-option>
+                         <mat-option value="Enfant maladie">Enfant malade</mat-option>
+                         <mat-option value="Déplacement">Déplacement</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field class="example-full-width">
+                      <mat-label>Type déplacement</mat-label>
+                      <mat-select matInput formControlName="types_deplacement" [ngModel]="timeSheet.types_deplacement">
+                         <mat-option value="Matin">Matin</mat-option>
+                         <mat-option value="Midi">Midi</mat-option>
+                         <mat-option value="Soir">Soir</mat-option>
+                         <mat-option value="Journée">Journée</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+            </div>
+
+        </form>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="center">
+     <button mat-button mat-dialog-close style="margin-right: 15px;">Fermer</button>
+
+     <button mat-button cdkFocusInitial (click)="onSubmit()" style=" background: #048a2e !important;color:#fff">Valider</button>
+  </mat-dialog-actions>
+  
+  
+  

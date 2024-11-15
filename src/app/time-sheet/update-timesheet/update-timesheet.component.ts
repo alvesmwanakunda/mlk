@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@ang
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DeleteTimesheetComponent } from '../delete-timesheet/delete-timesheet.component';
+import { DialogUpdateTimesheetComponent } from '../dialog-update-timesheet/dialog-update-timesheet.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MonthService } from 'src/app/shared/services/month.service';
 import { MatPaginator } from '@angular/material/paginator';
@@ -40,7 +41,7 @@ selected = 'jour';
 isFilter:boolean=false;
 isPresent:boolean=true;
 isDeplacement:boolean=true;
-displayedColumns:string[]=['date','task','project','deplacement','user'];
+displayedColumns:string[]=['date','debut','fin','project','user','action'];
 dataSource =new MatTableDataSource<TimeSheet>();
 @ViewChild(MatPaginator) paginator: MatPaginator;
 isUpdate:boolean=false;
@@ -84,7 +85,7 @@ champ_validation={
 ngOnInit(): void {
 
   this.matPaginatorIntl.itemsPerPageLabel="TimeSheet par page";
-  this.getAllTimeSheet();
+  //this.getAllTimeSheet();
   this.getAllTimeSheets();
   this.getUser();
   this.timesheetForm = new FormGroup({
@@ -124,6 +125,8 @@ getAllTimeSheets(){
       date: new Date(data?.createdAt).toISOString().split('T')[0],
       task:data?.tache,
       hour:data?.heure,
+      debut:data?.heureDebut,
+      fin:data?.heureFin,
       projet:data?.projet,
       createdAt:data?.createdAt,
       motifs:data?.motifs,
@@ -140,7 +143,7 @@ getAllTimeSheets(){
   })
 }
 
-getAllTimeSheet(){
+/*getAllTimeSheet(){
      this.timesheetService.getTimeSheetUserByDate(this.idUser,this.month,this.year).subscribe((res:any)=>{
        this.timesheet = res?.message.map((data)=>({
         id:data._id,
@@ -250,14 +253,14 @@ onSubmit(data, idTimesheet) {
        console.log(error);
     })
   }
-}
+}*/
 
 saveTime(){
   if (this.timesheetForm.valid){
     this.timesheetService.addTimeSheet(this.timesheetForm.value, this.idUser).subscribe((res:any)=>{
       this.message='Feuille de temps ajoutée avec succès.';
       this.openSnackBar(this.message);
-      this.afterSaveTimesheet(res?.message);
+      //this.afterSaveTimesheet(res?.message);
       this.getAllTimeSheets();
     },(error)=>{
       this.message="Une erreur s'est produite veuillez réessayer.";
@@ -267,7 +270,7 @@ saveTime(){
   }
 }
 
-filterTime(){
+/*filterTime(){
   if (this.filterForm.valid){
     const startDate = new Date(this.filterForm.get('startDate').value);
     const endDate = this.filterForm.get('endDate').value ? new Date(this.filterForm.get('endDate').value) : null;
@@ -289,7 +292,7 @@ isCheckAllTime(){
     this.isFilter=false,
     this.getAllTimeSheet();
   }
-}
+}*/
 
 openSnackBar(message){
   this._snackBar.open(message, 'Fermer',{
@@ -297,13 +300,24 @@ openSnackBar(message){
   })
 }
 
-openDialogDelete(idTime,index){
-  console.log("Index", index);
+openDialogDelete(idTime,index?){
+  //console.log("Index", index);
   const dialogRef = this.dialog.open(DeleteTimesheetComponent,{width:'30%',data:{id:idTime}});
   dialogRef.afterClosed().subscribe((result:any)=>{
      if(result){
-      //this.router.navigate(['dashboard']);
-      this.afterDeleteTimesheet(index);
+      this.getAllTimeSheets();
+      //this.afterDeleteTimesheet(index);
+     }
+  })
+}
+
+openDialogUpdate(idTime){
+  //console.log("Index", index);
+  const dialogRef = this.dialog.open(DialogUpdateTimesheetComponent,{width:'80%',data:{id:idTime}});
+  dialogRef.afterClosed().subscribe((result:any)=>{
+     if(result){
+      this.getAllTimeSheets();
+      //this.afterDeleteTimesheet(index);
      }
   })
 }
@@ -325,13 +339,13 @@ doSomething(event:any){
     }
  }
 
- isCheckingUpdate(){
+ /*isCheckingUpdate(){
   if(this.isUpdate){
       this.isUpdate=false
   }else{
       this.isUpdate=true
   }
- }
+ }*/
 
 
 }

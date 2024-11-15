@@ -106,23 +106,28 @@
        </div>
        <mat-divider style="margin-bottom: 15px;"></mat-divider>
 
-       <div [hidden]="isUpdate">
-        <div style="margin-bottom: 10px;">
+       <div>
+        <!--<div style="margin-bottom: 10px;">
           <div align="right"> 
             <button mat-raised-button color="accent" type="button" (click)="isCheckingUpdate()" >Modifier les lignes</button>
           </div>
-        </div>
+        </div>-->
           <table mat-table [dataSource]="dataSource">
             <!-- Name Column -->
             <ng-container matColumnDef="date">
               <th mat-header-cell *matHeaderCellDef class="box-header"> Date </th>
-              <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.date}}</td>
+              <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.date | date: 'dd/MM/yyyy'}}</td>
             </ng-container>
       
             <!-- Weight Column -->
-            <ng-container matColumnDef="task">
-              <th mat-header-cell *matHeaderCellDef class="box-header"> Tâche </th>
-              <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">  {{element?.task}}  </td>
+            <ng-container matColumnDef="debut">
+              <th mat-header-cell *matHeaderCellDef class="box-header"> Heure début </th>
+              <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">  {{element?.debut}} min  </td>
+            </ng-container>
+
+            <ng-container matColumnDef="fin">
+              <th mat-header-cell *matHeaderCellDef class="box-header"> Heure fin </th>
+              <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">  {{element?.fin}} min  </td>
             </ng-container>
       
             <!-- Symbol Column -->
@@ -131,14 +136,21 @@
               <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"> {{element?.projet}} </td>
             </ng-container>
 
-            <ng-container matColumnDef="deplacement">
-              <th mat-header-cell *matHeaderCellDef class="box-header">Deplacement</th>
-              <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"> {{element?.deplacement}} </td>
-            </ng-container>
-
             <ng-container matColumnDef="user">
               <th mat-header-cell *matHeaderCellDef class="box-header">Responsable</th>
               <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"> {{element?.responsable?.nom}} {{element?.responsable?.prenom}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef class="box-header">Actions</th>
+              <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">  
+                <button mat-icon-button color="primary"  style="margin-right: 2px;" (click)="openDialogUpdate(element?.id)" matTooltip="Modifier">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="openDialogDelete(element?.id)"  matTooltip="Supprimer">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
             </ng-container>
       
       
@@ -152,7 +164,7 @@
           </mat-paginator>
        </div>
 
-       <div [hidden]="!isUpdate">
+       <!--<div [hidden]="!isUpdate">
         <form [formGroup]="filterForm">
           <div class="row" style="margin-bottom: 10px;">
             <div class="col">
@@ -165,7 +177,6 @@
                  </mat-date-range-input>
                  <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
                  <mat-date-range-picker #dp3 disabled="false" [startAt]="fixedDate"></mat-date-range-picker>
-                 <!--<mat-datepicker #dp3 disabled="false" [startAt]="fixedDate"></mat-datepicker>-->
                </mat-form-field>
               </p>
             </div>
@@ -186,7 +197,6 @@
                 <th scope="col" class="th-devis" style="text-align: center;">Date</th>
                 <th scope="col" class="th-devis" style="text-align: right;">Tâche</th>
                 <th scope="col" class="th-devis" style="text-align: center;">Projet</th>
-                <!--<th scope="col" class="th-devis" style="text-align: right;">Deplacement</th>-->
                 <th scope="col" class="th-devis" style="text-align: right;">Heure</th>
                 <th scope="col" class="th-devis" style="text-align: right;">Action</th>
               </tr>
@@ -220,16 +230,6 @@
                                       <input matInput formControlName="projet" id="m.projet"  value="{{m.projet}}">
                                   </mat-form-field>
                                 </div>
-                               
-                              <!--<div class="col">
-                                <mat-form-field class="example-full-width">
-                                  <mat-label>Deplacement</mat-label>
-                                  <mat-select matInput formControlName="deplacement" id="m.deplacement"  value="{{m.deplacement}}">
-                                     <mat-option value="Oui">Oui</mat-option>
-                                     <mat-option value="Non">Non</mat-option>
-                                  </mat-select>
-                                </mat-form-field>
-                              </div>-->
                               <div class="col">
                                 <div class="row">
                                   <div class="col-6">
@@ -306,60 +306,6 @@
               <div [formArrayName]="'formArrayName'">
                   <div *ngFor="let m of filteredTimes; let i=index">
                       <div [formGroupName]="i">
-                          <!--<div class="row">
-                              <div class="col-2">
-                                  <mat-form-field class="example-full-width">
-                                      <mat-label>Date</mat-label>
-                                      <input matInput [matDatepicker]="picker1" formControlName="createdAt" id="m.date"  value="{{m.date}}" required>
-                                      <mat-datepicker-toggle matIconSuffix [for]="picker1">
-                                        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-                                      </mat-datepicker-toggle>
-                                      <mat-datepicker #picker1></mat-datepicker>
-                                    </mat-form-field>
-                              </div>
-                              <div class="col">
-                                <mat-form-field class="example-full-width">
-                                    <mat-label>Projet</mat-label>
-                                    <input matInput formControlName="projet" id="m.projet"  value="{{m.tache}}">
-                                </mat-form-field>
-                              </div>
-                              <div class="col">
-                                  <mat-form-field class="example-full-width">
-                                      <mat-label>Tâche</mat-label>
-                                      <input matInput formControlName="tache" id="m.tache"  value="{{m.tache}}">
-                                  </mat-form-field>
-                              </div>
-                              <div class="col">
-                                <mat-form-field class="example-full-width">
-                                  <mat-label>Deplacement</mat-label>
-                                  <mat-select matInput formControlName="deplacement" id="m.deplacement"  value="{{m.deplacement}}">
-                                     <mat-option value="Oui">Oui</mat-option>
-                                     <mat-option value="Non">Non</mat-option>
-                                  </mat-select>
-                                </mat-form-field>
-                              </div>
-                              <div class="col">
-                                <div class="row">
-                                  <div class="col-6">
-                                     <mat-form-field class="example-full-date">
-                                         <mat-label>Heure</mat-label>
-                                         <input type="number" matInput formControlName="heure" id="m.heure"  value="{{m.heure}}"  required>
-                                       </mat-form-field>
-                                 </div>
-                                 <div class="col-6">
-                                   <div align="right" style="padding-top: 5px;">
-                                     <button mat-icon-button color="primary"  style="margin-right: 2px;" (click)="onSubmit(i,m?.id)" matTooltip="Modifier">
-                                       <mat-icon>edit</mat-icon>
-                                     </button>
-                                     <button mat-icon-button color="warn" (click)="openDialogDelete(m?.id,i)"  matTooltip="Supprimer">
-                                       <mat-icon>delete</mat-icon>
-                                     </button>
-                                   </div>
-                                 </div>
-                               </div>
-                              </div>
-                              
-                          </div>-->
                           <div class="row">
                               <div class="col-2">
                                   <mat-form-field class="example-full-width">
@@ -383,16 +329,6 @@
                                     <input matInput formControlName="projet" id="m.projet"  value="{{m.projet}}">
                                 </mat-form-field>
                               </div>
-                            
-                            <!--<div class="col">
-                              <mat-form-field class="example-full-width">
-                                <mat-label>Deplacement</mat-label>
-                                <mat-select matInput formControlName="deplacement" id="m.deplacement"  value="{{m.deplacement}}">
-                                  <mat-option value="Oui">Oui</mat-option>
-                                  <mat-option value="Non">Non</mat-option>
-                                </mat-select>
-                              </mat-form-field>
-                            </div>-->
                             <div class="col">
                               <div class="row">
                                 <div class="col-6">
@@ -463,8 +399,8 @@
                       <mat-divider style="margin-bottom: 10px;"></mat-divider>
                   </div>
               </div>
-          </form>
+           </form>
         </div>
-       </div>
+       </div>-->
     </div>
 </app-navbar>

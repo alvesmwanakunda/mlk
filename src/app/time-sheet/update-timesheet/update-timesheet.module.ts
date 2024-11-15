@@ -10,6 +10,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { TimesheetService } from 'src/app/shared/services/timesheet.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DeleteTimesheetModule } from '../delete-timesheet/delete-timesheet.module';
+import { DialogUpdateTimesheetModule } from '../dialog-update-timesheet/dialog-update-timesheet.module';
 import { MonthService } from 'src/app/shared/services/month.service';
 
 export function jwtOptionsFactory() {
@@ -41,7 +42,8 @@ export function jwtOptionsFactory() {
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    DeleteTimesheetModule
+    DeleteTimesheetModule,
+    DialogUpdateTimesheetModule
   ],
   providers: [AuthGuardService,TimesheetService, MonthService],
   

@@ -9,6 +9,9 @@ export interface TimeSheet {
     deplacement:string;
     projet:string;
     motifs:string;
-    type_deplacement:string;
+    types_deplacement:string;
     presence:string;
+    heureDebut:string;
+    heureFin:string;
+    pause:string
   }
