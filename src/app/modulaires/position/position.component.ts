@@ -10,10 +10,7 @@ import { ModulairesComponent } from '../modulaires.component';
 })
 export class PositionComponent implements OnInit {
 
-  constructor(
-    public dialogRef:MatDialogRef<ModulairesComponent>,
-  ){
-
+  constructor(){
   }
 
   ngOnInit(): void {

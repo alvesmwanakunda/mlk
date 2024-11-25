@@ -171,7 +171,8 @@
           </mat-tab>
           <mat-tab label="Position" *ngIf="user?.user?.role!='user'">
              <div style="padding-top: 20px;">
-              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2618.9424619896226!2d2.5078592757248828!3d48.97361967134805!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e614ffd9cdbd83%3A0x3d2bb5dfb174bbe!2s18%20Pl.%20des%20Nymph%C3%A9as%2C%2093420%20Villepinte%2C%20France!5e0!3m2!1sfr!2ssn!4v1702491580081!5m2!1sfr!2ssn" width="1200" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+              <!--<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2618.9424619896226!2d2.5078592757248828!3d48.97361967134805!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e614ffd9cdbd83%3A0x3d2bb5dfb174bbe!2s18%20Pl.%20des%20Nymph%C3%A9as%2C%2093420%20Villepinte%2C%20France!5e0!3m2!1sfr!2ssn!4v1702491580081!5m2!1sfr!2ssn" width="1200" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>-->
+               <app-position></app-position>
              </div>
           </mat-tab>
           <mat-tab label="Formulaire" *ngIf="user?.user?.role!='user'">

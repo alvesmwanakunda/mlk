@@ -16,14 +16,31 @@
           </div>
          </div>
          <div class="col">
-          <div style="padding-top: 13px;">
-            <button mat-button  class="btn-entreprise" (click)="addModule()"  [disabled]="moduleForm.invalid">VALIDER</button>
+          <div>
+            <mat-form-field class="example-full-width">
+              <mat-label>Position</mat-label>
+              <input matInput formControlName="position">
+            </mat-form-field> 
           </div>
+         </div>
+         <div class="col-2">
+          <div style="padding-top: 14px;">
+            <input type="file" class="file-input" accept='image/*,.pdf' (change)="onFileSelected($event)" #fileUpload>
+            <button type="button" (click)="fileUpload.click()" mat-flat-button color="primary"><i class="fa-solid fa-cloud-arrow-down"></i> charger le plan</button>
+            <p>{{fileName}}</p>
+          </div>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col">
+          <button mat-button  class="btn-entreprise" (click)="addModule()"  [disabled]="moduleForm.invalid">VALIDER</button>
          </div>
       </div>
     </form>
  </div>
-
+ <div style="margin-bottom:15px;">
+   <mat-divider></mat-divider>
+ </div>
  <div>
   <mat-card>
     <mat-card-content>
@@ -32,6 +49,8 @@
           <tr>
             <th style="font-weight: normal;">Projet</th>
             <th style="font-weight: normal;">Date</th>
+            <th style="font-weight: normal;">Position</th>
+            <th style="font-weight: normal;">Plan</th>
             <th style="font-weight: normal;">Supprimer</th>
           </tr>
         </thead>
@@ -39,6 +58,12 @@
           <tr *ngFor="let m of modules">
             <td>{{m?.projet?.projet}}</td>
             <td>{{m?.dateLastUpdate | date:'d MMM y à HH:mm' }}</td>
+            <td>{{m?.position}}</td>
+            <td>
+              <button mat-icon-button (click)="openDialogFile(m?.plan,m?.extension)" *ngIf="m?.plan">
+                <mat-icon>visibility</mat-icon>
+              </button>
+            </td>
             <td>
               <button type="button" class="btn btn-projet-action" matTooltip="Supprimer" (click)="deleteModule(m?._id)"><i class="fa-solid fa-trash btn-icon-projet-delete"></i></button>
             </td>
@@ -50,4 +75,16 @@
   </mat-card>
 
  </div>
+ <div id="snackbar" *ngIf="progress">
+  <br/>
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" [style.width]="progress + '%'">{{progress}}%</div>
+  </div>
+  <br/>
+  <p style="font-size: 12px;" *ngIf="progress<100">Fichier {{fileName}} est en cours de chargement...</p>
+  <p style="font-size: 12px;color: rgb(16, 93, 38);" *ngIf="progress==100">Fichier {{fileName}} est chargé avec succès</p>
+  <p style="font-size: 12px;color:red;" *ngIf="error">
+    Erreur lors du téléchargement du fichier : {{error}}
+  </p>
+</div>
 </div>
