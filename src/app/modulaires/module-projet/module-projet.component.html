@@ -49,7 +49,7 @@
           <tr>
             <th style="font-weight: normal;">Projet</th>
             <th style="font-weight: normal;">Date</th>
-            <th style="font-weight: normal;">Position</th>
+            <!--<th style="font-weight: normal;">Position</th>-->
             <th style="font-weight: normal;">Plan</th>
             <th style="font-weight: normal;">Supprimer</th>
           </tr>
@@ -58,7 +58,7 @@
           <tr *ngFor="let m of modules">
             <td>{{m?.projet?.projet}}</td>
             <td>{{m?.dateLastUpdate | date:'d MMM y à HH:mm' }}</td>
-            <td>{{m?.position}}</td>
+            <!--<td>{{m?.position}}</td>-->
             <td>
               <button mat-icon-button (click)="openDialogFile(m?.plan,m?.extension)" *ngIf="m?.plan">
                 <mat-icon>visibility</mat-icon>
