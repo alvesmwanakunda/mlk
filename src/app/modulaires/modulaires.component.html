@@ -31,7 +31,7 @@
             <app-stock-module></app-stock-module>
           </div>
         </mat-tab>
-        <mat-tab>
+        <mat-tab *ngIf="user?.user?.role!='user'">
           <ng-template mat-tab-label>
             <span matBadge="{{countModules?.preparation}}" matBadgeOverlap="false">En préparation</span>
           </ng-template>
@@ -39,7 +39,7 @@
            <app-prepare-module></app-prepare-module>
           </div>
         </mat-tab>
-        <mat-tab >
+        <mat-tab *ngIf="user?.user?.role!='user'">
           <ng-template mat-tab-label>
             <span matBadge="{{countModules?.pret}}" matBadgeOverlap="false">Prêt à partir</span>
           </ng-template>

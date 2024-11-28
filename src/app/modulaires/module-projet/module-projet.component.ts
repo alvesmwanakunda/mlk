@@ -30,6 +30,7 @@ export class ModuleProjetComponent implements OnInit {
   file:any;
   progress:number;
   error:any;
+  user:any;
 
 
   constructor(
@@ -42,6 +43,7 @@ export class ModuleProjetComponent implements OnInit {
     this.route.params.subscribe((data:any)=>{
       this.idModule = data.id
      });
+     this.user = JSON.parse(localStorage.getItem('user'));
   }
 
   champ_validation={
