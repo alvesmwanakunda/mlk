@@ -39,6 +39,8 @@ export class ExcelService {
       let totalSundays=0;
       let totalTravelYes = 0;
       let totalTravelNo = 0;
+      let nbrHeureDeplacement=0;
+      let nbrHeureNonDeplacement=0;
   
       // Ajouter les données et appliquer les couleurs selon les motifs
       userGroup.timesheets.forEach((ts) => {
@@ -104,12 +106,18 @@ export class ExcelService {
               console.log("Dimanche", totalSundays);
           }
         }
-        if (ts?.deplacement === "Oui") {
+        if (ts?.deplacement === "Oui" &&  ts?.presence!='Absent') {
           totalTravelYes++;
           console.log("D", totalTravelYes);
-        } else if (ts?.deplacement === "Non") {
+        } else if (ts?.deplacement === "Non" &&  ts?.presence!='Absent') {
             totalTravelNo++;
             console.log("DN", totalTravelNo);
+        }
+        // Calculer la somme des heures en déplacement et sans déplacement
+        if (ts?.deplacement === "Oui" &&  ts?.presence!='Absent') {
+          nbrHeureDeplacement += ts?.heure || 0;
+        } else if (ts?.deplacement === "Non" &&  ts?.presence!='Absent') {
+          nbrHeureNonDeplacement += ts?.heure || 0;
         }
       });
 
@@ -141,6 +149,17 @@ export class ExcelService {
         '', 
         'Pas en déplacement',
         totalTravelNo,
+      ]);
+      sheet.addRow([
+        '', 
+        'Nombre d\'heure en déplacement',
+        nbrHeureDeplacement,
+      ]);
+
+      sheet.addRow([
+        '', 
+        'Nombre d\'heure pas en déplacement',
+        nbrHeureNonDeplacement,
       ]);
 
   
