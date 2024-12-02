@@ -84,6 +84,8 @@ export class UpdateUsersComponent implements OnInit {
        if(this.employe){
         this.userFormGroup=new FormGroup({
           nom:new FormControl(this.employe?.nom,[Validators.required]),
+          type_contrat:new FormControl(this.employe?.type_contrat,null),
+          heure:new FormControl(this.employe?.heure,null),
           prenom:new FormControl(this.employe?.prenom,[Validators.required]),
           email:new FormControl(this.employe?.email,[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
         });

@@ -1,5 +1,5 @@
 <app-navbar>
-    <div class="container">
+    <div class="container" style="margin-bottom: 80px;">
       <div class="content-top">
         <div class="row" style="margin-bottom: 10px;">
           <div class="col">
@@ -41,6 +41,12 @@
                   </div>
                   <div *ngIf="emailExists" class="error_field">Cet email est déjà utilisé.</div>
                 </div><!--div-->
+                <div style="margin-bottom: 15px;">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Nombre d'heure</mat-label>
+                    <input type="number" matInput formControlName="heure" [(ngModel)]="employe.heure">
+                  </mat-form-field>
+                </div><!--div-->
     
               </div><!--col-->
               <div class="col">
@@ -52,6 +58,15 @@
                   <div *ngIf="userFormGroup.get('prenom').hasError(champ_validation.type[0].type) && (userFormGroup.get('prenom').dirty || userFormGroup.get('prenom').touched)">
                     <p class="error_field">{{champ_validation.type[0].message}}</p>
                   </div>
+                </div><!--div-->
+                <div style="margin-bottom: 15px;">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Type de contrat</mat-label>
+                    <mat-select matInput formControlName="type_contrat" [(ngModel)]="employe.type_contrat">
+                      <mat-option value="Salarié">Salarié</mat-option>
+                      <mat-option value="Indépendant">Indépendant</mat-option>
+                    </mat-select>
+                  </mat-form-field>
                 </div><!--div-->
               
               </div><!--col-->

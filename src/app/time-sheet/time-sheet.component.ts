@@ -24,6 +24,7 @@ export class TimeSheetComponent implements OnInit, AfterViewInit {
   user:any;
   filterForm: FormGroup;
   months:any=[];
+  employes:any=[];
 
 
   constructor(
@@ -75,7 +76,8 @@ export class TimeSheetComponent implements OnInit, AfterViewInit {
 
   getAllEmployes(){
        this.authService.listEmployes().subscribe((res:any)=>{
-        this.dataSource.data = res?.message.map((data)=>({
+        this.employes = res?.message.filter(item => item.valid==true);
+        this.dataSource.data = this.employes.map((data)=>({
           id:data?._id,
           nom:data?.nom,
           prenom:data?.prenom,

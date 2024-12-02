@@ -11,6 +11,7 @@ import { StockModuleModule } from './stock-module/stock-module.module';
 import { PrepareModuleModule } from './prepare-module/prepare-module.module';
 import { ReadyModuleModule } from './ready-module/ready-module.module';
 import { SiteModuleModule } from './site-module/site-module.module';
+import { FicheTechniqueModule } from './fiche-technique/fiche-technique.module';
 
 
 export function jwtOptionsFactory() {
@@ -38,6 +39,7 @@ export function jwtOptionsFactory() {
     PrepareModuleModule,
     ReadyModuleModule,
     SiteModuleModule,
+    FicheTechniqueModule,
     JwtModule.forRoot({
       jwtOptionsProvider: {
         provide: JWT_OPTIONS,

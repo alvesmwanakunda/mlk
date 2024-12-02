@@ -12,7 +12,8 @@
             <h2 style="margin-bottom: 15px;">Total matériels : {{countModules?.module}}</h2>
           </div>
           <div class="col"  align="right">
-            <button type="button" class="btn btn-projet" routerLink="/modulaire" *ngIf="user?.user?.role!='user'"><i class="fa-solid fa-plus"></i> Nouvel article</button>
+            <button type="button" class="btn btn-projet" routerLink="/modulaire" *ngIf="user?.user?.role!='user'"  style="margin-right: 10px;"><i class="fa-solid fa-plus"></i> Nouvel article</button>
+            <button type="button" class="btn btn-projet" routerLink="/modulaires/description/fiche" *ngIf="user?.user?.role!='user'"><i class="fa-solid fa-file"></i> Fiche Technique</button>
           </div>
         </div>
         <div class="row">

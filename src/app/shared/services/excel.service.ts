@@ -98,10 +98,10 @@ export class ExcelService {
           if(["Lundi","Mardi","Mercredi","Jeudi","Vendredi"].includes(ts.dayOfWeek)){
             totalWorkingDays++;
             console.log("Jour de travail", totalWorkingDays);
-          }else if (ts.dayOfWeek === "Samedi") {
+          }else if (ts.dayOfWeek === "Samedi" &&  ts?.presence!='Absent') {
             totalSaturdays++;
             console.log("Samedi", totalSaturdays);
-          } else if (ts.dayOfWeek === "Dimanche") {
+          } else if (ts.dayOfWeek === "Dimanche" &&  ts?.presence!='Absent') {
               totalSundays++;
               console.log("Dimanche", totalSundays);
           }

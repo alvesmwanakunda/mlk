@@ -140,6 +140,30 @@ export class ProjetsService {
     return this.httpClient.get(`${environment.BASE_API_URL}/module/qrcode/infos/${id}`)
   }
 
+  public createDescription(idModule,body){
+    return this.httpClient.post(`${environment.BASE_API_URL}/module/description/${idModule}`, body);
+  }
+
+  public getDescription(idModule){
+    return this.httpClient.get(`${environment.BASE_API_URL}/module/description/${idModule}`);
+  }
+
+  public updateDescription(idFiche,body){
+    return this.httpClient.put(`${environment.BASE_API_URL}/module/description/${idFiche}`, body);
+  }
+
+  public createFiche(body){
+    return this.httpClient.post(`${environment.BASE_API_URL}/module/fiche`, body);
+  }
+
+  public getFiche(){
+    return this.httpClient.get(`${environment.BASE_API_URL}/module/fiche`);
+  }
+
+  public updateFiche(idFiche,body){
+    return this.httpClient.put(`${environment.BASE_API_URL}/module/fiche/${idFiche}`, body);
+  }
+
   // Historique
 
   public addHistorique(id, body){

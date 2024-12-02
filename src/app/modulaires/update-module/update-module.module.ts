@@ -10,6 +10,7 @@ import { PositionModule } from '../position/position.module';
 import { HistoriqueModuleModule } from '../historique-module/historique-module.module';
 import { PlanModuleModule } from '../plan-module/plan-module.module';
 import { ModuleProjetModule } from '../module-projet/module-projet.module';
+import { FicheTechniqueModule } from '../fiche-technique/fiche-technique.module';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { ModuleProjetModule } from '../module-projet/module-projet.module';
     PositionModule,
     HistoriqueModuleModule,
     PlanModuleModule,
-    ModuleProjetModule
+    ModuleProjetModule,
+    FicheTechniqueModule
   ]
 })
 export class UpdateModuleModule { }

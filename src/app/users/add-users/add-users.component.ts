@@ -62,6 +62,8 @@ export class AddUsersComponent implements OnInit {
     this.userFormGroup=new FormGroup({
       nom:new FormControl("",[Validators.required]),
       prenom:new FormControl("",[Validators.required]),
+      type_contrat:new FormControl("",null),
+      heure:new FormControl("",null),
       email:new FormControl("",[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
     });
 
