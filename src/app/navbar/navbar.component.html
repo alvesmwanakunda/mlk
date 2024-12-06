@@ -332,6 +332,20 @@
                       </a>
                     </div>
                   </div>
+                  <div *ngIf="user?.user?.role=='admin'">
+                    <div style="position:relative;">
+                      <a class="mlka-menuBtn mlka-menuBtn1" [routerLink]="['/transporteurs']" [routerLinkActive]="['activeMenus']">
+                        <span class="mlka-menuspan">
+                          <div class="mlka-menuspan1">
+                            <div>
+                              <i class="fa-solid fa-users mlka-menuspanIcon" [routerLinkActive]="['activeIcon']"></i>
+                            </div>
+                            <span class="mlka-menuspanTitle">Transporteurs</span>
+                          </div>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
                   <div *ngIf="user?.user?.role!='user'">
                     <div style="position:relative;">
                       <a class="mlka-menuBtn mlka-menuBtn1" [routerLink]="['/conges']" [routerLinkActive]="['activeMenus']">
@@ -355,6 +369,20 @@
                               <i class="fa-solid fa-calendar-check mlka-menuspanIcon" [routerLinkActive]="['activeIcon']"></i>
                             </div>
                             <span class="mlka-menuspanTitle">Feuille de temps</span>
+                          </div>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                  <div *ngIf="user?.user?.role=='admin'">
+                    <div style="position:relative;">
+                      <a class="mlka-menuBtn mlka-menuBtn1" [routerLink]="['/prestations']" [routerLinkActive]="['activeMenus']">
+                        <span class="mlka-menuspan">
+                          <div class="mlka-menuspan1">
+                            <div>
+                              <i class="fa-solid fa-bars-progress mlka-menuspanIcon" [routerLinkActive]="['activeIcon']"></i>
+                            </div>
+                            <span class="mlka-menuspanTitle">B.P.U</span>
                           </div>
                         </span>
                       </a>

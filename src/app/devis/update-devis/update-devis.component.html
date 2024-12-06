@@ -31,6 +31,16 @@
                   <p>{{devis?.entreprise?.societe}}</p>
                   <p>{{devis?.entreprise?.rue}} {{devis?.entreprise?.rue}}</p>
                   <p>{{devis?.entreprise?.pays}} {{devis?.entreprise?.postal}}</p>
+                  <div>
+                    <form [formGroup]="devisForm">
+                      <div>
+                        <mat-radio-group formControlName="isPrestation">
+                          <mat-radio-button value="true" (change)="OnchangeDevis($event)">Bordereau de Prix Unitaires</mat-radio-button>
+                          <mat-radio-button value="false" (change)="OnchangeDevis($event)">Les produits</mat-radio-button>
+                        </mat-radio-group>
+                      </div>
+                    </form>
+                  </div>
               </div>
            </div>
         </div>
@@ -60,12 +70,21 @@
           <form [formGroup]="produitForm">
             <div class="row" style="padding-top: 30px;">
               <div class="col-4">
-                <mat-form-field class="example-full-width">
+                <mat-form-field class="example-full-width" *ngIf="!isPresta">
                   <mat-label style="font-size: 13px !important;color: #000 !important;">Produits</mat-label>
                   <input  matInput type="text"  formControlName="name" [matAutocomplete]="auto" required style="font-size: 13px;">
                   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
                     <mat-option *ngFor="let p of produitFiltres | async" [value]="p?.name">
                       {{p?.name}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <mat-form-field class="example-full-width" *ngIf="isPresta">
+                  <mat-label style="font-size: 13px !important;color: #000 !important;">Bordereau de Prix Unitaires</mat-label>
+                  <input  matInput type="text"  formControlName="name" [matAutocomplete]="auto" required style="font-size: 13px;">
+                  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelectedPresta($event)">
+                    <mat-option *ngFor="let p of prestationFiltres | async" [value]="p?.nom">
+                      {{p?.nom}}
                     </mat-option>
                   </mat-autocomplete>
                 </mat-form-field>
@@ -86,12 +105,16 @@
               </div>
               <div class="col-2">
                 <div *ngIf="isProduit">
-                  <mat-form-field class="example-full-width">
+                  <mat-form-field class="example-full-width" *ngIf="!isPresta">
                     <mat-label style="font-size: 13px !important;color: #000 !important;">Unites</mat-label>
                     <mat-select  matInput  formControlName="unites" required style="font-size: 13px;">
                        <mat-option value="Unité(s)">Unité(s)</mat-option>
                        <mat-option value="Douzaines">Douzaines</mat-option>
                     </mat-select>
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width" *ngIf="isPresta">
+                    <mat-label style="font-size: 13px !important;color: #000 !important;">Unites</mat-label>
+                    <input  matInput formControlName="unites" [(ngModel)]="pdevis.unit"  required style="font-size: 13px;">
                   </mat-form-field>
                   <div *ngIf="produitForm.get('unites').hasError(champ_validation.input[0].type) && (produitForm.get('unites').dirty || produitForm.get('unites').touched)">
                     <p class="error_field">{{champ_validation.input[0].message}}</p>
@@ -117,12 +140,10 @@
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th scope="col" class="th-devis">Produit</th>
-                  <!--<th scope="col" class="th-devis">Description</th>-->
+                  <th scope="col" class="th-devis">Designation</th>
                   <th scope="col" class="th-devis">Quantité</th>
                   <th scope="col" class="th-devis">Unité(s)</th>
                   <th scope="col" class="th-devis">Prix unitaire</th>
-                  <!--<th scope="col" class="th-devis">Prix</th>-->
                   <th scope="col" class="th-devis">TVA</th>
                   <th scope="col" class="th-devis">Total</th>
                   <th scope="col" class="th-devis">Action</th>

@@ -22,6 +22,7 @@ export class PrepareModuleComponent implements OnInit, AfterViewInit {
   @ViewChild('paginatorStock') paginatorStock: MatPaginator;
   @ViewChild('matSort') matSort: MatSort;
   user:any;
+  modules:any=[];
 
   constructor(
     private projectService :ProjetsService,
@@ -46,7 +47,8 @@ export class PrepareModuleComponent implements OnInit, AfterViewInit {
   getAllModules(){
   if(this.user?.user?.role=='user'){
       this.projectService.getAllModuleByEntreprisePr(this.user?.user?.entreprise).subscribe((data:any)=>{
-        this.dataSource.data =data.message.map((data)=>({
+        this.modules = data?.message.reverse();
+        this.dataSource.data =this.modules.map((data)=>({
           id:data?._id,
           nom:data?.nom,
           projet:data?.project?.projet,
@@ -55,7 +57,7 @@ export class PrepareModuleComponent implements OnInit, AfterViewInit {
           largeur:data?.largeur,
           longueur:data?.longueur,
           numero:data?.numero_serie,
-          type:data?.module_type,
+          type:data?.categorie,
           photo:this.getSafeUrl(data?.photo) || null,
         })) as Modules[]
       },
@@ -65,7 +67,8 @@ export class PrepareModuleComponent implements OnInit, AfterViewInit {
     }
     else{
       this.projectService.getAllModulePr().subscribe((data:any)=>{
-        this.dataSource.data =data.message.map((data)=>({
+        this.modules = data?.message.reverse();
+        this.dataSource.data =this.modules.map((data)=>({
           id:data?._id,
           nom:data?.nom,
           projet:data?.project?.projet,
@@ -74,7 +77,7 @@ export class PrepareModuleComponent implements OnInit, AfterViewInit {
           largeur:data?.largeur,
           longueur:data?.longueur,
           numero:data?.numero_serie,
-          type:data?.module_type,
+          type:data?.categorie,
           photo:this.getSafeUrl(data?.photo) || null,
         })) as Modules[]
       },

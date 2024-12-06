@@ -155,7 +155,7 @@
 }
 .mlka-menuItem{
    flex-direction: column;
-   overflow-y: clip;
+   overflow-y: auto;
    overflow-x: clip;
    align-items: center;
    display: flex;

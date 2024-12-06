@@ -63,11 +63,12 @@ export class ProjetEntrepriseComponent implements OnInit {
   }
 
   addProjet(){
-    if(this.user?.user?.role=='admin'){
+    this.router.navigate(['add/entreprise/projet',this.id]);
+    /*if(this.user?.user?.role=='admin'){
       this.router.navigate(['add/projet']);
     }else{
       this.router.navigate(['add/entreprise/projet']);
-    }
+    }*/
   }
 
 

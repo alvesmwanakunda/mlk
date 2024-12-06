@@ -55,8 +55,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   getAllProjet(){
     this.projetService.getAllProjet().subscribe((data:any)=>{
-       this.projets = data.message;
-       this.dataSource.data = data.message.map((data)=>({
+       this.projets = data?.message.reverse();
+       this.dataSource.data = this.projets.map((data)=>({
         id:data._id,
         nom:data.projet,
         entreprise:data?.entreprise?.societe,

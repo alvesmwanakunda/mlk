@@ -54,8 +54,8 @@ export class DashboardUserComponent implements OnInit, AfterViewInit {
 
   getAllProjet(){
     this.projetService.getProjetEntreprise(this.user?.user?.entreprise).subscribe((data:any)=>{
-       this.projets = data.message;
-       this.dataSource.data = data.message.map((data)=>({
+       this.projets = data?.message.reverse();
+       this.dataSource.data = this.projets.map((data)=>({
         id:data._id,
         nom:data.projet,
         entreprise:data?.entreprise?.societe,
@@ -98,6 +98,10 @@ export class DashboardUserComponent implements OnInit, AfterViewInit {
     }else{
       this.isListe=false;
     }
+  }
+
+  addProjet(){
+    this.router.navigate(['add/entreprise/projet',this.user?.user?.entreprise]);
   }
 
 }

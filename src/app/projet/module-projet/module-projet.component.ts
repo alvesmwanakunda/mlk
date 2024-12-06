@@ -7,6 +7,10 @@ import { ProjetsService } from 'src/app/shared/services/projets.service';
 import { Modules } from 'src/app/shared/interfaces/modules.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatSort } from '@angular/material/sort';
+import { StockProjetComponent } from 'src/app/stock-projet/stock-projet.component';
+import { MatDialog } from '@angular/material/dialog';
+import { AddStockProjetComponent } from 'src/app/stock-projet/add-stock-projet/add-stock-projet.component';
+
 
 
 
@@ -32,6 +36,7 @@ export class ModuleProjetComponent implements OnInit, AfterViewInit {
      private router: Router,
      public route:ActivatedRoute,
      private sanitizer: DomSanitizer,
+     public dialog: MatDialog
   ){
     this.route.params.subscribe((data:any)=>{
       this.idProjet = data.id
@@ -59,8 +64,9 @@ export class ModuleProjetComponent implements OnInit, AfterViewInit {
         longueur:data?.module?.longueur,
         numero:data?.module?.numero_serie,
         type:data?.module?.module_type,
+        categorie:data?.module?.categorie,
         photo:this.getSafeUrl(data?.module?.photo) || null,
-       })) as Modules[];
+       })).reverse() as Modules[];
        console.log("sort",this.sort);
        console.log("pagination",this.paginator);
     },
@@ -86,6 +92,24 @@ export class ModuleProjetComponent implements OnInit, AfterViewInit {
 
 getSafeUrl(url){
   return  this.sanitizer.bypassSecurityTrustResourceUrl(url);
+}
+
+openDialog(){
+  const dialogRef = this.dialog.open(StockProjetComponent,{width:'70%',data:{id:this.idProjet}});
+  dialogRef.afterClosed().subscribe((result:any)=>{
+     if(result){
+      this.getAllModules();
+     }
+  })
+}
+
+openDialogProjet(){
+  const dialogRef = this.dialog.open(AddStockProjetComponent,{width:'70%',data:{id:this.idProjet}});
+  dialogRef.afterClosed().subscribe((result:any)=>{
+     if(result){
+      this.getAllModules();
+     }
+  })
 }
 
 }

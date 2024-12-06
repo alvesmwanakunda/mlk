@@ -1,0 +1,140 @@
+<mat-dialog-content class="mat-typography">
+    <div  style="padding-top: 30px;">
+        <form [formGroup]="moduleForm" style="margin-bottom: 35px;">
+            <div class="row" style="margin-bottom: 15px;">
+              <div class="col">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Nom d'article</mat-label>
+                  <input matInput  formControlName="nom" required>
+                </mat-form-field>
+                <div *ngIf="moduleForm.get('nom').hasError(champ_validation.input[0].type) && (moduleForm.get('nom').dirty || moduleForm.get('nom').touched)">
+                  <p class="error_field">{{champ_validation.input[0].message}}</p>
+                </div>
+              </div>
+              <!--<div class="col">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Etat</mat-label>
+                  <mat-select formControlName="type" required>
+                    <mat-option value="Stock">Stock</mat-option>
+                    <mat-option value="En préparation">En préparation</mat-option>
+                    <mat-option value="Prêt à partir">Prêt à partir</mat-option>
+                    <mat-option value="Site">Site</mat-option>
+                 </mat-select>
+                </mat-form-field>               
+                <div *ngIf="moduleForm.get('type').hasError(champ_validation.input[0].type) && (moduleForm.get('type').dirty || moduleForm.get('type').touched)">
+                  <p class="error_field">{{champ_validation.input[0].message}}</p>
+                </div>
+              </div>-->
+              <div class="col">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Catégorie</mat-label>
+                  <input matInput  formControlName="categorie" required>
+                </mat-form-field>
+                <div *ngIf="moduleForm.get('categorie').hasError(champ_validation.input[0].type) && (moduleForm.get('categorie').dirty || moduleForm.get('categorie').touched)">
+                  <p class="error_field">{{champ_validation.input[0].message}}</p>
+                </div>
+              </div>
+            </div><!--div-->
+            <div class="row" style="margin-bottom: 15px;">
+              <div class="col">
+                <mat-form-field class="example-full-width" *ngIf="user?.user.role!='user'">
+                  <mat-label>Propriétaire</mat-label>
+                  <mat-select  formControlName="entreprise">
+                    <mat-option *ngFor="let ent of entreprises" [value]="ent?._id">{{ent?.societe}}</mat-option>
+                 </mat-select>
+                </mat-form-field> 
+                
+                <mat-form-field class="example-full-width" *ngIf="user?.user.role=='user'">
+                  <mat-label>Propriétaire</mat-label>
+                  <input matInput [(ngModel)]="company.societe"  formControlName="entreprise" readonly>
+                </mat-form-field>
+              </div><!--div-->
+              <div class="col">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Fabricant</mat-label>
+                  <mat-select type="text" formControlName="marque">
+                    <mat-option value="ALGECO">ALGECO</mat-option>
+                    <mat-option value="COUGNAUD">COUGNAUD</mat-option>
+                    <mat-option value="TEPE PREFABRIK">TEPE PREFABRIK</mat-option>
+                    <mat-option value="CONTAINEX">CONTAINEX</mat-option>
+                    <mat-option value="AUTRES">AUTRES</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div><!--div-->
+            </div>
+            <div class="row" style="margin-bottom: 15px;">
+              <div class="col">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Détail</mat-label>
+                  <input matInput formControlName="module_type">
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Date de fabrication</mat-label>
+                  <input matInput [matDatepicker]="picker" formControlName="dateFabrication">
+                  <mat-datepicker-toggle matIconSuffix [for]="picker">
+                    <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div><!--div-->
+            </div>
+            <div class="row" style="margin-bottom: 15px;">
+              <div class="col">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Hauteur(mm)</mat-label>
+                  <input matInput formControlName="hauteur">
+                </mat-form-field>
+              </div><!--div-->
+              <div class="col">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Largeur(mm)</mat-label>
+                  <input matInput formControlName="largeur">
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Longueur(mm)</mat-label>
+                  <input matInput formControlName="longueur">
+                </mat-form-field>
+              </div>
+            </div>
+
+           <div class="row" style="margin-bottom: 15px;">
+            <div class="col">
+             <label class="label-entreprise">Image module <span *ngIf="imageName">({{imageName}})</span></label>
+             <br/>
+             <div *ngIf="isSize">
+              <mat-chip disabled color="accent">{{isSize}}</mat-chip>
+             </div>
+             <input type="file" class="file-input" accept='image/*' (change)="onFileSelectedImage($event)" #fileUpload>
+             <button type="button" (click)="fileUpload.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> charger la photo</button>
+            </div>
+            <div class="col">
+             <label class="label-entreprise">Plan module <span *ngIf="fileName">({{fileName}})</span></label>
+             <br/>
+             <input type="file" class="file-input" accept='.pdf' (change)="onFileSelectedPlan($event)" #fileUpload1>
+             <button type="button" (click)="fileUpload1.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> charger le plan</button>
+            </div>
+         </div>
+
+          </form>
+    </div> 
+    <div id="snackbar" *ngIf="progress">
+        <br/>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" [style.width]="progress + '%'">{{progress}}%</div>
+        </div>
+        <br/>
+        <p style="font-size: 12px;" *ngIf="progress<100">Fichier {{fileName}} est en cours de chargement...</p>
+        <p style="font-size: 12px;color: rgb(16, 93, 38);" *ngIf="progress==100">Fichier {{fileName}} est chargé avec succès</p>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="center">
+     <button  mat-raised-button color="warn" mat-dialog-close style="margin-right: 10px;">Fermer</button>
+     <button mat-raised-button (click)="addModule()" cdkFocusInitial color="primary">Valider</button>
+  </mat-dialog-actions>
+  
+  
+  

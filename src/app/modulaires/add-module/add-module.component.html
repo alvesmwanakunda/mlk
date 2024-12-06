@@ -47,8 +47,11 @@
               <div class="col">
                 <mat-form-field class="example-full-width">
                   <mat-label>Catégorie</mat-label>
-                  <input matInput  formControlName="categorie">
+                  <input matInput  formControlName="categorie" required>
                 </mat-form-field>
+                <div *ngIf="moduleForm.get('categorie').hasError(champ_validation.input[0].type) && (moduleForm.get('categorie').dirty || moduleForm.get('categorie').touched)">
+                  <p class="error_field">{{champ_validation.input[0].message}}</p>
+                </div>
               </div>
             </div><!--div-->
             <div class="row" style="margin-bottom: 15px;">
@@ -81,7 +84,7 @@
             <div class="row" style="margin-bottom: 15px;">
               <div class="col">
                 <mat-form-field class="example-full-width">
-                  <mat-label>Type</mat-label>
+                  <mat-label>Détail</mat-label>
                   <input matInput formControlName="module_type">
                 </mat-form-field>
               </div>
@@ -117,10 +120,9 @@
               </div>
             </div>
 
-
            <div class="row" style="margin-bottom: 15px;">
             <div class="col">
-             <label class="label-entreprise">Image principale <span *ngIf="imageName">({{imageName}})</span></label>
+             <label class="label-entreprise">Image module <span *ngIf="imageName">({{imageName}})</span></label>
              <br/>
              <div *ngIf="isSize">
               <mat-chip disabled color="accent">{{isSize}}</mat-chip>
@@ -129,7 +131,7 @@
              <button type="button" (click)="fileUpload.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> charger la photo</button>
             </div>
             <div class="col">
-             <label class="label-entreprise">Plan principal <span *ngIf="fileName">({{fileName}})</span></label>
+             <label class="label-entreprise">Plan module <span *ngIf="fileName">({{fileName}})</span></label>
              <br/>
              <input type="file" class="file-input" accept='.pdf' (change)="onFileSelectedPlan($event)" #fileUpload1>
              <button type="button" (click)="fileUpload1.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> charger le plan</button>

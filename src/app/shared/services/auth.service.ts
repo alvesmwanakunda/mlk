@@ -78,8 +78,17 @@ export class AuthService {
     return this.httpClient.get(`${environment.BASE_API_URL}/employe`,);
   }
 
+  listTransporteurs(){
+    return this.httpClient.get(`${environment.BASE_API_URL}/transporteur`,);
+  }
+
+
   addEmploye(data){
     return this.httpClient.post(`${environment.BASE_API_URL}/employe`,data);
+  }
+
+  addTransporteur(data){
+    return this.httpClient.post(`${environment.BASE_API_URL}/transporteur`,data);
   }
 
   updateEmploye(data,id){

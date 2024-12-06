@@ -1,7 +1,15 @@
 <div class="container">
     <div class="content-top-child">
-  
-      <div>
+      <div >
+        <div class="row" style="margin-bottom: 30px;">
+          <div class="col">
+            <div align="right">
+              <button type="button" class="btn btn-projet" (click)="openDialog()" style="margin-right: 10px;"><i class="fa-solid fa-plus"></i> Ajouter Stock</button>
+              <button type="button" class="btn btn-projet" (click)="openDialogProjet()"><i class="fa-solid fa-cubes"></i> Nouveau Stock</button>
+
+            </div>
+          </div>
+        </div>
   
         <div class="row" style="margin-bottom: 30px;">
           <div class="col-4">
@@ -9,7 +17,7 @@
           </div><!--col-->
           <div class="col">
             <div align="right">
-               <h2>Total matériels : {{dataSource.data.length}}</h2>
+               <h2 style="font-size: 14px;color: #292375e8;">Total matériels : {{dataSource.data.length}}</h2>
             </div>
           </div>
         </div><!--row-->
@@ -27,8 +35,8 @@
             </ng-container>
 
             <ng-container matColumnDef="type">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
-              <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;" (click)="getModule(element.id)"> {{element?.type}} </td>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Catégorie </th>
+              <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;" (click)="getModule(element.id)"> {{element?.categorie}} </td>
             </ng-container>
 
 

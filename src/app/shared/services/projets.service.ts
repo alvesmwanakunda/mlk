@@ -140,6 +140,16 @@ export class ProjetsService {
     return this.httpClient.get(`${environment.BASE_API_URL}/module/qrcode/infos/${id}`)
   }
 
+  // Affecte projet direct dans un projet
+
+  public listModuleNotSite(){
+    return this.httpClient.get(`${environment.BASE_API_URL}/modules/notsite`);
+  }
+
+  public addStockToProjet(idModule, idProjet){
+    return this.httpClient.get(`${environment.BASE_API_URL}/modules/notsite/${idModule}/${idProjet}`);
+  }
+
   public createDescription(idModule,body){
     return this.httpClient.post(`${environment.BASE_API_URL}/module/description/${idModule}`, body);
   }
@@ -287,6 +297,56 @@ export class ProjetsService {
   public getAllFactureProjet(id){
     return this.httpClient.get(`${environment.BASE_API_URL}/facture/projet/${id}`);
   }
+  // Prestations
+
+  public getAllPrestations(){
+    return this.httpClient.get(`${environment.BASE_API_URL}/categorie/prestation`);
+  }
+
+  public addPrestation(body){
+    return this.httpClient.post(`${environment.BASE_API_URL}/categorie/prestation`, body);
+  }
+
+  public updatePrestation(idPrestation, body){
+    return this.httpClient.put(`${environment.BASE_API_URL}/categorie/prestation/${idPrestation}`, body);
+  }
+
+  public getPrestation(idPrestation){
+    return this.httpClient.get(`${environment.BASE_API_URL}/categorie/prestation/${idPrestation}`);
+  }
+
+  public deletePrestation(idPrestation){
+    return this.httpClient.delete(`${environment.BASE_API_URL}/categorie/prestation/${idPrestation}`);
+  }
+
+  // Produit Prestation
+
+  public getAllProduitPrestations(){
+    return this.httpClient.get(`${environment.BASE_API_URL}/prestations`);
+  }
+
+  public getAllProduitPrestationsByCat(idCat){
+    return this.httpClient.get(`${environment.BASE_API_URL}/prestation/all/${idCat}`);
+  }
+
+  public addProduitPrestation(idCat,body){
+    return this.httpClient.post(`${environment.BASE_API_URL}/prestation/${idCat}`, body);
+  }
+
+  public updateProduitPrestation(idPrestation, body){
+    return this.httpClient.put(`${environment.BASE_API_URL}/prestation/${idPrestation}`, body);
+  }
+
+  public getProduitPrestation(idPrestation){
+    return this.httpClient.get(`${environment.BASE_API_URL}/prestation/${idPrestation}`);
+  }
+
+  public deleteProduitPrestation(idPrestation){
+    return this.httpClient.delete(`${environment.BASE_API_URL}/prestation/${idPrestation}`);
+  }
+
+
+
   // resize image angular editor
   resizeImages(){
     const editorElement = document.querySelector('.angular-editor');

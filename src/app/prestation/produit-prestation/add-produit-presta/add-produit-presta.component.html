@@ -1,0 +1,53 @@
+<mat-dialog-content class="mat-typography">
+    <div  style="padding-top: 30px;">
+        <form [formGroup]="categorieFormGroup">
+            <div class="row">
+                <div class="col">
+                    <div style="margin-bottom: 15px;">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Nom</mat-label>
+                          <input matInput formControlName="nom" required>
+                        </mat-form-field>
+                        <div *ngIf="categorieFormGroup.get('nom').hasError(champ_validation.type[0].type) && (categorieFormGroup.get('nom').dirty || categorieFormGroup.get('nom').touched)">
+                          <p class="error_field">{{champ_validation.type[0].message}}</p>
+                        </div>
+                    </div><!--div-->
+                    <div style="margin-bottom: 15px;">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Prix</mat-label>
+                          <input matInput type="number" formControlName="prix" required>
+                        </mat-form-field>
+                        <div *ngIf="categorieFormGroup.get('prix').hasError(champ_validation.type[0].type) && (categorieFormGroup.get('prix').dirty || categorieFormGroup.get('prix').touched)">
+                          <p class="error_field">{{champ_validation.type[0].message}}</p>
+                        </div>
+                    </div><!--div-->
+                </div>
+                <div class="col">
+                    <div style="margin-bottom: 15px;">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Référence</mat-label>
+                          <input matInput formControlName="reference" required>
+                        </mat-form-field>
+                        <div *ngIf="categorieFormGroup.get('reference').hasError(champ_validation.type[0].type) && (categorieFormGroup.get('reference').dirty || categorieFormGroup.get('reference').touched)">
+                          <p class="error_field">{{champ_validation.type[0].message}}</p>
+                        </div>
+                    </div><!--div-->
+                    <div style="margin-bottom: 15px;">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Unite</mat-label>
+                          <input matInput formControlName="unite" required>
+                        </mat-form-field>
+                        <div *ngIf="categorieFormGroup.get('unite').hasError(champ_validation.type[0].type) && (categorieFormGroup.get('unite').dirty || categorieFormGroup.get('unite').touched)">
+                          <p class="error_field">{{champ_validation.type[0].message}}</p>
+                        </div>
+                    </div><!--div-->
+                </div>
+            </div>
+        </form>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="center">
+     <button mat-button mat-dialog-close>Fermer</button>
+     <button mat-button (click)="addCategorie()" cdkFocusInitial style=" background: #2a56f4 !important;color:#fff" [disabled]="categorieFormGroup.invalid">Enregistrer</button>
+  </mat-dialog-actions>
+  

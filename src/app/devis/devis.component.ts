@@ -54,7 +54,7 @@ export class DevisComponent implements OnInit, AfterViewInit {
         numero:data?.numero,
         total:(Math.round(data?.total * 100) / 100).toFixed(2),
         date:data?.dateLastUpdate,
-        })) as Devis[]
+        })).reverse() as Devis[]
     },
     (error) => {
       console.log("Erreur lors de la récupération des données", error);
@@ -68,7 +68,7 @@ export class DevisComponent implements OnInit, AfterViewInit {
           numero:data?.numero,
           total:(Math.round(data?.total * 100) / 100).toFixed(2),
           date:data?.dateLastUpdate,
-          })) as Devis[]
+          })).reverse() as Devis[]
       },
       (error) => {
         console.log("Erreur lors de la récupération des données", error);

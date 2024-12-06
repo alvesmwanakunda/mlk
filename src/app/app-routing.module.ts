@@ -45,7 +45,7 @@ const routes: Routes = [
     loadChildren:()=>import('./dashboard-user/dashboard-user.module').then(m=>m.DashboardUserModule),
   },
   {
-    path:"add/entreprise/projet",
+    path:"add/entreprise/projet/:id",
     loadChildren:()=>import('./projet-user/projet-user.module').then(m=>m.ProjetUserModule),
   },
   {
@@ -235,6 +235,14 @@ const routes: Routes = [
     loadChildren:()=>import('./users/update-users/update-users.module').then(m=>m.UpdateUsersModule)
   },
   {
+    path:'transporteurs',
+    loadChildren:()=>import('./transporteurs/transporteurs.module').then(m=>m.TransporteursModule)
+  },
+  {
+     path:'transporteurs/nouveau',
+     loadChildren:()=>import('./transporteurs/add-transporteur/add-transporteur.module').then(m=>m.AddTransporteurModule)
+  },
+  {
     path:'timesheet',
     loadChildren:()=>import('./time-sheet/time-sheet.module').then(m=>m.TimeSheetModule)
   },
@@ -253,6 +261,14 @@ const routes: Routes = [
   {
     path:'agent/timesheet/:month/:year',
     loadChildren:()=>import('./time-sheet/agent-detail-timesheet/agent-detail-timesheet.module').then(m=>m.AgentDetailTimesheetModule)
+  },
+  {
+    path:'prestations',
+    loadChildren:()=>import('./prestation/prestation.module').then(m=>m.PrestationModule)
+  },
+  {
+    path:'prestations/produit/:id',
+    loadChildren:()=>import('./prestation/produit-prestation/produit-prestation.module').then(m=>m.ProduitPrestationModule)
   }
 ];
 

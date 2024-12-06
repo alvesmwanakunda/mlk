@@ -22,16 +22,19 @@ export class AddDevisComponent implements OnInit {
   onLoadForm:boolean=false;
   message:any;
   produits:any=[];
+  prestations:any=[];
   listProduits:any[]=[];
   entreprises:any=[];
   pdevis:any;
   produitFiltres:Observable<any[]>;
+  prestationFiltres:Observable<any[]>;
   entrepriseFiltres:Observable<any[]>;
   isProduit:boolean=false;
   qte=1;
   user:any;
   entreprise:any;
   totalDevis=0;
+  isPresta:boolean=false;
 
   constructor(
     private _formBuilder :FormBuilder,
@@ -60,9 +63,11 @@ export class AddDevisComponent implements OnInit {
     }
     this.getAllProduits();
     this.getAllEntreprise();
+    this.getAllPrestations();
     this.devisForm=this._formBuilder.group({
       projet:['',Validators.required],
       entreprise:['',null],
+      isPrestation: ['',null],
     });
     this.produitForm=this._formBuilder.group({
        name:['', Validators.required],
@@ -76,6 +81,12 @@ export class AddDevisComponent implements OnInit {
       startWith(''),
       map((val) => this.filterProduit(val))
     );
+
+    this.prestationFiltres = this.produitForm.get('name').valueChanges.pipe(
+      startWith(''),
+      map((val) => this.filterPrestation(val))
+    );
+
     this.entrepriseFiltres = this.devisForm.get('entreprise').valueChanges.pipe(
       startWith(''),
       map((val)=> this.filterEntreprise(val))
@@ -117,6 +128,14 @@ export class AddDevisComponent implements OnInit {
     })
   }
 
+  getAllPrestations(){
+    this.projetService.getAllProduitPrestations().subscribe((res:any)=>{
+      this.prestations = res.message;
+  },(error)=>{
+    console.log(error);
+  })
+  }
+
   filterProduit(value:string){
       //const filtre = value.toLowerCase();
       const filtre = value ? value.toLowerCase() : '';
@@ -126,6 +145,16 @@ export class AddDevisComponent implements OnInit {
       return option && option.name && option.name.toLowerCase().includes(filtre);
     });
   }
+
+  filterPrestation(value:string){
+    //const filtre = value.toLowerCase();
+    const filtre = value ? value.toLowerCase() : '';
+    //return this.produits.filter(option=> option.name.toLocaleLowerCase().includes(filtre));
+    return this.prestations.filter(option => {
+    // Vérifiez si option et option.name sont définis avant d'appeler toLowerCase()
+    return option && option.nom && option.nom.toLowerCase().includes(filtre);
+  });
+}
 
   filterEntreprise(value:string){
     //const filtre = value.toLowerCase();
@@ -142,6 +171,26 @@ export class AddDevisComponent implements OnInit {
     const selectedProductName = event.option.value;
     if(selectedProductName){
       this.pdevis = this.produits.filter(item=> item.name==selectedProductName)[0];
+      console.log("Produit", this.pdevis);
+      this.isProduit=true;
+      this.qte=1;
+    }
+  }
+
+  onOptionSelectedPresta(event) {
+    const selectedProductName = event.option.value;
+    if(selectedProductName){
+      let presta = this.prestations.filter(item=> item.nom==selectedProductName)[0];
+      console.log("Prestation", presta);
+      if(presta){
+        this.pdevis = {
+          "name":presta?.nom,
+          "id":presta?.reference,
+          "price": presta?.prix,
+          "unit":presta?.unite
+        }
+      }
+      //this.pdevis = this.produits.filter(item=> item.name==selectedProductName)[0];
       this.isProduit=true;
       this.qte=1;
     }
@@ -169,7 +218,7 @@ export class AddDevisComponent implements OnInit {
         produit: nameValue,
         quantite: quantiteValue,
         price_unitaire: priceUnitaireValue,
-        description: this.pdevis?.description_short,
+        description: this.pdevis?.id,
         price: parseInt(quantiteValue) * parseInt(priceUnitaireValue),
         tva: tva,
         total:total,
@@ -220,7 +269,8 @@ export class AddDevisComponent implements OnInit {
        total:this.totalDevis,
        projet:this.devisForm.get('projet').value,
        entreprise:this.entreprise?._id,
-       produits:this.listProduits
+       produits:this.listProduits,
+       isPrestation:this.isPresta,
     }
     if(!this.devisForm.invalid){
       this.projetService.addDevis(payload).subscribe((res:any)=>{
@@ -235,6 +285,17 @@ export class AddDevisComponent implements OnInit {
          this.openSnackBar(this.message);
       })
     }
+  }
 
+  // select type devis
+
+  OnchangeDevis(event){
+    if(event?.value=="true"){
+       this.isPresta=true
+    }else{
+      this.isPresta=false
+    }
+    //console.log("event", event?.value);
+    //this.isPresta = event?.value;
   }
 }

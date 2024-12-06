@@ -74,7 +74,7 @@ export class AddModuleComponent implements OnInit {
       entreprise:['',null],
       position:['',null],
       module_type:['',null],
-      categorie:['',null],
+      categorie:['',Validators.required],
       largeur:['',null],
       hauteur:['',null],
       longueur:['',null],

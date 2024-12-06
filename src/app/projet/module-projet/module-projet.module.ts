@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ProjetsService } from 'src/app/shared/services/projets.service';
 import { ModuleProjetComponent } from './module-projet.component';
+import { StockProjetModule } from 'src/app/stock-projet/stock-projet.module';
+import { AddStockProjetModule } from 'src/app/stock-projet/add-stock-projet/add-stock-projet.module';
 
 
 
@@ -10,7 +12,9 @@ import { ModuleProjetComponent } from './module-projet.component';
   declarations: [ModuleProjetComponent],
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    StockProjetModule,
+    AddStockProjetModule
   ],
   exports:[ModuleProjetComponent],
   providers:[ProjetsService]

@@ -1,0 +1,63 @@
+<app-navbar>
+    <div class="container">
+      <div class="content-top">
+        <h2 class="content-title">Bordereau de Prix Unitaires (Les catégories)</h2>
+        <mat-divider></mat-divider>
+      </div><!--content-->
+    </div>
+    <div>
+        <div class="row" style="margin-bottom: 35px;">
+          <div class="col">
+            <input type="text"  (keyup)="applyFilter($event)" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher">
+          </div>
+          <div class="col"  align="right">
+            <button type="button" class="btn btn-projet" (click)="openDialogAdd()"><i class="fa-solid fa-plus"></i> Nouveau catégorie</button>
+          </div>
+        </div>
+    
+        <table mat-table [dataSource]="dataSource">
+          <!-- Position Column -->
+    
+           <!-- Symbol Column -->
+           <ng-container matColumnDef="nom">
+            <th mat-header-cell *matHeaderCellDef>Designation</th>
+            <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"> {{element?.nom}} </td>
+          </ng-container>
+    
+           <!-- Weight Column -->
+           <ng-container matColumnDef="reference">
+            <th mat-header-cell *matHeaderCellDef>Article</th>
+            <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.reference}}  </td>
+          </ng-container>
+    
+          
+    
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button  matTooltip="Détail" style="margin-right: 5px;" (click)="getProduit(element?.id)">
+                <mat-icon style="font-size: 18px;">more_vert</mat-icon>
+              </button>
+              <button mat-icon-button color="primary" matTooltip="Modifier" style="margin-right: 5px;" (click)="openDialogAupdate(element?.id)">
+                <mat-icon style="font-size: 18px;">edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" matTooltip="Supprimer" (click)="openDialogDelete(element?.id)">
+                <mat-icon style="font-size: 18px;">delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+    
+    
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    
+        <mat-paginator [pageSizeOptions]="[10, 20]"
+                      showFirstLastButtons
+                      aria-label="Select page of periodic elements"
+                      >
+        </mat-paginator>
+    
+    
+    </div>
+</app-navbar>
