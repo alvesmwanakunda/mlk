@@ -4,6 +4,7 @@ import { ModuleProjetComponent } from './module-projet.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ViewerStandarModule } from 'src/app/viewer-standar/viewer-standar.module';
+import { DeleteModuleProjetModule } from 'src/app/projet/module-projet/delete-module-projet/delete-module-projet.module';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { ViewerStandarModule } from 'src/app/viewer-standar/viewer-standar.modul
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    ViewerStandarModule
+    ViewerStandarModule,
+    DeleteModuleProjetModule
   ],
   exports:[ModuleProjetComponent]
 })

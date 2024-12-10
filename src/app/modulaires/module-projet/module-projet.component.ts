@@ -12,6 +12,7 @@ import {
 import { map, catchError } from "rxjs/operators";
 import { throwError } from "rxjs";
 import { environment} from 'src/environments/environment';
+import { DeleteModuleProjetComponent } from 'src/app/projet/module-projet/delete-module-projet/delete-module-projet.component';
 
 
 
@@ -129,13 +130,25 @@ export class ModuleProjetComponent implements OnInit {
     }
   }
 
-  deleteModule(id){
+  /*deleteModule(id){
     this.projetService.deleteProjetModule(id).subscribe((res:any)=>{
       console.log("message",res);
       this.getAllModule();
     },(error)=>{
       console.log(error);
     })
+  }*/
+
+  openDialogDelete(id){
+    const dialogRef = this.dialog.open(DeleteModuleProjetComponent,{
+      width:'30%',
+      data:{id:id}});
+      const instance = dialogRef.componentInstance;
+      instance.close.subscribe(()=> dialogRef.close());
+      instance.confirm.subscribe(()=>{
+        dialogRef.close();
+        this.getAllModule();
+      })
   }
 
   openDialogFile(chemin, extension){

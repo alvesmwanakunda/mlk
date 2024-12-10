@@ -58,9 +58,15 @@
               <div class="col">
                 <mat-form-field class="example-full-width" *ngIf="user?.user.role!='user'">
                   <mat-label>Propriétaire</mat-label>
-                  <mat-select  formControlName="entreprise">
+                  <!--<mat-select  formControlName="entreprise">
                     <mat-option *ngFor="let ent of entreprises" [value]="ent?._id">{{ent?.societe}}</mat-option>
-                 </mat-select>
+                  </mat-select>-->
+                      <input  matInput  formControlName="entreprise" [matAutocomplete]="auto1" required style="font-size: 13px;">
+                      <mat-autocomplete #auto1="matAutocomplete">
+                        <mat-option *ngFor="let p of entrepriseFiltres | async" [value]="p?.societe">
+                          {{p?.societe}}
+                        </mat-option>
+                      </mat-autocomplete>
                 </mat-form-field> 
                 
                 <mat-form-field class="example-full-width" *ngIf="user?.user.role=='user'">

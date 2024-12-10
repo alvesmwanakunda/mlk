@@ -1,0 +1,111 @@
+<div class="container">
+    <div class="content-top-child-agenda">
+        <div class="row">
+            <div class="col">
+             <div>
+               <button mat-stroked-button style="margin-right: 40px;font-weight: 500 !important;" class="content-title" mwlCalendarToday  [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()" [(viewDate)]="viewDate">Aujourd'hui</button>
+               <button mat-icon-button mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()" style="position:relative;top:8px;">
+                 <mat-icon>chevron_left</mat-icon>
+               </button>
+               <button mat-icon-button mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()" style="position:relative;top:8px;">
+                 <mat-icon>chevron_right</mat-icon>
+               </button>
+             </div>
+            </div>
+            <!--<div class="col-4">
+               <p class="agenda-title" style="font-size: 20px;font-weight: 500;position: relative;bottom: 5px;">{{ viewDate | calendarDate:(view + 'ViewTitle'):'fr' }}</p>
+            </div>-->
+            <div class="col">
+             <div>
+               <mat-form-field appearance="fill" class="example-full-width">
+                 <mat-label>Filtre</mat-label>
+                 <mat-select [disabled]="disableSelect.value">
+                   <mat-option value="Jour" (click)="setView(CalendarView.Day)">Jour</mat-option>
+                   <mat-option value="Semaine" (click)="setView(CalendarView.Week)">Semaine</mat-option>
+                   <mat-option value="Mois" (click)="setView(CalendarView.Month)">Mois</mat-option>
+                 </mat-select>
+               </mat-form-field>
+             </div>
+             
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+    </div>
+    <div class="content-bottom-child">
+        <div class="row">
+          <div style="margin-bottom: 10px;" align="right">
+            <button  mat-stroked-button color="primary" (click)="openDialogAgenda()" style="width: 20% !important;height: 55px !important;border-radius: 20px !important;">
+              <mat-icon>add</mat-icon> Créer
+            </button>
+          </div>
+            <!--<div class="col-3">
+             <div style="margin-bottom: 10px;">
+               <button  mat-stroked-button (click)="openDialogAgenda()" style="width: 65% !important;height: 55px !important;border-radius: 20px !important;">
+                 <mat-icon>add</mat-icon> Créer
+               </button>
+             </div>
+             <mat-card class="demo-inline-calendar-card">
+               <mat-calendar></mat-calendar>
+             </mat-card>
+            </div>-->
+            <div class="col">
+                <p class="agenda-title" style="font-size: 20px;font-weight: 500;position: relative;bottom: 5px;text-align: center;text-transform: uppercase;">{{ viewDate | calendarDate:(view + 'ViewTitle'):'fr' }}</p>
+
+             <mat-card>
+
+               <div class="row">
+                 <div class="col-2">
+                   <p style="padding: 29px;color: #444746 !important;font-weight: 500;" *ngIf="view!='month'">GMT <small>+00</small></p>
+                   <p style="padding: 29px;color: #444746 !important;font-weight: 500;" *ngIf="view=='month'">MOIS</p>
+                 </div>
+                 <div class="col" *ngIf="!isDay">
+                   <div class="dayL">{{currentDay}}</div>
+                   <div class="daycgf nSCxEf">{{day}}</div>
+                 </div>
+               </div>
+               <mat-card-content [style.overflow]="'auto'" [style.height.px]="'230'">
+                 
+                 <div [ngSwitch]="view">
+                   <mwl-calendar-month-view
+                   *ngSwitchCase="CalendarView.Month"
+                   [viewDate]="viewDate"
+                   [events]="events"
+                   [refresh]="refresh"
+                   [activeDayIsOpen]="activeDayIsOpen"
+                   (dayClicked)="dayClicked($event.day)"
+                   (eventClicked)="openDialogDetail($event.event)"
+                   (eventTimesChanged)="eventTimesChanged($event)"
+                   locale="fr"
+                   >
+                   </mwl-calendar-month-view>
+       
+                   <mwl-calendar-week-view
+                   *ngSwitchCase="CalendarView.Week"
+                   [viewDate]="viewDate"
+                   [events]="events"
+                   [refresh]="refresh"
+                   (eventClicked)="openDialogDetail($event.event)"
+                   (eventTimesChanged)="eventTimesChanged($event)"
+                   locale="fr"
+                   >
+                   </mwl-calendar-week-view>
+       
+                   <mwl-calendar-day-view
+                   *ngSwitchCase="CalendarView.Day"
+                   [viewDate]="viewDate"
+                   [events]="events"
+                   [refresh]="refresh"
+                   (eventClicked)="openDialogDetail($event.event)"
+                   (eventTimesChanged)="eventTimesChanged($event)"
+                   locale="fr"
+                   >
+                   </mwl-calendar-day-view>
+                 </div>
+               </mat-card-content>
+             </mat-card>
+     
+              
+            </div>
+          </div><!--row-->
+    </div>
+</div>

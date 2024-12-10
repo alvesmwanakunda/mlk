@@ -10,6 +10,7 @@ import { MatSort } from '@angular/material/sort';
 import { StockProjetComponent } from 'src/app/stock-projet/stock-projet.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AddStockProjetComponent } from 'src/app/stock-projet/add-stock-projet/add-stock-projet.component';
+import { DeleteModuleProjetComponent } from './delete-module-projet/delete-module-projet.component';
 
 
 
@@ -22,7 +23,7 @@ import { AddStockProjetComponent } from 'src/app/stock-projet/add-stock-projet/a
 export class ModuleProjetComponent implements OnInit, AfterViewInit {
 
   idProjet:any
-  displayedColumns:string[]=['numero','nom','type','hauteur','largeur','longueur'];
+  displayedColumns:string[]=['numero','nom','type','hauteur','largeur','longueur','action'];
   dataSource =new MatTableDataSource<Modules>();
 
   @ViewChild('paginator') paginator: MatPaginator;
@@ -56,6 +57,7 @@ export class ModuleProjetComponent implements OnInit, AfterViewInit {
   getAllModules(){
     this.projetService.getAllModuleByProjet(this.idProjet).subscribe((data:any)=>{
        this.dataSource.data = data.message.map((data)=>({
+        idP:data?._id,
         id:data?.module?._id,
         nom:data?.module?.nom,
         position:data?.module?.position,
@@ -109,6 +111,16 @@ openDialogProjet(){
      if(result){
       this.getAllModules();
      }
+  })
+}
+
+openDialogDelete(idP){
+  const dialogRef = this.dialog.open(DeleteModuleProjetComponent,{width:'40%',data:{id:idP}});
+  const instance = dialogRef.componentInstance;
+  instance.close.subscribe(()=> dialogRef.close());
+  instance.confirm.subscribe(()=>{
+      dialogRef.close();
+      this.getAllModules();
   })
 }
 

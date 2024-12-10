@@ -29,4 +29,26 @@ export class AgendaService {
    return this.httpClient.delete(`${environment.BASE_API_URL}/agenda/${idAgenda}`)
  }
 
+ // Agenda Projet
+
+ public addAgendaProjet(agenda, idProjet){
+  return this.httpClient.post(`${environment.BASE_API_URL}/projet/agenda/${idProjet}`,agenda);
+}
+
+public getAgendaProjet(idAgenda){
+ return this.httpClient.get(`${environment.BASE_API_URL}/projet/agenda/${idAgenda}`)
+}
+
+public getAllAgendaProjet(idProjet){
+ return this.httpClient.get(`${environment.BASE_API_URL}/projet/agenda/by/${idProjet}`)
+}
+
+public updateAgendaProjet(idAgenda, agenda){
+ return this.httpClient.put(`${environment.BASE_API_URL}/projet/agenda/${idAgenda}`,agenda)
+}
+
+public deleteAgendaProjet(idAgenda){
+ return this.httpClient.delete(`${environment.BASE_API_URL}/projet/agenda/${idAgenda}`)
+}
+
 }

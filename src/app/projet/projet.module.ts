@@ -14,6 +14,7 @@ import { FactureProjetModule } from '../factures/facture-projet/facture-projet.m
 import { ChatProjetModule } from '../chat-projet/chat-projet.module';
 import { PreparationModule } from './preparation/preparation.module';
 import { ModuleProjetModule } from './module-projet/module-projet.module';
+import { PlanningProjetModule } from './planning-projet/planning-projet.module';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { ModuleProjetModule } from './module-projet/module-projet.module';
     FactureProjetModule,
     ChatProjetModule,
     PreparationModule,
-    ModuleProjetModule
+    ModuleProjetModule,
+    PlanningProjetModule
   ],
   providers:[ProjetsService]
 })

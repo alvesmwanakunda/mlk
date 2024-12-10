@@ -8,8 +8,8 @@ import {
   HttpEventType,
   HttpErrorResponse
 } from "@angular/common/http";
-import { map, catchError } from "rxjs/operators";
-import { throwError } from "rxjs";
+import { map, catchError, startWith } from "rxjs/operators";
+import { Observable, throwError } from "rxjs";
 import { environment} from 'src/environments/environment';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { Router } from '@angular/router';
@@ -40,6 +40,8 @@ export class AddModuleComponent implements OnInit {
   isSize:any;
   user:any;
   company:any;
+  entrepriseFiltres:Observable<any[]>;
+
 
 
   constructor(
@@ -81,6 +83,11 @@ export class AddModuleComponent implements OnInit {
       marque:['',null],
       dateFabrication:['',null]
     });
+
+    this.entrepriseFiltres = this.moduleForm.get('entreprise').valueChanges.pipe(
+      startWith(''),
+      map((val)=> this.filterEntreprise(val))
+    );
   }
 
   getEntrepriseId(){
@@ -105,6 +112,14 @@ export class AddModuleComponent implements OnInit {
     },(error)=>{
       console.log(error);
     })
+  }
+
+  filterEntreprise(value:string){
+    const filtre = value ? value.toLowerCase() : '';
+    return this.entreprises.filter(option => {
+      //console.log("Option entre", option);
+      return option && option.societe && option.societe.toLowerCase().includes(filtre);
+    });
   }
 
   onFileSelectedImage(event){

@@ -1,11 +1,7 @@
 import { Component,OnInit } from '@angular/core';
 import { CalendarView, CalendarEvent, CalendarEventTimesChangedEvent, CalendarEventAction } from 'angular-calendar';
-import { AddAgendaComponent } from './add-agenda/add-agenda.component';
-import { UpdateAgendaComponent } from './update-agenda/update-agenda.component';
-import { DeleteAgendaComponent } from './delete-agenda/delete-agenda.component';
-import { DetailAgendaComponent } from './detail-agenda/detail-agenda.component';
 import { MatDialog } from '@angular/material/dialog';
-import { AgendaService } from '../shared/services/agenda.service';
+import { AgendaService } from '../../shared/services/agenda.service';
 import { Subject } from 'rxjs';
 import {
   startOfDay,
@@ -20,17 +16,19 @@ import {
 } from 'date-fns';
 import fr from 'date-fns/locale/fr';
 import {FormControl} from '@angular/forms';
-
-
+import { Router, ActivatedRoute } from '@angular/router';
+import { AddPlanningProjetComponent } from './add-planning-projet/add-planning-projet.component';
+import { UpdateAgendaComponent } from 'src/app/agenda/update-agenda/update-agenda.component';
+import { DeleteAgendaComponent } from 'src/app/agenda/delete-agenda/delete-agenda.component';
+import { DetailAgendaComponent } from 'src/app/agenda/detail-agenda/detail-agenda.component';
 
 @Component({
-  selector: 'app-agenda',
-  templateUrl: './agenda.component.html',
-  styleUrls: ['./agenda.component.scss']
+  selector: 'app-planning-projet',
+  templateUrl: './planning-projet.component.html',
+  styleUrls: ['./planning-projet.component.scss']
 })
-export class AgendaComponent implements OnInit {
+export class PlanningProjetComponent implements OnInit {
 
-  //view: CalendarView = CalendarView.Month;
   view: CalendarView = CalendarView.Day;
   CalendarView = CalendarView;
   viewDate: Date = new Date();
@@ -65,13 +63,19 @@ export class AgendaComponent implements OnInit {
   refresh = new Subject<void>();
   agenda:any;
   user:any;
+  idProjet:any;
 
 
   constructor(
     public dialog: MatDialog,
-    private agendaService:AgendaService
+    private agendaService:AgendaService,
+    private router:Router,
+    private route:ActivatedRoute
   ){
     this.user = JSON.parse(localStorage.getItem('user'));
+    this.route.params.subscribe((data:any)=>{
+      this.idProjet = data.id
+     })
   }
 
   ngOnInit() {
@@ -111,14 +115,13 @@ export class AgendaComponent implements OnInit {
   }
 
   getAllAgenda(){
-    this.agendaService.getAllAgenda().subscribe((res:any)=>{
+    this.agendaService.getAllAgendaProjet(this.idProjet).subscribe((res:any)=>{
       if(res.message){
         this.events = res.message.map((data)=>({
           _id:data._id,
           start:new Date(data.start),
           end:new Date(data.end),
-          //title:data.title,
-          title: `${data.title}<br>(${new Date(data.start).toLocaleString('fr-FR')} - ${new Date(data.end).toLocaleString('fr-FR')})`,
+          title: `${data.title}`,
           color:{primary:'#fff', secondary:data.color},
           actions: this.actions,
         }));
@@ -144,7 +147,7 @@ export class AgendaComponent implements OnInit {
   }
 
   openDialogAgenda(){
-    const dialogRef = this.dialog.open(AddAgendaComponent,{width:'50%',height:'65%'});
+    const dialogRef = this.dialog.open(AddPlanningProjetComponent,{width:'50%',height:'65%',data:{id:this.idProjet}});
     dialogRef.afterClosed().subscribe((result:any)=>{
        if(result){
         this.getAllAgenda();
@@ -152,26 +155,10 @@ export class AgendaComponent implements OnInit {
     })
   }
 
-  openDialogUpadte(event:CalendarEvent){
+ openDialogUpadte(event:CalendarEvent){
     console.log("Evenements", event);
     this.agenda =event;
-    const dialogRef = this.dialog.open(UpdateAgendaComponent,{data:{id:this.agenda._id,type:"agenda"},width:'50%',height:'70%'});
-    /*dialogRef.afterClosed().subscribe((result:any)=>{
-       if(result){
-        this.getAllAgenda();
-       }
-    })*/
-       const instance = dialogRef.componentInstance;
-       instance.close.subscribe(()=> dialogRef.close());
-       instance.confirm.subscribe(()=>{
-           dialogRef.close();
-           this.getAllAgenda();
-       })
-  }
-
-  openDialogDelete(event:CalendarEvent){
-    this.agenda =event;
-    const dialogRef = this.dialog.open(DeleteAgendaComponent,{data:{id:this.agenda._id,type:"agenda"},width:'30%'});
+    const dialogRef = this.dialog.open(UpdateAgendaComponent,{data:{id:this.agenda._id,type:"planning"},width:'50%',height:'70%'});
     const instance = dialogRef.componentInstance;
     instance.close.subscribe(()=> dialogRef.close());
     instance.confirm.subscribe(()=>{
@@ -183,12 +170,27 @@ export class AgendaComponent implements OnInit {
         this.getAllAgenda();
        }
     })*/
-   
+  }
+
+  openDialogDelete(event:CalendarEvent){
+    this.agenda =event;
+    const dialogRef = this.dialog.open(DeleteAgendaComponent,{data:{id:this.agenda._id,type:"planning"},width:'30%'});
+    const instance = dialogRef.componentInstance;
+    instance.close.subscribe(()=> dialogRef.close());
+    instance.confirm.subscribe(()=>{
+        dialogRef.close();
+        this.getAllAgenda();
+    })
+    /*dialogRef.afterClosed().subscribe((result:any)=>{
+       if(result){
+        this.getAllAgenda();
+       }
+    })*/
   }
 
   openDialogDetail(event:CalendarEvent){
     this.agenda =event;
-    const dialogRef = this.dialog.open(DetailAgendaComponent,{data:{id:this.agenda._id,type:"agenda"},width:'40%'});
+    const dialogRef = this.dialog.open(DetailAgendaComponent,{data:{id:this.agenda._id,type:"planning"},width:'40%'});
     const instance = dialogRef.componentInstance;
     instance.close.subscribe(()=> dialogRef.close());
     instance.confirm.subscribe(()=>{

@@ -7,8 +7,8 @@ import {
   HttpEventType,
   HttpErrorResponse
 } from "@angular/common/http";
-import { map, catchError } from "rxjs/operators";
-import { throwError } from "rxjs";
+import { map, catchError, startWith } from "rxjs/operators";
+import { Observable, throwError } from "rxjs";
 import { environment} from 'src/environments/environment';
 import { Modules } from 'src/app/shared/interfaces/modules.model';
 import { Router,ActivatedRoute } from '@angular/router';
@@ -55,6 +55,8 @@ export class UpdateModuleComponent implements OnInit {
   moduleEntreprise:any;
   societe:any;
   site:any;
+  entrepriseFiltres:Observable<any[]>;
+
 
 
   constructor(
@@ -141,6 +143,10 @@ export class UpdateModuleComponent implements OnInit {
           dateFabrication:[this.module.dateFabrication,null],
           module_type:[this.module.module_type,null],
         });
+        this.entrepriseFiltres = this.moduleForm.get('entreprise').valueChanges.pipe(
+          startWith(''),
+          map((val)=> this.filterEntreprise(val))
+        );
       }
     },(error) => {
       console.log("Erreur lors de la récupération des données", error);
@@ -156,6 +162,14 @@ export class UpdateModuleComponent implements OnInit {
     },(error) => {
       console.log("Erreur lors de la récupération des données", error);
     })
+  }
+
+  filterEntreprise(value:string){
+    const filtre = value ? value.toLowerCase() : '';
+    return this.entreprises.filter(option => {
+      //console.log("Option entre", option);
+      return option && option.societe && option.societe.toLowerCase().includes(filtre);
+    });
   }
 
 

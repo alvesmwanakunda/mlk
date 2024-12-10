@@ -5,7 +5,7 @@ import { ProjetsService } from 'src/app/shared/services/projets.service';
 import { ModuleProjetComponent } from './module-projet.component';
 import { StockProjetModule } from 'src/app/stock-projet/stock-projet.module';
 import { AddStockProjetModule } from 'src/app/stock-projet/add-stock-projet/add-stock-projet.module';
-
+import { DeleteModuleProjetModule } from './delete-module-projet/delete-module-projet.module';
 
 
 @NgModule({
@@ -14,7 +14,8 @@ import { AddStockProjetModule } from 'src/app/stock-projet/add-stock-projet/add-
     CommonModule,
     SharedModule,
     StockProjetModule,
-    AddStockProjetModule
+    AddStockProjetModule,
+    DeleteModuleProjetModule
   ],
   exports:[ModuleProjetComponent],
   providers:[ProjetsService]

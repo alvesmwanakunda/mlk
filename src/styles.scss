@@ -438,6 +438,16 @@ a{
   margin-bottom: 30px;
  }
 
+ .content-bottom-child{
+  margin-bottom: 30px;
+ }
+
+ .content-top-child-agenda{
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  //margin-bottom: 20px;
+ }
+
 .content-title{
   font-family: 'Roboto' !important;
   font-style: normal !important;
@@ -972,7 +982,7 @@ hr.entreprise{
 
 .agenda-title{
   color: #28628B;
-  text-align: center
+  //text-align: center
 }
 
 .btn-outline-primary {
@@ -1952,6 +1962,49 @@ hr.entreprise{
   }
 }
 
+.mat-calendar-body-today:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+  border-color: #28628B !important;
+  background: #28628B !important;
+  color: #fff !important;
+}
+
+
+// Boutton agenda
+
+.btnAg{
+  height: 31px;
+  width: 31px;
+  line-height: 46px;
+  background: #ffffff;
+  //color: #fff;
+  text-align: center;
+  position: relative;
+  z-index: 5;
+  border-radius: 100%;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5px;
+  margin-right: 5px;
+}
+
+.btnAgS{
+  height: 31px;
+  width: 31px;
+  line-height: 46px;
+  background: #ffffff;
+  color: #9c0434;
+  text-align: center;
+  position: relative;
+  z-index: 5;
+  border-radius: 100%;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5px;
+  margin-right: 5px;
+}
+
 
 
 
@@ -1965,6 +2018,7 @@ hr.entreprise{
 /* Importing Bootstrap SCSS file. */
 @import 'assets/css/menus_mlka.scss';
 @import 'bootstrap/scss/bootstrap';
+@import 'assets/css/calendar.scss';
 @import "../node_modules/angular-calendar/css/angular-calendar.css";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 

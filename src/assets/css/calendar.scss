@@ -1,0 +1,158 @@
+.cal-week-view .cal-hour:not(:last-child) .cal-hour-segment, 
+.cal-week-view .cal-hour:last-child :not(:last-child) .cal-hour-segment {
+    border-bottom: none !important;
+}
+
+.cal-week-view .cal-time-events {
+    position: relative;
+    border: solid 0px !important; 
+    border-top: 0; 
+    display: flex
+;
+}
+
+.cal-week-view * {
+    //box-sizing: border-box;
+    border-bottom: 0.3px solid rgba(0, 0, 0, .12) !important;
+    //border-radius: 20px !important;
+}
+
+.cal-week-view mwl-calendar-week-view-hour-segment {
+    display: block;
+    border-bottom: none !important;
+    //display: none;
+}
+
+/*.cal-week-view .cal-hour-segment.cal-after-hour-start .cal-time {
+    //display: block; 
+    border-right: 1px solid #f7f7fa !important;
+}*/
+
+.cal-week-view .cal-hour-odd {
+    background-color: #fff !important;
+}
+
+.cal-week-view .cal-time {
+    padding-top: 5px;
+    width: 70px;
+    text-align: center;
+    font-family: "Google Sans", Roboto, Arial, sans-serif !important;
+    font-size: .688rem !important;
+    font-weight: 500 !important;
+    letter-spacing: .006rem !important;
+    line-height: 1rem !important;
+    color: #444746 !important;
+    //border: none !important;
+    border-bottom: none !important;
+    border-right: 0.1px solid rgba(0, 0, 0, .12) !important;
+    height: 203% !important;
+}
+
+.cal-week-view .cal-ends-within-day .cal-event {
+    border-bottom-left-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+    //background-color: rgb(3, 155, 229) !important;
+    //border-color: none !important;
+}
+
+.cal-week-view .cal-starts-within-day .cal-event {
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+}
+
+.cal-week-view .cal-time-events .cal-event {
+    width: calc(100% - 2px);
+    height: calc(100% - 2px);
+    margin: 1px;
+    padding: 0 14px !important;
+    line-height: 25px;
+}
+
+.cal-week-view .cal-day-headers {
+    border-color: rgba(0, 0, 0, 0.12) !important;
+    border-top: 0;
+}
+
+.cal-week-view .cal-day-headers {
+    display: flex;
+    padding-left: 70px;
+    border: none !important; 
+}
+
+.cal-week-view .cal-day-headers .cal-header:first-child {
+    border-left-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+.cal-week-view .cal-day-headers .cal-header:not(:last-child) {
+    border-right-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+.cal-week-view .cal-header.cal-today {
+    background-color: #28628B;
+    color: #fff !important;
+}
+
+.cal-week-view .cal-day-headers .cal-header {
+    flex: 1;
+    text-align: center;
+    padding: 13px !important;
+    //color: #444746 !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    letter-spacing: .8px !important;
+    text-transform: uppercase !important;
+    line-height: 32px !important;
+    position: relative !important;
+    z-index: 5 !important;
+}
+
+.cal-month-view .cal-header .cal-cell {
+    padding: 19px 0 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    white-space: nowrap;
+    color: #444746 !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    line-height: 20px !important;
+    text-align: center !important;
+    text-transform: uppercase !important;
+}
+
+.cal-month-view .cal-day-cell:not(:last-child) {
+    border-right-color:  rgba(0, 0, 0, 0.12) !important;
+}
+
+.cal-month-view .cal-day-cell {
+    min-height: 70px !important;
+}
+
+.cal-month-view .cal-day-number {
+    opacity: 100 !important;
+    margin-right: 15px;
+    float: right;
+    margin-bottom: 10px;
+    margin-top: 8px;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    letter-spacing: .3px !important;
+    display: inline-block !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    width: max-content !important;
+    min-width: 24px !important;
+    line-height: 16px !important;
+    pointer-events: auto !important;
+    color: #1f1f1f !important;
+}
+
+.cal-month-view .cal-day-badge {
+    background-color: #0b57d0 !important;
+    color: #fff;
+}
+
+.cal-month-view .cal-day-cell.cal-today {
+    background-color: #28628bd1 !important;
+    color: #fff !important;
+}
