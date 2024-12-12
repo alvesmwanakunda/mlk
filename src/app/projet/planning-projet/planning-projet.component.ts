@@ -29,7 +29,7 @@ import { DetailAgendaComponent } from 'src/app/agenda/detail-agenda/detail-agend
 })
 export class PlanningProjetComponent implements OnInit {
 
-  view: CalendarView = CalendarView.Day;
+  view: CalendarView = CalendarView.Week;
   CalendarView = CalendarView;
   viewDate: Date = new Date();
   day:any;
@@ -121,9 +121,11 @@ export class PlanningProjetComponent implements OnInit {
           _id:data._id,
           start:new Date(data.start),
           end:new Date(data.end),
-          title: `${data.title}`,
+          title: data?.isDay 
+                 ? `${data.title}, ${data.heure_start}` // Si allDay est true, ajoute l'heure de start
+                 : `${data.title}, ${data.heure_start} à ${data?.heure_end}`, // Sinon, inclut les heures
           color:{primary:'#fff', secondary:data.color},
-          actions: this.actions,
+          allDay:data?.isDay
         }));
       }
     },(error) => {

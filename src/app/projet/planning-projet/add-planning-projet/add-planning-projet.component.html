@@ -1,43 +1,59 @@
 <mat-dialog-content class="mat-typography">
-    <div class="text-center" style="padding-top: 25px;"><p class="title-projet-page">Nouvel événement</p></div>
-    <div class="row"><div class="col"><hr class="entreprise"></div></div><!--row-->
-    <div>
-      <form [formGroup]="agendaFormGroup">
-  
-        <div style="margin-bottom: 8px;">
-          <mat-form-field class="example-full-width">
-            <mat-label>Titre</mat-label>
-            <input matInput  formControlName="title">
+  <div style="margin-bottom: 30px;"><p class="title-projet-page">Nouvel événement</p></div>
+  <div>
+    <form [formGroup]="agendaFormGroup">
+
+      <div style="margin-bottom: 8px;">
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Titre</mat-label>
+          <input matInput  formControlName="title">
+        </mat-form-field>
+      </div><!--div-->
+      <!--type="datetime-local"-->
+      <div class="row">
+        <mat-label style="margin-bottom: 10px;">Date Événement</mat-label>
+        
+        <div class="col">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <!--<input matInput   formControlName="start">-->
+            <input matInput [matDatepicker]="picker" formControlName="start">
+            <mat-datepicker-toggle matIconSuffix [for]="picker">
+            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
-        </div><!--div-->
-  
-        <div class="row" style="margin-bottom: 8px;">
-          <div class="col">
-            <mat-form-field class="example-full-width">
-              <mat-label>Début</mat-label>
-              <input matInput  type="datetime-local" formControlName="start">
-            </mat-form-field>
-            
-          </div>
-          <div class="col">
-            <mat-form-field class="example-full-width">
-              <mat-label>Fin</mat-label>
-              <input matInput  type="datetime-local" formControlName="end">
-            </mat-form-field>
-          </div>
-        </div><!--div-->
-        <div style="margin-bottom: 8px;">
-          <mat-form-field>
-            <mat-label>Couleur</mat-label>
-            <input matInput type="color" formControlName="color" [(ngModel)]="color">
+        </div>
+        <div class="col-4" *ngIf="!isAllDays" align="right">
+          <mat-form-field class="example-full" appearance="outline">
+            <input matInput type="time"  formControlName="heure_start">
           </mat-form-field>
-        </div><!--div-->
-  
-      </form>
-    </div>
-  </mat-dialog-content>
-  <mat-dialog-actions align="center">
-     <button mat-button mat-dialog-close style="margin-right: 10px;">Fermer</button>
-     <button mat-button cdkFocusInitial style=" background: #0829cf !important;color:#fff" (click)="addAgenda()">Valider</button>
-  </mat-dialog-actions>
-  
+          - 
+          <mat-form-field class="example-full" appearance="outline">
+            <input matInput type="time"  formControlName="heure_end">
+          </mat-form-field>
+        </div>
+        <div class="col" *ngIf="isAllDays">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label></mat-label>
+            <input matInput [matDatepicker]="picker1" formControlName="end">
+            <mat-datepicker-toggle matIconSuffix [for]="picker1">
+            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div><!--div-->
+      <div>
+        <mat-checkbox formControlName="isDay" (change)="checkIsDay($event)">Toute la journée</mat-checkbox>
+        <mat-form-field class="example-full-color" appearance="outline" style="float:right;">
+          <input matInput type="color" formControlName="color" [(ngModel)]="color">
+        </mat-form-field>
+      </div>
+    
+    </form>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+   <button mat-flat-button mat-dialog-close style="margin-right: 10px;">Fermer</button>
+   <button mat-flat-button cdkFocusInitial color="primary" (click)="addAgenda()">Valider</button>
+</mat-dialog-actions>

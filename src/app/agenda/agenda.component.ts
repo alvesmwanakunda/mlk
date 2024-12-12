@@ -31,7 +31,7 @@ import {FormControl} from '@angular/forms';
 export class AgendaComponent implements OnInit {
 
   //view: CalendarView = CalendarView.Month;
-  view: CalendarView = CalendarView.Day;
+  view: CalendarView = CalendarView.Week;
   CalendarView = CalendarView;
   viewDate: Date = new Date();
   day:any;
@@ -117,10 +117,13 @@ export class AgendaComponent implements OnInit {
           _id:data._id,
           start:new Date(data.start),
           end:new Date(data.end),
-          //title:data.title,
-          title: `${data.title}<br>(${new Date(data.start).toLocaleString('fr-FR')} - ${new Date(data.end).toLocaleString('fr-FR')})`,
+          //title: `${data.title}, ${data.heure_start} à ${data?.heure_end}`,
+          title: data?.isDay 
+                 ? `${data.title}, ${data.heure_start}` // Si allDay est true, ajoute l'heure de start
+                 : `${data.title}, ${data.heure_start} à ${data?.heure_end}`, // Sinon, inclut les heures
           color:{primary:'#fff', secondary:data.color},
-          actions: this.actions,
+          allDay:data?.isDay
+          //actions: this.actions,
         }));
       }
     },(error) => {
@@ -144,7 +147,7 @@ export class AgendaComponent implements OnInit {
   }
 
   openDialogAgenda(){
-    const dialogRef = this.dialog.open(AddAgendaComponent,{width:'50%',height:'65%'});
+    const dialogRef = this.dialog.open(AddAgendaComponent,{width:'40%',height:'60%'});
     dialogRef.afterClosed().subscribe((result:any)=>{
        if(result){
         this.getAllAgenda();

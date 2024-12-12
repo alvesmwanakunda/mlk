@@ -5,4 +5,7 @@ export interface Agendas {
   end: Date;
   color:string;
   user:string;
+  heure_start:string;
+  heure_end:string;
+  isDay:boolean
 }

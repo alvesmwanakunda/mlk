@@ -156,3 +156,15 @@
     background-color: #28628bd1 !important;
     color: #fff !important;
 }
+
+.cal-week-view .cal-all-day-events {
+    border-color: none !important;
+}
+
+.cal-week-view .cal-all-day-events {
+    border: none !important;
+    border-top: none !important;
+    border-bottom-width: 0.3px !important;
+    padding-top: 3px;
+    position: relative;
+}

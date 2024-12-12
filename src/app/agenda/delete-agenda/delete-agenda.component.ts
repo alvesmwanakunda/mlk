@@ -37,7 +37,7 @@ export class DeleteAgendaComponent implements OnInit {
     this.confirm.emit();
   }
 
-  deleteAgenda():void{
+deleteAgenda():void{
 
     if(this.data.type=="agenda"){
       this.agendaService.deleteAgenda(this.data.id).subscribe((res:any)=>{

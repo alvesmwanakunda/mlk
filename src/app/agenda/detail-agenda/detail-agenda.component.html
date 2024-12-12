@@ -1,24 +1,101 @@
-<mat-dialog-content class="mat-typography">
-  <div style="padding-top: 8px;">
-    <div align="right">
-      <button mat-icon-button (click)="onNoClick()"><mat-icon>close</mat-icon></button>
-      <!--<button mat-icon-button (click)="openDialogUpadte()"><mat-icon>edit</mat-icon></button>
-      <button mat-icon-button (click)="openDialogDelete()"><mat-icon>delete</mat-icon></button>-->
+
+<div align="right" style="padding-top: 10px;">
+  <button mat-icon-button (click)="onNoClick()"><mat-icon style="font-size: 19px;">close</mat-icon></button>
+  <button mat-icon-button color="primary" (click)="openDialogUpadte()"><mat-icon style="font-size: 19px;">edit</mat-icon></button>
+  <button mat-icon-button color="warn" (click)="openDialogDelete()"><mat-icon style="font-size: 19px;">delete</mat-icon></button>
+</div>
+<div *ngIf="isDetail">
+  <mat-dialog-content class="mat-typography">
+    <div style="padding-top: 8px;">
     </div>
-  </div>
-  <div class="row" style="margin-bottom: 18px;">
-    <div class="col">
-      <p><span class="card-color" [ngStyle]="{'background-color':agenda?.color}"></span> <span  class="title-projet-page-detail">{{agenda?.title}}</span></p>
+    <div class="row" style="margin-bottom: 18px;">
+      <div class="col">
+        <p><span class="card-color" [ngStyle]="{'background-color':agenda?.color}"></span> <span  class="title-projet-page-detail">{{agenda?.title}}</span></p>
+      </div>
     </div>
-  </div>
+  
+    <div>
+      <p><span style="margin-right: 12px"><i class='fas fa-clock'></i></span> <span style="font-size:13px;">{{agenda?.start | date:'EEEE, d MMMM'}} ({{agenda?.heure_start}}) <!--({{agenda?.start | date:'HH:mm'}})--></span></p>
+    </div>
+    <div style="position: relative;bottom: 10px;">
+      <p><span style="margin-right: 29px"></span> <span style="font-size:13px;">{{agenda?.end | date:'EEEE, d MMMM'}} ({{agenda?.heure_end}})<!--({{agenda?.end | date:'HH:mm'}})--></span></p>
+    </div>
+  </mat-dialog-content>
+</div>
+<div *ngIf="isUpdate">
+  <mat-dialog-content class="mat-typography">
+    <div style="margin-bottom: 30px;"><p class="title-projet-page">Modifier événement</p></div>
+    <div>
+      <form [formGroup]="agendaFormGroup" *ngIf="agenda">
+  
+        <div style="margin-bottom: 8px;">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Titre</mat-label>
+            <input matInput  formControlName="title" [(ngModel)]="agenda.title">
+          </mat-form-field>
+        </div><!--div-->
+        <!--type="datetime-local"-->
+        <div class="row">
+          <mat-label style="margin-bottom: 10px;">Date Événement</mat-label>
+          
+          <div class="col">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <!--<input matInput   formControlName="start">-->
+              <input matInput [matDatepicker]="picker" formControlName="start" [(ngModel)]="agenda.start">
+              <mat-datepicker-toggle matIconSuffix [for]="picker">
+              <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-4" *ngIf="!isAllDays" align="right">
+            <mat-form-field class="example-full" appearance="outline">
+              <input matInput type="time"  formControlName="heure_start" [(ngModel)]="agenda.heure_start">
+            </mat-form-field>
+            - 
+            <mat-form-field class="example-full" appearance="outline">
+              <input matInput type="time"  formControlName="heure_end" [(ngModel)]="agenda.heure_end">
+            </mat-form-field>
+          </div>
+          <div class="col" *ngIf="isAllDays">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label></mat-label>
+              <input matInput [matDatepicker]="picker1" formControlName="end" [(ngModel)]="agenda.end">
+              <mat-datepicker-toggle matIconSuffix [for]="picker1">
+              <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div><!--div-->
+        <div>
+          <mat-checkbox formControlName="isDay" (change)="checkIsDay($event)" [(ngModel)]="agenda.isDay">Toute la journée</mat-checkbox>
+          <mat-form-field class="example-full-color" appearance="outline" style="float:right;">
+            <input matInput type="color" formControlName="color" [(ngModel)]="agenda.color">
+          </mat-form-field>
+        </div>
+        
+      </form>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="center">
+     <button mat-flat-button mat-dialog-close style="margin-right: 10px;">Fermer</button>
+     <button mat-flat-button cdkFocusInitial color="primary" (click)="updateAgenda()">Valider</button>
+  </mat-dialog-actions>
+</div>
 
-  <div>
-    <p><span style="margin-right: 12px"><i class='fas fa-clock'></i></span> <span style="font-size:13px;">{{agenda?.start | date:'EEEE, d MMMM'}} ({{agenda?.start | date:'HH:mm'}})</span></p>
-  </div>
-  <div style="position: relative;bottom: 10px;">
-    <p><span style="margin-right: 29px"></span> <span style="font-size:13px;">{{agenda?.end | date:'EEEE, d MMMM'}} ({{agenda?.end | date:'HH:mm'}})</span></p>
-  </div>
+<div *ngIf="isDelete">
+  <mat-dialog-content class="mat-typography">
+    <div class="text-center" style="padding-top: 30px;">
+     <p>Êtes-vous sûr de vouloir supprimer?</p>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="center">
+     <button mat-button mat-dialog-close>Fermer</button>
+     <button mat-button (click)="deleteAgenda()" cdkFocusInitial style=" background: #c71e56 !important;color:#fff">Supprimer</button>
+  </mat-dialog-actions>
+</div>
 
 
 
-</mat-dialog-content>
+

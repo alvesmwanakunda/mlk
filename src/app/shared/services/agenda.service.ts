@@ -17,6 +17,10 @@ export class AgendaService {
    return this.httpClient.get(`${environment.BASE_API_URL}/agenda/${idAgenda}`)
  }
 
+ public getAgendaWeb(idAgenda){
+  return this.httpClient.get(`${environment.BASE_API_URL}/agenda/web/${idAgenda}`)
+}
+
  public getAllAgenda(){
    return this.httpClient.get(`${environment.BASE_API_URL}/agenda`)
  }
@@ -38,6 +42,10 @@ export class AgendaService {
 public getAgendaProjet(idAgenda){
  return this.httpClient.get(`${environment.BASE_API_URL}/projet/agenda/${idAgenda}`)
 }
+
+public getAgendaProjetWeb(idAgenda){
+  return this.httpClient.get(`${environment.BASE_API_URL}/projet/agenda/web/${idAgenda}`)
+ }
 
 public getAllAgendaProjet(idProjet){
  return this.httpClient.get(`${environment.BASE_API_URL}/projet/agenda/by/${idProjet}`)
