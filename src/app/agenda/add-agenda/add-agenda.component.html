@@ -36,7 +36,7 @@
         <div class="col" *ngIf="isAllDays">
           <mat-form-field class="example-full-width" appearance="outline">
             <mat-label></mat-label>
-            <input matInput [matDatepicker]="picker1" formControlName="end">
+            <input matInput [matDatepicker]="picker1" [(ngModel)]="now" formControlName="end">
             <mat-datepicker-toggle matIconSuffix [for]="picker1">
             <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
             </mat-datepicker-toggle>
@@ -45,7 +45,7 @@
         </div>
       </div><!--div-->
       <div>
-        <mat-checkbox formControlName="isDay" (change)="checkIsDay($event)">Toute la journée</mat-checkbox>
+        <mat-checkbox formControlName="isDay" [(ngModel)]="isAllDays" (change)="checkIsDay($event)">Toute la journée</mat-checkbox>
         <mat-form-field class="example-full-color" appearance="outline" style="float:right;">
           <input matInput type="color" formControlName="color" [(ngModel)]="color">
         </mat-form-field>

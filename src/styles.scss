@@ -15,6 +15,7 @@ a{
   --shadow4: 0 0 2px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.14);
   --shadowAmbient: rgba(0,0,0,0.12);
   --shadowKey: rgba(0,0,0,0.14);
+  --cal-list-view-calendar-indicator-size:12px;
 }
 
 .span-brand{
@@ -2007,6 +2008,81 @@ hr.entreprise{
   flex-direction: column;
   justify-content: center;
   padding: 5px;
+  margin-right: 5px;
+}
+
+.day-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.day-header {
+  display: flex;
+  //align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.date-circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: transparent;
+  color: rgb(16, 15, 15);
+  font-weight: bold;
+  margin-right: 1rem;
+}
+
+.circle-today {
+  background-color: #4285f4; /* Bleu pour la date d'aujourd'hui */
+  color: #fff !important;
+}
+
+.day-number {
+  font-size: 18px;
+  color: #1f1f1f;
+  font-family: "Google Sans Text", "Google Sans", Roboto, Arial, sans-serif;
+}
+
+.day-label-active {
+  color: #4285f4 !important;
+}
+
+.day-label {
+  color: #444647;
+  font-size: 11px;
+  font-family: "Google Sans Text", "Google Sans", Roboto, Arial, sans-serif;
+}
+
+.event-item {
+  margin-left: 3rem;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.event-time {
+  font-size: 13px;
+  color: #444647;
+  font-family: "Google Sans Text", "Google Sans", Roboto, Arial, sans-serif;
+}
+
+.event-title {
+  color: #1f1f1f;
+  font-weight: 500;
+  font-size: 13px;
+  font-family: "Google Sans Text", "Google Sans", Roboto, Arial, sans-serif;
+}
+
+.round-color {
+  border-radius: 12px;
+  border:12px;
+  width: 12px;
+  height: 12px;
+  background-color: transparent;
+  display: inline-block;
   margin-right: 5px;
 }
 

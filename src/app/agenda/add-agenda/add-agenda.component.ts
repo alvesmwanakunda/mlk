@@ -17,7 +17,7 @@ export class AddAgendaComponent implements OnInit {
   agenda:Agendas;
   message:any;
   color="#4285F4";
-  isAllDays:boolean=false;
+  isAllDays:boolean=true;
   now = new Date();
   heureStart = this.formatTime(this.now);
   heureEnd = this.formatTime(new Date(this.now.getTime()+20 * 60 * 1000));

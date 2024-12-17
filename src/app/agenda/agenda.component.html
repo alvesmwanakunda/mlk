@@ -6,27 +6,43 @@
           <h2 class="content-title">Mon agenda</h2>
         </div>
         <div class="col">
-          <!--<button type="button" class="btn btn-projet" (click)="openDialogAgenda()"><i class="fa-solid fa-plus"></i> Nouvel événement</button>-->
            <div class="row">
              <div class="col-3">
               <div style="top: 46px;position: absolute;">
-                <button mat-stroked-button style="margin-right: 40px;font-weight: 500 !important;" class="content-title" mwlCalendarToday  [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()" [(viewDate)]="viewDate">Aujourd'hui</button>
-                <button mat-icon-button mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()" style="position:relative;top:8px;">
-                  <mat-icon>chevron_left</mat-icon>
-                </button>
-                <button mat-icon-button mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()" style="position:relative;top:8px;">
-                  <mat-icon>chevron_right</mat-icon>
-                </button>
+                <div *ngIf="isPlanning">
+                  <button mat-stroked-button style="margin-right: 40px;font-weight: 500 !important;" class="content-title" mwlCalendarToday  [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()" [(viewDate)]="viewDate">Aujourd'hui</button>
+                  <button mat-icon-button mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()" style="position:relative;top:8px;">
+                    <mat-icon>chevron_left</mat-icon>
+                  </button>
+                  <button mat-icon-button mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()" style="position:relative;top:8px;">
+                    <mat-icon>chevron_right</mat-icon>
+                  </button>
+                </div>
+
+                <div *ngIf="!isPlanning">
+                  <button mat-stroked-button style="margin-right: 40px;font-weight: 500 !important;" class="content-title"  (click)="goToCurrentWeek()">Aujourd'hui</button>
+                  <button mat-icon-button (click)="previousWeek()" style="position:relative;top:8px;">
+                    <mat-icon>chevron_left</mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="nextWeek()"   style="position:relative;top:8px;">
+                    <mat-icon>chevron_right</mat-icon>
+                  </button>
+                </div>
+                
               </div>
              </div>
              <div class="col-4">
-                <p class="agenda-title" style="font-size: 20px;font-weight: 500;position: relative;bottom: 5px;">{{ viewDate | calendarDate:(view + 'ViewTitle'):'fr' }}</p>
+                <p class="agenda-title" style="font-size: 20px;font-weight: 500;position: relative;bottom: 5px;" *ngIf="isPlanning">{{ viewDate | calendarDate:(view + 'ViewTitle'):'fr' }}</p>
+                <p class="agenda-title" style="font-size: 20px;font-weight: 500;position: relative;bottom: 5px;" *ngIf="!isPlanning">
+                  {{ currentWeekStart | date:'MMM yyyy' | uppercase }}
+                </p>
              </div>
              <div class="col-5">
               <div style="position: relative;bottom: 24px;">
                 <mat-form-field appearance="fill" class="example-full-width">
                   <mat-label>Filtre</mat-label>
-                  <mat-select [disabled]="disableSelect.value">
+                  <mat-select [disabled]="disableSelect.value" (selectionChange)="isClickPlanning($event)">
+                    <mat-option value="Planning">Planning</mat-option>
                     <mat-option value="Jour" (click)="setView(CalendarView.Day)">Jour</mat-option>
                     <mat-option value="Semaine" (click)="setView(CalendarView.Week)">Semaine</mat-option>
                     <mat-option value="Mois" (click)="setView(CalendarView.Month)">Mois</mat-option>
@@ -42,26 +58,6 @@
     </div><!--content-->
 
     <div>
-     <!--<div class="row"  style="margin-bottom: 10px;">
-      <div class="col">
-        <div class="btn-group" role="group" aria-label="Basic example">
-          <button type="button" style="font-size: 12px;" class="btn btn-outline-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">Précédent</button>
-          <button type="button" style="font-size: 12px;" class="btn btn-outline-primary" mwlCalendarToday [(viewDate)]="viewDate">Aujourd'hui</button>
-          <button type="button" style="font-size: 12px;" class="btn btn-outline-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">Suivant</button>
-        </div>
-      </div>
-      <div class="col" align="right">
-        <div class="btn-group" role="group" aria-label="Basic example">
-          <button type="button" class="btn btn-outline-primary" (click)="setView(CalendarView.Month)"
-          [class.active]="view === CalendarView.Month">Mois</button>
-          <button type="button" class="btn btn-outline-primary" (click)="setView(CalendarView.Week)"
-          [class.active]="view === CalendarView.Week">Week</button>
-          <button type="button" class="btn btn-outline-primary" (click)="setView(CalendarView.Day)"
-          [class.active]="view === CalendarView.Day">Jour</button>
-        </div>
-      </div>
-     </div>-->
-
      <div class="row">
        <div class="col-3">
        
@@ -75,7 +71,7 @@
         </mat-card>
        </div>
        <div class="col-9">
-        <mat-card>
+        <mat-card style="border-radius: 30px !important;" *ngIf="isPlanning">
           <div class="row">
             <div class="col-2">
               <p style="padding: 29px;color: #444746 !important;font-weight: 500;" *ngIf="view!='month'">GMT <small>+00</small></p>
@@ -86,8 +82,9 @@
               <div class="daycgf nSCxEf">{{day}}</div>
             </div>
           </div>
+          
           <mat-card-content [style.overflow]="'auto'" [style.height.px]="'400'">
-            
+
             <div [ngSwitch]="view">
               <mwl-calendar-month-view
               *ngSwitchCase="CalendarView.Month"
@@ -124,6 +121,74 @@
               >
               </mwl-calendar-day-view>
             </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card style="border-radius: 30px !important;" *ngIf="!isPlanning">
+         
+          <mat-card-content [style.overflow]="'auto'">
+              
+              <div *ngFor="let day of weekWithEvents" class="day-container">
+                  <div class="row">
+                     <div class="col-2">
+                      <div class="day-header">
+                        <div [ngClass]="{ 'circle-today': isToday(day.date) }" class="date-circle">
+                          <div [ngClass]="{ 'circle-today': isToday(day.date) }" class="day-number">
+                            {{ day.date | date: 'd' }}
+                          </div>
+                        </div>
+                        <div [ngClass]="{ 'day-label-active': isToday(day.date) }" class="day-label">
+                          {{ day.date | date: 'EEE, MMM.' | uppercase }}
+                        </div>
+                      </div>
+                     </div>
+                     <div class="col">
+                      <div *ngIf="day.events.length > 0; else noEvents">
+                        <div *ngFor="let dayEvents of day.events">
+                           <div class=" row event-item" *ngFor="let event of dayEvents.events" style="cursor: pointer;" (click)="openDialogDetailP(event?._id)">
+                            <div class="event-time col-3" *ngIf="event?.time">
+                              <span class="round-color" [ngStyle]="{'background-color': event?.color}"></span> {{ event?.time }}
+                            </div>
+                            <div class="event-title col">
+                              {{ event?.title }}
+                            </div>
+                        </div>
+                        </div>
+                      </div>
+                      <ng-template #noEvents>
+                        <div class="no-event">Aucun événement</div>
+                      </ng-template>
+                     </div>
+                  </div>
+                  <mat-divider></mat-divider>
+              </div>
+            <!--<div class="calendar-container">
+              <div class="calendar-day" *ngFor="let day of weekWithEvents">
+                <div class="day-header">
+                  <div class="day-date">
+                    <span class="day-number">{{ day.date | date: 'd' }}</span>
+                    <span class="day-name">{{ day.date | date: 'EEE' }}</span>
+                  </div>
+                </div>
+            
+                <div class="day-events">
+                  <div *ngIf="day.events.length > 0; else noEvents">
+                    <div *ngFor="let dayEvents of day.events">
+                      <div *ngFor="let event of dayEvents.events" class="event" [style.background-color]="event.color">
+                        <span class="event-title">{{ event.title }}</span>
+                        <span class="event-time">{{ event.time }}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <ng-template #noEvents>
+                    <div class="no-event">Aucun événement</div>
+                  </ng-template>
+                </div>
+              </div>
+            </div>-->
+            
+            
+            
           </mat-card-content>
         </mat-card>
 

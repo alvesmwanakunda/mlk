@@ -2,7 +2,7 @@
     <div class="content-top-child-agenda">
         <div class="row">
             <div class="col">
-             <div>
+             <div *ngIf="isPlanning">
                <button mat-stroked-button style="margin-right: 40px;font-weight: 500 !important;" class="content-title" mwlCalendarToday  [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()" [(viewDate)]="viewDate">Aujourd'hui</button>
                <button mat-icon-button mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()" style="position:relative;top:8px;">
                  <mat-icon>chevron_left</mat-icon>
@@ -11,6 +11,16 @@
                  <mat-icon>chevron_right</mat-icon>
                </button>
              </div>
+             <div *ngIf="!isPlanning">
+              <button mat-stroked-button style="margin-right: 40px;font-weight: 500 !important;" class="content-title"  (click)="goToCurrentWeek()">Aujourd'hui</button>
+              <button mat-icon-button (click)="previousWeek()" style="position:relative;top:8px;">
+                <mat-icon>chevron_left</mat-icon>
+              </button>
+              <button mat-icon-button (click)="nextWeek()"   style="position:relative;top:8px;">
+                <mat-icon>chevron_right</mat-icon>
+              </button>
+            </div>
+            
             </div>
             <!--<div class="col-4">
                <p class="agenda-title" style="font-size: 20px;font-weight: 500;position: relative;bottom: 5px;">{{ viewDate | calendarDate:(view + 'ViewTitle'):'fr' }}</p>
@@ -19,7 +29,8 @@
              <div>
                <mat-form-field appearance="fill" class="example-full-width">
                  <mat-label>Filtre</mat-label>
-                 <mat-select [disabled]="disableSelect.value">
+                 <mat-select [disabled]="disableSelect.value" (selectionChange)="isClickPlanning($event)">
+                  <mat-option value="Planning">Planning</mat-option>
                    <mat-option value="Jour" (click)="setView(CalendarView.Day)">Jour</mat-option>
                    <mat-option value="Semaine" (click)="setView(CalendarView.Week)">Semaine</mat-option>
                    <mat-option value="Mois" (click)="setView(CalendarView.Month)">Mois</mat-option>
@@ -38,20 +49,13 @@
               <mat-icon>add</mat-icon> Créer
             </button>
           </div>
-            <!--<div class="col-3">
-             <div style="margin-bottom: 10px;">
-               <button  mat-stroked-button (click)="openDialogAgenda()" style="width: 65% !important;height: 55px !important;border-radius: 20px !important;">
-                 <mat-icon>add</mat-icon> Créer
-               </button>
-             </div>
-             <mat-card class="demo-inline-calendar-card">
-               <mat-calendar></mat-calendar>
-             </mat-card>
-            </div>-->
+            
             <div class="col">
-                <p class="agenda-title" style="font-size: 20px;font-weight: 500;position: relative;bottom: 5px;text-align: center;text-transform: uppercase;">{{ viewDate | calendarDate:(view + 'ViewTitle'):'fr' }}</p>
-
-             <mat-card>
+                <p *ngIf="isPlanning" class="agenda-title" style="font-size: 20px;font-weight: 500;position: relative;bottom: 5px;text-align: center;text-transform: uppercase;">{{ viewDate | calendarDate:(view + 'ViewTitle'):'fr' }}</p>
+                <p class="agenda-title" style="font-size: 20px;font-weight: 500;position: relative;bottom: 5px;text-align: center;text-transform: uppercase;" *ngIf="!isPlanning">
+                  {{ currentWeekStart | date:'MMM yyyy' | uppercase }}
+                </p>
+             <mat-card style="border-radius: 30px !important;" *ngIf="isPlanning">
 
                <div class="row">
                  <div class="col-2">
@@ -103,6 +107,47 @@
                  </div>
                </mat-card-content>
              </mat-card>
+
+             <mat-card style="border-radius: 30px !important;" *ngIf="!isPlanning">
+         
+              <mat-card-content [style.overflow]="'auto'">
+                  
+                  <div *ngFor="let day of weekWithEvents" class="day-container">
+                      <div class="row">
+                         <div class="col-2">
+                          <div class="day-header">
+                            <div [ngClass]="{ 'circle-today': isToday(day.date) }" class="date-circle">
+                              <div [ngClass]="{ 'circle-today': isToday(day.date) }" class="day-number">
+                                {{ day.date | date: 'd' }}
+                              </div>
+                            </div>
+                            <div [ngClass]="{ 'day-label-active': isToday(day.date) }" class="day-label">
+                              {{ day.date | date: 'EEE, MMM.' | uppercase }}
+                            </div>
+                          </div>
+                         </div>
+                         <div class="col">
+                          <div *ngIf="day.events.length > 0; else noEvents">
+                            <div *ngFor="let dayEvents of day.events">
+                               <div class=" row event-item" *ngFor="let event of dayEvents.events" style="cursor: pointer;" (click)="openDialogDetailP(event?._id)">
+                                <div class="event-time col-3" *ngIf="event?.time">
+                                  <span class="round-color" [ngStyle]="{'background-color': event?.color}"></span> {{ event?.time }}
+                                </div>
+                                <div class="event-title col">
+                                  {{ event?.title }}
+                                </div>
+                            </div>
+                            </div>
+                          </div>
+                          <ng-template #noEvents>
+                            <div class="no-event">Aucun événement</div>
+                          </ng-template>
+                         </div>
+                      </div>
+                      <mat-divider></mat-divider>
+                  </div>
+              </mat-card-content>
+            </mat-card>
      
               
             </div>
