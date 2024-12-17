@@ -56,6 +56,7 @@ export class UpdateModuleComponent implements OnInit {
   societe:any;
   site:any;
   entrepriseFiltres:Observable<any[]>;
+  isEquipement:boolean=false;
 
 
 
@@ -88,6 +89,7 @@ export class UpdateModuleComponent implements OnInit {
 
   ngOnInit(): void {
     this.getModule();
+    this.getFicheTechnique();
     this.getAllProjet();
     this.getAllEntreprise();
   }
@@ -323,6 +325,19 @@ openDialogPosition(){
       console.log("Type", result);
 
      }
+  })
+}
+
+getFicheTechnique(){
+  this.projetService.getFicheTechnique(this.idModule).subscribe((res:any)=>{
+    if(res?.message){
+      this.isEquipement=true
+    }else{
+      this.isEquipement=false
+    }
+     
+  },(error)=>{
+      console.log(error);
   })
 }
 

@@ -150,28 +150,22 @@ export class ProjetsService {
     return this.httpClient.get(`${environment.BASE_API_URL}/modules/notsite/${idModule}/${idProjet}`);
   }
 
-  public createDescription(idModule,body){
-    return this.httpClient.post(`${environment.BASE_API_URL}/module/description/${idModule}`, body);
+
+
+  public createFicheTechnique(body, idModule){
+    return this.httpClient.post(`${environment.BASE_API_URL}/module/fiche/${idModule}`, body);
   }
 
-  public getDescription(idModule){
-    return this.httpClient.get(`${environment.BASE_API_URL}/module/description/${idModule}`);
+  public getFicheTechnique(idModule){
+    return this.httpClient.get(`${environment.BASE_API_URL}/module/fiche/${idModule}`);
   }
 
-  public updateDescription(idFiche,body){
-    return this.httpClient.put(`${environment.BASE_API_URL}/module/description/${idFiche}`, body);
-  }
-
-  public createFiche(body){
-    return this.httpClient.post(`${environment.BASE_API_URL}/module/fiche`, body);
-  }
-
-  public getFiche(){
-    return this.httpClient.get(`${environment.BASE_API_URL}/module/fiche`);
-  }
-
-  public updateFiche(idFiche,body){
+  public updateFicheTechnique(idFiche,body){
     return this.httpClient.put(`${environment.BASE_API_URL}/module/fiche/${idFiche}`, body);
+  }
+
+  public deleteFicheTechnique(idFiche,){
+    return this.httpClient.delete(`${environment.BASE_API_URL}/module/fiche/${idFiche}`);
   }
 
   // Historique

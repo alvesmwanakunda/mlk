@@ -1,22 +1,666 @@
 <div class="container">
-  <div class="row" style="margin-bottom: 20px;">
-     <div class="col">
-        <div class="row" style="margin-bottom: 10px;">
-            <div class="col"  align="right">
-              <button type="button" class="btn btn-projet" (click)="addDescription()" [disabled]="moduleForm.invalid" *ngIf="!isFiche"><i class="fa-solid fa-plus"></i> Ajouter la description</button>
-              <button type="button" class="btn btn-projet" (click)="updateDescription()" [disabled]="moduleForm.invalid" *ngIf="isFiche"><i class="fa-solid fa-plus"></i> Modifier la description</button>
-            </div>
-        </div>
-        <div>
-            <form [formGroup]="moduleForm">  
-              <div *ngIf="!this.fiche">
-                <angular-editor formControlName="description" [(ngModel)]="description.description" [config]="editorConfig"></angular-editor>
+   <div>
+    <mat-stepper [linear]="isLinear" #stepper>
+      <mat-step [stepControl]="ficheFormIsolation" label="ISOLATION">
+        <form [formGroup]="ficheFormIsolation">
+          <div style="padding-top: 30px;">
+            <div style="margin-bottom: 30px;">
+              <p style="font-weight: 500;color: #29628B;">TOITURE</p>
+              <div class="row">
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Type de toiture</mat-label>
+                    <mat-select matInput formControlName="isolation_toiture_type">
+                      <mat-option value="Bac acier">Bac acier</mat-option>
+                      <mat-option value="Membrane EPDM">Membrane EPDM</mat-option>
+                      <mat-option value="Tôle soudée">Tôle soudée</mat-option>
+                    </mat-select>
+                    <!--<input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>-->
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Epaisseur d'isolation</mat-label>
+                    <input matInput type="number" formControlName="isolation_toiture_epaisseur">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Type d'isolation</mat-label>
+                    <mat-select matInput formControlName="isolation_toiture_isolation">
+                      <mat-option value="Laine de verre">Laine de verre</mat-option>
+                      <mat-option value="Laine de roche">Laine de roche</mat-option>
+                      <mat-option value="Panneau PU">Panneau PU</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                 </div><!--col-->
               </div>
-              <div *ngIf="this.fiche">
-                <angular-editor formControlName="description" [(ngModel)]="fiche.description" [config]="editorConfig"></angular-editor>
-              </div>    
-            </form>
+            </div>
+            <div style="margin-bottom: 30px;">
+              <p style="font-weight: 500;color: #29628B;">SOL</p>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Epaisseur de plancher</mat-label>
+                    <input matInput type="number" formControlName="isolation_sol_plancher">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Type de plancher</mat-label>
+                    <mat-select matInput formControlName="isolation_sol_type">
+                      <mat-option value="Contreplaque">Contreplaque</mat-option>
+                      <mat-option value="Contre plaquée marine">Contre plaquée marine</mat-option>
+                      <mat-option value="Aggloméré">Aggloméré</mat-option>
+                      <mat-option value="Bois ciment">Bois ciment</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Epaisseur d'isolation</mat-label>
+                      <input matInput type="number" formControlName="isolation_sol_epaisseur">
+                    </mat-form-field>
+                 </div><!--col-->
+              </div>
+              <div class="row">
+                <div class="col">
+                 <mat-form-field appearance="fill" class="example-full-width">
+                   <mat-label style="font-size: 12px;">Type d'isolation</mat-label>
+                   <mat-select matInput formControlName="isolation_sol_isolation">
+                     <mat-option value="Laine de verre">Laine de verre</mat-option>
+                     <mat-option value="Laine de roche">Laine de roche</mat-option>
+                     <mat-option value="Panneau PU">Panneau PU</mat-option>
+                     <mat-option value="Polystyrène">Polystyrène</mat-option>
+                   </mat-select>
+                 </mat-form-field>
+                </div><!--col-->
+                <div class="col">
+                 <mat-form-field appearance="fill" class="example-full-width">
+                   <mat-label style="font-size: 12px;">Surface</mat-label>
+                   <input matInput type="number" formControlName="isolation_sol_surface">
+                 </mat-form-field>
+                </div><!--col-->
+             </div>
+            </div>
+            <div style="margin-bottom: 30px;">
+              <div class="row">
+                 <div class="col"><p style="font-weight: 500;color: #29628B;">PENNEAUX</p></div>
+                 <div class="col"><p style="color: #b10433;text-align: center;font-weight: 500;">Couleur</p></div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Epaisseur d'isolation</mat-label>
+                    <input matInput type="number" formControlName="isolation_panneaux_epaisseur">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Type d'isolation</mat-label>
+                    <mat-select matInput formControlName="isolation_panneaux_type">
+                      <mat-option value="PUR">PUR</mat-option>
+                      <mat-option value="PIR">PIR</mat-option>
+                      <mat-option value="Polystyrène">Polystyrène</mat-option>
+                      <mat-option value="Laine de roche">Laine de roche</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col-6">
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field appearance="fill" class="example-full-width">
+                          <mat-label style="font-size: 12px;">Face intérieure</mat-label>
+                          <input matInput  formControlName="isolation_panneaux_couleur_faceInterieure">
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field appearance="fill" class="example-full-width">
+                          <mat-label style="font-size: 12px;">Face exterieure</mat-label>
+                          <input matInput  formControlName="isolation_panneaux_couleur_faceExterieure">
+                        </mat-form-field>
+                      </div>
+                    </div>
+                 </div><!--col-->
+              </div>
+            </div>
+            <div style="margin-bottom: 30px;">
+              <div class="row">
+                 <div class="col"><p style="font-weight: 500;color: #b10433;">Revêtement panneau</p></div>
+                 <div class="col"><p style="color: #b10433;text-align: center;font-weight: 500;">Revêtement panneau/Dimension</p></div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Intérieur</mat-label>
+                    <mat-select matInput formControlName="isolation_panneaux_revetement_interieur">
+                      <mat-option value="Lisse">Lisse</mat-option>
+                      <mat-option value="Gaufrée">Gaufrée</mat-option>
+                      <mat-option value="Rainurée">Rainurée</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Exterieur</mat-label>
+                    <mat-select matInput formControlName="isolation_panneaux_revetement_exterieur">
+                      <mat-option value="Lisse">Lisse</mat-option>
+                      <mat-option value="Gaufrée">Gaufrée</mat-option>
+                      <mat-option value="Rainurée">Rainurée</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col-6">
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field appearance="fill" class="example-full-width">
+                          <mat-label style="font-size: 12px;">Longueur</mat-label>
+                          <input matInput type="number"  formControlName="isolation_panneaux_revetement_dimension_longueur">
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field appearance="fill" class="example-full-width">
+                          <mat-label style="font-size: 12px;">Largeur</mat-label>
+                          <input matInput type="number"  formControlName="isolation_panneaux_revetement_dimension_largeur">
+                        </mat-form-field>
+                      </div>
+                    </div>
+                 </div><!--col-->
+              </div>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Quantite</mat-label>
+                    <input matInput type="number"  formControlName="isolation_panneaux_revetement_dimension_quantite">
+                  </mat-form-field>
+                 </div><!--col-->
+                <div class="col">
+                
+                </div><!--col-->
+             </div>
+            </div>
           </div>
-     </div>
- </div>
+          <div>
+            <button mat-stroked-button color="primary" matStepperNext>Suivant</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="ficheFormMenuiserieExterieur" label="MENUISERIE EXTERIEUR">
+        <form [formGroup]="ficheFormMenuiserieExterieur">
+          <div style="padding-top: 30px;">
+            <div style="margin-bottom: 30px;">
+              <p style="font-weight: 500;color: #29628B;">FENÊTRE</p>
+              <div class="row">
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Longueur</mat-label>
+                    <input matInput type="number" formControlName="menuiserie_fenetre_longueur">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Largeur</mat-label>
+                    <input matInput type="number" formControlName="menuiserie_fenetre_largeur">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Epaisseur</mat-label>
+                    <input matInput type="number" formControlName="menuiserie_fenetre_epaisseur">
+                  </mat-form-field>
+                 </div><!--col-->
+                 
+              </div>
+              <div class="row"> 
+                <div class="col">
+                 <mat-form-field appearance="fill" class="example-full-width">
+                   <mat-label style="font-size: 12px;">Type</mat-label>
+                   <input matInput formControlName="menuiserie_fenetre_type">
+                 </mat-form-field>
+                </div><!--col-->
+                <div class="col">
+                 <mat-form-field appearance="fill" class="example-full-width">
+                   <mat-label style="font-size: 12px;">Matiere</mat-label>
+                   <mat-select matInput formControlName="menuiserie_fenetre_matiere">
+                     <mat-option value="PVC">PVC</mat-option>
+                     <mat-option value="Alu">Alu</mat-option>
+                   </mat-select>
+                 </mat-form-field>
+                </div><!--col-->
+                <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Couleur</mat-label>
+                    <input matInput formControlName="menuiserie_fenetre_couleur">
+                  </mat-form-field>
+                 </div><!--col-->
+              </div>
+              <div class="row"> 
+                <div class="col">
+                 <mat-form-field appearance="fill" class="example-full-width">
+                   <mat-label style="font-size: 12px;">Type de vitrage</mat-label>
+                   <input matInput formControlName="menuiserie_fenetre_typeVitrage">
+                 </mat-form-field>
+                </div><!--col-->
+                <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Quantite</mat-label>
+                    <input matInput type="number" formControlName="menuiserie_fenetre_quantite">
+                  </mat-form-field>
+                 </div><!--col-->
+              </div>
+            </div>
+            <div style="margin-bottom: 30px;">
+              <p style="font-weight: 500;color: #29628B;">PORTE</p>
+              <div class="row">
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Largeur</mat-label>
+                    <input matInput type="number" formControlName="menuiserie_porte_largeur">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Hauteur</mat-label>
+                    <input matInput type="number" formControlName="menuiserie_porte_hauteur">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Epaisseur</mat-label>
+                    <input matInput type="number" formControlName="menuiserie_porte_epaisseur">
+                  </mat-form-field>
+                 </div><!--col-->
+                 
+              </div>
+              <div class="row"> 
+                <div class="col">
+                 <mat-form-field appearance="fill" class="example-full-width">
+                   <mat-label style="font-size: 12px;">Ouvrant</mat-label>
+                   <input matInput formControlName="menuiserie_porte_ouvrant">
+                 </mat-form-field>
+                </div><!--col-->
+                <div class="col">
+                 <mat-form-field appearance="fill" class="example-full-width">
+                   <mat-label style="font-size: 12px;">Matiere</mat-label>
+                   <mat-select matInput formControlName="menuiserie_porte_matiere">
+                    <mat-option value="Bois">Bois</mat-option>
+                    <mat-option value="Alu">Alu</mat-option>
+                     <mat-option value="PVC">PVC</mat-option>
+                     <mat-option value="Métal">Métal</mat-option>
+                   </mat-select>
+                 </mat-form-field>
+                </div><!--col-->
+                <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Couleur</mat-label>
+                    <input matInput formControlName="menuiserie_porte_couleur">
+                  </mat-form-field>
+                 </div><!--col-->
+              </div>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Quantite</mat-label>
+                    <input matInput type="number" formControlName="menuiserie_porte_quantite">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col-2">
+                  <div style="padding-top: 15px;">
+                    <mat-checkbox formControlName="menuiserie_porte_isVitree" (change)="isCheckVitree($event)">Vitrée</mat-checkbox>
+                  </div>
+                 </div><!--col--> 
+              </div>
+              <div class="row" *ngIf="isVitree"> 
+                <div class="col">
+                 <mat-form-field appearance="fill" class="example-full-width">
+                   <mat-label style="font-size: 12px;">Couleur</mat-label>
+                   <input matInput formControlName=" menuiserie_porte_vitree_couleur">
+                 </mat-form-field>
+                </div><!--col-->
+                <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Toute vitrée</mat-label>
+                    <input matInput formControlName="menuiserie_porte_vitree_touteVitrage">
+                  </mat-form-field>
+                 </div><!--col-->
+              </div>
+              <div class="row" *ngIf="isVitree"> 
+                <p style="font-weight: 500;color: #b10433;">Semi vitrée (Dimension du vitrage)</p>
+                <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Type de vitrage</mat-label>
+                    <mat-select matInput formControlName="menuiserie_porte_vitree_semi_typeVitrage">
+                     <mat-option value="Simple vitrage">Simple vitrage</mat-option>
+                     <mat-option value="Double vitrage">Double vitrage</mat-option>
+                      <mat-option value="Autre">Autre</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                 </div><!--col-->
+                <div class="col">
+                 <mat-form-field appearance="fill" class="example-full-width">
+                   <mat-label style="font-size: 12px;">Longueur</mat-label>
+                   <input matInput type="number" formControlName="menuiserie_porte_vitree_semi_longueur">
+                 </mat-form-field>
+                </div><!--col-->
+                <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Largeur</mat-label>
+                    <input matInput type="number" formControlName="menuiserie_porte_vitree_semi_largeur">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Epaisseur</mat-label>
+                    <input matInput type="number" formControlName="menuiserie_porte_vitree_semi_epaisseur">
+                  </mat-form-field>
+                 </div><!--col-->
+              </div>
+              <div class="row" *ngIf="isVitree"> 
+                <p style="font-weight: 500;color: #b10433;">Ocutus</p>
+                <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Type de vitrage</mat-label>
+                    <mat-select matInput formControlName="menuiserie_porte_vitree_ocutus_typeVitrage">
+                     <mat-option value="Simple vitrage">Simple vitrage</mat-option>
+                     <mat-option value="Double vitrage">Double vitrage</mat-option>
+                      <mat-option value="Autre">Autre</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                 </div><!--col-->
+                <div class="col">
+                 <mat-form-field appearance="fill" class="example-full-width">
+                   <mat-label style="font-size: 12px;">Longueur</mat-label>
+                   <input matInput type="number" formControlName="menuiserie_porte_vitree_ocutus_longueur">
+                 </mat-form-field>
+                </div><!--col-->
+                <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Largeur</mat-label>
+                    <input matInput type="number" formControlName="menuiserie_porte_vitree_ocutus_largeur">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Epaisseur</mat-label>
+                    <input matInput type="number" formControlName="menuiserie_porte_vitree_ocutus_epaisseur">
+                  </mat-form-field>
+                 </div><!--col-->
+              </div>
+            </div>
+          </div>
+          <div>
+            <button mat-stroked-button color="warn" style="margin-right: 10px;" matStepperPrevious>Précédent</button>
+            <button mat-stroked-button color="primary" matStepperNext>Suivant</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="ficheFormMenuiserieInterieur" label="MENUISERIE INTERIEUR">
+        <form [formGroup]="ficheFormMenuiserieInterieur">
+          <div style="padding-top: 30px;">
+            <div style="margin-bottom: 30px;">
+              <p style="font-weight: 500;color: #29628B;">REVÊTEMENT DE SOL / PLAFOND</p>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Type de revêtement de sol</mat-label>
+                    <input matInput formControlName="menuiserieI_revetement_type">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Type de plafond</mat-label>
+                    <mat-select matInput formControlName="menuiserieI_plafond_type">
+                      <mat-option value="Métallique">Métallique</mat-option>
+                      <mat-option value="Faux plafond en Dalle 600x600">Faux plafond en Dalle 600x600</mat-option>
+                      <mat-option value="BA13">BA13</mat-option>
+                      <mat-option value="Bois ciment">Bois ciment</mat-option>
+                      <mat-option value="Contreplaque">Contreplaque </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                 </div><!--col-->
+              </div>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Couleur</mat-label>
+                    <input matInput  formControlName="menuiserieI_couleur">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Surface</mat-label>
+                    <input matInput type="number" formControlName="menuiserieI_surface">
+                  </mat-form-field>
+                 </div><!--col-->
+              </div>
+            </div>
+          </div>
+          <div>
+            <button mat-stroked-button color="warn" style="margin-right: 10px;" matStepperPrevious>Précédent</button>
+            <button mat-stroked-button color="primary" matStepperNext>Suivant</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="ficheFormElectricite" label="ELECTRICITE">
+        <form [formGroup]="ficheFormElectricite">
+          <div style="padding-top: 30px;">
+            <div style="margin-bottom: 30px;">
+              <div class="row">
+                <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Quantité PC</mat-label>
+                    <input matInput type="number" formControlName="electricite_quantitePC">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Quantité Sortie de câble</mat-label>
+                    <input matInput type="number" formControlName="electricite_quantiteSortieCable">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Quantité prise RJ45</mat-label>
+                    <input matInput type="number" formControlName="electricite_quantitePriseRJ45">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Quantité interrupteur</mat-label>
+                    <input matInput type="number" formControlName="electricite_quantiteInterrupteur">
+                  </mat-form-field>
+                 </div><!--col-->
+              </div>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Quantité détecteur de mouvement</mat-label>
+                    <input matInput type="number"  formControlName="electricite_quantiteDetecteurMouvement">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Type d’eclairage </mat-label>
+                    <input matInput  formControlName="electricite_typeEclairage">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Quantité d’eclairage</mat-label>
+                    <input matInput type="number"  formControlName="electricite_quantiteEclairage">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Quantité BAES</mat-label>
+                    <input matInput type="number"  formControlName="electricite_quantiteBAES">
+                  </mat-form-field>
+                 </div><!--col-->
+              </div>
+            </div>
+
+            <div style="margin-bottom: 30px;">
+              <p style="font-weight: 500;color: #29628B;">CONVECTEUR</p>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Type Marque</mat-label>
+                    <input matInput formControlName="electricite_convecteur_typeMarque">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Puissance</mat-label>
+                    <input matInput type="number" formControlName="electricite_convecteur_puissance">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Quantité</mat-label>
+                    <input matInput type="number" formControlName="electricite_convecteur_quantite">
+                  </mat-form-field>
+                 </div><!--col-->
+              </div>
+            </div>
+
+            <div style="margin-bottom: 30px;">
+              <p style="font-weight: 500;color: #29628B;">CLIMATISATION</p>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Reference – Type</mat-label>
+                    <input matInput formControlName="electricite_climatissation_referenceType">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Quantité</mat-label>
+                    <input matInput type="number" formControlName="electricite_climatissation_quantite">
+                  </mat-form-field>
+                 </div><!--col-->
+              </div>
+            </div>
+          </div>
+          <div>
+            <button mat-stroked-button color="warn" style="margin-right: 10px;" matStepperPrevious>Précédent</button>
+            <button mat-stroked-button color="primary" matStepperNext>Suivant</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="ficheFormPlomberie" label="PLOMBERIE">
+        <form [formGroup]="ficheFormPlomberie">
+          <div style="padding-top: 30px;">
+            <div style="margin-bottom: 30px;">
+              <div class="row">
+                <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Toilette</mat-label>
+                    <input matInput type="number"  formControlName="plomberie_toilette">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Toilette PMR</mat-label>
+                    <input matInput type="number"  formControlName="plomberie_toilettePMR">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">WC turc</mat-label>
+                    <input matInput  type="number" formControlName="plomberie_wcTurc">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Lavabo</mat-label>
+                    <input matInput type="number"  formControlName="plomberie_lavabo">
+                  </mat-form-field>
+                 </div><!--col-->
+              </div>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Lavabo PMR</mat-label>
+                    <input matInput type="number"  formControlName="plomberie_lavaboPMR">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Lave main </mat-label>
+                    <input matInput  type="number" formControlName="plomberie_laveMain">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Auge</mat-label>
+                    <input matInput  type="number"  formControlName="plomberie_auge">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Urinoir</mat-label>
+                    <input matInput type="number"  formControlName="plomberie_urinoir">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Douche</mat-label>
+                    <input matInput type="number"  formControlName="plomberie_douche">
+                  </mat-form-field>
+                 </div><!--col-->
+              </div>
+            </div>
+            <div style="margin-bottom: 30px;">
+              <p style="font-weight: 500;color: #29628B;">BALLON D'EAU CHAUDE</p>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Reference – Type</mat-label>
+                    <input matInput formControlName="plomberie_ballonEauChaude_referenceType">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Quantité</mat-label>
+                    <input matInput type="number" formControlName="plomberie_ballonEauChaude_quantite">
+                  </mat-form-field>
+                 </div><!--col-->
+              </div>
+            </div>
+            <div style="margin-bottom: 30px;">
+              <p style="font-weight: 500;color: #29628B;">EXTRACTEUR</p>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Reference – Type</mat-label>
+                    <input matInput formControlName="plomberie_extracteur_referenceType">
+                  </mat-form-field>
+                 </div><!--col-->
+                 <div class="col">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label style="font-size: 12px;">Quantité</mat-label>
+                    <input matInput type="number" formControlName="plomberie_extracteur_quantite">
+                  </mat-form-field>
+                 </div><!--col-->
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <button mat-stroked-button color="warn" style="margin-right: 20px;" matStepperPrevious>Précédent</button>
+            <button mat-raised-button color="primary" (click)="addFiche()">Enregistrer</button>
+            <!--<button mat-button (click)="stepper.reset()">Reset</button>-->
+          </div>
+        </form>
+      </mat-step>
+      <!--<mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        <p>You are now done.</p>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button (click)="stepper.reset()">Reset</button>
+        </div>
+      </mat-step>-->
+    </mat-stepper>
+   </div>
 </div>

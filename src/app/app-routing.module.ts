@@ -147,10 +147,6 @@ const routes: Routes = [
     loadChildren:()=>import('./modulaires/update-module/update-module.module').then(m=>m.UpdateModuleModule),
   },
   {
-    path:'modulaires/description/fiche',
-    loadChildren:()=>import('./modulaires/description-module/description-module.module').then(m=>m.DescriptionModuleModule)
-  },
-  {
     path:'plan3d',
     loadChildren:()=>import('./plan3d/plan3d.module').then(m=>m.Plan3dModule)
   },

@@ -14,6 +14,7 @@ import { FactureProjetModule } from 'src/app/factures/facture-projet/facture-pro
 import { ChatProjetModule } from '../../chat-projet/chat-projet.module';
 import { PreparationModule } from 'src/app/projet/preparation/preparation.module';
 import { ModuleProjetModule } from 'src/app/projet/module-projet/module-projet.module';
+import { PlanningProjetModule } from 'src/app/projet/planning-projet/planning-projet.module';
 
 
 
@@ -32,7 +33,8 @@ import { ModuleProjetModule } from 'src/app/projet/module-projet/module-projet.m
     FactureProjetModule,
     ChatProjetModule,
     PreparationModule,
-    ModuleProjetModule
+    ModuleProjetModule,
+    PlanningProjetModule
   ],
   providers:[ProjetsService]
 })

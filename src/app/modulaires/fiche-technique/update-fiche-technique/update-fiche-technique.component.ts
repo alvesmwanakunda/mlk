@@ -2,16 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ProjetsService } from 'src/app/shared/services/projets.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { ActivatedRoute } from '@angular/router';
 
-
 @Component({
-  selector: 'app-fiche-technique',
-  templateUrl: './fiche-technique.component.html',
-  styleUrls: ['./fiche-technique.component.scss']
+  selector: 'app-update-fiche-technique',
+  templateUrl: './update-fiche-technique.component.html',
+  styleUrls: ['./update-fiche-technique.component.scss']
 })
-export class FicheTechniqueComponent implements OnInit {
+export class UpdateFicheTechniqueComponent implements OnInit {
 
   ficheFormIsolation : FormGroup;
   ficheFormMenuiserieExterieur : FormGroup;
@@ -43,6 +41,7 @@ export class FicheTechniqueComponent implements OnInit {
 
 
   ngOnInit(){
+    this.getFicheTechnique();
      this.ficheFormIsolation=this._formBuilder.group({
       isolation_toiture_type:['',],
       isolation_toiture_epaisseur:['',],
@@ -126,11 +125,10 @@ export class FicheTechniqueComponent implements OnInit {
       plomberie_extracteur_referenceType:['',],
       plomberie_extracteur_quantite:['',],
     })
-
   }
 
   
-  addFiche(){
+  updateFiche(){
       let payload={
         isolation: {
           toiture: {
@@ -250,10 +248,10 @@ export class FicheTechniqueComponent implements OnInit {
             }
         }
       };
-      console.log("payload", payload);
-       this.projetsService.createFicheTechnique(payload,this.idModule).subscribe((res:any)=>{
+      //console.log("payload", payload);
+      this.projetsService.updateFicheTechnique(this.fiche?._id,payload).subscribe((res:any)=>{
            this.fiche = res?.message;
-           this.message='La fiche a été ajoutée avec succès';
+           this.message='La fiche a été modifiée avec succès';
             this.openSnackBar(this.message);
        },(error)=>{
         this.message="Une erreur s'est produite veuillez réessayer.";
@@ -261,6 +259,15 @@ export class FicheTechniqueComponent implements OnInit {
         console.log(error);
       })
     
+  }
+
+  getFicheTechnique(){
+    this.projetsService.getFicheTechnique(this.idModule).subscribe((res:any)=>{
+      this.fiche = res?.message;
+      this.isVitree =this.fiche?.menuiserieExterieur?.porte?.isVitree;
+    },(error)=>{
+        console.log(error);
+    })
   }
 
   openSnackBar(message){
