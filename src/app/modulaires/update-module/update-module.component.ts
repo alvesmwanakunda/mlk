@@ -89,7 +89,6 @@ export class UpdateModuleComponent implements OnInit {
 
   ngOnInit(): void {
     this.getModule();
-    this.getFicheTechnique();
     this.getAllProjet();
     this.getAllEntreprise();
   }
@@ -327,18 +326,4 @@ openDialogPosition(){
      }
   })
 }
-
-getFicheTechnique(){
-  this.projetService.getFicheTechnique(this.idModule).subscribe((res:any)=>{
-    if(res?.message){
-      this.isEquipement=true
-    }else{
-      this.isEquipement=false
-    }
-     
-  },(error)=>{
-      console.log(error);
-  })
-}
-
 }

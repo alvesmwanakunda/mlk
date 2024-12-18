@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { UpdateFicheTechniqueComponent } from './update-fiche-technique.component';
+import { PdfFicheTechniqueModule } from '../pdf-fiche-technique/pdf-fiche-technique.module';
 
 
 
@@ -14,7 +15,8 @@ import { UpdateFicheTechniqueComponent } from './update-fiche-technique.componen
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    PdfFicheTechniqueModule
   ],
   exports: [UpdateFicheTechniqueComponent]
 })

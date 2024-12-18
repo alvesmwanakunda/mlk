@@ -11,7 +11,7 @@ import { HistoriqueModuleModule } from '../historique-module/historique-module.m
 import { PlanModuleModule } from '../plan-module/plan-module.module';
 import { ModuleProjetModule } from '../module-projet/module-projet.module';
 import { FicheTechniqueModule } from '../fiche-technique/fiche-technique.module';
-import { UpdateFicheTechniqueModule } from '../fiche-technique/update-fiche-technique/update-fiche-technique.module';
+//import { UpdateFicheTechniqueModule } from '../fiche-technique/update-fiche-technique/update-fiche-technique.module';
 
 
 @NgModule({
@@ -29,7 +29,7 @@ import { UpdateFicheTechniqueModule } from '../fiche-technique/update-fiche-tech
     PlanModuleModule,
     ModuleProjetModule,
     FicheTechniqueModule,
-    UpdateFicheTechniqueModule
+    //UpdateFicheTechniqueModule
   ]
 })
 export class UpdateModuleModule { }

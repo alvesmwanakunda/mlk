@@ -166,9 +166,7 @@
           </mat-tab>
           <mat-tab label="Équipements">
             <div style="padding-top: 20px;">
-              <div *ngIf="!isEquipement"><app-fiche-technique></app-fiche-technique></div>
-              <div *ngIf="isEquipement"><app-update-fiche-technique></app-update-fiche-technique></div>
-               
+              <app-fiche-technique></app-fiche-technique>
             </div>
           </mat-tab>
           <mat-tab label="Projets">

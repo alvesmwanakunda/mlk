@@ -27,6 +27,7 @@ export class FicheTechniqueComponent implements OnInit {
   message:any;
   isLinear = false;
   isVitree:boolean=false;
+  isEquipement:boolean=false
  
 
 
@@ -43,6 +44,7 @@ export class FicheTechniqueComponent implements OnInit {
 
 
   ngOnInit(){
+    this.getFicheTechnique();
      this.ficheFormIsolation=this._formBuilder.group({
       isolation_toiture_type:['',],
       isolation_toiture_epaisseur:['',],
@@ -254,6 +256,7 @@ export class FicheTechniqueComponent implements OnInit {
        this.projetsService.createFicheTechnique(payload,this.idModule).subscribe((res:any)=>{
            this.fiche = res?.message;
            this.message='La fiche a été ajoutée avec succès';
+           this.isEquipement=true;
             this.openSnackBar(this.message);
        },(error)=>{
         this.message="Une erreur s'est produite veuillez réessayer.";
@@ -277,6 +280,19 @@ export class FicheTechniqueComponent implements OnInit {
     }else{
       this.isVitree = false
     }
+  }
+
+  getFicheTechnique(){
+    this.projetsService.getFicheTechnique(this.idModule).subscribe((res:any)=>{
+      if(res?.message){
+        this.isEquipement=true
+      }else{
+        this.isEquipement=false
+      }
+       
+    },(error)=>{
+        console.log(error);
+    })
   }
 
 }
