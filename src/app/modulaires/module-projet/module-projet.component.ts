@@ -13,6 +13,7 @@ import { map, catchError } from "rxjs/operators";
 import { throwError } from "rxjs";
 import { environment} from 'src/environments/environment';
 import { DeleteModuleProjetComponent } from 'src/app/projet/module-projet/delete-module-projet/delete-module-projet.component';
+import { UpdateModuleProjetComponent } from './update-module-projet/update-module-projet.component';
 
 
 
@@ -149,6 +150,18 @@ export class ModuleProjetComponent implements OnInit {
         dialogRef.close();
         this.getAllModule();
       })
+  }
+
+  openDialogUpdate(id){
+    const dialogRef = this.dialog.open(UpdateModuleProjetComponent,{
+      width:'50%',
+      data:{id:id}});
+      dialogRef.afterClosed().subscribe((result:any)=>{
+        if(result){
+          console.log("Update projet");
+         this.getAllModule();
+        }
+     })
   }
 
   openDialogFile(chemin, extension){

@@ -145,7 +145,7 @@
                      <div class="col">
                       <div *ngIf="day.events.length > 0; else noEvents">
                         <div *ngFor="let dayEvents of day.events">
-                           <div class=" row event-item" *ngFor="let event of dayEvents.events" style="cursor: pointer;" (click)="openDialogDetailP(event?._id)">
+                           <div class=" row event-item" *ngFor="let event of dayEvents.events" style="cursor: pointer;" (click)="openDialogDetailP(event?._id,event?.type)">
                             <div class="event-time col-3" *ngIf="event?.time">
                               <span class="round-color" [ngStyle]="{'background-color': event?.color}"></span> {{ event?.time }}
                             </div>

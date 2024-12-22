@@ -128,6 +128,7 @@ export class AgendaComponent implements OnInit {
       if(res.message){
         this.events = res.message.map((data)=>({
           _id:data._id,
+          type:data.type,
           start:new Date(data.start),
           end:new Date(data.end),
           //title: `${data.title}, ${data.heure_start} à ${data?.heure_end}`,
@@ -196,7 +197,7 @@ export class AgendaComponent implements OnInit {
 
   openDialogDetail(event:CalendarEvent){
     this.agenda =event;
-    const dialogRef = this.dialog.open(DetailAgendaComponent,{data:{id:this.agenda._id,type:"agenda"},width:'40%'});
+    const dialogRef = this.dialog.open(DetailAgendaComponent,{data:{id:this.agenda._id,type:this.agenda.type},width:'40%'});
     const instance = dialogRef.componentInstance;
     instance.close.subscribe(()=> dialogRef.close());
     instance.confirm.subscribe(()=>{
@@ -205,8 +206,8 @@ export class AgendaComponent implements OnInit {
     })
   }
 
-  openDialogDetailP(idAgenda){
-    const dialogRef = this.dialog.open(DetailAgendaComponent,{data:{id:idAgenda,type:"agenda"},width:'40%'});
+  openDialogDetailP(idAgenda,type){
+    const dialogRef = this.dialog.open(DetailAgendaComponent,{data:{id:idAgenda,type:type},width:'40%'});
     const instance = dialogRef.componentInstance;
     instance.close.subscribe(()=> dialogRef.close());
     instance.confirm.subscribe(()=>{
@@ -244,7 +245,8 @@ export class AgendaComponent implements OnInit {
             title: event.title,
             time: 'Toute la journée',
             color: event.color,
-            _id:event?._id
+            _id:event?._id,
+            type:event?.type
           });
           currentDate.setDate(currentDate.getDate() + 1); // Avancer d'un jour
         }
@@ -257,7 +259,8 @@ export class AgendaComponent implements OnInit {
           title: event.title,
           time: `${event.heure_start} - ${event.heure_end}`,
           color: event.color,
-          _id:event?._id
+          _id:event?._id,
+          type:event?.type
         });
       }
     });

@@ -136,6 +136,10 @@ export class ProjetsService {
     return this.httpClient.delete(`${environment.BASE_API_URL}/projet/module/${id}`);
   }
 
+  public getOneProjetModule(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/projet/module/plan/${id}`);
+  }
+
   public getQrcodeInfo(id){
     return this.httpClient.get(`${environment.BASE_API_URL}/module/qrcode/infos/${id}`)
   }

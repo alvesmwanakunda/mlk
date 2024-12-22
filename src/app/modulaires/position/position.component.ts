@@ -22,6 +22,7 @@ export class PositionComponent implements OnInit {
   position:any;
   localisation:any;
   activeProjectId:any;
+  local:any;
 
   constructor(
     private projetService:ProjetsService,
@@ -43,8 +44,9 @@ export class PositionComponent implements OnInit {
        this.position= this.modules[0];
        if(this.position){
         this.activeProjectId = this.position?._id;
-        this.localisation = this.sanitizer.bypassSecurityTrustResourceUrl(`${this.position?.position}`);
-
+        this.localisation = JSON.parse(this.position?.position);
+        const mapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${this.localisation?.longitude},${this.localisation?.latitude},${this.localisation?.longitude},${this.localisation?.latitude}&layer=mapnik&marker=${this.localisation?.latitude},${this.localisation?.longitude}`;
+        this.local = this.sanitizer.bypassSecurityTrustResourceUrl(mapUrl);
        }
        //console.log("Position actuel", this.position);
     },(error)=>{
