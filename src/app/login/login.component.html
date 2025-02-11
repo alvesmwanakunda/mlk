@@ -1,68 +1,80 @@
 <app-navbar-user></app-navbar-user>
 
-<div class="container" style="padding-top: 90px;">
+<div style="background-color: white !important;">
+  <div class="d-flex justify-content-between" style="background-color: white !important;">
+    <div>
+      <div class="background" *ngFor="let image of images; let i = index" 
+      [ngStyle]="{'background-image': 'url(' + image + ')', 'opacity': i === currentImageIndex ? 1 : 0}">
+        
+      </div>
+    </div>
+    <div style="background-color: white !important; height:100vh; width: 40%; padding-top:150px; position: absolute; right:0;">
+      <div class="container-lg justify-content-md-center d-flex">
+          <mat-card style="background-color: #ffffff !important; box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.614) !important; border-radius: 25px !important; width: 80%;">
+            <mat-card-content style="padding-top: 30px !important;padding-bottom: 30px !important;">
+              <h1 class="content-form" style="margin-bottom: 50px;">
+                <span class="title-login">Connexion</span>
+              </h1>
 
-  <div class="row justify-content-md-center">
-    <div class="col-lg-6 col-md-6 col-md-auto">
-        <mat-card style="background-color: #F0F0F0 !important;">
-          <mat-card-content style="padding-top: 30px !important;padding-bottom: 30px !important;">
-            <h1 class="text-center" style="margin-bottom: 50px;">
-              <span class="title-login">Connectez-vous</span>
-            </h1>
+              <form [formGroup]="loginForm" novalidate style="margin-bottom: 20px;">
 
-            <form [formGroup]="loginForm" novalidate style="margin-bottom: 20px;">
+                <div *ngIf="testValidation">
+                  <p class="text-danger text-center">Veuillez remplir tous les champs</p>
+                </div>
+                <div class="content-form">
+                  <div class="row">
+                    <div class="col">
+                      <mat-form-field class="example-full-login">
+                        <mat-label>E-mail</mat-label>
+                        <input matInput formControlName="email">
+                      </mat-form-field>
+                      <div *ngIf="loginForm.get('email').hasError(account_validation_messages.email[0].type) && ((loginForm.get('email').dirty || loginForm.get('email').touched))">
+                        <p class="error_field">{{account_validation_messages.email[0].message}}</p>
+                      </div>
+                      <div *ngIf="loginForm.get('email').hasError(account_validation_messages.email[1].type) && ((loginForm.get('email').dirty || loginForm.get('email').touched))">
+                        <p class="error_field">{{account_validation_messages.email[1].message}}</p>
+                      </div>
+                      <div *ngIf="loginFormErrors.email.notfound">
+                        <p style="color:#BA0237">Adresse email ou le mot de passe invalide.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <mat-form-field class="example-full-login">
+                        <mat-label>Mot de passe</mat-label>
+                        <input matInput formControlName="password" [type]="hideP ? 'password' : 'text'">
+                        <button *ngIf="loginForm.get('password').value && loginForm.get('password').value!=''" mat-icon-button matSuffix (click)="hideP = !hideP" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideP">
+                          <mat-icon>{{hideP ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div style="display: flex; justify-content: center;">
+                    <div style="margin-bottom: 20px; display: flex; justify-content: end; width: 75%;">
+                      <button mat-button color="primary" [routerLink]="'/reset'">Mot de passe oubliée ?</button>
+                    </div>
+                  </div>
+                  <div align="center" style="margin-bottom: 30px;">
+                    <button mat-raised-button [disabled]="onLoadForm" type="submit" (click)="onLogin()" class="sizeButtonLogin" style="color: #fff;">Se connecter</button>
+                  </div>
+                  <div>
+                    <p>Pas encore de compte Mlka ? <button mat-button [routerLink]="'/signup'" type="button">S'inscrire</button></p>
+                  </div>
+                </div>
+            </form>
 
-              <div *ngIf="testValidation">
-                <p class="text-danger text-center">Veuillez remplir tous les champs</p>
+            </mat-card-content>
+            <mat-card-footer>
+              <div *ngIf="onLoadForm">
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
               </div>
-              <div class="content-form">
-                 <div class="row">
-                   <div class="col">
-                    <mat-form-field class="example-full-login">
-                      <mat-label>E-mail</mat-label>
-                      <input matInput formControlName="email">
-                    </mat-form-field>
-                    <div *ngIf="loginForm.get('email').hasError(account_validation_messages.email[0].type) && ((loginForm.get('email').dirty || loginForm.get('email').touched))">
-                      <p class="error_field">{{account_validation_messages.email[0].message}}</p>
-                    </div>
-                    <div *ngIf="loginForm.get('email').hasError(account_validation_messages.email[1].type) && ((loginForm.get('email').dirty || loginForm.get('email').touched))">
-                      <p class="error_field">{{account_validation_messages.email[1].message}}</p>
-                    </div>
-                    <div *ngIf="loginFormErrors.email.notfound">
-                      <p style="color:#BA0237">Adresse email ou le mot de passe invalide.</p>
-                    </div>
-                   </div>
-                 </div>
-                 <div class="row">
-                   <div class="col">
-                    <mat-form-field class="example-full-login">
-                      <mat-label>Mot de passe</mat-label>
-                      <input matInput formControlName="password" [type]="hideP ? 'password' : 'text'">
-                      <button *ngIf="loginForm.get('password').value && loginForm.get('password').value!=''" mat-icon-button matSuffix (click)="hideP = !hideP" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideP">
-                        <mat-icon>{{hideP ? 'visibility_off' : 'visibility'}}</mat-icon>
-                      </button>
-                    </mat-form-field>
-                   </div>
-                 </div>
-                 <div style="margin-bottom: 20px;">
-                  <button mat-button color="primary" [routerLink]="'/reset'">Mot de passe oubliée ?</button>
-                </div>
-                <div align="center" style="margin-bottom: 30px;">
-                  <button mat-raised-button [disabled]="onLoadForm" type="submit" (click)="onLogin()" class="sizeButtonLogin" style="color: #fff;">Se connecter</button>
-                </div>
-                <div>
-                  <p>Pas encore de compte Mlka ? <button mat-button [routerLink]="'/signup'" type="button">S'inscrire</button></p>
-                </div>
-              </div>
-           </form>
-
-          </mat-card-content>
-          <mat-card-footer>
-            <div *ngIf="onLoadForm">
-              <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-            </div>
-          </mat-card-footer>
-        </mat-card>
+            </mat-card-footer>
+          </mat-card>
+      </div>
     </div>
   </div>
 </div>
+
+
+

@@ -1,5 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, Router, PreloadAllModules, CanActivate } from '@angular/router';
+import { MlkaGroupeComponent } from './mlka-groupe/mlka-groupe.component';
+import { MlkaInnovComponent } from './mlka-innov/mlka-innov.component';
+import { MlkaLocationComponent } from './mlka-location/mlka-location.component';
+import { MlkaMarketComponent } from './mlka-market/mlka-market.component';
 
 const routes: Routes = [
   {
@@ -265,7 +269,24 @@ const routes: Routes = [
   {
     path:'prestations/produit/:id',
     loadChildren:()=>import('./prestation/produit-prestation/produit-prestation.module').then(m=>m.ProduitPrestationModule)
+  },
+  {
+    path:'mlka-groupe',
+    component: MlkaGroupeComponent
+  },
+  {
+    path: 'mlka-innov',
+    component: MlkaInnovComponent
+  },
+  {
+    path: 'mlka-location',
+    component: MlkaLocationComponent
+  },
+  {
+    path: 'mlka-market',
+    component: MlkaMarketComponent
   }
+
 ];
 
 @NgModule({

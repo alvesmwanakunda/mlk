@@ -35,8 +35,10 @@ export class NavbarUserComponent implements OnInit {
   isSignUpRoute():boolean{
     return this.currentRoute==='/signup';
   }
+
+
   isLoginOrHomeRoute(): boolean {
-    return this.currentRoute === '/' || this.currentRoute === '/login';
+    return this.currentRoute === '/' || this.currentRoute === '/login' ;
   }
 
   isMlka():boolean{

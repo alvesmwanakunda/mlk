@@ -1,7 +1,7 @@
 .headerMenu{
     box-shadow: var(--shadow4, 0 0 2px var(--shadowAmbient, rgba(0, 0, 0, 0.12)), 0 2px 4px var(--shadowKey, rgba(0, 0, 0, 0.14))) !important;
-    height: 48px !important;
-    background-color: #F0F0F0 !important;
+    height: fit-content !important;
+    background-color: #FFFFFF !important;
 }
 
 .mlka-user{
@@ -20,3 +20,35 @@
   text-align: center;
   outline-offset: -1px;
 }
+
+.lien{
+  text-align: center !important;
+  padding-right: 8px !important;
+  margin-right: 30px !important;
+  border-bottom: white solid 1px !important;
+  margin-bottom: -1px !important;
+}
+
+.lien:hover{
+  transition: ease-in-out !important;
+  color: #4BA6DF !important;
+  border-bottom: #4BA6DF solid 1px !important;
+}
+
+.btn{
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  border: #4BA6DF solid 1px !important;
+  padding: 8px 20px !important;
+  background-color: #4BA6DF !important;
+  color: white !important;
+}
+
+.btn:hover{
+  transition: ease-in-out;
+  transition-duration: 8ms;
+  background-color: #28628B !important;
+  border: #28628B solid 1px !important;
+}
+

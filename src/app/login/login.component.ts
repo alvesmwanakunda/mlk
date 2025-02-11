@@ -31,7 +31,15 @@ export class LoginComponent implements OnInit {
        message:"Email est incorrect. Veuillez ressayer à nouveau."
       }
     ]
-}
+  }
+
+  images: string[] = [
+    'assets/images/bg-01.png',
+    'assets/images/bg-02.png',
+    'assets/images/bg-03.png',
+    'assets/images/bg-04.png',
+  ];
+  currentImageIndex: number = 0;
 
   constructor(
     private formBuilder:FormBuilder,
@@ -53,6 +61,10 @@ export class LoginComponent implements OnInit {
     this.loginForm.valueChanges.subscribe(()=>{
        this.onLoginFormValuesChanged();
     })
+
+    setInterval(() => {
+      this.currentImageIndex = (this.currentImageIndex + 1) % this.images.length;
+    }, 6000);
   }
 
   //redirect
@@ -103,7 +115,6 @@ export class LoginComponent implements OnInit {
       console.log("Erreur login", err);
     })
   }
-
 
 
 }
