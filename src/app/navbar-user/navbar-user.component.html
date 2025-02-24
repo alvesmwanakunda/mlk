@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light-customer fixed-top headerMenu">
   <div class="container-fluid container-xl" >
-    <a class="navbar-brand" href="#" style="width: 8%;">
+    <a class="navbar-brand" href="#" style="width: 100px;">
       <img src="assets/images/mlka_logo.png" style="width: 80%;">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,11 +21,11 @@
         <a class="nav-link link-c" [routerLink]="['/detail/entreprise',user?.user?.entreprise]">Entreprise</a>
       </div>
       <span>
-        <a class="nav-link btn" [routerLink]="'/'" *ngIf="isSignUpRoute()">
+        <a class="nav-link btn btn-nav" [routerLink]="'/'" *ngIf="isSignUpRoute()">
           <i class="fa-solid fa-right-to-bracket" style="margin-right: 6px;"></i>
           <span style="font-weight:500 !important; font-size: 15px !important;">Se connecter</span>
         </a>
-        <a class="nav-link btn" [routerLink]="'/signup'" *ngIf="isLoginOrHomeRoute()">
+        <a class="nav-link btn btn-nav" [routerLink]="'/signup'" *ngIf="isLoginOrHomeRoute()">
           <i class="fa-solid fa-user-plus" style="margin-right: 6px;"></i> 
           <span style="font-weight:500 !important; font-size: 15px !important;">S'inscrire</span>
         </a>

@@ -18,7 +18,8 @@ export class JwtService implements HttpInterceptor {
       };
 
       let user = JSON.parse(localStorage.getItem("user"));
-      if(user && user.token){
+      
+      if(user && user.token && !(req.url.includes("check-email") || req.url.includes("check-societe"))){
         headers.setHeaders={
           token:user.token
         };
