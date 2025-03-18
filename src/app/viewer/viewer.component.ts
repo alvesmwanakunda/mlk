@@ -49,6 +49,7 @@ export class ViewerComponent implements OnInit {
   getFile(){
      this.boxService.getFile(this.data.id).subscribe((res:any)=>{
        this.file = res.message;
+       this.chemin = res.message.chemin;
        this.openFile(res.message.extension,res.message.chemin);
      },(error)=>{
       console.log("Erreur lors de la récupération des données", error);

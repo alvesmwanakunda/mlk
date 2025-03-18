@@ -43,7 +43,8 @@ export class ViewerStandarComponent implements OnInit {
   ngOnInit(){
     //console.log("Chemin", this.data.chemin);
     //console.log("Extension", this.data.extension);
-    this.openFile(this.data.chemin,this.data.extension)
+    this.openFile(this.data.chemin,this.data.extension);
+    this.chemin = this.data.chemin;
   }
 
   openFile(chemin, extension){
