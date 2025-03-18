@@ -57,6 +57,7 @@ export class UpdateModuleComponent implements OnInit {
   site:any;
   entrepriseFiltres:Observable<any[]>;
   isEquipement:boolean=false;
+  photo:any;
 
 
 
@@ -126,9 +127,11 @@ export class UpdateModuleComponent implements OnInit {
 
       this.getQrcodeModule();
       this.projet = res.message?.project;
-      console.log("Module", res);
-      if(this.module.chemin){
-        this.src=this.getSafeUrl(this.module.chemin);
+      if(this.module?.chemin){
+         this.getPlan(this.module?.chemin);
+      }
+      if(this.module?.photo){
+          this.getPhoto(this.module?.photo);
       }
       if(this.module){
         this.moduleForm=this._formBuilder.group({
@@ -240,7 +243,7 @@ export class UpdateModuleComponent implements OnInit {
     formData.append("largeur", this.form.largeur);
     formData.append("longueur", this.form.longueur);
     formData.append("dateFabrication",this.form.dateFabrication);
-    formData.append("module_type",this.form.module_type); 
+    formData.append("module_type",this.form.module_type);
     if(this.user?.user?.role=="user"){
       formData.append("entreprise",this.moduleEntreprise)
      }else{
@@ -313,8 +316,25 @@ export class UpdateModuleComponent implements OnInit {
 
  }
 
- getSafeUrl(url){
-  return  this.sanitizer.bypassSecurityTrustResourceUrl(url);
+getSafeUrl(url){
+  return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+}
+
+getPlan(url){
+  this.entrepriseService.openFile(url).subscribe((res:any)=>{
+    //console.log("plan", res?.message);
+     this.src = this.getSafeUrl(res?.message);
+  },(error) => {
+    console.log("Erreur lors de la récupération des données", error);
+  })
+}
+
+getPhoto(url){
+  this.entrepriseService.openFile(url).subscribe((res:any)=>{
+    this.photo = res?.message
+  },(error) => {
+    console.log("Erreur lors de la récupération des données", error);
+  })
 }
 
 openDialogPosition(){

@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { EntreprisesService } from '../shared/services/entreprises.service';
+import { forkJoin, map, of } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard-user',
@@ -19,9 +20,13 @@ export class DashboardUserComponent implements OnInit, AfterViewInit {
   dataSource =new MatTableDataSource<Projets>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   projets:any=[];
+  projetsList:any=[];
   isListe:boolean=true;
   user:any;
-  company:any
+  company:any;
+  visibleProjets: any[] = []; // Projets visibles
+  itemsPerPage = 8; // Nombre d'éléments par page
+  currentIndex = 0; // Index actuel de pagination
 
   constructor(
     private projetService: ProjetsService,
@@ -55,6 +60,7 @@ export class DashboardUserComponent implements OnInit, AfterViewInit {
   getAllProjet(){
     this.projetService.getProjetEntreprise(this.user?.user?.entreprise).subscribe((data:any)=>{
        this.projets = data?.message.reverse();
+       this.getProjetList(this.projets);
        this.dataSource.data = this.projets.map((data)=>({
         id:data._id,
         nom:data.projet,
@@ -67,6 +73,50 @@ export class DashboardUserComponent implements OnInit, AfterViewInit {
       console.log("Erreur lors de la récupération des données", error);
     }
     );
+  }
+
+  getProjetList(projets) {
+    const projetRequests = projets.map(data => {
+      if (!data?.photo) {
+        // Si la photo n'existe pas, on retourne directement l'objet avec une image par défaut
+        return of({
+          id: data._id,
+          projet: data.projet,
+          entreprise: data?.entreprise?.societe,
+          photo: 'assets/images/ppr.png', // Image par défaut
+          etat: data.etat,
+          limite: data.date_limite,
+        });
+      } else {
+        // Si la photo existe, on récupère son URL signée
+        return this.projetService.openFile(data.photo).pipe(
+          map((res:any) => ({
+            id: data._id,
+            projet: data.projet,
+            entreprise: data?.entreprise?.societe,
+            photo: res?.message || 'assets/images/ppr.png', // Image par défaut en cas d'erreur
+            etat: data.etat,
+            limite: data.date_limite,
+          }))
+        );
+      }
+    });
+
+    forkJoin(projetRequests).subscribe(projetsAvecPhotos => {
+      this.projetsList = projetsAvecPhotos;
+       // Afficher les 8 premiers projets
+      this.visibleProjets = this.projetsList.slice(0, this.itemsPerPage);
+      this.currentIndex = this.itemsPerPage;
+      //console.log(this.projetsList);
+    });
+
+
+  }
+
+  loadMore() {
+    const nextItems = this.projetsList.slice(this.currentIndex, this.currentIndex + this.itemsPerPage);
+    this.visibleProjets = [...this.visibleProjets, ...nextItems];
+    this.currentIndex += this.itemsPerPage;
   }
 
   getProjet(idProjet){

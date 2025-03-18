@@ -132,4 +132,9 @@ export class ChatService {
     updateReadMessageClient(idProjet){
       return this.httpClient.get(`${environment.BASE_API_URL}/messages/projet/update/client/${idProjet}`);
     }
+
+    public openFile(url){
+      const encodedPath = encodeURIComponent(url);
+      return this.httpClient.get(`${environment.BASE_API_URL}/open/fichier/${encodedPath}`);
+    }
 }

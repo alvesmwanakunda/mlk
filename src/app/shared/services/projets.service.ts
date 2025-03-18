@@ -403,6 +403,11 @@ export class ProjetsService {
     return file.size <= maxSizeInBytes;
   }
 
+  public openFile(url){
+    const encodedPath = encodeURIComponent(url);
+    return this.httpClient.get(`${environment.BASE_API_URL}/open/fichier/${encodedPath}`);
+  }
+
   // compression des iamges
 
   async compressImage(base64Str: string, maxSizeMB: number = 1, maxWidthOrHeight: number = 1920): Promise<string> {

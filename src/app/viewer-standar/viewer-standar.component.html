@@ -12,7 +12,7 @@
       {{file?.nom}}
     </span>
     <span class="example-spacer"></span>
-    <button mat-icon-button class="example-icon favorite-icon" matTooltip="lien partagé" [cdkCopyToClipboard]="this.data.chemin">
+    <button mat-icon-button class="example-icon favorite-icon" matTooltip="lien partagé" [cdkCopyToClipboard]="chemin">
       <mat-icon>link</mat-icon>
     </button>
     <button mat-icon-button class="example-icon" matTooltip="Télécharger" (click)="download()">

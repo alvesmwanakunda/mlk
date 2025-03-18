@@ -39,6 +39,7 @@ export class UpdateCongesComponent implements OnInit {
   fileName:any;
   file:File;
   form:any;
+  piece:any;
 
   //PDF
   header:any;
@@ -79,7 +80,7 @@ export class UpdateCongesComponent implements OnInit {
      });
      this.user = JSON.parse(localStorage.getItem('user'));
   }
-  
+
 
   champ_validation={
     input:[
@@ -102,7 +103,7 @@ export class UpdateCongesComponent implements OnInit {
     this.signaturePad = new SignaturePad(this.canvas.nativeElement);
   }
 
-  
+
   getConge(){
     this.entrepriseService.getConge(this.id).subscribe((res:any)=>{
       this.conge=res?.message;
@@ -133,8 +134,11 @@ export class UpdateCongesComponent implements OnInit {
           this.dateV = dates.getDate()+"/"+(dates.getMonth()+1)+"/"+dates.getFullYear();
         }if(this.conge?.signature_entreprise){
           this.isSigne=true;
+        }if(this.conge?.fichier){
+          this.getPieceConge(this.conge?.fichier);
         }
       }
+
     },(error) => {
       console.log("Erreur lors de la récupération des données", error);
      })
@@ -258,7 +262,16 @@ export class UpdateCongesComponent implements OnInit {
     })
   }
 
+  getPieceConge(url){
+    this.entrepriseService.openFile(url).subscribe((res:any)=>{
+      this.piece = res?.message;
+    },(error)=>{
+       console.log("Une erreur s'est produite veuillez réessayer.",error);
+    })
+  }
+
   downloadFile(url){
+    console.log("Url", url);
     this.entrepriseService.downloadFile(url);
   }
 
@@ -310,7 +323,7 @@ export class UpdateCongesComponent implements OnInit {
                 widths: [ '100%','20%'],
                 body: [
                     [
-                        { 
+                        {
                           stack: [
                             { text: `DEMANDE DE CONGES`, style: 'header',bold:true,alignment:'center'},
                           ],margin: 10,fillColor: '#0477C9'
@@ -336,7 +349,7 @@ export class UpdateCongesComponent implements OnInit {
                           {image:  `${this.conge?.signature_user}`, width: 150, height: 75, alignment:'center'},
                         ]
                        },
-                      { 
+                      {
                           stack: [
                             {text:`Date validation employeur : ${this.dateV}`, fontSize:12,margin: [0, 10, 0, 10]as [number, number, number, number]},
                             {text:`Signature employeur`, fontSize:12,margin: [0, 10, 0, 10]as [number, number, number, number]},
@@ -375,7 +388,7 @@ export class UpdateCongesComponent implements OnInit {
       ],
 
       styles:this.styles
-      
+
     };
     pdfMake.createPdf(docDefinition).open();
   }

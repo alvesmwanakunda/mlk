@@ -82,6 +82,11 @@ export class EntreprisesService {
     return this.httpClient.get(`${environment.BASE_API_URL}/conge/refuser/${id}`)
   }
 
+  public openFile(url){
+    const encodedPath = encodeURIComponent(url);
+    return this.httpClient.get(`${environment.BASE_API_URL}/open/fichier/${encodedPath}`);
+  }
+
   downloadFile(url){
     const link = document.createElement('a');
     link.href = url;

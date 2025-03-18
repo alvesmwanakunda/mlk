@@ -13,6 +13,7 @@ import { DeleteDossierComponent } from 'src/app/box/delete-dossier/delete-dossie
 import { UpdateFileComponent } from 'src/app/box/update-file/update-file.component';
 import { DeleteFileComponent } from 'src/app/box/delete-file/delete-file.component';
 import { MoveFolderProjetComponent } from './move-folder-projet/move-folder-projet.component';
+import { forkJoin } from 'rxjs';
 
 
 @Component({
@@ -86,23 +87,27 @@ export class BoxProjetComponent implements OnInit,AfterViewInit {
     this.boxService.getFolderByProjet(this.idProjet).subscribe((res:any)=>{
 
       console.log("Projet", this.idProjet);
-      let dossiers = res.message.dossiers.filter(item=> item.nom!=='PV de réception' && item.nom!=='Etat de lieu')
-
+      let dossiers = res.message.dossiers.filter(item=> item.nom!=='PV de réception' && item.nom!=='Etat de lieu');
       this.fichiers = dossiers.concat(res.message.fichiers);
-      this.dataSource.data = this.fichiers.map((data)=>({
-        id:data._id,
-        nom:data.nom,
-        profondeur:data.profondeur,
-        dateLastUpdate:data.dateLastUpdate,
-        dossierParent:data?.dossierParent,
-        creator:data.creator,
-        chemin:data?.chemin,
-        extension:data?.extension,
-        size:data?.size
-       })) as Fichiers[]
 
-      console.log("Fichiers", this.dataSource.data);
+      const requests = this.fichiers.map(data => this.boxService.openFile(data?.chemin));
 
+      forkJoin(requests).subscribe((url:any) =>{
+
+        this.dataSource.data = this.fichiers.map((data, index)=>({
+          id:data._id,
+          nom:data.nom,
+          profondeur:data.profondeur,
+          dateLastUpdate:data.dateLastUpdate,
+          dossierParent:data?.dossierParent,
+          creator:data.creator,
+          chemin:url[index].message,
+          extension:data?.extension,
+          size:data?.size
+         })) as Fichiers[]
+
+        console.log("Fichiers", this.dataSource.data);
+      });
     },(error)=>{
       console.log("Erreur lors de la récupération des données", error);
     })
@@ -172,19 +177,26 @@ export class BoxProjetComponent implements OnInit,AfterViewInit {
     this.boxService.getFolderByProjet(id).subscribe((res:any)=>{
       let dossiers = res.message.dossiers.filter(item=> item.nom!=='PV de réception' && item.nom!=='Etat de lieu')
       this.fichiers = dossiers.concat(res.message.fichiers);
-      this.dataSource.data = this.fichiers.map((data)=>({
-        id:data._id,
-        nom:data.nom,
-        profondeur:data.profondeur,
-        dateLastUpdate:data.dateLastUpdate,
-        dossierParent:data?.dossierParent,
-        creator:data.creator,
-        chemin:data?.chemin,
-        extension:data?.extension,
-        size:data?.size
-       })) as Fichiers[]
 
-      console.log("Fichiers", this.dataSource.data);
+      const requests = this.fichiers.map(data => this.boxService.openFile(data?.chemin));
+
+      forkJoin(requests).subscribe((url:any) =>{
+
+        this.dataSource.data = this.fichiers.map((data, index)=>({
+          id:data._id,
+          nom:data.nom,
+          profondeur:data.profondeur,
+          dateLastUpdate:data.dateLastUpdate,
+          dossierParent:data?.dossierParent,
+          creator:data.creator,
+          chemin:url[index].message,
+          extension:data?.extension,
+          size:data?.size
+         })) as Fichiers[]
+
+        console.log("Fichiers sous dossiers", this.dataSource.data);
+
+      })
 
     },(error)=>{
       console.log("Erreur lors de la récupération des données", error);

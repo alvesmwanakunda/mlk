@@ -59,6 +59,11 @@ export class ContactsService {
     return this.httpClient.get(`${environment.BASE_API_URL}/contact/livraison/${idContact}`);
   }
 
+  public openFile(url){
+    const encodedPath = encodeURIComponent(url);
+    return this.httpClient.get(`${environment.BASE_API_URL}/open/fichier/${encodedPath}`);
+  }
+
 
   /*public updateEntreprisePhoto(idEntreprise, entreprise){
     return this.httpClient.put(`${environment.BASE_API_URL}/entreprise/file/${idEntreprise}`,entreprise)

@@ -93,6 +93,11 @@ public moveFile(id,parent){
   return this.httpClient.get(`${environment.BASE_API_URL}/fichier/move/${id}/${parent}`)
 }
 
+public openFile(url){
+  const encodedPath = encodeURIComponent(url);
+  return this.httpClient.get(`${environment.BASE_API_URL}/open/fichier/${encodedPath}`);
+}
+
 
 
 

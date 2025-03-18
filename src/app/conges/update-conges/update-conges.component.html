@@ -39,10 +39,10 @@
                 <p> Date de fin du congé : {{conge?.fin |date :'dd MMMM yyyy'}}</p>
                 <p>Nombre de jours pris : {{conge?.jours}}</p>
                 <p>Type de congés : {{conge?.types}}</p>
-                <p>Date de la demande :  {{conge?.date_demande |date :'dd MMMM yyyy'}}</p> 
+                <p>Date de la demande :  {{conge?.date_demande |date :'dd MMMM yyyy'}}</p>
                 <p *ngIf="conge?.raison">Raison :  {{conge?.raison}}</p>
                 <div *ngIf="conge?.fichier">
-                  <button mat-raised-button color="warn" (click)="downloadFile(conge?.fichier)">Télécharger le document justificatif</button>
+                  <button mat-raised-button color="warn" (click)="downloadFile(piece)">Télécharger le document justificatif</button>
                 </div>
               </div>
               <div class="col">
@@ -68,7 +68,7 @@
                       </div>
                     </div>
                   </form>
-                </div> 
+                </div>
                 <div [hidden]="conge?.signature_entreprise">
                     <div style="margin-bottom: 10px;">
                       <canvas #canvas style="background: white;"></canvas>
@@ -77,13 +77,13 @@
                       <button mat-raised-button (click)="clear()" style="margin-right: 10px;">Effacer</button>
                       <button mat-raised-button  color="primary" (click)="saveSignature()"   cdkFocusInitial>Enregister</button>
                     </div>
-                  </div> 
-                
+                  </div>
+
               </div>
             </div>
           </div>
         </div>
-      </div> 
+      </div>
 
       <div style="padding-top:20px;" [hidden]="user?.user?.role=='admin'">
         <div class="row justify-content-md-center">
@@ -115,9 +115,9 @@
                       <mat-option value="Congés sans solde">Congés sans solde</mat-option>
                       <mat-option value="Récupération">Récupération</mat-option>
                       <mat-option value="Absence justifiée">Absence justifiée</mat-option>
-                      <mat-option value="Absence non justifiée">Absence non justifiée</mat-option>  
+                      <mat-option value="Absence non justifiée">Absence non justifiée</mat-option>
                    </mat-select>
-                  </mat-form-field>               
+                  </mat-form-field>
                   <div *ngIf="congeForm.get('types').hasError(champ_validation.input[0].type) && ((congeForm.get('types').dirty || congeForm.get('types').touched))">
                     <p class="error_field">{{champ_validation.input[0].message}}</p>
                   </div>
@@ -171,7 +171,7 @@
               <div class="row" style="margin-bottom: 15px;">
                  <div class="col">
                   <div *ngIf="conge?.fichier">
-                    <button mat-raised-button color="warn" (click)="downloadFile(conge?.fichier)">Télécharger le document justificatif</button>
+                    <button mat-raised-button color="warn" (click)="downloadFile(piece)">Télécharger le document justificatif</button>
                   </div>
                  </div>
                  <div class="col">
@@ -185,11 +185,11 @@
                     <button type="button" (click)="fileUpload.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> Charger</button>
                   </div>
                  </div>
-              </div>                 
+              </div>
             </form>
           </div>
         </div>
-      </div>  
- 
+      </div>
+
     </div>
 </app-navbar>

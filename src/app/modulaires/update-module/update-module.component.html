@@ -81,7 +81,7 @@
                             </p>
                            </div>
                         </div>
-                       
+
 
                         <mat-divider></mat-divider>
                       </div>
@@ -154,7 +154,7 @@
                            </div>
                         </div>
                         <p *ngIf="module?.nom_photo" style="text-align: center;">
-                          <img [src]="module.photo" alt="" width="200px" height="150px"/>
+                          <img [src]="photo" alt="" width="200px" height="150px"/>
                         </p>
                         <p *ngIf="!module?.nom_photo" style="font-size: 13px;">Pas d'image</p>
                       </div>
@@ -204,7 +204,7 @@
                             <mat-option value="Prêt à partir">Prêt à partir</mat-option>
                             <mat-option value="Site">Site</mat-option>
                          </mat-select>
-                        </mat-form-field>    
+                        </mat-form-field>
                         <div *ngIf="moduleForm.get('type').hasError(champ_validation.input[0].type) && (moduleForm.get('type').dirty || moduleForm.get('type').touched)">
                           <p class="error_field">{{champ_validation.input[0].message}}</p>
                         </div>

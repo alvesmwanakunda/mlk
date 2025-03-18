@@ -5,7 +5,7 @@ import {
   HttpErrorResponse
 } from "@angular/common/http";
 import { map, catchError } from "rxjs/operators";
-import { throwError } from "rxjs";
+import { forkJoin, throwError } from "rxjs";
 import { environment} from 'src/environments/environment';
 import { ProjetsService } from 'src/app/shared/services/projets.service';
 import { ActivatedRoute } from '@angular/router';
@@ -64,17 +64,23 @@ export class PlanModuleComponent implements OnInit,AfterViewInit {
   getAllFiles(){
     this.projetService.getAllPlanModule(this.idModule).subscribe((res:any)=>{
 
-      this.dataSource.data = res.message.map((data)=>({
-        id:data._id,
-        nom:data.nom,
-        dateLastUpdate:data.dateLastUpdate,
-        creator:data.creator,
-        chemin:data?.chemin,
-        extension:data?.extension,
-        size:data?.size
-       })) as Fichiers[]
+      const requests =res.message.map(data => this.projetService.openFile(data?.chemin));
+       forkJoin(requests).subscribe((url:any) =>{
+        this.dataSource.data = res.message.map((data, index)=>({
+          id:data._id,
+          nom:data.nom,
+          dateLastUpdate:data.dateLastUpdate,
+          creator:data.creator,
+          chemin:url[index].message,
+          url: data.chemin,
+          extension:data?.extension,
+          size:data?.size
+         })) as Fichiers[]
 
-      console.log("Fichiers", this.dataSource.data);
+        console.log("Fichiers", this.dataSource.data);
+       })
+
+
 
     },(error)=>{
       console.log("Erreur lors de la récupération des données", error);

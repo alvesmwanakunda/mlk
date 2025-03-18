@@ -29,6 +29,7 @@ export class ViewerComponent implements OnInit {
   height = 673;
   percent=60;
   fit:boolean=false;
+  chemin:any;
 
   constructor(
     private boxService:BoxService,
@@ -55,17 +56,23 @@ export class ViewerComponent implements OnInit {
   }
 
   openFile(extension,chemin){
-    if ( extension == "pdf" ){
-       this.isPdf=true;
-        this.src=chemin;
-       //this.src="https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf"
-    }else if(extension === "xlsx" || extension === "docx" || extension === "pptx"){
-       this.isOffice=true;
-       this.src=this.getSafeUrl(`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(chemin)}`);
-    }else{
-      this.isImage=true;
-      this.src=this.getSafeUrl(chemin);
-    }
+    this.boxService.openFile(chemin).subscribe((res:any)=>{
+      this.chemin = res?.message;
+      if ( extension == "pdf" ){
+        this.isPdf=true;
+         this.src=res?.message;
+        //this.src="https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf"
+      }else if(extension === "xlsx" || extension === "docx" || extension === "pptx"){
+          this.isOffice=true;
+          this.src=this.getSafeUrl(`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(res?.message)}`);
+      }else{
+        this.isImage=true;
+        this.src=this.getSafeUrl(res?.message);
+      }
+
+    },(error)=>{
+      console.log("Erreur lors de la récupération des données", error);
+    })
   }
 
   getSafeUrl(url){
@@ -79,12 +86,12 @@ export class ViewerComponent implements OnInit {
   }
 
   download(): void {
-    this.boxService.downloadFile(this.file.chemin);
+    this.boxService.downloadFile(this.chemin);
   }
 
   print(){
 
-    this.boxService.downloadPDF(this.file.chemin).subscribe(res => {
+    this.boxService.downloadPDF(this.chemin).subscribe(res => {
       const fileURL = URL.createObjectURL(res);
       window.open(fileURL, '_blank');
     });

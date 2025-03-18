@@ -14,6 +14,7 @@ import { UpdateFileComponent } from 'src/app/box/update-file/update-file.compone
 import { DeleteFileComponent } from 'src/app/box/delete-file/delete-file.component';
 import { BreadcrumbService } from 'src/app/shared/services/breadcrumb.service';
 import { MoveFolderProjetComponent } from '../move-folder-projet/move-folder-projet.component';
+import { forkJoin } from 'rxjs';
 @Component({
   selector: 'app-detail-folder',
   templateUrl: './detail-folder.component.html',
@@ -74,19 +75,24 @@ export class DetailFolderComponent implements OnInit,AfterViewInit {
       this.breadService.addBreadcrumb(this.dossierCourant);
       this.breadcrumbs = this.breadService.getBreadcrumbs();
       this.fichiers = res.message.dossiers.concat(res.message.fichiers);
-      this.dataSource.data = this.fichiers.map((data)=>({
-        id:data._id,
-        nom:data.nom,
-        profondeur:data.profondeur,
-        dateLastUpdate:data.dateLastUpdate,
-        dossierParent:data?.dossierParent,
-        creator:data.creator,
-        chemin:data?.chemin,
-        extension:data?.extension,
-        size:data?.size
-       })) as Fichiers[]
 
-      //console.log("Fichiers", this.dataSource.data);
+      const requests = this.fichiers.map(data => this.boxService.openFile(data?.chemin));
+
+      forkJoin(requests).subscribe((url:any) =>{
+        console.log("Ficheir", url);
+        this.dataSource.data = this.fichiers.map((data, index)=>({
+          id:data._id,
+          nom:data.nom,
+          profondeur:data.profondeur,
+          dateLastUpdate:data.dateLastUpdate,
+          dossierParent:data?.dossierParent,
+          creator:data.creator,
+          chemin:url[index].message,
+          extension:data?.extension,
+          size:data?.size
+         })) as Fichiers[]
+      })
+      console.log("Fichiers sous", this.dataSource.data);
 
     },(error)=>{
       console.log("Erreur lors de la récupération des données", error);

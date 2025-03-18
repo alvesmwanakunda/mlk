@@ -21,6 +21,7 @@ export class ProjetComponent implements OnInit {
   numberMessage:number=0;
   contact:any;
   entreprise:any;
+  image:any;
 
   constructor(
     private projetService: ProjetsService,
@@ -44,10 +45,14 @@ export class ProjetComponent implements OnInit {
   getProjet(){
     this.projetService.getProjet(this.idProjet).subscribe((res:any)=>{
         this.projet = res.message;
+
+        if(this.projet?.photo){
+           this.getImageProjet(this.projet?.photo);
+        }
         if(res.message?.entreprise){
           this.getEntreprise(res.message?.entreprise);
         }
-        
+
         if(this.projet?.contact){
           this.getResponsable(this.projet?.contact)
         }
@@ -67,6 +72,14 @@ export class ProjetComponent implements OnInit {
   getResponsable(id){
     this.contactService.getContact(id).subscribe((res:any)=>{
        this.contact = res?.message;
+    },(error) => {
+      console.log("Erreur lors de la récupération des données", error);
+    })
+  }
+
+  getImageProjet(image){
+    this.projetService.openFile(image).subscribe((res:any)=>{
+      this.image = res?.message;
     },(error) => {
       console.log("Erreur lors de la récupération des données", error);
     })
