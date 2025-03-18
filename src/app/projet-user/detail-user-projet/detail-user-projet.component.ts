@@ -46,9 +46,6 @@ export class DetailUserProjetComponent implements OnInit {
     this.projetService.getProjet(this.idProjet).subscribe((res:any)=>{
         this.projet = res.message;
 
-        if(this.projet?.photo){
-          this.getImageProjet(this.projet?.photo);
-        }
         if(this.projet?.contact){
           this.getResponsable(this.projet?.contact)
         }
@@ -65,13 +62,13 @@ export class DetailUserProjetComponent implements OnInit {
     })
   }
 
-  getImageProjet(image){
+  /*getImageProjet(image){
     this.projetService.openFile(image).subscribe((res:any)=>{
       this.image = res?.message;
     },(error) => {
       console.log("Erreur lors de la récupération des données", error);
     })
-  }
+  }*/
 
   updateProjet(idProjet){
     this.router.navigate(['update/entreprise/projet',idProjet]);

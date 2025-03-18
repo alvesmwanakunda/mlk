@@ -46,7 +46,7 @@ export class ViewerStandarComponent implements OnInit {
     this.openFile(this.data.chemin,this.data.extension)
   }
 
-  /*openFile(chemin, extension){
+  openFile(chemin, extension){
     if ( extension == "pdf" ){
        this.isPdf=true;
         this.src=chemin;
@@ -58,9 +58,9 @@ export class ViewerStandarComponent implements OnInit {
       this.isImage=true;
       this.src=this.getSafeUrl(chemin);
     }
-  }*/
+  }
 
-    openFile(chemin,extension){
+    /*openFile(chemin,extension){
       this.boxService.openFile(chemin).subscribe((res:any)=>{
         this.chemin = res?.message;
         if ( extension == "pdf" ){
@@ -78,7 +78,7 @@ export class ViewerStandarComponent implements OnInit {
       },(error)=>{
         console.log("Erreur lors de la récupération des données", error);
       })
-    }
+    }*/
 
 
   getSafeUrl(url){

@@ -64,24 +64,18 @@ export class PlanModuleComponent implements OnInit,AfterViewInit {
   getAllFiles(){
     this.projetService.getAllPlanModule(this.idModule).subscribe((res:any)=>{
 
-      const requests =res.message.map(data => this.projetService.openFile(data?.chemin));
-       forkJoin(requests).subscribe((url:any) =>{
-        this.dataSource.data = res.message.map((data, index)=>({
+        this.dataSource.data = res.message.map((data)=>({
           id:data._id,
           nom:data.nom,
           dateLastUpdate:data.dateLastUpdate,
           creator:data.creator,
-          chemin:url[index].message,
+          chemin:data.chemin,
           url: data.chemin,
           extension:data?.extension,
           size:data?.size
          })) as Fichiers[]
 
         console.log("Fichiers", this.dataSource.data);
-       })
-
-
-
     },(error)=>{
       console.log("Erreur lors de la récupération des données", error);
     })

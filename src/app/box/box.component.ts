@@ -53,16 +53,17 @@ export class BoxComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(){
+    this.boxService.listDossier.subscribe((message:any)=>{
+      console.log("liste des documents", message );
+      this.getAllFiles();
+    });
     this.dataSource.paginator=this.paginator;
   }
 
   getAllFiles(){
     this.boxService.getAllDocuments().subscribe((res:any)=>{
 
-      this.fichiers = res.message.dossiers.concat(res.message.fichiers);
-      const requests = this.fichiers.map(data => this.boxService.openFile(data?.chemin));
-
-       forkJoin(requests).subscribe((url:any) =>{
+        this.fichiers = res.message.dossiers.concat(res.message.fichiers);
 
         this.dataSource.data = this.fichiers.map((data, index)=>({
           id:data._id,
@@ -71,15 +72,12 @@ export class BoxComponent implements OnInit, AfterViewInit {
           dateLastUpdate:data.dateLastUpdate,
           dossierParent:data?.dossierParent,
           creator:data.creator,
-          chemin:url[index].message,
+          chemin:data.chemin,
           extension:data?.extension,
           size:data?.size
          })) as Fichiers[]
 
         console.log("Fichiers", this.dataSource.data);
-
-       })
-
     },(error)=>{
       console.log("Erreur lors de la récupération des données", error);
     })
@@ -130,6 +128,7 @@ export class BoxComponent implements OnInit, AfterViewInit {
        }
     })
   }
+
 
   openDialogFileDelete(idFile){
     const dialogRef = this.dialog.open(DeleteFileComponent,{width:'30%',data:{id:idFile}});

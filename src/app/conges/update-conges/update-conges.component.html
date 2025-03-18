@@ -42,7 +42,7 @@
                 <p>Date de la demande :  {{conge?.date_demande |date :'dd MMMM yyyy'}}</p>
                 <p *ngIf="conge?.raison">Raison :  {{conge?.raison}}</p>
                 <div *ngIf="conge?.fichier">
-                  <button mat-raised-button color="warn" (click)="downloadFile(piece)">Télécharger le document justificatif</button>
+                  <button mat-raised-button color="warn" (click)="downloadFile(conge?.fichier)">Télécharger le document justificatif</button>
                 </div>
               </div>
               <div class="col">
@@ -171,7 +171,7 @@
               <div class="row" style="margin-bottom: 15px;">
                  <div class="col">
                   <div *ngIf="conge?.fichier">
-                    <button mat-raised-button color="warn" (click)="downloadFile(piece)">Télécharger le document justificatif</button>
+                    <button mat-raised-button color="warn" (click)="downloadFile(conge?.fichier)">Télécharger le document justificatif</button>
                   </div>
                  </div>
                  <div class="col">

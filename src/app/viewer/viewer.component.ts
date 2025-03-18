@@ -56,23 +56,18 @@ export class ViewerComponent implements OnInit {
   }
 
   openFile(extension,chemin){
-    this.boxService.openFile(chemin).subscribe((res:any)=>{
-      this.chemin = res?.message;
-      if ( extension == "pdf" ){
-        this.isPdf=true;
-         this.src=res?.message;
-        //this.src="https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf"
-      }else if(extension === "xlsx" || extension === "docx" || extension === "pptx"){
-          this.isOffice=true;
-          this.src=this.getSafeUrl(`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(res?.message)}`);
-      }else{
-        this.isImage=true;
-        this.src=this.getSafeUrl(res?.message);
-      }
 
-    },(error)=>{
-      console.log("Erreur lors de la récupération des données", error);
-    })
+    if ( extension == "pdf" ){
+      this.isPdf=true;
+       this.src=chemin;
+      //this.src="https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf"
+    }else if(extension === "xlsx" || extension === "docx" || extension === "pptx"){
+        this.isOffice=true;
+        this.src=this.getSafeUrl(`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(chemin)}`);
+    }else{
+      this.isImage=true;
+      this.src=this.getSafeUrl(chemin);
+    }
   }
 
   getSafeUrl(url){

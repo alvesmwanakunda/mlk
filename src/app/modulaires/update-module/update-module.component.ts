@@ -114,6 +114,7 @@ export class UpdateModuleComponent implements OnInit {
     this.projetService.getModule(this.idModule).subscribe((res:any)=>{
 
       this.module = res.message;
+      console.log("Module", res.message);
       this.site = res?.projet;
       if(this.module.entreprise){
         this.moduleEntreprise = res.message?.entreprise?._id;
@@ -128,10 +129,7 @@ export class UpdateModuleComponent implements OnInit {
       this.getQrcodeModule();
       this.projet = res.message?.project;
       if(this.module?.chemin){
-         this.getPlan(this.module?.chemin);
-      }
-      if(this.module?.photo){
-          this.getPhoto(this.module?.photo);
+         this.src = this.getSafeUrl(this.module?.chemin);
       }
       if(this.module){
         this.moduleForm=this._formBuilder.group({
@@ -320,22 +318,6 @@ getSafeUrl(url){
   return this.sanitizer.bypassSecurityTrustResourceUrl(url);
 }
 
-getPlan(url){
-  this.entrepriseService.openFile(url).subscribe((res:any)=>{
-    //console.log("plan", res?.message);
-     this.src = this.getSafeUrl(res?.message);
-  },(error) => {
-    console.log("Erreur lors de la récupération des données", error);
-  })
-}
-
-getPhoto(url){
-  this.entrepriseService.openFile(url).subscribe((res:any)=>{
-    this.photo = res?.message
-  },(error) => {
-    console.log("Erreur lors de la récupération des données", error);
-  })
-}
 
 openDialogPosition(){
   const dialogRef = this.dialog.open(PositionComponent,{width:'50%'});

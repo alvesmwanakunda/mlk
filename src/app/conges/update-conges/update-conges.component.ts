@@ -134,8 +134,6 @@ export class UpdateCongesComponent implements OnInit {
           this.dateV = dates.getDate()+"/"+(dates.getMonth()+1)+"/"+dates.getFullYear();
         }if(this.conge?.signature_entreprise){
           this.isSigne=true;
-        }if(this.conge?.fichier){
-          this.getPieceConge(this.conge?.fichier);
         }
       }
 
