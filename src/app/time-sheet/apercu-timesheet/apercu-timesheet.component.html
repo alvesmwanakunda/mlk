@@ -1,0 +1,67 @@
+
+<app-navbar>
+    <div>
+        <!--<p class=" text-center p-1 text-white" style="background-color: rgba(17, 116, 178, 0.685);">
+           <span role="button" >Cliquez ici pour revenir en arrière</span>
+        </p>-->
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2 >Feuille de temps de {{monthName}} {{year}} : <span style="color: #28628B;">{{user?.nom}} {{user?.prenom}}</span> </h2>
+            <button (click)="retour()" class="btn btn-mlka" type="button">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                Retour
+            </button>
+        </div>
+        <div class="mb-4 mt-2 p-3 bg-white ">
+            <h2>Total : <span class=" text-danger">{{nbreHeureDeplacement + nbreHeurePasDeplacement}} heure(s)</span> </h2>
+            <div class="row" >
+                <div class="col-4">
+                    <div class="col" *ngIf="nbreTotalJour>0">
+                        <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height:'300px',}"></canvasjs-chart> 
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="col" *ngIf="nbreTotalJour>0">
+                        <canvasjs-chart [options]="pieChartOptions" [styles]="{width: '100%', height:'300px',}"></canvasjs-chart> 
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="col" *ngIf="nbreTotalJour>0">
+                        <canvasjs-chart [options]="chartOptionsHeure" [styles]="{width: '100%', height:'300px',}"></canvasjs-chart> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Tâche</th>
+                        <th scope="col">Projet</th>
+                        <th scope="col">Déplacement</th>
+                        <th scope="col">Présence</th>
+                        <th scope="col">Motif</th>
+                        <th scope="col">Type déplacement</th>
+                        <th scope="col">Heures</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of feuilles; let i = index" [ngClass]="{'bg-yellow': item.presence === 'Absent'}" >
+                        <th scope="row">{{i +1 }}</th>
+                        <td>{{ item.dayOfWeek + " "+ (item.createdAt | date : "dd/MM/yyyy") }}</td>
+                        <td>{{item.tache ||'-'}}</td>
+                        <td>{{item.projet ||'-'}}</td>
+                        <td>{{item.deplacement ||'-'}}</td>
+                        <td>{{item.presence ||'-'}}</td>
+                        <td>{{item.motifs ||'-'}}</td>
+                        <td>{{item.types_deplacement ||'-'}}</td>
+                        <td>{{item.heure}}</td>
+                    </tr>    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</app-navbar>

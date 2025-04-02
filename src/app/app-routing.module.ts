@@ -247,6 +247,10 @@ const routes: Routes = [
     loadChildren:()=>import('./time-sheet/detail-timesheet/detail-timesheet.module').then(m=>m.DetailTimesheetModule)
   },
   {
+    path:'timesheet/:id/apercu/:month/:year',
+    loadChildren:()=>import('./time-sheet/apercu-timesheet/apercu-timesheet.module').then(m=>m.ApercuTimesheetModule)
+  },
+  {
     path:'timesheet/:id/:month/:year',
     loadChildren:()=>import('./time-sheet/update-timesheet/update-timesheet.module').then(m=>m.UpdateTimesheetModule)
   },

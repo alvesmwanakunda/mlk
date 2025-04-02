@@ -7,6 +7,8 @@ import { AuthService } from '../../shared/services/auth.service';
 import { TimesheetService } from 'src/app/shared/services/timesheet.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CountriesService } from 'src/app/shared/services/countries.service';
+import { MatDialog } from '@angular/material/dialog';
 
 
 
@@ -26,6 +28,8 @@ timesheetForm: FormGroup;
 message:any;
 isPresent:boolean=true;
 isDeplacement:boolean=true
+filterForm: FormGroup;
+months:any=[];
 
 constructor(
   private matPaginatorIntl:MatPaginatorIntl,
@@ -33,7 +37,10 @@ constructor(
   private authService: AuthService,
   private route: ActivatedRoute,
   private timesheetService: TimesheetService,
+  private formBuilder: FormBuilder,
+  private countrieService: CountriesService,
   private _snackBar:MatSnackBar,
+  public dialog: MatDialog,
 ){
   this.route.params.subscribe((data:any)=>{
     this.idUser = data?.id
@@ -52,6 +59,13 @@ champ_validation={
 ngOnInit(): void {
   this.getAllTimeSheet();
   this.getUser();
+  this.getMonth();
+
+  this.filterForm = new FormGroup({
+    startDate: new FormControl("",[Validators.required]),
+    endDate: new FormControl("",[Validators.required]),
+  })
+
   this.matPaginatorIntl.itemsPerPageLabel="Feuille de temps par page";
   this.timesheetForm = new FormGroup({
     createdAt:new FormControl("",[Validators.required]),
@@ -64,6 +78,17 @@ ngOnInit(): void {
     projet: new FormControl("", null),
     deplacement: new FormControl("", null),
   })
+}
+
+getMonth(){
+  this.countrieService.getMonth().subscribe(
+    (data)=>{
+      this.months = data;
+    },
+    (error)=>{
+      console.log(error);
+    }
+  )
 }
 
 ngAfterViewInit(): void {
@@ -101,9 +126,9 @@ applyFilter(event: Event) {
   }
 }
 
-getTimesheet(id,month,year){
-this.router.navigate(['/timesheet', id, month, year])
-}
+  getTimesheet(id,month,year){
+    this.router.navigate(['/timesheet', id, month, year])
+  }
 
 saveTime(){
   if (this.timesheetForm.valid){
@@ -142,6 +167,30 @@ doSomethingDeplacement(event:any){
     this.isDeplacement=false;
    }
 }
+
+  downloadFile(){
+    if(this.filterForm.valid){
+      //console.log("Valeur", this.filterForm.value.startDate);
+      let month = this.filterForm.value.startDate;
+      let year = this.filterForm.value.endDate;
+      this.timesheetService.getTimeSheetDonwload(this.filterForm.value.startDate,this.filterForm.value.endDate).subscribe((res:any)=>{
+        console.log("Data", res);
+        console.log(this.user);
+        
+        // this.excelService.generateExcelTimeSheet(res.message,month,year);
+      },(error) => {
+      console.log("Erreur lors de la récupération des données", error);
+      })
+    }
+  }
+
+  openApercuView(){
+    this.downloadFile();
+    if(this.filterForm.valid){
+      this.router.navigate(['/timesheet', this.idUser,"apercu" ,this.filterForm.value.startDate, this.filterForm.value.endDate])
+      // const dialogRef = this.dialog.open(ApercuTimesheetComponent,{width:'80%', data: {user: this.user, month: this.filterForm.value.startDate, year: this.filterForm.value.endDate }});
+    }
+  }
 
 }
 export interface TimeSheet{

@@ -8,6 +8,7 @@ import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { NavbarModule } from '../navbar/navbar.module';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ApercuTimesheetComponent } from './apercu-timesheet/apercu-timesheet.component';
 
 export function jwtOptionsFactory() {
   return {
