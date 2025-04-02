@@ -11,9 +11,10 @@ import { AddFolderComponent } from './add-folder/add-folder.component';
 import { UpdateDossierComponent } from 'src/app/box/update-dossier/update-dossier.component';
 import { DeleteDossierComponent } from 'src/app/box/delete-dossier/delete-dossier.component';
 import { UpdateFileComponent } from 'src/app/box/update-file/update-file.component';
-import { DeleteFileComponent } from 'src/app/box/delete-file/delete-file.component';
+//import { DeleteFileProjetComponent } from './delete-file-projet/delete-file-projet.component';
 import { MoveFolderProjetComponent } from './move-folder-projet/move-folder-projet.component';
 import { forkJoin } from 'rxjs';
+import { DialogService } from 'src/app/shared/services/dialog.service';
 
 
 @Component({
@@ -43,6 +44,7 @@ export class BoxProjetComponent implements OnInit,AfterViewInit {
     public dialog: MatDialog,
     private router: Router,
     public route:ActivatedRoute,
+    private dialogService:DialogService
   ){
     this.user = JSON.parse(localStorage.getItem('user'));
 
@@ -90,24 +92,19 @@ export class BoxProjetComponent implements OnInit,AfterViewInit {
       let dossiers = res.message.dossiers.filter(item=> item.nom!=='PV de réception' && item.nom!=='Etat de lieu');
       this.fichiers = dossiers.concat(res.message.fichiers);
 
-      const requests = this.fichiers.map(data => this.boxService.openFile(data?.chemin));
-
-      forkJoin(requests).subscribe((url:any) =>{
-
-        this.dataSource.data = this.fichiers.map((data, index)=>({
+      this.dataSource.data = this.fichiers.map((data)=>({
           id:data._id,
           nom:data.nom,
           profondeur:data.profondeur,
           dateLastUpdate:data.dateLastUpdate,
           dossierParent:data?.dossierParent,
           creator:data.creator,
-          chemin:url[index].message,
+          chemin:data.chemin,
           extension:data?.extension,
           size:data?.size
          })) as Fichiers[]
 
         console.log("Fichiers", this.dataSource.data);
-      });
     },(error)=>{
       console.log("Erreur lors de la récupération des données", error);
     })
@@ -154,13 +151,22 @@ export class BoxProjetComponent implements OnInit,AfterViewInit {
     })
   }
 
-  openDialogFileDelete(idFile){
-    const dialogRef = this.dialog.open(DeleteFileComponent,{width:'30%',data:{id:idFile}});
+  /*openDialogFileDelete(idFile){
+    const dialogRef = this.dialog.open(DeleteFileProjetComponent,{width:'30%',data:{id:idFile}});
     dialogRef.afterClosed().subscribe((result:any)=>{
        if(result){
         this.getAllFiles();
        }
     })
+  }*/
+
+  openDialogFileDelete(idFile) {
+    this.dialogService.openDialog(idFile).subscribe((result: any) => {
+      if (result) {
+        console.log("Fichier supprimé !");
+        this.getAllFiles(); // Recharge les fichiers après suppression
+      }
+    });
   }
   openDialogMove(id, extension?){
     const dialogRef = this.dialog.open(MoveFolderProjetComponent,{width:'50%',data:{id:id,extension:extension,idProjet:this.idProjet}});
@@ -178,26 +184,19 @@ export class BoxProjetComponent implements OnInit,AfterViewInit {
       let dossiers = res.message.dossiers.filter(item=> item.nom!=='PV de réception' && item.nom!=='Etat de lieu')
       this.fichiers = dossiers.concat(res.message.fichiers);
 
-      const requests = this.fichiers.map(data => this.boxService.openFile(data?.chemin));
-
-      forkJoin(requests).subscribe((url:any) =>{
-
-        this.dataSource.data = this.fichiers.map((data, index)=>({
+        this.dataSource.data = this.fichiers.map((data)=>({
           id:data._id,
           nom:data.nom,
           profondeur:data.profondeur,
           dateLastUpdate:data.dateLastUpdate,
           dossierParent:data?.dossierParent,
           creator:data.creator,
-          chemin:url[index].message,
+          chemin:data.chemin,
           extension:data?.extension,
           size:data?.size
          })) as Fichiers[]
 
         console.log("Fichiers sous dossiers", this.dataSource.data);
-
-      })
-
     },(error)=>{
       console.log("Erreur lors de la récupération des données", error);
     })

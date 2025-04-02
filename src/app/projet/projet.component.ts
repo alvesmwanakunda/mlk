@@ -46,9 +46,6 @@ export class ProjetComponent implements OnInit {
     this.projetService.getProjet(this.idProjet).subscribe((res:any)=>{
         this.projet = res.message;
 
-        if(this.projet?.photo){
-           this.getImageProjet(this.projet?.photo);
-        }
         if(res.message?.entreprise){
           this.getEntreprise(res.message?.entreprise);
         }
@@ -77,13 +74,13 @@ export class ProjetComponent implements OnInit {
     })
   }
 
-  getImageProjet(image){
+  /*getImageProjet(image){
     this.projetService.openFile(image).subscribe((res:any)=>{
       this.image = res?.message;
     },(error) => {
       console.log("Erreur lors de la récupération des données", error);
     })
-  }
+  }*/
 
   updateProjet(idProjet){
     this.router.navigate(['update/projet',idProjet]);

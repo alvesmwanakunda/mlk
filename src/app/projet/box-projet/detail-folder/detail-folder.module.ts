@@ -9,10 +9,10 @@ import { AddFolderModule } from '../add-folder/add-folder.module';
 import { UpdateDossierModule } from 'src/app/box/update-dossier/update-dossier.module';
 import { DeleteDossierModule } from 'src/app/box/delete-dossier/delete-dossier.module';
 import { UpdateFileModule } from 'src/app/box/update-file/update-file.module';
-import { DeleteFileModule } from 'src/app/box/delete-file/delete-file.module';
 import { FileBoxModule } from '../file-box/file-box.module';
 import { DetailFolderComponent } from './detail-folder.component';
 import { MoveFolderProjetModule } from '../move-folder-projet/move-folder-projet.module';
+import { DeleteFileProjetModule } from '../delete-file-projet/delete-file-projet.module';
 
 
 @NgModule({
@@ -27,9 +27,9 @@ import { MoveFolderProjetModule } from '../move-folder-projet/move-folder-projet
     UpdateDossierModule,
     DeleteDossierModule,
     UpdateFileModule,
-    DeleteFileModule,
     FileBoxModule,
-    MoveFolderProjetModule
+    MoveFolderProjetModule,
+    DeleteFileProjetModule
   ],
   providers:[BoxService, BreadcrumbService],
   exports:[DetailFolderComponent]

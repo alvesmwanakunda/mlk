@@ -4,11 +4,11 @@
       <mat-icon>close</mat-icon>
     </button>
     <span style="font-size:15px;font-weight:400;">
-      <img src="assets/images/pdf.png" *ngIf="file?.extension=='pdf'" style="margin-right: 10px;margin-top: -4px;">
-      <img src="assets/images/doc.png" *ngIf="file?.extension=='docx'" style="margin-right: 10px;margin-top: -4px;">
-      <img src="assets/images/xls.png" *ngIf="file?.extension=='xlsx' || file?.extension=='xls'" style="margin-right: 10px;margin-top: -4px;">
-      <img src="assets/images/pptx.png"  *ngIf="file?.extension=='pptx'" style="margin-right: 10px;margin-top: -4px;">
-      <img src="assets/images/image.png"  *ngIf="file?.extension=='png' || file?.extension=='jpeg' || file?.extension=='jpg' || file?.extension=='gif'" style="margin-right: 10px;margin-top: -4px;">
+      <img src="assets/images/pdf.png" *ngIf="data?.extension=='pdf'" style="margin-right: 10px;margin-top: -4px;">
+      <img src="assets/images/doc.png" *ngIf="data?.extension=='docx'" style="margin-right: 10px;margin-top: -4px;">
+      <img src="assets/images/xls.png" *ngIf="data?.extension=='xlsx' || data?.extension=='xls'" style="margin-right: 10px;margin-top: -4px;">
+      <img src="assets/images/pptx.png"  *ngIf="data?.extension=='pptx'" style="margin-right: 10px;margin-top: -4px;">
+      <img src="assets/images/image.png"  *ngIf="data?.extension=='png' || data?.extension=='jpeg' || data?.extension=='jpg' || data?.extension=='gif'" style="margin-right: 10px;margin-top: -4px;">
       {{file?.nom}}
     </span>
     <span class="example-spacer"></span>

@@ -11,10 +11,11 @@ import { AddFolderComponent } from '../add-folder/add-folder.component';
 import { UpdateDossierComponent } from 'src/app/box/update-dossier/update-dossier.component';
 import { DeleteDossierComponent } from 'src/app/box/delete-dossier/delete-dossier.component';
 import { UpdateFileComponent } from 'src/app/box/update-file/update-file.component';
-import { DeleteFileComponent } from 'src/app/box/delete-file/delete-file.component';
+//import { DeleteFileProjetComponent } from '../delete-file-projet/delete-file-projet.component';
 import { BreadcrumbService } from 'src/app/shared/services/breadcrumb.service';
 import { MoveFolderProjetComponent } from '../move-folder-projet/move-folder-projet.component';
 import { forkJoin } from 'rxjs';
+import { DialogService } from 'src/app/shared/services/dialog.service';
 @Component({
   selector: 'app-detail-folder',
   templateUrl: './detail-folder.component.html',
@@ -44,18 +45,19 @@ export class DetailFolderComponent implements OnInit,AfterViewInit {
     private router: Router,
     public route:ActivatedRoute,
     public dialog: MatDialog,
-    private breadService: BreadcrumbService
+    private breadService: BreadcrumbService,
+    private dialogService: DialogService
   ){
      this.boxService.listDossier.subscribe((message:any)=>{
       console.log("liste des documents", message );
       if(message){
-        this.getAllFiles(this.idFolder);
+        this.getAllFiles();
       }
     });
   }
 
   ngOnInit(){
-    this.getAllFiles(this.idFolder);
+    this.getAllFiles();
     console.log("idProjet", this.idProjet);
     this.matPaginatorIntl.itemsPerPageLabel="Box par page";
   }
@@ -66,17 +68,35 @@ export class DetailFolderComponent implements OnInit,AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator=this.paginator;
+    this.boxService.listDossier.subscribe((message:any)=>{
+      console.log("liste des documents", message );
+      if(message){
+        this.getAllFiles();
+      }
+    });
   }
 
-  getAllFiles(idFile){
-    this.boxService.getFolderDetailId(idFile).subscribe((res:any)=>{
+  getAllFiles(){
+    this.boxService.getFolderDetailId(this.idFolder).subscribe((res:any)=>{
       this.dossier =res.message.dossier;
       this.dossierCourant={id:this.dossier._id, name:this.dossier?.nom, current:true};
       this.breadService.addBreadcrumb(this.dossierCourant);
       this.breadcrumbs = this.breadService.getBreadcrumbs();
       this.fichiers = res.message.dossiers.concat(res.message.fichiers);
 
-      const requests = this.fichiers.map(data => this.boxService.openFile(data?.chemin));
+      this.dataSource.data = this.fichiers.map((data)=>({
+        id:data._id,
+        nom:data.nom,
+        profondeur:data.profondeur,
+        dateLastUpdate:data.dateLastUpdate,
+        dossierParent:data?.dossierParent,
+        creator:data.creator,
+        chemin:data.chemin,
+        extension:data?.extension,
+        size:data?.size
+       })) as Fichiers[]
+
+      /*const requests = this.fichiers.map(data => this.boxService.openFile(data?.chemin));
 
       forkJoin(requests).subscribe((url:any) =>{
         console.log("Ficheir", url);
@@ -91,7 +111,7 @@ export class DetailFolderComponent implements OnInit,AfterViewInit {
           extension:data?.extension,
           size:data?.size
          })) as Fichiers[]
-      })
+      })*/
       console.log("Fichiers sous", this.dataSource.data);
 
     },(error)=>{
@@ -106,7 +126,7 @@ export class DetailFolderComponent implements OnInit,AfterViewInit {
   removeFoldersAndSetCurrent(index,idFolder) {
     this.breadcrumbs = this.breadService.removeItemsAfterIndex(index);
     this.idFolder = idFolder;
-    this.getAllFiles(this.idFolder);
+    this.getAllFiles();
   }
 
   applyFilter(event: Event) {
@@ -118,7 +138,7 @@ export class DetailFolderComponent implements OnInit,AfterViewInit {
     const dialogRef = this.dialog.open(AddFolderComponent,{width:'50%', data:{id:this.idProjet,idFolder:this.idFolder}});
     dialogRef.afterClosed().subscribe((result:any)=>{
        if(result){
-        this.getAllFiles(this.idFolder);
+        this.getAllFiles();
        }
     })
   }
@@ -127,7 +147,7 @@ export class DetailFolderComponent implements OnInit,AfterViewInit {
     const dialogRef = this.dialog.open(UpdateDossierComponent,{width:'50%',data:{id:idDossier}});
     dialogRef.afterClosed().subscribe((result:any)=>{
        if(result){
-        this.getAllFiles(this.idFolder);
+        this.getAllFiles();
        }
     })
   }
@@ -136,7 +156,7 @@ export class DetailFolderComponent implements OnInit,AfterViewInit {
     const dialogRef = this.dialog.open(UpdateFileComponent,{width:'30%',data:{id:idFile}});
     dialogRef.afterClosed().subscribe((result:any)=>{
        if(result){
-        this.getAllFiles(this.idFolder);
+        this.getAllFiles();
        }
     })
   }
@@ -145,18 +165,27 @@ export class DetailFolderComponent implements OnInit,AfterViewInit {
     const dialogRef = this.dialog.open(DeleteDossierComponent,{width:'30%',data:{id:idDossier}});
     dialogRef.afterClosed().subscribe((result:any)=>{
        if(result){
-        this.getAllFiles(this.idFolder);
+        this.getAllFiles();
        }
     })
   }
 
-  openDialogFileDelete(idFile){
-    const dialogRef = this.dialog.open(DeleteFileComponent,{width:'30%',data:{id:idFile}});
+  /*openDialogFileDelete(idFile){
+    const dialogRef = this.dialog.open(DeleteFileProjetComponent,{width:'30%',data:{id:idFile}});
     dialogRef.afterClosed().subscribe((result:any)=>{
        if(result){
         this.getAllFiles(this.idFolder);
        }
     })
+  }*/
+
+  openDialogFileDelete(idFile: string) {
+    this.dialogService.openDialog(idFile).subscribe((result: any) => {
+      if (result) {
+        console.log("Fichier supprimé !");
+        this.getAllFiles(); // Recharge les fichiers après suppression
+      }
+    });
   }
 
   openDialogFile(idFile, extension){
@@ -170,14 +199,14 @@ export class DetailFolderComponent implements OnInit,AfterViewInit {
         data:{id:idFile}});
       dialogRef.afterClosed().subscribe((result:any)=>{
          if(result){
-          this.getAllFiles(this.idFolder);
+          this.getAllFiles();
          }
       })
     }else{
       //this.router.navigate(['box', idFile]);
       this.idFolder = idFile;
       console.log("idFolder", this.idFolder);
-      this.getAllFiles(this.idFolder);
+      this.getAllFiles();
     }
   }
 
@@ -185,7 +214,7 @@ export class DetailFolderComponent implements OnInit,AfterViewInit {
     const dialogRef = this.dialog.open(MoveFolderProjetComponent,{width:'50%',data:{id:id,extension:extension,idProjet:this.idProjet}});
     dialogRef.afterClosed().subscribe((result:any)=>{
        if(result){
-        this.getAllFiles(this.idFolder);
+        this.getAllFiles();
        }
     })
   }
