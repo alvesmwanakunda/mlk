@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit {
     if(user.user.role!="user"){
       this.router.navigate(["dashboard"]);
     }else{
-      this.router.navigate(["entreprise/dashboard"]);
+      this.router.navigate(["modulaires"]);
     }
   }
 
