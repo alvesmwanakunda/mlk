@@ -17,6 +17,10 @@ export class TimesheetService {
     return this.httpClient.get(`${environment.BASE_API_URL}/timesheet/user/${idUser}/${month}/${year}`)
   }
 
+  public getTimeSheetUserByPeriod(idUser,startDate,endDate){
+    return this.httpClient.get(`${environment.BASE_API_URL}/timesheet/user/period/${idUser}/${startDate}/${endDate}`)
+  }
+
   public getTimeSheetByAgent(){
     return this.httpClient.get(`${environment.BASE_API_URL}/timesheet/agent`)
   }

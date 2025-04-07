@@ -73,7 +73,10 @@ onSubmit() {
     this.message='Veuillez remplir les champs obligatoire.';
     this.openSnackBar(this.message);
   }else{
-    this.timesheetService.updateTimeSheet(this.timesheetForm.value,this.data.id).subscribe((res:any)=>{
+    let {...data} = this.timesheetForm.getRawValue();
+    data.motifs = data.presence == "Absent" ? data.motifs : null;
+    data.types_deplacement = data.deplacement == "Oui" ? data.types_deplacement : null;
+    this.timesheetService.updateTimeSheet(data,this.data.id).subscribe((res:any)=>{
       this.dialogRef.close(res)
       this.message='Feuille de temps modifée avec succès.';
       this.openSnackBar(this.message);

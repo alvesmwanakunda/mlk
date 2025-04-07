@@ -18,7 +18,7 @@ export function jwtOptionsFactory() {
       return token || '';
     },
     allowedDomains: [window.location.origin], // Dynamiquement obtenu
-    disallowedRoutes: [`${window.location.origin}/timesheet/:id/apercu/:month/:year`], // Dynamiquement obtenu
+    disallowedRoutes: [`${window.location.origin}/timesheet/:id/apercu/:startDate/:endDate`], // Dynamiquement obtenu
   };
 }
 

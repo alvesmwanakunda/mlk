@@ -81,6 +81,15 @@ export class ExcelService {
             case 'déplacement':
               fillColor = 'FF4500'; // rouge
               break;
+            case 'congé de naissance':
+              fillColor = '90EE90'; // vert clair
+              break;
+            case 'congé d\'accueil':
+              fillColor = 'ac8def'; // violet moyen
+              break;
+            case 'congé paternité':
+              fillColor = '6bb4ef'; // bleu acier 
+              break;
             default:
               fillColor = null;
           }

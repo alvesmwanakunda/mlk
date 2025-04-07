@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CountriesService } from 'src/app/shared/services/countries.service';
 import { MatDialog } from '@angular/material/dialog';
+import { formatDate } from '@angular/common';
 
 
 
@@ -168,27 +169,13 @@ doSomethingDeplacement(event:any){
    }
 }
 
-  downloadFile(){
-    if(this.filterForm.valid){
-      //console.log("Valeur", this.filterForm.value.startDate);
-      let month = this.filterForm.value.startDate;
-      let year = this.filterForm.value.endDate;
-      this.timesheetService.getTimeSheetDonwload(this.filterForm.value.startDate,this.filterForm.value.endDate).subscribe((res:any)=>{
-        console.log("Data", res);
-        console.log(this.user);
-        
-        // this.excelService.generateExcelTimeSheet(res.message,month,year);
-      },(error) => {
-      console.log("Erreur lors de la récupération des données", error);
-      })
-    }
-  }
 
   openApercuView(){
-    this.downloadFile();
+    const start =formatDate(this.filterForm.value.startDate, "yyyy-MM-dd","fr_FR")
+    const end = formatDate(this.filterForm.value.endDate, "yyyy-MM-dd","fr_FR")
+
     if(this.filterForm.valid){
-      this.router.navigate(['/timesheet', this.idUser,"apercu" ,this.filterForm.value.startDate, this.filterForm.value.endDate])
-      // const dialogRef = this.dialog.open(ApercuTimesheetComponent,{width:'80%', data: {user: this.user, month: this.filterForm.value.startDate, year: this.filterForm.value.endDate }});
+      this.router.navigate(['/timesheet', this.idUser,"apercu" ,start, end])
     }
   }
 

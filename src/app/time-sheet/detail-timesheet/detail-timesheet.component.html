@@ -11,10 +11,12 @@
                 <div class="row">
                   <div class="col">
                     <mat-form-field class="example-full-width">
-                      <mat-label>Mois</mat-label>
-                      <mat-select matInput formControlName="startDate">
-                         <mat-option  *ngFor="let month of months" [value]="month?.value">{{month?.name}}</mat-option>
-                      </mat-select>
+                      <mat-label>Date de début</mat-label>
+                      <input matInput [matDatepicker]="pickerStart" formControlName="startDate" required>
+                      <mat-datepicker-toggle matIconSuffix [for]="pickerStart">
+                        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                      </mat-datepicker-toggle>
+                      <mat-datepicker #pickerStart></mat-datepicker>
                     </mat-form-field>
                     <div *ngIf="filterForm.get('startDate').hasError(champ_validation.input[0].type) && (filterForm.get('startDate').dirty || filterForm.get('startDate').touched)">
                       <p class="error_field">{{champ_validation.input[0].message}}</p>
@@ -22,12 +24,12 @@
                   </div>
                   <div class="col">
                     <mat-form-field class="example-full-width">
-                      <mat-label>Année</mat-label>
-                      <mat-select matInput formControlName="endDate">
-                         <mat-option value="2024">2024</mat-option>
-                         <mat-option value="2025">2025</mat-option>
-                         <mat-option value="2026">2026</mat-option>
-                      </mat-select>
+                      <mat-label>Date de fin</mat-label>
+                      <input matInput [matDatepicker]="pickerEnd" formControlName="endDate" required>
+                      <mat-datepicker-toggle matIconSuffix [for]="pickerEnd">
+                        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                      </mat-datepicker-toggle>
+                      <mat-datepicker #pickerEnd></mat-datepicker>
                     </mat-form-field>
                     <div *ngIf="filterForm.get('endDate').hasError(champ_validation.input[0].type) && (filterForm.get('endDate').dirty || filterForm.get('endDate').touched)">
                       <p class="error_field">{{champ_validation.input[0].message}}</p>
@@ -113,13 +115,16 @@
               <mat-form-field class="example-full-width" >
                 <mat-label>Motif</mat-label>
                 <mat-select matInput formControlName="motifs">
-                   <mat-option value="Non justifié">Non justifié</mat-option>
-                   <mat-option value="RCR">RCR</mat-option>
-                   <mat-option value="CP">CP</mat-option>
-                   <mat-option value="Ecole">Ecole</mat-option>
-                   <mat-option value="Arret maladie">Arret maladie</mat-option>
-                   <mat-option value="Enfant maladie">Enfant malade</mat-option>
-                   <mat-option value="Déplacement">Déplacement</mat-option>
+                  <mat-option value="Non justifié">Non justifié</mat-option>
+                  <mat-option value="RCR">RCR</mat-option>
+                  <mat-option value="CP">CP</mat-option>
+                  <mat-option value="Ecole">Ecole</mat-option>
+                  <mat-option value="Arret maladie">Arret maladie</mat-option>
+                  <mat-option value="Enfant malade">Enfant malade</mat-option>
+                  <mat-option value="Déplacement">Déplacement</mat-option>
+                  <mat-option value="Congé de naissance">Congé de naissance</mat-option>
+                  <mat-option value="Congé d'accueil">Congé d'accueil</mat-option>
+                  <mat-option value="Congé paternité">Congé paternité</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>

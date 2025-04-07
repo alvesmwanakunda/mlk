@@ -5,7 +5,7 @@
            <span role="button" >Cliquez ici pour revenir en arrière</span>
         </p>-->
         <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h2 >Feuille de temps de {{monthName}} {{year}} : <span style="color: #28628B;">{{user?.nom}} {{user?.prenom}}</span> </h2>
+            <h2 >Feuille de temps du {{start | date:"dd/MM/yyyy"}} au {{end | date:"dd/MM/yyyy"}} : <span style="color: #28628B;">{{user?.nom}} {{user?.prenom}}</span> </h2>
             <button (click)="retour()" class="btn btn-mlka" type="button">
                 <i class="fa fa-arrow-left" aria-hidden="true"></i>
                 Retour
@@ -14,19 +14,28 @@
         <div class="mb-4 mt-2 p-3 bg-white ">
             <h2>Total : <span class=" text-danger">{{nbreHeureDeplacement + nbreHeurePasDeplacement}} heure(s)</span> </h2>
             <div class="row" >
-                <div class="col-4">
-                    <div class="col" *ngIf="nbreTotalJour>0">
+                <div *ngIf="nbreTotalJour>0" class="col-4">
+                    <div class="d-flex justify-content-center align-items-center" style="background-color: #e9e9e9;">
+                        <p style="font-size: 18px; font-weight:600; margin: 10px 0px !important;">Répartition des jours travaillés</p>
+                    </div>
+                    <div class="col">
                         <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height:'300px',}"></canvasjs-chart> 
                     </div>
                 </div>
-                <div class="col-4">
+                <div *ngIf="nbreTotalJour>0" class="col-4">
+                    <div class="d-flex justify-content-center align-items-center" style="background-color: #e9e9e9;">
+                        <p style="font-size: 18px; font-weight:600; margin: 10px 0px !important;">Bilan des déplacements</p>
+                    </div>
                     <div class="col" *ngIf="nbreTotalJour>0">
                         <canvasjs-chart [options]="pieChartOptions" [styles]="{width: '100%', height:'300px',}"></canvasjs-chart> 
                     </div>
                 </div>
-                <div class="col-4">
-                    <div class="col" *ngIf="nbreTotalJour>0">
-                        <canvasjs-chart [options]="chartOptionsHeure" [styles]="{width: '100%', height:'300px',}"></canvasjs-chart> 
+                <div *ngIf="nbreTotalJour>0" class="col-4">
+                    <div  class="d-flex justify-content-center align-items-center" style="background-color: #e9e9e9;">
+                        <p style="font-size: 18px !important; font-weight:600 !important; margin: 10px 0px !important;">Détail des absences</p>
+                    </div>
+                    <div class="col" >
+                        <canvasjs-chart [options]="chartOptionsAbsence" [styles]="{width: '100%', height:'300px',}"></canvasjs-chart> 
                     </div>
                 </div>
             </div>
@@ -49,16 +58,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of feuilles; let i = index" [ngClass]="{'bg-yellow': item.presence === 'Absent'}" >
-                        <th scope="row">{{i +1 }}</th>
-                        <td>{{ item.dayOfWeek + " "+ (item.createdAt | date : "dd/MM/yyyy") }}</td>
-                        <td>{{item.tache ||'-'}}</td>
-                        <td>{{item.projet ||'-'}}</td>
-                        <td>{{item.deplacement ||'-'}}</td>
-                        <td>{{item.presence ||'-'}}</td>
-                        <td>{{item.motifs ||'-'}}</td>
-                        <td>{{item.types_deplacement ||'-'}}</td>
-                        <td>{{item.heure}}</td>
+                    <tr *ngFor="let item of feuilles; let i = index" 
+                        [ngStyle]="{'background-color': item.presence === 'Absent' ? item.couleur : 'transparent'}"
+                    >
+                        <th [ngStyle]="{'background-color': item.presence === 'Absent' ? item.couleur : 'transparent'}" scope="row">{{i +1 }}</th>
+                        <td [ngStyle]="{'background-color': item.presence === 'Absent' ? item.couleur : 'transparent'}">{{ item.dayOfWeek + " "+ (item.createdAt | date : "dd/MM/yyyy") }}</td>
+                        <td [ngStyle]="{'background-color': item.presence === 'Absent' ? item.couleur : 'transparent'}">{{item.tache ||'-'}}</td>
+                        <td [ngStyle]="{'background-color': item.presence === 'Absent' ? item.couleur : 'transparent'}">{{item.projet ||'-'}}</td>
+                        <td [ngStyle]="{'background-color': item.presence === 'Absent' ? item.couleur : 'transparent'}">{{item.deplacement ||'-'}}</td>
+                        <td [ngStyle]="{'background-color': item.presence === 'Absent' ? item.couleur : 'transparent'}">{{item.presence ||'-'}}</td>
+                        <td [ngStyle]="{'background-color': item.presence === 'Absent' ? item.couleur : 'transparent'}">{{item.motifs ||'-'}}</td>
+                        <td [ngStyle]="{'background-color': item.presence === 'Absent' ? item.couleur : 'transparent'}">{{item.types_deplacement ||'-'}}</td>
+                        <td [ngStyle]="{'background-color': item.presence === 'Absent' ? item.couleur : 'transparent'}">{{item.heure}}</td>
                     </tr>    
                 </tbody>
             </table>
