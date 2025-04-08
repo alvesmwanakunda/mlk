@@ -69,7 +69,7 @@
                         <td [ngStyle]="{'background-color': item.presence === 'Absent' ? item.couleur : 'transparent'}">{{item.presence ||'-'}}</td>
                         <td [ngStyle]="{'background-color': item.presence === 'Absent' ? item.couleur : 'transparent'}">{{item.motifs ||'-'}}</td>
                         <td [ngStyle]="{'background-color': item.presence === 'Absent' ? item.couleur : 'transparent'}">{{item.types_deplacement ||'-'}}</td>
-                        <td [ngStyle]="{'background-color': item.presence === 'Absent' ? item.couleur : 'transparent'}">{{item.heure}}</td>
+                        <td [ngStyle]="{'background-color': item.presence === 'Absent' ? item.couleur : 'transparent'}">{{item.heure ||'-'}}</td>
                     </tr>    
                 </tbody>
             </table>
