@@ -1,26 +1,26 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light-customer fixed-top headerMenu">
-  <div class="container-fluid container-xl" >
-    <a class="navbar-brand" href="#" style="width: 100px;">
-      <img src="assets/images/mlka_logo.png" style="width: 80%;">
+  <div class="container-fluid container-xl" style="height: 55px;" >
+    <a class="navbar-brand" href="#" style="width: 80px; height: 70px;">
+      <img src="assets/images/mlka_logo.png" style="width: 85%;">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav me-auto mb-2 mb-lg-0" *ngIf="!isMlka()">
+      <div class="navbar-nav ms-auto mb-lg-0" *ngIf="!isMlka()">
         <a class="nav-link link-c lien" target="_blank" href="https://mlka-hld.fr">MLKA GROUPE</a>
         <a class="nav-link link-c lien" target="_blank" href="https://mlka-innov.fr">INNOVATION</a>
         <a class="nav-link link-c lien" target="_blank" href="https://mlka-market.fr">LOCATION</a>
         <a class="nav-link link-c lien" target="_blank" href="https://mlka-market.fr">MARKETPLACE</a>
       </div>
       <div class="navbar-nav me-auto mb-2 mb-lg-0" *ngIf="isMlka()">
-        <a class="nav-link link-c" [routerLink]="['/entreprise/dashboard']">Accueil</a>
-        <a class="nav-link link-c" [routerLink]="['/devis']">Devis</a>
-        <a class="nav-link link-c" [routerLink]="['/modulaires']">Module</a>
-        <a class="nav-link link-c" [routerLink]="['/agenda']">Agenda</a>
-        <a class="nav-link link-c" [routerLink]="['/detail/entreprise',user?.user?.entreprise]">Entreprise</a>
+        <a class="nav-link link-c lien" [routerLink]="['/entreprise/dashboard']">Accueil</a>
+        <a class="nav-link link-c lien" [routerLink]="['/devis']">Devis</a>
+        <a class="nav-link link-c lien" [routerLink]="['/modulaires']">Module</a>
+        <a class="nav-link link-c lien" [routerLink]="['/agenda']">Agenda</a>
+        <a class="nav-link link-c lien" [routerLink]="['/detail/entreprise',user?.user?.entreprise]">Entreprise</a>
       </div>
-      <span>
+      <span >
         <a class="nav-link btn btn-nav" [routerLink]="'/'" *ngIf="isSignUpRoute()">
           <i class="fa-solid fa-right-to-bracket" style="margin-right: 6px;"></i>
           <span style="font-weight:500 !important; font-size: 15px !important;">Se connecter</span>
@@ -32,11 +32,11 @@
         
         <a class="nav-link link-c" *ngIf="isMlka()">
           <button class="mlka-user" [matMenuTriggerFor]="menu">
-            <div class="dot">
-              <div class="dot-span">{{user?.user?.nom.substring(0, 1)}}{{user?.user?.prenom.substring(0, 1)}}</div>
+            <div class="dot" style="background-color: white; border-radius: 50%;" >
+              <div class="dot-span" style=" color: #28628B;">{{user?.user?.nom.substring(0, 1)}}{{user?.user?.prenom.substring(0, 1)}}</div>
             </div>
-           </button>
-           <mat-menu #menu="matMenu">
+          </button>
+          <mat-menu #menu="matMenu">
             <button mat-menu-item [routerLink]="['/profil']">
               <mat-icon>person</mat-icon>
               <span style="font-size: 14px;">Mon profil</span>
@@ -45,7 +45,7 @@
               <mat-icon>logout</mat-icon>
               <span style="font-size: 14px;">Déconnexion</span>
             </button>
-           </mat-menu>
+          </mat-menu>
         </a>
 
       </span>

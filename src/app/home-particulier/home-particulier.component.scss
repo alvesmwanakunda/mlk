@@ -1,0 +1,26 @@
+.title-sign{
+  font-weight: 700 !important;
+  color: #28628B !important;
+  font-family: Poppins !important;
+  font-size: 25px !important;
+}
+
+.module-title{
+  font-size: 16px;
+  letter-spacing: .3px;
+  line-height: 24px;
+  color: #333;
+  margin-left: 11px;
+  font-family: HelveticaNeue,Helvetica,Arial,sans-serif;
+}
+
+.desc{
+  color: #333;
+  margin-bottom: 50px;
+  font-family: HelveticaNeue,Helvetica,Arial,sans-serif;
+}
+
+.click:hover{
+    transition: all ease-in-out;
+    background-color: rgb(228, 228, 228) !important;
+}

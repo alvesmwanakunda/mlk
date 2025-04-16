@@ -52,6 +52,10 @@ export class AuthService {
     return this.httpClient.post(`${environment.BASE_API_URL}/signup`, credentials);
   }
 
+  public signupParticulier(credentials){
+    return this.httpClient.post(`${environment.BASE_API_URL}/signup/particulier`, credentials);
+  }
+
   public updateProfil(credentials){
     return this.httpClient.put(`${environment.BASE_API_URL}/update/profil`, credentials);
   }

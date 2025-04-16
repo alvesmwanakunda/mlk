@@ -1,245 +1,263 @@
 <app-navbar-user></app-navbar-user>
-<div style="background-color: white !important;">
-  <div class="container shadow-lg" style="padding-top: 150px; padding-bottom: 50px;">
+<div class="d-flex" >
+  <div class="container" style="padding-top: 130px; padding-bottom: 50px; width: 100%; margin-right: 270px;">
+    <div class="row justify-content-md-center">
+      <div class="col-lg-6 col-md-6 col-md-auto">
 
-  <div class="row justify-content-md-center">
-    <div class="col-lg-6 col-md-6 col-md-auto">
+        <h1 class="text-center" style="margin-bottom: 40px;">
+          <span class="title-sign">Bienvenue chez MLKA GROUPE</span>
+        </h1>
 
-      <h1 class="text-center" style="margin-bottom: 50px;">
-        <span class="title-sign">Bienvenue chez MLKA</span>
-      </h1>
+        <p class="title-info" style="margin-bottom: 40px; color: black;"> {{isEnterprise ? "Informations de l'entreprise" : "Informations personnelles"}}</p>
 
-      <p class="title-info" style="margin-bottom: 50px;">Informations personnelles</p>
-
-      <form [formGroup]="signupForm" novalidate>
-        <div style="margin-bottom: 5px;">
-          <p style="font-weight: bold;">Civilité*</p>
-          <mat-radio-group aria-label="Select an option" formControlName="genre" required>
-            <mat-radio-button value="Mr">Monsieur</mat-radio-button>
-            <mat-radio-button value="Mme">Madame</mat-radio-button>
-          </mat-radio-group>
-          <div *ngIf="signupForm.get('genre').hasError(account_validation.input[0].type) && ((signupForm.get('genre').dirty || signupForm.get('genre').touched) ||  (submitted))">
-            <p class="error_field">{{account_validation.input[0].message}}</p>
+        <form [formGroup]="signupForm" novalidate>
+          <div  style="margin-bottom: 28px;">
+            <p style="font-weight: bold;">Civilité*</p>
+            <mat-radio-group aria-label="Select an option" formControlName="genre" required>
+              <mat-radio-button value="Mr" style="background-color: white; border-bottom: 1px solid gray; padding: 15px 24px 19px 0px; border-radius:4px 4px 0px 0px; margin-right: 12px;">Monsieur</mat-radio-button>
+              <mat-radio-button value="Mme" style="background-color: white; border-bottom: 1px solid gray; padding: 15px 24px 19px 0px; border-radius:4px 4px 0px 0px;">Madame</mat-radio-button>
+            </mat-radio-group>
+            <div class="mt-4" *ngIf="signupForm.get('genre').hasError(account_validation.input[0].type) && ((signupForm.get('genre').dirty || signupForm.get('genre').touched) ||  (submitted))">
+              <p class="error_field">{{account_validation.input[0].message}}</p>
+            </div>
           </div>
-        </div>
-        <div class="row">
+          <div class="row">
+              <div class="col">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Nom</mat-label>
+                  <input matInput formControlName="nom" required>
+                </mat-form-field>
+                <div *ngIf="signupForm.get('nom').hasError(account_validation.input[0].type) && ((signupForm.get('nom').dirty || signupForm.get('nom').touched) ||  (submitted))">
+                  <p class="error_field">{{account_validation.input[0].message}}</p>
+                </div>
+              </div>
+              <div class="col">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Prénom</mat-label>
+                  <input matInput formControlName="prenom" required>
+                </mat-form-field>
+                <div *ngIf="signupForm.get('prenom').hasError(account_validation.input[0].type) && ((signupForm.get('prenom').dirty || signupForm.get('prenom').touched) ||  (submitted))">
+                  <p class="error_field">{{account_validation.input[0].message}}</p>
+                </div>
+              </div>
+          </div>
+          <!--<div class="row">
             <div class="col">
               <mat-form-field class="example-full-width">
-                <mat-label>Nom</mat-label>
-                <input matInput formControlName="nom" required>
+                <mat-label>Type d'entreprise</mat-label>
+                <mat-select matInput formControlName="company" required>
+                  <mat-option value="person">Particulier</mat-option>
+                  <mat-option value="company">Société</mat-option>
+                </mat-select>
               </mat-form-field>
-              <div *ngIf="signupForm.get('nom').hasError(account_validation.input[0].type) && ((signupForm.get('nom').dirty || signupForm.get('nom').touched) ||  (submitted))">
+              <div *ngIf="signupForm.get('company').hasError(account_validation.input[0].type) && ((signupForm.get('company').dirty || signupForm.get('company').touched) ||  (submitted))">
+                <p class="error_field">{{account_validation.input[0].message}}</p>
+              </div>
+            </div>
+          </div>-->
+          <div *ngIf="isEnterprise" class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-label>Sociéte</mat-label>
+                <input matInput formControlName="societe" (input)="checkSociete()" required>
+              </mat-form-field>
+              <div *ngIf="signupForm.get('societe').hasError(account_validation.input[0].type) && ((signupForm.get('societe').dirty || signupForm.get('societe').touched) ||  (submitted))">
+                <p class="error_field">{{account_validation.input[0].message}}</p>
+              </div>
+              <div *ngIf="societeExists" class="error_field">L'entreprise existe déjà.</div>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-label>Siret</mat-label>
+                <input matInput formControlName="siret">
+              </mat-form-field>
+              <!--<div *ngIf="signupForm.get('siret').hasError(account_validation.input[0].type) && ((signupForm.get('siret').dirty || signupForm.get('siret').touched) ||  (submitted))">
+                <p class="error_field">{{account_validation.input[0].message}}</p>
+              </div>-->
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-label>Rue</mat-label>
+                <input matInput formControlName="rue" required>
+              </mat-form-field>
+              <div *ngIf="signupForm.get('rue').hasError(account_validation.input[0].type) && ((signupForm.get('rue').dirty || signupForm.get('rue').touched) ||  (submitted))">
+                <p class="error_field">{{account_validation.input[0].message}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-label>Numéro</mat-label>
+                <input matInput formControlName="numero">
+              </mat-form-field>
+              <div *ngIf="signupForm.get('numero').hasError(account_validation.input[0].type) && ((signupForm.get('numero').dirty || signupForm.get('numero').touched) ||  (submitted))">
                 <p class="error_field">{{account_validation.input[0].message}}</p>
               </div>
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <mat-label>Prénom</mat-label>
-                <input matInput formControlName="prenom" required>
+                <mat-label>Code postal</mat-label>
+                <input matInput formControlName="postal" required>
               </mat-form-field>
-              <div *ngIf="signupForm.get('prenom').hasError(account_validation.input[0].type) && ((signupForm.get('prenom').dirty || signupForm.get('prenom').touched) ||  (submitted))">
+              <div *ngIf="signupForm.get('postal').hasError(account_validation.input[0].type) && ((signupForm.get('postal').dirty || signupForm.get('postal').touched) ||  (submitted))">
                 <p class="error_field">{{account_validation.input[0].message}}</p>
               </div>
             </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <mat-form-field class="example-full-width">
-              <mat-label>Type d'entreprise</mat-label>
-              <mat-select matInput formControlName="company" required>
-                <mat-option value="person">Particulier</mat-option>
-                <mat-option value="company">Société</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <div *ngIf="signupForm.get('company').hasError(account_validation.input[0].type) && ((signupForm.get('company').dirty || signupForm.get('company').touched) ||  (submitted))">
-              <p class="error_field">{{account_validation.input[0].message}}</p>
+          </div>
+          <!--<div class="row">
+            <div class="col-4">
+              <mat-form-field class="example-full-width">
+                <mat-label>Code postal</mat-label>
+                <input matInput formControlName="postal" required>
+              </mat-form-field>
+              <div *ngIf="signupForm.get('postal').hasError(account_validation.input[0].type) && ((signupForm.get('postal').dirty || signupForm.get('postal').touched) ||  (submitted))">
+                <p class="error_field">{{account_validation.input[0].message}}</p>
+              </div>
             </div>
-          </div>
-      </div>
-        <div class="row">
-          <div class="col">
-            <mat-form-field class="example-full-width">
-              <mat-label>Sociéte</mat-label>
-              <input matInput formControlName="societe" (input)="checkSociete()" required>
-            </mat-form-field>
-            <div *ngIf="signupForm.get('societe').hasError(account_validation.input[0].type) && ((signupForm.get('societe').dirty || signupForm.get('societe').touched) ||  (submitted))">
-              <p class="error_field">{{account_validation.input[0].message}}</p>
+            <div class="col-8">
+              <mat-form-field class="example-full-width">
+                <mat-label>Lieu</mat-label>
+                <input matInput formControlName="adresse" required>
+              </mat-form-field>
+              <div *ngIf="signupForm.get('adresse').hasError(account_validation.input[0].type) && ((signupForm.get('adresse').dirty || signupForm.get('adresse').touched) ||  (submitted))">
+                <p class="error_field">{{account_validation.input[0].message}}</p>
+              </div>
             </div>
-            <div *ngIf="societeExists" class="error_field">L'entreprise existe déjà.</div>
-          </div>
-          <div class="col">
+          </div>-->
+          <div>
             <mat-form-field class="example-full-width">
-              <mat-label>Siret</mat-label>
-              <input matInput formControlName="siret">
-            </mat-form-field>
-            <!--<div *ngIf="signupForm.get('siret').hasError(account_validation.input[0].type) && ((signupForm.get('siret').dirty || signupForm.get('siret').touched) ||  (submitted))">
-              <p class="error_field">{{account_validation.input[0].message}}</p>
-            </div>-->
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <mat-form-field class="example-full-width">
-              <mat-label>Rue</mat-label>
-              <input matInput formControlName="rue" required>
-            </mat-form-field>
-            <div *ngIf="signupForm.get('rue').hasError(account_validation.input[0].type) && ((signupForm.get('rue').dirty || signupForm.get('rue').touched) ||  (submitted))">
-              <p class="error_field">{{account_validation.input[0].message}}</p>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <mat-form-field class="example-full-width">
-              <mat-label>Numéro</mat-label>
-              <input matInput formControlName="numero">
-            </mat-form-field>
-            <div *ngIf="signupForm.get('numero').hasError(account_validation.input[0].type) && ((signupForm.get('numero').dirty || signupForm.get('numero').touched) ||  (submitted))">
-              <p class="error_field">{{account_validation.input[0].message}}</p>
-            </div>
-          </div>
-          <div class="col">
-            <mat-form-field class="example-full-width">
-              <mat-label>Code postal</mat-label>
-              <input matInput formControlName="postal" required>
-            </mat-form-field>
-            <div *ngIf="signupForm.get('postal').hasError(account_validation.input[0].type) && ((signupForm.get('postal').dirty || signupForm.get('postal').touched) ||  (submitted))">
-              <p class="error_field">{{account_validation.input[0].message}}</p>
-            </div>
-          </div>
-        </div>
-        <!--<div class="row">
-          <div class="col-4">
-            <mat-form-field class="example-full-width">
-              <mat-label>Code postal</mat-label>
-              <input matInput formControlName="postal" required>
-            </mat-form-field>
-            <div *ngIf="signupForm.get('postal').hasError(account_validation.input[0].type) && ((signupForm.get('postal').dirty || signupForm.get('postal').touched) ||  (submitted))">
-              <p class="error_field">{{account_validation.input[0].message}}</p>
-            </div>
-          </div>
-          <div class="col-8">
-            <mat-form-field class="example-full-width">
-              <mat-label>Lieu</mat-label>
-              <input matInput formControlName="adresse" required>
-            </mat-form-field>
-            <div *ngIf="signupForm.get('adresse').hasError(account_validation.input[0].type) && ((signupForm.get('adresse').dirty || signupForm.get('adresse').touched) ||  (submitted))">
-              <p class="error_field">{{account_validation.input[0].message}}</p>
-            </div>
-          </div>
-        </div>-->
-        <div>
-          <mat-form-field class="example-full-width">
-            <mat-label>Pays</mat-label>
-            <input  matInput type="text" formControlName="pays" [(ngModel)]="pays" [matAutocomplete]="auto" required>
-            <mat-autocomplete #auto="matAutocomplete">
-              <mat-option *ngFor="let pays of paysFiltres | async" [value]="pays.name">
-                {{pays?.emoji}} {{pays?.name}}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-          <div *ngIf="signupForm.get('pays').hasError(account_validation.input[0].type) && ((signupForm.get('pays').dirty || signupForm.get('pays').touched) ||  (submitted))">
-            <p class="error_field">{{account_validation.input[0].message}}</p>
-          </div>
-        </div><!--div-->
-        <div class="row">
-          <div class="col-3">
-            <mat-form-field class="example-full-width">
-              <input type="text" matInput formControlName="indicatif" [(ngModel)]="code" [matAutocomplete]="autoCode" required>
-              <mat-autocomplete #autoCode="matAutocomplete">
-                <mat-option *ngFor="let code of codeFiltres | async" [value]="code?.dial_code">
-                  {{code?.dial_code}}
+              <mat-label>Pays</mat-label>
+              <input  matInput type="text" formControlName="pays" [(ngModel)]="pays" [matAutocomplete]="auto" required>
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let pays of paysFiltres | async" [value]="pays.name">
+                  {{pays?.emoji}} {{pays?.name}}
                 </mat-option>
               </mat-autocomplete>
             </mat-form-field>
-            <div *ngIf="signupForm.get('indicatif').hasError(account_validation.input[0].type) && ((signupForm.get('indicatif').dirty || signupForm.get('indicatif').touched) ||  (submitted))">
+            <div *ngIf="signupForm.get('pays').hasError(account_validation.input[0].type) && ((signupForm.get('pays').dirty || signupForm.get('pays').touched) ||  (submitted))">
               <p class="error_field">{{account_validation.input[0].message}}</p>
             </div>
+          </div><!--div-->
+          <div class="row">
+            <div class="col-3">
+              <mat-form-field class="example-full-width">
+                <input type="text" matInput formControlName="indicatif" [(ngModel)]="code" [matAutocomplete]="autoCode" required>
+                <mat-autocomplete #autoCode="matAutocomplete">
+                  <mat-option *ngFor="let code of codeFiltres | async" [value]="code?.dial_code">
+                    {{code?.dial_code}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+              <div *ngIf="signupForm.get('indicatif').hasError(account_validation.input[0].type) && ((signupForm.get('indicatif').dirty || signupForm.get('indicatif').touched) ||  (submitted))">
+                <p class="error_field">{{account_validation.input[0].message}}</p>
+              </div>
+            </div>
+            <div class="col-9">
+              <mat-form-field class="example-full-width">
+                <mat-label>Téléphone</mat-label>
+                <input matInput formControlName="telephone" appPhoneMask required>
+              </mat-form-field>
+              <div *ngIf="signupForm.get('telephone').hasError(account_validation.telephone[0].type) && ((signupForm.get('telephone').dirty || signupForm.get('telephone').touched) || (submitted))">
+                <p class="error_field">{{account_validation.telephone[0].message}}</p>
+              </div>
+              <div *ngIf="signupForm.get('telephone').hasError(account_validation.telephone[1].type) && ((signupForm.get('telephone').dirty || signupForm.get('telephone').touched) || (submitted))">
+                <p class="error_field">{{account_validation.telephone[1].message}}</p>
+              </div>
+            </div>
           </div>
-          <div class="col-9">
+          <div>
             <mat-form-field class="example-full-width">
-              <mat-label>Téléphone</mat-label>
-              <input matInput formControlName="telephone" appPhoneMask required>
+              <mat-label>Email</mat-label>
+              <input matInput type="email" formControlName="email" (input)="checkEmail()" required>
             </mat-form-field>
-            <div *ngIf="signupForm.get('telephone').hasError(account_validation.telephone[0].type) && ((signupForm.get('telephone').dirty || signupForm.get('telephone').touched) || (submitted))">
-              <p class="error_field">{{account_validation.telephone[0].message}}</p>
+            <div *ngIf="signupForm.get('email').hasError(account_validation.email[0].type) && ((signupForm.get('email').dirty || signupForm.get('email').touched) ||  (submitted))">
+              <p class="error_field">{{account_validation.email[0].message}}</p>
             </div>
-            <div *ngIf="signupForm.get('telephone').hasError(account_validation.telephone[1].type) && ((signupForm.get('telephone').dirty || signupForm.get('telephone').touched) || (submitted))">
-              <p class="error_field">{{account_validation.telephone[1].message}}</p>
+            <div *ngIf="signupForm.get('email').hasError(account_validation.email[1].type) && ((signupForm.get('email').dirty || signupForm.get('email').touched) ||  (submitted))">
+              <p class="error_field">{{account_validation.email[1].message}}</p>
+            </div>
+            <div *ngIf="emailExists" class="error_field">Cet email est déjà utilisé.</div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-label>Mot de passe</mat-label>
+                <input matInput formControlName="password" [type]="hideP ? 'password' : 'text'"  required>
+                <button *ngIf="signupForm.get('password').value && signupForm.get('password').value!=''" mat-icon-button matSuffix (click)="hideP = !hideP" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideP">
+                  <mat-icon>{{hideP ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                  <mat-icon matTooltip="{{ account_validation.password[0].message }}"
+                    *ngIf="signupForm.get('password').hasError(account_validation.password[0].type) && ((signupForm.get('password').dirty || signupForm.get('password').touched) || (submitted))"
+                    style="cursor: pointer;" matSuffix>
+                    <i class="fas fa-exclamation-circle" style="color:red"></i>
+                  </mat-icon>
+                  <mat-icon matTooltip="{{ account_validation.password[1].message }}"
+                    *ngIf="signupForm.get('password').hasError(account_validation.password[1].type) && ((signupForm.get('password').dirty || signupForm.get('password').touched) || (submitted))"
+                    style="cursor: pointer;" matSuffix>
+                    <i class="fas fa-exclamation-circle" style="color:red"></i>
+                  </mat-icon>
+              </mat-form-field>
+              <div class="text-danger" style="font-size: 11px;" *ngIf="signupForm.get('password').hasError(account_validation.password[2].type) && ((signupForm.get('password').dirty || signupForm.get('password').touched) || (submitted))">
+                {{ account_validation.password[2].message }}
+              </div>
+            </div>
+            <div class="col">
+              <mat-form-field  class="example-full-width">
+                <mat-label>Confirmation mot de passe</mat-label>
+                <input matInput  formControlName="confirmpassword" [type]="hidePassword ? 'password' : 'text'">
+                <button *ngIf="signupForm.get('confirmpassword').value && signupForm.get('confirmpassword').value!=''" mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                  <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                <mat-icon matTooltip="Les deux mot de passe ne correspondent pas"
+                    *ngIf="(signupForm.get('confirmpassword').errors?.notEqual || signupForm.get('confirmpassword').value!=signupForm.get('password').value) &&  ((signupForm.get('confirmpassword').dirty || signupForm.get('confirmpassword').touched) || (submitted))"
+                    style="cursor: pointer;" matSuffix>
+                    <i class="fas fa-exclamation-circle" style="color:red"></i>
+                </mat-icon>
+              </mat-form-field>
             </div>
           </div>
-        </div>
-        <div>
-          <mat-form-field class="example-full-width">
-            <mat-label>Email</mat-label>
-            <input matInput type="email" formControlName="email" (input)="checkEmail()" required>
-          </mat-form-field>
-          <div *ngIf="signupForm.get('email').hasError(account_validation.email[0].type) && ((signupForm.get('email').dirty || signupForm.get('email').touched) ||  (submitted))">
-            <p class="error_field">{{account_validation.email[0].message}}</p>
-          </div>
-          <div *ngIf="signupForm.get('email').hasError(account_validation.email[1].type) && ((signupForm.get('email').dirty || signupForm.get('email').touched) ||  (submitted))">
-            <p class="error_field">{{account_validation.email[1].message}}</p>
-          </div>
-          <div *ngIf="emailExists" class="error_field">Cet email est déjà utilisé.</div>
-        </div>
-        <div class="row">
-          <div class="col">
+          <!--<div>
             <mat-form-field class="example-full-width">
-              <mat-label>Mot de passe</mat-label>
-              <input matInput formControlName="password" [type]="hideP ? 'password' : 'text'"  required>
-              <button *ngIf="signupForm.get('password').value && signupForm.get('password').value!=''" mat-icon-button matSuffix (click)="hideP = !hideP" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideP">
-                <mat-icon>{{hideP ? 'visibility_off' : 'visibility'}}</mat-icon>
-              </button>
-                <mat-icon matTooltip="{{ account_validation.password[0].message }}"
-                  *ngIf="signupForm.get('password').hasError(account_validation.password[0].type) && ((signupForm.get('password').dirty || signupForm.get('password').touched) || (submitted))"
-                  style="cursor: pointer;" matSuffix>
-                  <i class="fas fa-exclamation-circle" style="color:red"></i>
-                </mat-icon>
-                <mat-icon matTooltip="{{ account_validation.password[1].message }}"
-                  *ngIf="signupForm.get('password').hasError(account_validation.password[1].type) && ((signupForm.get('password').dirty || signupForm.get('password').touched) || (submitted))"
-                  style="cursor: pointer;" matSuffix>
-                  <i class="fas fa-exclamation-circle" style="color:red"></i>
-                </mat-icon>
+              <mat-label>Message</mat-label>
+              <textarea matInput placeholder="Message"></textarea>
             </mat-form-field>
-            <div class="text-danger" style="font-size: 11px;" *ngIf="signupForm.get('password').hasError(account_validation.password[2].type) && ((signupForm.get('password').dirty || signupForm.get('password').touched) || (submitted))">
-              {{ account_validation.password[2].message }}
-            </div>
+          </div>-->
+          <div style="margin-bottom: 25px;">
+            <small class="cgu">
+              En cliquant sur S’inscrire, vous acceptez nos <a href="" style="text-decoration: none !important;">Conditions générales</a>, notre <a href="" style="text-decoration: none !important;">Politique de confidentialité</a>. Vous recevrez peut-être des notifications par texto de notre part.
+            </small>
           </div>
-          <div class="col">
-            <mat-form-field  class="example-full-width">
-              <mat-label>Confirmation mot de passe</mat-label>
-              <input matInput  formControlName="confirmpassword" [type]="hidePassword ? 'password' : 'text'">
-              <button *ngIf="signupForm.get('confirmpassword').value && signupForm.get('confirmpassword').value!=''" mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
-                <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-              </button>
-              <mat-icon matTooltip="Les deux mot de passe ne correspondent pas"
-                  *ngIf="(signupForm.get('confirmpassword').errors?.notEqual || signupForm.get('confirmpassword').value!=signupForm.get('password').value) &&  ((signupForm.get('confirmpassword').dirty || signupForm.get('confirmpassword').touched) || (submitted))"
-                  style="cursor: pointer;" matSuffix>
-                  <i class="fas fa-exclamation-circle" style="color:red"></i>
-                </mat-icon>
-            </mat-form-field>
+          <div class="text-center">
+            <button mat-raised-button [disabled]="onLoadForm" type="submit" (click)="onRegisterUser()" class="sizeButtonSignup" style="color: #fff;">S'INSCRIRE</button>
           </div>
+        </form>
+        <div *ngIf="onLoadForm">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
         </div>
-        <!--<div>
-          <mat-form-field class="example-full-width">
-            <mat-label>Message</mat-label>
-            <textarea matInput placeholder="Message"></textarea>
-          </mat-form-field>
-        </div>-->
-        <div style="margin-bottom: 25px;">
-          <small class="cgu">
-            En cliquant sur S’inscrire, vous acceptez nos <a href="" style="text-decoration: none !important;">Conditions générales</a>, notre <a href="" style="text-decoration: none !important;">Politique de confidentialité</a>. Vous recevrez peut-être des notifications par texto de notre part.
-          </small>
-        </div>
-        <div class="text-center">
-          <button mat-raised-button [disabled]="onLoadForm" type="submit" (click)="onRegisterUser()" class="sizeButtonSignup" style="color: #fff;">S'INSCRIRE</button>
-        </div>
-      </form>
-      <div *ngIf="onLoadForm">
-        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
       </div>
     </div>
   </div>
+ 
+  <div class="position-fixed shadow-sm" style=" height:100%; right:0px; width: 270px; padding-top: 110px; padding-bottom: 50px; background-color: white;">
+    <p class=" position-relative" style="margin-bottom: 30px; color: rgb(100, 100, 100); font-size: 20px; font-weight:700; text-align:center;">Type de compte</p>
 
-</div>
+    <div class="mb-4 position-relative">
+      <div class="ms-3 mb-2 d-flex align-items-center">
+        <input type="radio" value="entreprise" name="typeCompte" id="enter" class="custom-radio me-2" checked>
+        <label for="enter" class="fw-bold fs-6" style="color:rgb(117, 117, 117);">ENTREPRISE</label>
+      </div>
+      <p *ngIf="isEnterprise" style="margin-left: 45px; padding-right:6px;">Destiné aux sociétés, ce compte offre des fonctionnalités adaptées à la gestion de projet sur notre plateforme</p>
+    </div>
+
+    <div class="position-relative">
+      <div class="ms-3 mb-2 d-flex align-items-center">
+        <input type="radio" value="particulier" name="typeCompte" id="particulier" class="custom-radio me-2">
+        <label for="particulier" class="fw-bold fs-6" style="color:rgb(117, 117, 117);">PARTICULIER</label>
+      </div>
+      <p *ngIf="!isEnterprise" style="margin-left: 45px; padding-right:6px;">Compte réservé aux particuliers, conçu pour un usage personnel avec des services simplifiés.</p>
+    </div>
+  </div>
 </div>

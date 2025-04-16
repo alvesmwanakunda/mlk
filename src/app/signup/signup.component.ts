@@ -36,7 +36,9 @@ export class SignupComponent implements OnInit {
   isEntr:boolean=false;
   message:any;
   pays="France";
-  code="+33"
+  code="+33";
+
+  isEnterprise = true;
 
 
   constructor(
@@ -50,7 +52,11 @@ export class SignupComponent implements OnInit {
       nom:{},
       email:{},
     };
+    
+    
+    
   }
+
 
   account_validation={
     email:[
@@ -88,7 +94,7 @@ export class SignupComponent implements OnInit {
       {
         type: "pattern",
         message:
-          "Votre mot de passe doit contenir 8 caractères minimum",
+          "Votre mot de passe doit contenir 8 caractères minimum : une majuscule, une miniscule, un chiffre",
       },
     ],
     terms: [
@@ -138,7 +144,7 @@ export class SignupComponent implements OnInit {
       ]),
       nom:new FormControl("",[Validators.required]),
       societe:new FormControl("",[Validators.required]),
-      company:new FormControl("",[Validators.required]),
+      // company:new FormControl("",[Validators.required]),
       prenom:new FormControl("",[Validators.required]),
       genre:new FormControl("",[Validators.required]),
       siret:new FormControl("",null),
@@ -153,6 +159,7 @@ export class SignupComponent implements OnInit {
       confirmpassword: confirmpassword,
       cgu: new FormControl("", [CustomValidators.equal(true)])
     });
+
     this.codeFiltres = this.signupForm.get('indicatif').valueChanges.pipe(
       startWith(''),
       map((val) => this.filterCode(val))
@@ -162,6 +169,38 @@ export class SignupComponent implements OnInit {
       startWith(''),
       map((val) => this.filterPays(val))
     );
+    
+    document.getElementsByName("typeCompte").forEach(input => {
+      input.addEventListener('click',(e)=>{
+        
+        if(input.getAttribute("value")=="entreprise"){
+          this.isEnterprise = true;
+          this.resetFormCommonField();
+          this.signupForm.get("societe").setValidators(Validators.required);
+          this.signupForm.get("societe").updateValueAndValidity();
+        }else{
+          this.isEnterprise = false;
+          this.resetFormCommonField();
+          this.signupForm.get("societe").setValidators([]);
+          this.signupForm.get("societe").updateValueAndValidity();
+        }
+      });
+    });
+  }
+
+  resetFormCommonField(){
+    this.signupForm.get("email").reset();
+    this.signupForm.get("nom").reset();
+    this.signupForm.get("societe").reset();
+    this.signupForm.get("prenom").reset();
+    this.signupForm.get("genre").reset();
+    this.signupForm.get("siret").reset();
+    this.signupForm.get("rue").reset();
+    this.signupForm.get("postal").reset();
+    this.signupForm.get("numero").reset();
+    this.signupForm.get("telephone").reset();
+    this.signupForm.get("password").reset();
+    this.signupForm.get("confirmpassword").reset();
   }
 
   filterCode(value:string){
@@ -196,30 +235,45 @@ export class SignupComponent implements OnInit {
     let login= {};
     console.log("Form", this.signupForm);
     if(!this.signupForm.invalid){
-        Object.assign(this.user, this.signupForm.value);
-        /*login={
-              email:this.signupForm.get("email").value,
-              password:this.signupForm.get("password").value
-        }*/
+      Object.assign(this.user, this.signupForm.value);
+      /*login={
+            email:this.signupForm.get("email").value,
+            password:this.signupForm.get("password").value
+      }*/
+      if(this.isEnterprise){
         this.authService.signup(this.user).subscribe((res:any)=>{
-        console.log("Response", res);
-        if(!res.success){
-          this.signupFormErrors["email"].found = true;
-
-        }else{
+          console.log("Response", res);
+          if(!res.success){
+            this.signupFormErrors["email"].found = true;
+          }else{
+              this.isForm=true;
+              let login={
+                email : res?.message?.email,
+                password : res?.signature,
+              };
+              this.onLogin(login);
+          }
+          this.onLoadForm = false;
+        });
+      }else{
+        this.authService.signupParticulier(this.user).subscribe((res:any)=>{
+          console.log("Response", res);
+          if(!res.success){
+            this.signupFormErrors["email"].found = true;
+          }else{
             this.isForm=true;
-            let login={
-              email : res?.message?.email,
-              password : res?.signature,
-            };
-            this.onLogin(login);
-        }
-        this.onLoadForm = false;
-      });
+            localStorage.setItem("newParticulier","1");
+            this.router.navigate(["mlka-home"]);
+          }
+          this.onLoadForm = false;
+        });
+      }
     }else{
       this.onLoadForm=false;
     }
   }
+
+
 
   onLogin(login):void{
 

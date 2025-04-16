@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, Router, PreloadAllModules, CanActivate } from '@angular/router';
+import { HomeParticulierGuard } from './shared/guards/home-particulier.guard';
 
 const routes: Routes = [
   {
@@ -27,6 +28,11 @@ const routes: Routes = [
   {
     path:"mlka",
     loadChildren:()=>import('./home/home.module').then(m=>m.HomeModule)
+  },
+  {
+    path:"mlka-home",
+    loadChildren:()=>import('./home-particulier/home-particulier.module').then(m=>m.HomeParticulierModule),
+    canMatch: [HomeParticulierGuard]
   },
   {
     path:"profil",

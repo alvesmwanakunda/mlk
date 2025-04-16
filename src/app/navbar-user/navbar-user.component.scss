@@ -1,14 +1,14 @@
 .headerMenu{
-    box-shadow: var(--shadow4, 0 0 2px var(--shadowAmbient, rgba(0, 0, 0, 0.12)), 0 2px 4px var(--shadowKey, rgba(0, 0, 0, 0.14))) !important;
-    height: fit-content !important;
-    background-color: #FFFFFF !important;
-    z-index: 1 !important;
+  box-shadow: var(--shadow4, 0 0 2px var(--shadowAmbient, rgba(0, 0, 0, 0.12)), 0 2px 4px var(--shadowKey, rgba(0, 0, 0, 0.14))) !important;
+  height: fit-content !important;
+  background-color: #28628B !important;
+  z-index: 1 !important;
 }
 
 .mlka-user{
   color: #242424;
-  line-height: 48px;
-  background: transparent;
+  line-height: 45px;
+  background: white;
   border-width: 0;
   width: auto;
   height: 100%;
@@ -20,13 +20,15 @@
   padding: 0;
   text-align: center;
   outline-offset: -1px;
+  border-radius: 50% !important;
 }
 
 .lien{
   text-align: center !important;
   padding-right: 8px !important;
   margin-right: 30px !important;
-  border-bottom: white solid 1px !important;
+  color: white !important;
+  border-bottom: #28628B solid 1px !important;
   margin-bottom: -1px !important;
 }
 
@@ -49,7 +51,7 @@
 .btn-nav:hover{
   transition: ease-in-out;
   transition-duration: 8ms;
-  background-color: #28628B !important;
-  border: #28628B solid 1px !important;
+  background-color: #4192c4 !important;
+  border: #4192c4 solid 1px !important;
 }
 
