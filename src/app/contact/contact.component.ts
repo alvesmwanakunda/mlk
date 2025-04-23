@@ -33,11 +33,12 @@ export class ContactComponent implements OnInit,AfterViewInit {
   }
 
   ngOnInit(){
+    this.allContact();
     this.matPaginatorIntl.itemsPerPageLabel="Contact par page";
+
   }
 
   ngAfterViewInit() {
-    this.allContact();
     this.dataSource.paginator=this.paginator;
 
   }
@@ -98,9 +99,9 @@ export class ContactComponent implements OnInit,AfterViewInit {
       }else{
         this.contacts = this.contacts.filter(contact => {
             return (
-              contact.nom.toLowerCase().includes(filterValue) ||
-              contact.prenom.toLowerCase().includes(filterValue) ||
-              contact.email.toLowerCase().includes(filterValue) ||
+              contact.nom.toLowerCase().includes(filterValue.toLowerCase()) ||
+              contact.prenom.toLowerCase().includes(filterValue.toLowerCase()) ||
+              contact.email.toLowerCase().includes(filterValue.toLowerCase()) ||
               contact.phone.includes(filterValue) // Je suppose que phone est une chaîne de caractères
             );
         });

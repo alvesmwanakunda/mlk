@@ -25,12 +25,12 @@
         </div><!--col-->
      </div><!--row-->
 
-     <div class="bloc-projets" *ngIf="!contacts.length">
+     <div class="bloc-projets" [hidden]="contacts.length">
       <p class="notdata">Aucune donnée(s)</p>
     </div>
 
-      <div *ngIf="contacts.length">
-        <div *ngIf="!isListe">
+      <div [hidden]="!contacts.length">
+        <div [hidden]="isListe">
           <div class="row">
             <div class="col-4"  *ngFor="let contact of contacts" style="margin-bottom: 15px;">
              <div class="card card-contact">
@@ -65,7 +65,7 @@
             </div><!--col-->
          </div><!--row-->
         </div><!--row-->
-        <div *ngIf="isListe">
+        <div [hidden]="!isListe">
 
           <table mat-table [dataSource]="dataSource">
 

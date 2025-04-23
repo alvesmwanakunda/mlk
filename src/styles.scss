@@ -261,7 +261,7 @@ a{
 
 .btn-icon-projet{
   color: #28628B !important;
-  font-size: 14px !important;
+  font-size: 21px !important;
 }
 
 .btn-icon-projet-delete{
@@ -571,10 +571,29 @@ a{
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 400;
+  font-size: 12px;
+  line-height: 11px;
+  color: #666B78;
+  text-align: center;
+}
+
+.title-entreprise-name{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
   font-size: 14px;
   line-height: 11px;
   color: #666B78;
-  text-align: center
+  text-align: center;
+
+  /* Ellipsis */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  /* Optionnel : fixe une largeur pour couper au bon endroit */
+  width: 200px; /* à ajuster selon ton besoin */
+  display: inline-block;
 }
 
 .title-projet-ent {
@@ -598,7 +617,7 @@ a{
 
 .etat-entreprise{
     position: absolute;
-    bottom: 96px;
+    //bottom: 96px;
     background-color: #28628B;
     width: 55px;
     height: 20px;

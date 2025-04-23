@@ -43,6 +43,7 @@
     "file-saver": "^2.0.5",
     "html-to-pdfmake": "^2.5.7",
     "html2canvas": "^1.4.1",
+    "html2pdf.js": "^0.10.3",
     "jspdf": "^2.5.1",
     "ng-image-slider": "^7.0.1",
     "ng2-pdf-viewer": "^9.1.5",

@@ -16,7 +16,7 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
 })
 export class TabEntrepriseComponent implements OnInit, AfterViewInit {
 
-  displayedColumns:string[]=['nom','commercial','phone','adresse','action'];
+  displayedColumns:string[]=['nom','phone','adresse','action'];
   dataSource =new MatTableDataSource<Entreprises>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   entreprises:any=[];
@@ -40,8 +40,8 @@ export class TabEntrepriseComponent implements OnInit, AfterViewInit {
     this.entrepriseService.getAllEntreprise().subscribe((data:any)=>{
        this.dataSource.data = data.message.map((data)=>({
         id:data._id,
-        nom:data.nom,
-        commercial:data.commercial,
+        nom:data.societe,
+        //commercial:data.commercial,
         phone:data.telephone,
         indicatif:data.indicatif,
         rue:data.rue,

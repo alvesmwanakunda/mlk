@@ -19,27 +19,27 @@
         </div><!--col-->
 
         <div class="col" align="right">
-         <button type="button" class="btn" style="margin-right: 10px;" matTooltip="Tableau" *ngIf="!isListe" (click)="getList()"><i class="fa-solid fa-table btn-icon-projet"></i></button>
-         <button type="button" class="btn" style="margin-right: 10px;" matTooltip="Liste" *ngIf="isListe" (click)="getList()"><i class="fa-solid fa-grip btn-icon-projet"></i></button>
+         <button type="button" class="btn" style="margin-right: 10px;" matTooltip="Tableau" *ngIf="isListe" (click)="getList()"><i class="fa-solid fa-table btn-icon-projet"></i></button>
+         <button type="button" class="btn" style="margin-right: 10px;" matTooltip="Liste" *ngIf="!isListe" (click)="getList()"><i class="fa-solid fa-grip btn-icon-projet"></i></button>
          <button type="button" class="btn btn-projet" [routerLink]="['/add/entreprise']"><i class="fa-solid fa-plus"></i> Nouveau Entreprise</button>
         </div><!--col-->
      </div><!--row-->
 
-    <div class="bloc-projets" *ngIf="!entreprises">
+    <div class="bloc-projets" [hidden]="entreprises">
         <p class="notdata">Aucun données</p>
     </div><!--bloc-->
 
-     <div class="bloc-projets" *ngIf="entreprises">
-      <div class="row" *ngIf="!isListe">
+     <div class="bloc-projets" [hidden]="!entreprises">
+      <div class="row" [hidden]="isListe">
         <div class="col-3" *ngFor="let entreprise of entreprises" style="margin-bottom: 15px;">
           <div class="card card-projet">
             <img src="data:image/png;base64,{{entreprise?.photo}}" *ngIf="entreprise?.photo" class="card-img-projet" alt="...">
             <img src="assets/images/ent.png" *ngIf="!entreprise?.photo" class="card-img-projet" alt="...">
             <div class="etat-entreprise">
-              <span class="label-projet">{{entreprise?.nbr_projet}} projet(s)</span>
+              <span class="label-projet">{{entreprise?.nbr_projet}}</span>
             </div>
             <div class="card-body">
-              <p class="title-projet">{{entreprise?.societe}}</p>
+              <p class="title-entreprise-name" matTooltip="{{entreprise?.societe}}">{{entreprise?.societe}}</p>
               <p align="center">
                 <button type="button" class="btn btn-outline-secondary btn-detail-projet" (click)="getEntreprise(entreprise?._id)">Détail</button>
               </p>
@@ -47,7 +47,7 @@
           </div>
         </div><!--col-->
       </div><!--row-->
-      <div *ngIf="isListe">
+      <div [hidden]="!isListe">
         <app-tab-entreprise></app-tab-entreprise>
       </div>
      </div><!--projets-->

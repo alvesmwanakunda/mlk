@@ -56,7 +56,7 @@ export class EntrepriseComponent implements OnInit {
       }else{
         this.entreprises = this.entreprises.filter(entreprise => {
           return (
-            entreprise.nom.toLowerCase().includes(filterValue)
+            entreprise.societe.toLowerCase().includes(filterValue.toLowerCase())
           );
         });
       }

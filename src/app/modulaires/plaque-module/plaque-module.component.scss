@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+    @page {
+      size: 16cm 8cm;
+      margin: 0;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      //background-color: beige;
+    }
+
+   /* #pdf-card {
+      width: 16cm !important;
+      height: 8cm !important;
+      overflow: hidden !important;
+      page-break-inside: avoid;
+    }*/
+
+
+
+    .card {
+      position: relative;
+      width: 16cm;
+      height: 8cm;
+      background: url('/assets/images/prodc.png') no-repeat center center;
+      background-size: cover;
+      font-family: 'Montserrat', Arial, sans-serif;
+      border-color: rgb(255 255 255 / 18%) !important;
+      overflow: hidden;
+    }
+
+    .text {
+      position: absolute;
+      top: 0.5cm;
+      left: 3cm;
+      font-size: 13px;
+      color: black;
+      line-height: 1.2rem;
+      font-family: m;
+    }
+
+    .sub-text {
+        position: absolute;
+        line-height: 3.3rem;
+        bottom: 20px;
+        left: 30px;
+        font-size: 12px;
+    }
+
+    .box {
+      border: 4px solid #072d17;
+      padding: 2px 15px;
+      margin: 20px auto;
+      width: fit-content;
+      font-weight: bold;
+      text-align: center;
+      font-size: 12px;
+
+      position: absolute;
+      bottom: 60px;
+      left: 150px;
+      width: 230px;
+
+    }
+
+
+    .box2 {
+      border: 4px solid #072d17;
+      padding: 2px 15px;
+      margin: 20px auto;
+      width: fit-content;
+      font-weight: bold;
+      text-align: center;
+      font-size: 12px;
+
+      position: absolute;
+      bottom: 10px;
+      left: 150px;
+      width: 230px;
+
+    }
+    .img {
+
+        position: absolute;
+        bottom: 80px;
+        right: 20px;
+    }

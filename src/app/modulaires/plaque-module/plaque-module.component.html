@@ -1,0 +1,36 @@
+
+
+<div style="margin-bottom: 10px;">
+  <button type="button" (click)="print()" mat-flat-button color="primary"><i class="fa-solid fa-print"></i> Imprimer</button>
+</div>
+<div class="card" id="pdf-card">
+  <div style="margin: 2px;">
+     <img src="assets/images/innov2025.png"  height="110" width="110">
+     <br/>
+     <img src="assets/images/exp.png"  height="30" width="40" style="position: absolute;left: 39px;">
+  </div>
+  <div class="text">
+    <strong >MLKA INNOVATION</strong><br/>
+    18 PL. DES NYMPHÉAS, 93420 VILLEPINTE, FRANCE<br/>
+    Tél : +33 87 66 98 54 <br/>
+    Email : contactmlka.fr <br/>
+    Site web : www.mlka-groupe.fr
+  </div>
+
+
+    <div class="sub-text">
+
+        <span><strong>PROPRIETAIRE</strong> </span> <br>
+        <span><strong>NUMERO</strong> </span>
+
+
+      </div>
+
+      <div class="box">{{module?.entreprise?.societe}}</div>
+      <div class="box2">{{module?.numero_serie}}</div>
+
+
+      <div class="img">
+        <img [src]="qrcode" height="150" width="150" alt="">
+      </div>
+</div>
