@@ -19,3 +19,8 @@
   margin-bottom: 50px;
   font-family: HelveticaNeue,Helvetica,Arial,sans-serif;
 }
+
+.click:hover{
+  transition: all ease-in-out;
+  background-color: rgb(228, 228, 228) !important;
+}
