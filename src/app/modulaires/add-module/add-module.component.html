@@ -39,7 +39,7 @@
                     <mat-option value="Prêt à partir">Prêt à partir</mat-option>
                     <mat-option value="Site">Site</mat-option>
                  </mat-select>
-                </mat-form-field>               
+                </mat-form-field>
                 <div *ngIf="moduleForm.get('type').hasError(champ_validation.input[0].type) && (moduleForm.get('type').dirty || moduleForm.get('type').touched)">
                   <p class="error_field">{{champ_validation.input[0].message}}</p>
                 </div>
@@ -67,8 +67,8 @@
                           {{p?.societe}}
                         </mat-option>
                       </mat-autocomplete>
-                </mat-form-field> 
-                
+                </mat-form-field>
+
                 <mat-form-field class="example-full-width" *ngIf="user?.user.role=='user'">
                   <mat-label>Propriétaire</mat-label>
                   <input matInput [(ngModel)]="company.societe"  formControlName="entreprise" readonly>
@@ -82,6 +82,7 @@
                     <mat-option value="COUGNAUD">COUGNAUD</mat-option>
                     <mat-option value="TEPE PREFABRIK">TEPE PREFABRIK</mat-option>
                     <mat-option value="CONTAINEX">CONTAINEX</mat-option>
+                    <mat-option value="DEVINCI">DEVINCI</mat-option>
                     <mat-option value="AUTRES">AUTRES</mat-option>
                   </mat-select>
                 </mat-form-field>

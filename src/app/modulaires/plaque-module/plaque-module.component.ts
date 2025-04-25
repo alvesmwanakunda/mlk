@@ -14,6 +14,7 @@ export class PlaqueModuleComponent implements OnInit {
   idModule:any;
   qrcode:any;
   module:any;
+  email="contact@mlka.fr";
 
   constructor(private route:ActivatedRoute, private projetService: ProjetsService){
     this.route.params.subscribe((data:any)=>{
