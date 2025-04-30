@@ -62,7 +62,7 @@
                     <mat-option *ngFor="let ent of entreprises" [value]="ent?._id">{{ent?.societe}}</mat-option>
                   </mat-select>-->
                       <input  matInput  formControlName="entreprise" [matAutocomplete]="auto1" required style="font-size: 13px;">
-                      <mat-autocomplete #auto1="matAutocomplete">
+                      <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="onOptionClientSelected($event)">
                         <mat-option *ngFor="let p of entrepriseFiltres | async" [value]="p?.societe">
                           {{p?.societe}}
                         </mat-option>

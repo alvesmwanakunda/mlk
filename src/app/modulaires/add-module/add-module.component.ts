@@ -41,6 +41,7 @@ export class AddModuleComponent implements OnInit {
   user:any;
   company:any;
   entrepriseFiltres:Observable<any[]>;
+  entreprise:any;
 
 
 
@@ -152,6 +153,13 @@ export class AddModuleComponent implements OnInit {
     })
   }
 
+  onOptionClientSelected(event) {
+    const selectedName = event.option.value;
+    if(selectedName){
+      this.entreprise = this.entreprises.filter(item=> item.societe==selectedName)[0];
+    }
+  }
+
   addModule(){
 
      this.onLoadForm=true;
@@ -175,9 +183,9 @@ export class AddModuleComponent implements OnInit {
      if(this.user?.user?.role=="user"){
       formData.append("entreprise",this.user?.user?.entreprise)
      }else{
-      formData.append("entreprise",this.form.entreprise)
+      formData.append("entreprise",this.entreprise?._id)
      }
-    
+
 
      return this.http.post(`${environment.BASE_API_URL}/module`,formData,{
       reportProgress:true,
