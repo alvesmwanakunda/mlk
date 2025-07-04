@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../shared/services/auth.service';
 import { EntreprisesService } from '../shared/services/entreprises.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from "ng2-validation";
 import { startWith, map, Observable } from 'rxjs';
 import { CountriesService } from 'src/app/shared/services/countries.service';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { environment } from 'src/environments/environment';
 
 
 
@@ -26,7 +28,7 @@ export class SignupComponent implements OnInit {
   signupFormErrors:any;
   errorMessage: string="";
   user:any;
-  emailExists: boolean;
+  emailExists: boolean = false;
   societeExists: boolean;
   indicatifControl = new FormControl();
   codeFiltres:Observable<any[]>;
@@ -40,13 +42,18 @@ export class SignupComponent implements OnInit {
 
   isEnterprise = true;
 
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthService,
     private countryService: CountriesService,
-    private entrepriseService: EntreprisesService
+    private entrepriseService: EntreprisesService,
+    private snackBar: MatSnackBar,
+    private route: ActivatedRoute
   ) {
     this.signupFormErrors={
       nom:{},
@@ -119,6 +126,38 @@ export class SignupComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if(this.route.snapshot.queryParamMap.get('error')){
+      this.router.navigate(["/signup"]);
+    }
+    // LinkedIn
+    const code = this.route.snapshot.queryParamMap.get('code');
+    const state = this.route.snapshot.queryParamMap.get('state');
+    var btn = localStorage.getItem("btnSignup");
+    if(code && state && state == "mlka-2025" && btn == "linkedin"){
+      localStorage.removeItem("btnSignup");
+      this.handleLinkedInSignup(code);
+    }
+
+    // @ts-ignore
+    google.accounts.id.initialize({
+      client_id: environment.GOOGLE_CLIENT_ID,
+      callback: this.handleCredentialResponse.bind(this),
+      auto_select: false,
+      cancel_on_tap_outside: true,
+      ux_mode: "popup",
+      context:"signup",
+      // login_uri: environment.BASE_URL + "/signup"
+
+    });
+    // @ts-ignore
+    google.accounts.id.renderButton(
+      document.getElementById("google-button-signup"),
+      { theme: "outline", size: "large", width: "100%", type:"icon", shape: "circle",         // ou "rectangular", "circle"
+        logo_alignment: "center",
+        locale: "fr" }
+    );
+    // @ts-ignore
+    google.accounts.id.prompt((notification: PromptMomentNotification) => {});
 
     this.isForm = false;
     this.errorMessage="";
@@ -185,6 +224,87 @@ export class SignupComponent implements OnInit {
           this.signupForm.get("societe").updateValueAndValidity();
         }
       });
+    });
+
+  }
+
+  handleCredentialResponse(response: any) {
+    this.onLoadForm=true;
+    if(!this.isEnterprise){
+      this.authService.googleSignupParticulier(response.credential).subscribe((res:any)=>{
+        if(!res.success){
+          if(res.message !="already exists"){
+            this.snackBar.open("Une erreur est survenue lors de la création de votre compte. Veuillez réessayer.", "Fermer", {
+              horizontalPosition: this.horizontalPosition,
+              verticalPosition: this.verticalPosition,
+              duration: 4000,
+            });
+          }else{
+            this.snackBar.open("Vous avez déjà un compte avec cette adresse e-mail. Veuillez vous connecter.", "Fermer", {
+              horizontalPosition: this.horizontalPosition,
+              verticalPosition: this.verticalPosition,
+              duration: 4000,
+            });
+          }
+        }else{
+          localStorage.setItem("newParticulier","1");
+          this.router.navigate(["mlka-home"]);
+        }
+        this.onLoadForm = false;
+      },(err)=>{
+        this.onLoadForm=false;
+        this.snackBar.open("Une erreur est survenue. Veuillez réessayer.", "Fermer", {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 4000,
+        });
+        console.log("Erreur signup", err);
+      });
+    }
+  }
+
+  signUpWithLinkedin() {
+    localStorage.setItem("btnSignup", "linkedin");
+    const clientId = environment.LINKEDIN_CLIENT_ID;
+    const redirectUri = 'http://localhost:4200/signup';
+    const state = 'mlka-2025'; // Pour sécurité CSRF
+    const scope = 'openid profile email';
+
+    const authUrl = encodeURI(`https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}&scope=${scope}`);
+
+    window.location.href = authUrl;
+  }
+  
+  handleLinkedInSignup(code:string) {
+    this.onLoadForm=true;
+    this.authService.linkedInSignupParticulier(code).subscribe((res:any)=>{
+      this.onLoadForm = false;
+      if(!res.success){
+        if(res.message !="already exists"){
+          this.snackBar.open("Une erreur est survenue lors de la création de votre compte. Veuillez réessayer.", "Fermer", {
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            duration: 4000,
+          });
+        }else{
+          this.snackBar.open("Vous avez déjà un compte avec cette adresse e-mail. Veuillez vous connecter.", "Fermer", {
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            duration: 4000,
+          });
+        }
+      }else{
+        localStorage.setItem("newParticulier","1");
+        this.router.navigate(["mlka-home"]);
+      }
+    },(err)=>{
+      this.onLoadForm=false;
+      this.snackBar.open("Une erreur est survenue lors de la connexion. Veuillez réessayer.", "Fermer", {
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        duration: 4000,
+      });
+      console.log("Erreur signup", err);
     });
   }
 

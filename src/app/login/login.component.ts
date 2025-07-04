@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../shared/services/auth.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { environment } from 'src/environments/environment';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +11,6 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
 
   onLoadForm:boolean=false;
   testValidation:boolean=false;
@@ -33,10 +34,17 @@ export class LoginComponent implements OnInit {
     ]
   }
 
+
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+
+
   constructor(
     private formBuilder:FormBuilder,
     private router:Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private snackBar: MatSnackBar,
+    private route: ActivatedRoute
   ){
     this.loginFormErrors={
       email:{},
@@ -54,8 +62,116 @@ export class LoginComponent implements OnInit {
        this.onLoginFormValuesChanged();
     })
 
+    const code = this.route.snapshot.queryParamMap.get('code');
+    const state = this.route.snapshot.queryParamMap.get('state');
+    var btn = localStorage.getItem("btn");
+    if(code && state && state == "mlka-2025" && btn == "linkedin"){
+      localStorage.removeItem("btn");
+      this.handleLinkedInLogin(code);
+    }
+
+    // @ts-ignore
+    google.accounts.id.initialize({
+      client_id: environment.GOOGLE_CLIENT_ID,
+      callback: this.handleCredentialResponse.bind(this),
+      auto_select: false,
+      cancel_on_tap_outside: true,
+      // use_fedcm_for_button: true,
+      ux_mode: "popup",
+    });
+    // @ts-ignore
+    google.accounts.id.renderButton(
+      document.getElementById("google-button"),
+      { theme: "outline", size: "large", width: "100%", type:"icon", shape: "circle",         // ou "rectangular", "circle"
+        logo_alignment: "center",
+        locale: "fr"        }
+    );
+    // @ts-ignore
+    google.accounts.id.prompt((notification: PromptMomentNotification) => {});
+  }
+  
+  handleCredentialResponse(response: any) {
+    this.onLoadForm=true;
+    this.authService.googleLogin(response.credential).subscribe((res:any)=>{
+      if(!res.success){
+        this.snackBar.open("Une erreur est survenue lors de la connexion. Veuillez réessayer.", "Fermer", {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 4000,
+        });
+      }else{
+        this.handleRedirectOnLogin(res.message);
+        this.authService.setUser(res.message)
+      }
+      this.onLoadForm=false;
+    },(err)=>{
+      this.onLoadForm=false;
+      if(err.status==404){  
+        this.snackBar.open("Vous n'avez pas de compte chez MLKA avec cette adresse e-mail.", "Fermer", {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 4000,
+        });
+      }else{
+        this.snackBar.open("Une erreur est survenue lors de la connexion. Veuillez réessayer.", "Fermer", {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 4000,
+        });
+      }
+      console.log("Erreur Google login", err);
+    });
   }
 
+  signInWithLinkedin() {
+    localStorage.setItem("btn", "linkedin");
+    const clientId = environment.LINKEDIN_CLIENT_ID;
+    const redirectUri = 'http://localhost:4200/login';
+    const state = 'mlka-2025'; // Pour sécurité CSRF
+    const scope = 'openid profile email';
+
+    // const authUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}&scope=${scope}`;
+    const authUrl = encodeURI(`https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}&scope=${scope}`);
+
+    window.location.href = authUrl;
+  }
+
+
+  handleLinkedInLogin(code:string){
+    this.onLoadForm=true;
+    this.authService.linkedInLogin(code).subscribe((res:any)=>{
+      console.log("res", res);
+      if(!res.success){
+        this.snackBar.open("Une erreur est survenue lors de la connexion. Veuillez réessayer.", "Fermer", {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 4000,
+        });
+      }else{
+        this.handleRedirectOnLogin(res.message);
+        this.authService.setUser(res.message)
+      }
+      this.onLoadForm=false;
+    },(err)=>{
+      this.onLoadForm=false;
+      if(err.status==404){  
+        this.snackBar.open("Vous n'avez pas de compte chez MLKA avec cette adresse e-mail.", "Fermer", {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 4000,
+        });
+      }else{
+        this.snackBar.open("Une erreur est survenue lors de la connexion. Veuillez réessayer.", "Fermer", {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 4000,
+        });
+      }
+      console.log("Erreur LinkedIn login", err);
+    });
+  }
+
+  
   //redirect
   handleRedirectOnLogin(user){
     if(user.user.role!="user"){
@@ -105,5 +221,6 @@ export class LoginComponent implements OnInit {
     })
   }
 
-
+  
 }
+

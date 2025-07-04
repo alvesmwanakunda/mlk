@@ -6,6 +6,8 @@ import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../shared/services/auth.service';
 import { NavbarUserModule } from '../navbar-user/navbar-user.module';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 
@@ -17,7 +19,9 @@ import { NavbarUserModule } from '../navbar-user/navbar-user.module';
     SharedModule,
     ReactiveFormsModule,
     FormsModule,
-    NavbarUserModule
+    NavbarUserModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule
   ],
   providers:[AuthService]
 })

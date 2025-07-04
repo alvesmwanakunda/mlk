@@ -11,7 +11,8 @@ export class AuthService {
   constructor(
     private readonly httpClient: HttpClient,
     private router: Router,
-  ) { }
+  ){
+  }
 
   /*public isAuthenticated():boolean{
     let token = JSON.parse(localStorage.getItem("user"));
@@ -109,5 +110,21 @@ export class AuthService {
 
   dissableEmploye(id){
     return this.httpClient.get(`${environment.BASE_API_URL}/dissable/employe/${id}`);
+  }
+
+  googleLogin(credentials){
+    return this.httpClient.post(`${environment.BASE_API_URL}/auth/google`,{credential: credentials});
+  }
+
+  googleSignupParticulier(credentials){
+    return this.httpClient.post(`${environment.BASE_API_URL}/signup/particulier/google`,{credential: credentials});
+  }
+
+  linkedInLogin(code:string){
+    return this.httpClient.post(`${environment.BASE_API_URL}/auth/linkedin`,{code: code});
+  }
+
+  linkedInSignupParticulier(code:string){
+    return this.httpClient.post(`${environment.BASE_API_URL}/signup/particulier/linkedin`,{code: code});
   }
 }

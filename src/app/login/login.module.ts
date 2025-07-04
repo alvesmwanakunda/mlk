@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../shared/services/auth.service';
 import { NavbarUserModule } from '../navbar-user/navbar-user.module';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 
@@ -18,7 +19,8 @@ import { JwtHelperService } from '@auth0/angular-jwt';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    NavbarUserModule
+    NavbarUserModule,
+    MatSnackBarModule
   ],
   providers:[AuthService,JwtHelperService]
 })

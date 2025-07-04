@@ -75,6 +75,18 @@
     flex-direction: column;
 }
 
+.icon-box{
+  padding: 10px;
+  border-radius: 100%;
+}
+
+.icon-box:hover{
+  cursor: pointer;
+  background-color: #ebebeb;
+  transition: all 0.35s ease-in-out;
+}
+
+
 
 
 
