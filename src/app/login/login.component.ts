@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../shared/services/auth.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -33,10 +33,6 @@ export class LoginComponent implements OnInit {
       }
     ]
   }
-
-
-  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-  verticalPosition: MatSnackBarVerticalPosition = 'top';
 
 
   constructor(
@@ -94,11 +90,7 @@ export class LoginComponent implements OnInit {
     this.onLoadForm=true;
     this.authService.googleLogin(response.credential).subscribe((res:any)=>{
       if(!res.success){
-        this.snackBar.open("Une erreur est survenue lors de la connexion. Veuillez réessayer.", "Fermer", {
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-          duration: 4000,
-        });
+        this.openSnackBarError("Une erreur est survenue lors de la connexion. Veuillez réessayer.");
       }else{
         this.handleRedirectOnLogin(res.message);
         this.authService.setUser(res.message)
@@ -107,17 +99,9 @@ export class LoginComponent implements OnInit {
     },(err)=>{
       this.onLoadForm=false;
       if(err.status==404){  
-        this.snackBar.open("Vous n'avez pas de compte chez MLKA avec cette adresse e-mail.", "Fermer", {
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-          duration: 4000,
-        });
+        this.openSnackBar("Vous n'avez pas de compte chez MLKA avec cette adresse e-mail.");
       }else{
-        this.snackBar.open("Une erreur est survenue lors de la connexion. Veuillez réessayer.", "Fermer", {
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-          duration: 4000,
-        });
+        this.openSnackBarError("Une erreur est survenue lors de la connexion. Veuillez réessayer.");
       }
       console.log("Erreur Google login", err);
     });
@@ -142,11 +126,7 @@ export class LoginComponent implements OnInit {
     this.authService.linkedInLogin(code).subscribe((res:any)=>{
       console.log("res", res);
       if(!res.success){
-        this.snackBar.open("Une erreur est survenue lors de la connexion. Veuillez réessayer.", "Fermer", {
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-          duration: 4000,
-        });
+        this.openSnackBarError("Une erreur est survenue lors de la connexion. Veuillez réessayer.");
       }else{
         this.handleRedirectOnLogin(res.message);
         this.authService.setUser(res.message)
@@ -155,17 +135,9 @@ export class LoginComponent implements OnInit {
     },(err)=>{
       this.onLoadForm=false;
       if(err.status==404){  
-        this.snackBar.open("Vous n'avez pas de compte chez MLKA avec cette adresse e-mail.", "Fermer", {
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-          duration: 4000,
-        });
+        this.openSnackBar("Vous n'avez pas de compte chez MLKA avec cette adresse e-mail.");
       }else{
-        this.snackBar.open("Une erreur est survenue lors de la connexion. Veuillez réessayer.", "Fermer", {
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-          duration: 4000,
-        });
+        this.openSnackBarError("Une erreur est survenue lors de la connexion. Veuillez réessayer.");
       }
       console.log("Erreur LinkedIn login", err);
     });
@@ -218,6 +190,19 @@ export class LoginComponent implements OnInit {
     }).catch((err)=>{
       this.onLoadForm=false;
       console.log("Erreur login", err);
+    })
+  }
+
+  openSnackBar(message){
+    this.snackBar.open(message, 'Fermer',{
+      duration:6000,
+    })
+  }
+
+  openSnackBarError(message){
+    this.snackBar.open(message, 'Fermer',{
+      duration:6000,
+      panelClass:['error-snackbar']
     })
   }
 

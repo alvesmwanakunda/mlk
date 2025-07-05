@@ -42,9 +42,6 @@ export class SignupComponent implements OnInit {
 
   isEnterprise = true;
 
-  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-  verticalPosition: MatSnackBarVerticalPosition = 'top';
-
 
   constructor(
     private formBuilder: FormBuilder,
@@ -138,27 +135,6 @@ export class SignupComponent implements OnInit {
       this.handleLinkedInSignup(code);
     }
 
-    // @ts-ignore
-    google.accounts.id.initialize({
-      client_id: environment.GOOGLE_CLIENT_ID,
-      callback: this.handleCredentialResponse.bind(this),
-      auto_select: false,
-      cancel_on_tap_outside: true,
-      ux_mode: "popup",
-      context:"signup",
-      // login_uri: environment.BASE_URL + "/signup"
-
-    });
-    // @ts-ignore
-    google.accounts.id.renderButton(
-      document.getElementById("google-button-signup"),
-      { theme: "outline", size: "large", width: "100%", type:"icon", shape: "circle",         // ou "rectangular", "circle"
-        logo_alignment: "center",
-        locale: "fr" }
-    );
-    // @ts-ignore
-    google.accounts.id.prompt((notification: PromptMomentNotification) => {});
-
     this.isForm = false;
     this.errorMessage="";
     this.getContry();
@@ -218,6 +194,27 @@ export class SignupComponent implements OnInit {
           this.signupForm.get("societe").setValidators(Validators.required);
           this.signupForm.get("societe").updateValueAndValidity();
         }else{
+          // @ts-ignore
+          google.accounts.id.initialize({
+            client_id: environment.GOOGLE_CLIENT_ID,
+            callback: this.handleCredentialResponse.bind(this),
+            auto_select: false,
+            cancel_on_tap_outside: true,
+            ux_mode: "popup",
+            context:"signup",
+            // login_uri: environment.BASE_URL + "/signup"
+
+          });
+          // @ts-ignore
+          google.accounts.id.renderButton(
+            document.getElementById("google-button-signup"),
+            { theme: "outline", size: "large", width: "100%", type:"icon", shape: "circle",         // ou "rectangular", "circle"
+              logo_alignment: "center",
+              locale: "fr" }
+          );
+          // @ts-ignore
+          google.accounts.id.prompt((notification: PromptMomentNotification) => {});
+
           this.isEnterprise = false;
           this.resetFormCommonField();
           this.signupForm.get("societe").setValidators([]);
@@ -234,17 +231,9 @@ export class SignupComponent implements OnInit {
       this.authService.googleSignupParticulier(response.credential).subscribe((res:any)=>{
         if(!res.success){
           if(res.message !="already exists"){
-            this.snackBar.open("Une erreur est survenue lors de la création de votre compte. Veuillez réessayer.", "Fermer", {
-              horizontalPosition: this.horizontalPosition,
-              verticalPosition: this.verticalPosition,
-              duration: 4000,
-            });
+            this.openSnackBarError("Une erreur est survenue lors de la création de votre compte. Veuillez réessayer.");
           }else{
-            this.snackBar.open("Vous avez déjà un compte avec cette adresse e-mail. Veuillez vous connecter.", "Fermer", {
-              horizontalPosition: this.horizontalPosition,
-              verticalPosition: this.verticalPosition,
-              duration: 4000,
-            });
+            this.openSnackBar("Vous avez déjà un compte avec cette adresse e-mail. Veuillez vous connecter.")
           }
         }else{
           localStorage.setItem("newParticulier","1");
@@ -253,11 +242,7 @@ export class SignupComponent implements OnInit {
         this.onLoadForm = false;
       },(err)=>{
         this.onLoadForm=false;
-        this.snackBar.open("Une erreur est survenue. Veuillez réessayer.", "Fermer", {
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-          duration: 4000,
-        });
+        this.openSnackBarError("Une erreur est survenue. Veuillez réessayer.");
         console.log("Erreur signup", err);
       });
     }
@@ -281,17 +266,9 @@ export class SignupComponent implements OnInit {
       this.onLoadForm = false;
       if(!res.success){
         if(res.message !="already exists"){
-          this.snackBar.open("Une erreur est survenue lors de la création de votre compte. Veuillez réessayer.", "Fermer", {
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-            duration: 4000,
-          });
+          this.openSnackBarError("Une erreur est survenue lors de la création de votre compte. Veuillez réessayer.");
         }else{
-          this.snackBar.open("Vous avez déjà un compte avec cette adresse e-mail. Veuillez vous connecter.", "Fermer", {
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-            duration: 4000,
-          });
+          this.openSnackBar("Vous avez déjà un compte avec cette adresse e-mail. Veuillez vous connecter.")
         }
       }else{
         localStorage.setItem("newParticulier","1");
@@ -299,11 +276,7 @@ export class SignupComponent implements OnInit {
       }
     },(err)=>{
       this.onLoadForm=false;
-      this.snackBar.open("Une erreur est survenue lors de la connexion. Veuillez réessayer.", "Fermer", {
-        horizontalPosition: this.horizontalPosition,
-        verticalPosition: this.verticalPosition,
-        duration: 4000,
-      });
+      this.openSnackBarError("Une erreur est survenue lors de la connexion. Veuillez réessayer.");
       console.log("Erreur signup", err);
     });
   }
@@ -447,5 +420,17 @@ export class SignupComponent implements OnInit {
     }
   }
 
+  openSnackBar(message){
+    this.snackBar.open(message, 'Fermer',{
+      duration:6000,
+    })
+  }
+
+  openSnackBarError(message){
+    this.snackBar.open(message, 'Fermer',{
+      duration:6000,
+      panelClass:['error-snackbar']
+    })
+  }
 
 }
