@@ -232,7 +232,9 @@ export class SignupComponent implements OnInit {
           if(res.message !="already exists"){
             this.openSnackBarError("Une erreur est survenue lors de la création de votre compte. Veuillez réessayer.");
           }else{
+
             this.openSnackBar("Vous avez déjà un compte avec cette adresse e-mail. Veuillez vous connecter.");
+
           }
         }else{
           localStorage.setItem("newParticulier","1");
@@ -432,6 +434,8 @@ export class SignupComponent implements OnInit {
       panelClass:['error-snackbar']
     })
   }
+
+
 
 
 }
