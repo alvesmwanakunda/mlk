@@ -275,6 +275,11 @@ const routes: Routes = [
   {
     path:'prestations/produit/:id',
     loadChildren:()=>import('./prestation/produit-prestation/produit-prestation.module').then(m=>m.ProduitPrestationModule)
+  },
+  {
+    path:'verification/:id',
+    loadChildren:()=>import('./verification/verification.module').then(m=>m.VerificationModule),
+    canMatch: [HomeParticulierGuard]
   }
 
 ];

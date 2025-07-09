@@ -92,8 +92,7 @@ export class LoginComponent implements OnInit {
       if(!res.success){
         this.openSnackBarError("Une erreur est survenue lors de la connexion. Veuillez réessayer.");
       }else{
-        this.handleRedirectOnLogin(res.message);
-        this.authService.setUser(res.message)
+        this.handleRedirectAndUserSet(res.message);
       }
       this.onLoadForm=false;
     },(err)=>{
@@ -128,8 +127,7 @@ export class LoginComponent implements OnInit {
       if(!res.success){
         this.openSnackBarError("Une erreur est survenue lors de la connexion. Veuillez réessayer.");
       }else{
-        this.handleRedirectOnLogin(res.message);
-        this.authService.setUser(res.message)
+        this.handleRedirectAndUserSet(res.message);
       }
       this.onLoadForm=false;
     },(err)=>{
@@ -145,11 +143,17 @@ export class LoginComponent implements OnInit {
 
   
   //redirect
-  handleRedirectOnLogin(user){
-    if(user.user.role!="user"){
-      this.router.navigate(["dashboard"]);
+  handleRedirectAndUserSet(userInfos: any){
+    if (userInfos.user.twoFactorEnabled){
+      localStorage.setItem("verification", "true");//pour le guard de la page verification
+      this.router.navigate(["verification", userInfos.user._id], {queryParams: {type: userInfos.user.twoFactorType}});
     }else{
-      this.router.navigate(["modulaires"]);
+      this.authService.setUser(userInfos);
+      if(userInfos.user.role!="user"){
+        this.router.navigate(["dashboard"]);
+      }else{
+        this.router.navigate(["modulaires"]);
+      }
     }
   }
 
@@ -182,9 +186,7 @@ export class LoginComponent implements OnInit {
       if(!res.success){
           this.loginFormErrors["email"].notfound=true;
       }else{
-         console.log("User", res);
-         this.handleRedirectOnLogin(res.message);
-         this.authService.setUser(res.message)
+        this.handleRedirectAndUserSet(res.message);
       }
       this.onLoadForm=false;
     }).catch((err)=>{

@@ -127,4 +127,17 @@ export class AuthService {
   linkedInSignupParticulier(code:string){
     return this.httpClient.post(`${environment.BASE_API_URL}/signup/particulier/linkedin`,{code: code});
   }
+
+  public updateProfilA2FAuthentication(credentials){
+    return this.httpClient.put(`${environment.BASE_API_URL}/update/profil/a2f`, credentials);
+  }
+
+  public verifyA2FAuthentication(credentials: any){
+    return this.httpClient.post(`${environment.BASE_API_URL}/verify/a2f/authentication`, credentials);
+  }
+
+  public resendAuthenticationCode(user_id: string){
+    return this.httpClient.post(`${environment.BASE_API_URL}/resend/authentication/code`, {user_id: user_id});
+  }
+
 }

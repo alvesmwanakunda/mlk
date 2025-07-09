@@ -9,6 +9,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../shared/services/auth.service';
 import { AuthGuardService } from '../shared/services/auth-guard.service';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatRadioModule} from '@angular/material/radio';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+
 
 export function jwtOptionsFactory() {
   return {
@@ -33,6 +38,10 @@ export function jwtOptionsFactory() {
     NavbarUserModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSlideToggleModule,
+    MatRadioModule,
+    MatSnackBarModule,
+    MatProgressBarModule,
     JwtModule.forRoot({
       jwtOptionsProvider: {
         provide: JWT_OPTIONS,

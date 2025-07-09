@@ -19,7 +19,7 @@ export function jwtOptionsFactory() {
     allowedDomains: [window.location.origin], // Dynamiquement obtenu
     disallowedRoutes: [`${window.location.origin}/profil/password`], // Dynamiquement obtenu
   };
-}
+} 
 
 @NgModule({
   declarations: [UpdatePasswordComponent],
