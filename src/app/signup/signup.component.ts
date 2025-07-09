@@ -42,6 +42,10 @@ export class SignupComponent implements OnInit {
 
   isEnterprise = true;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> eb3e950 (fiche)
 
   constructor(
     private formBuilder: FormBuilder,
@@ -233,9 +237,13 @@ export class SignupComponent implements OnInit {
           if(res.message !="already exists"){
             this.openSnackBarError("Une erreur est survenue lors de la création de votre compte. Veuillez réessayer.");
           }else{
+<<<<<<< HEAD
 
             this.openSnackBar("Vous avez déjà un compte avec cette adresse e-mail. Veuillez vous connecter.");
 
+=======
+            this.openSnackBar("Vous avez déjà un compte avec cette adresse e-mail. Veuillez vous connecter.");
+>>>>>>> eb3e950 (fiche)
           }
         }else{
           localStorage.setItem("newParticulier","1");
@@ -270,9 +278,13 @@ export class SignupComponent implements OnInit {
         if(res.message !="already exists"){
           this.openSnackBarError("Une erreur est survenue lors de la création de votre compte. Veuillez réessayer.");
         }else{
+<<<<<<< HEAD
 
           this.openSnackBar("Vous avez déjà un compte avec cette adresse e-mail. Veuillez vous connecter.")
 
+=======
+          this.openSnackBar("Vous avez déjà un compte avec cette adresse e-mail. Veuillez vous connecter.");
+>>>>>>> eb3e950 (fiche)
         }
       }else{
         localStorage.setItem("newParticulier","1");
@@ -422,6 +434,19 @@ export class SignupComponent implements OnInit {
       this.isEntr = false;
       this.message = "";
     }
+  }
+
+    openSnackBar(message){
+    this.snackBar.open(message, 'Fermer',{
+      duration:6000,
+    })
+  }
+
+  openSnackBarError(message){
+    this.snackBar.open(message, 'Fermer',{
+      duration:6000,
+      panelClass:['error-snackbar']
+    })
   }
 
 
