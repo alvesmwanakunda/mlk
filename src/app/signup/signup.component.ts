@@ -42,6 +42,10 @@ export class SignupComponent implements OnInit {
 
   isEnterprise = true;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> eb3e950 (fiche)
 
   constructor(
     private formBuilder: FormBuilder,
@@ -56,9 +60,9 @@ export class SignupComponent implements OnInit {
       nom:{},
       email:{},
     };
-    
-    
-    
+
+
+
   }
 
 
@@ -184,10 +188,10 @@ export class SignupComponent implements OnInit {
       startWith(''),
       map((val) => this.filterPays(val))
     );
-    
+
     document.getElementsByName("typeCompte").forEach(input => {
       input.addEventListener('click',(e)=>{
-        
+
         if(input.getAttribute("value")=="entreprise"){
           this.isEnterprise = true;
           this.resetFormCommonField();
@@ -233,7 +237,11 @@ export class SignupComponent implements OnInit {
           if(res.message !="already exists"){
             this.openSnackBarError("Une erreur est survenue lors de la création de votre compte. Veuillez réessayer.");
           }else{
+<<<<<<< HEAD
             this.openSnackBar("Vous avez déjà un compte avec cette adresse e-mail. Veuillez vous connecter.")
+=======
+            this.openSnackBar("Vous avez déjà un compte avec cette adresse e-mail. Veuillez vous connecter.");
+>>>>>>> eb3e950 (fiche)
           }
         }else{
           localStorage.setItem("newParticulier","1");
@@ -259,7 +267,7 @@ export class SignupComponent implements OnInit {
 
     window.location.href = authUrl;
   }
-  
+
   handleLinkedInSignup(code:string) {
     this.onLoadForm=true;
     this.authService.linkedInSignupParticulier(code).subscribe((res:any)=>{
@@ -268,7 +276,11 @@ export class SignupComponent implements OnInit {
         if(res.message !="already exists"){
           this.openSnackBarError("Une erreur est survenue lors de la création de votre compte. Veuillez réessayer.");
         }else{
+<<<<<<< HEAD
           this.openSnackBar("Vous avez déjà un compte avec cette adresse e-mail. Veuillez vous connecter.")
+=======
+          this.openSnackBar("Vous avez déjà un compte avec cette adresse e-mail. Veuillez vous connecter.");
+>>>>>>> eb3e950 (fiche)
         }
       }else{
         localStorage.setItem("newParticulier","1");
@@ -420,7 +432,11 @@ export class SignupComponent implements OnInit {
     }
   }
 
+<<<<<<< HEAD
   openSnackBar(message){
+=======
+    openSnackBar(message){
+>>>>>>> eb3e950 (fiche)
     this.snackBar.open(message, 'Fermer',{
       duration:6000,
     })
@@ -432,5 +448,9 @@ export class SignupComponent implements OnInit {
       panelClass:['error-snackbar']
     })
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> eb3e950 (fiche)
 
 }
