@@ -14,7 +14,7 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule,
     RouterModule,
     NgbCollapse,
-    SharedModule
+    SharedModule,
   ],
   exports:[NavbarComponent]
 })

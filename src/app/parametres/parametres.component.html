@@ -1,0 +1,47 @@
+<app-navbar>
+  <div class="container">
+
+    <div class="row justify-content-md-center">
+        <div class="col-lg-8 col-md-auto">
+
+            <div class="content-top">
+            <div class="row">
+                <div class="col">
+                <h2 class="content-title">Paramètres de sécurité</h2>
+                </div>
+                
+            </div>
+            </div><!--content-->
+
+            <div >
+            <mat-card class="example-card">
+                <mat-card-header style="margin-bottom: 30px;">
+                <mat-card-title style="font-weight: normal !important; display: flex; align-items: center;">
+                    <mat-icon style="margin-right: 8px; color: #1976d2;">verified_user</mat-icon>
+                    Authentification à deux facteurs
+                </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                <mat-list>
+                    <mat-list-item ><span class="text-profil" style="margin-right: 200px;">Actif</span> <mat-slide-toggle [(ngModel)]="isA2FChecked"></mat-slide-toggle> </mat-list-item>
+                    <mat-divider *ngIf="isA2FChecked"></mat-divider>
+                    <mat-list-item *ngIf="isA2FChecked">
+                    <span class="text-profil" style="margin-right: 200px;">Type</span>
+                    <mat-radio-group aria-label="Selectionner un type" [(ngModel)]="a2fType">
+                        <mat-radio-button value="email" style="margin-right: 50px;">E-mail</mat-radio-button>
+                        <mat-radio-button value="application">Application</mat-radio-button>
+                    </mat-radio-group>  
+                    </mat-list-item>
+                </mat-list>
+                <div align="right" *ngIf="showSaveButton()" >
+                    <button mat-raised-button color="primary" (click)="updateA2FAuthentication()" >Enregistrer </button>
+                </div>
+                </mat-card-content>
+            </mat-card>
+            <mat-progress-bar mode="indeterminate" *ngIf="onLoadForm"></mat-progress-bar>
+            </div>
+        </div>
+    </div>
+</div>
+</app-navbar>
+

@@ -74,7 +74,7 @@
   display: flex;
   flex: 1 0 auto;
   height: 100%;
-  width: calc(100% - 116px);
+  width: calc(100% - 170px);
 }
 .mlka-centerChild{
   height: 48px;
@@ -283,4 +283,20 @@
   display: block;
   font-family: 'Segoe UI', 'Segoe UI Web (West European)', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif;
   pointer-events: none;
+}
+
+.setting-icon{
+  cursor: pointer; 
+  padding: 5px; 
+  border-radius: 50%; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  margin: auto 20px auto 0;
+
+}
+
+.setting-icon:hover{
+  background-color: rgb(219, 219, 219);
+  transition: background-color 0.3s ease;
 }

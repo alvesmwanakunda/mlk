@@ -47,31 +47,6 @@
           </mat-card>
         </div>
 
-        <div style="margin-bottom: 25px;">
-          <mat-card class="example-card">
-            <mat-card-header style="margin-bottom: 30px;">
-              <mat-card-title style="font-weight: normal !important;">Authentification à deux facteurs</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <mat-list>
-                <mat-list-item ><span class="text-profil" style="margin-right: 200px;">Actif</span> <mat-slide-toggle [(ngModel)]="isA2FChecked"></mat-slide-toggle> </mat-list-item>
-                <mat-divider *ngIf="isA2FChecked"></mat-divider>
-                <mat-list-item *ngIf="isA2FChecked">
-                  <span class="text-profil" style="margin-right: 200px;">Type</span>
-                  <mat-radio-group aria-label="Selectionner un type" [(ngModel)]="a2fType">
-                    <mat-radio-button value="email" style="margin-right: 50px;">E-mail</mat-radio-button>
-                    <mat-radio-button value="application">Application</mat-radio-button>
-                  </mat-radio-group>  
-                </mat-list-item>
-              </mat-list>
-              <div align="right" *ngIf="showSaveButton()" >
-                <button mat-raised-button color="primary" (click)="updateA2FAuthentication()" >Enregistrer </button>
-              </div>
-            </mat-card-content>
-          </mat-card>
-          <mat-progress-bar mode="indeterminate" *ngIf="onLoadForm"></mat-progress-bar>
-        </div>
-
         <!--<div>
           <mat-card class="example-card">
             <mat-card-header style="margin-bottom: 50px;">

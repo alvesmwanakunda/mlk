@@ -280,6 +280,10 @@ const routes: Routes = [
     path:'verification/:id',
     loadChildren:()=>import('./verification/verification.module').then(m=>m.VerificationModule),
     canMatch: [HomeParticulierGuard]
+  },
+  {
+    path:'parametres',
+    loadChildren:()=>import('./parametres/parametres.module').then(m=>m.ParametresModule)
   }
 
 ];
