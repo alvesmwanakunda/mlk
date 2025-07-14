@@ -49,9 +49,9 @@ export class AuthService {
     .catch(this.handleError)
   }
 
-  public signup(credentials){
-    return this.httpClient.post(`${environment.BASE_API_URL}/signup`, credentials);
-  }
+  // public signup(credentials){
+  //   return this.httpClient.post(`${environment.BASE_API_URL}/signup`, credentials);
+  // }
 
   public signupParticulier(credentials){
     return this.httpClient.post(`${environment.BASE_API_URL}/signup/particulier`, credentials);

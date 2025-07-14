@@ -109,7 +109,7 @@ export class LoginComponent implements OnInit {
   signInWithLinkedin() {
     localStorage.setItem("btn", "linkedin");
     const clientId = environment.LINKEDIN_CLIENT_ID;
-    const redirectUri = 'http://localhost:4200/login';
+    const redirectUri = `${environment.BASE_URL}/login`;
     const state = 'mlka-2025'; // Pour sécurité CSRF
     const scope = 'openid profile email';
 

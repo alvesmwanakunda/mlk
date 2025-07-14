@@ -1,6 +1,6 @@
 <app-navbar-user></app-navbar-user>
 <div class="d-flex" >
-  <div class="container" style="padding-top: 130px; padding-bottom: 50px; width: 100%; margin-right: 270px;">
+  <div class="container" style="padding-top: 130px; padding-bottom: 50px; width: 100%;">
     <div class="row justify-content-md-center">
       <div class="col-lg-6 col-md-6 col-md-auto">
 
@@ -8,35 +8,33 @@
           <span class="title-sign">Bienvenue chez MLKA GROUPE</span>
         </h1>
 
-        <div [ngClass]="{'d-none': isEnterprise}">
-          <div class="d-flex gap-3 justify-content-center align-items-center position-relative">
-            <div class="icon-box d-flex justify-content-center position-relative">
-              <div #googleBtn class="" id="google-button-signup" style="position: absolute; top:5px; z-index: 10; opacity: 0;"></div>
-              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class=" icons" style="width: 30px; height: 30px; position: relative;">
-                <g>
-                  <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
-                  <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
-                  <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
-                  <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
-                  <path fill="none" d="M0 0h48v48H0z"></path>
-                </g>
-              </svg>
-            </div>
+        <div class="d-flex gap-3 justify-content-center align-items-center position-relative">
+          <div class="icon-box d-flex justify-content-center position-relative">
+            <div #googleBtn class="" id="google-button-signup" style="position: absolute; top:5px; z-index: 10; opacity: 0;"></div>
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class=" icons" style="width: 30px; height: 30px; position: relative;">
+              <g>
+                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+                <path fill="none" d="M0 0h48v48H0z"></path>
+              </g>
+            </svg>
+          </div>
 
-            <div class="icon-box pointer-event" (click)="signUpWithLinkedin()">
-              <svg  height="33" width="33" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-                <path fill="#0a66b8" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/>
-              </svg>
-            </div>
-            
+          <div class="icon-box pointer-event" (click)="signUpWithLinkedin()">
+            <svg  height="33" width="33" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+              <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+              <path fill="#0a66b8" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/>
+            </svg>
           </div>
-          <div class="d-flex justify-content-center align-items-center" style="margin-bottom: 20px; ">
-            <hr style="width: 33%; color: #000; margin-right: 10px;"> Ou <hr style="width: 33%; color: #000; margin-left: 10px;">
-          </div>
+          
+        </div>
+        <div class="d-flex justify-content-center align-items-center" style="margin-bottom: 20px; ">
+          <hr style="width: 33%; color: #000; margin-right: 10px;"> Ou <hr style="width: 33%; color: #000; margin-left: 10px;">
         </div>
 
-        <p class="title-info" style="margin-bottom: 40px; color: black;"> {{isEnterprise ? "Informations de l'entreprise" : "Informations personnelles"}}</p>
+        <p class="title-info" style="margin-bottom: 40px; color: black;">Informations personnelles</p>
 
         <form [formGroup]="signupForm" novalidate>
           <div  style="margin-bottom: 28px;">
@@ -83,27 +81,7 @@
               </div>
             </div>
           </div>-->
-          <div *ngIf="isEnterprise" class="row">
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <mat-label>Sociéte</mat-label>
-                <input matInput formControlName="societe" (input)="checkSociete()" required>
-              </mat-form-field>
-              <div *ngIf="signupForm.get('societe').hasError(account_validation.input[0].type) && ((signupForm.get('societe').dirty || signupForm.get('societe').touched) ||  (submitted))">
-                <p class="error_field">{{account_validation.input[0].message}}</p>
-              </div>
-              <div *ngIf="societeExists" class="error_field">L'entreprise existe déjà.</div>
-            </div>
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <mat-label>Siret</mat-label>
-                <input matInput formControlName="siret">
-              </mat-form-field>
-              <!--<div *ngIf="signupForm.get('siret').hasError(account_validation.input[0].type) && ((signupForm.get('siret').dirty || signupForm.get('siret').touched) ||  (submitted))">
-                <p class="error_field">{{account_validation.input[0].message}}</p>
-              </div>-->
-            </div>
-          </div>
+
           <div class="row">
             <div class="col">
               <mat-form-field class="example-full-width">
@@ -269,25 +247,6 @@
     </div>
   </div>
  
-  <div class="position-fixed shadow-sm" style=" height:100%; right:0px; width: 270px; padding-top: 110px; padding-bottom: 50px; background-color: white;">
-    <p class=" position-relative" style="margin-bottom: 30px; color: rgb(100, 100, 100); font-size: 20px; font-weight:700; text-align:center;">Type de compte</p>
-
-    <div class="mb-4 position-relative">
-      <div class="ms-3 mb-2 d-flex align-items-center">
-        <input type="radio" value="entreprise" name="typeCompte" id="enter" class="custom-radio me-2" checked>
-        <label for="enter" class="fw-bold fs-6" style="color:rgb(117, 117, 117);">ENTREPRISE</label>
-      </div>
-      <p *ngIf="isEnterprise" style="margin-left: 45px; padding-right:6px;">Destiné aux sociétés, ce compte offre des fonctionnalités adaptées à la gestion de projet sur notre plateforme</p>
-    </div>
-
-    <div class="position-relative">
-      <div class="ms-3 mb-2 d-flex align-items-center">
-        <input type="radio" value="particulier" name="typeCompte" id="particulier" class="custom-radio me-2">
-        <label for="particulier" class="fw-bold fs-6" style="color:rgb(117, 117, 117);">PARTICULIER</label>
-      </div>
-      <p *ngIf="!isEnterprise" style="margin-left: 45px; padding-right:6px;">Compte réservé aux particuliers, conçu pour un usage personnel avec des services simplifiés.</p>
-    </div>
-  </div>
 </div>
 
 <div *ngIf="onLoadForm" class="position-fixed" style="top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; height: 100%; width: 100%;">

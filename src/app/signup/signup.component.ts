@@ -40,8 +40,6 @@ export class SignupComponent implements OnInit {
   pays="France";
   code="+33";
 
-  isEnterprise = true;
-
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -157,11 +155,9 @@ export class SignupComponent implements OnInit {
         Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")
       ]),
       nom:new FormControl("",[Validators.required]),
-      societe:new FormControl("",[Validators.required]),
       // company:new FormControl("",[Validators.required]),
       prenom:new FormControl("",[Validators.required]),
       genre:new FormControl("",[Validators.required]),
-      siret:new FormControl("",null),
       rue:new FormControl("",[Validators.required]),
       //adresse:new FormControl("",[Validators.required]),
       postal:new FormControl("",[Validators.required]),
@@ -184,75 +180,56 @@ export class SignupComponent implements OnInit {
       map((val) => this.filterPays(val))
     );
 
-    document.getElementsByName("typeCompte").forEach(input => {
-      input.addEventListener('click',(e)=>{
+    // @ts-ignore
+    google.accounts.id.initialize({
+      client_id: environment.GOOGLE_CLIENT_ID,
+      callback: this.handleCredentialResponse.bind(this),
+      auto_select: false,
+      cancel_on_tap_outside: true,
+      ux_mode: "popup",
+      context:"signup",
+      // login_uri: environment.BASE_URL + "/signup"
 
-        if(input.getAttribute("value")=="entreprise"){
-          this.isEnterprise = true;
-          this.resetFormCommonField();
-          this.signupForm.get("societe").setValidators(Validators.required);
-          this.signupForm.get("societe").updateValueAndValidity();
-        }else{
-          // @ts-ignore
-          google.accounts.id.initialize({
-            client_id: environment.GOOGLE_CLIENT_ID,
-            callback: this.handleCredentialResponse.bind(this),
-            auto_select: false,
-            cancel_on_tap_outside: true,
-            ux_mode: "popup",
-            context:"signup",
-            // login_uri: environment.BASE_URL + "/signup"
-
-          });
-          // @ts-ignore
-          google.accounts.id.renderButton(
-            document.getElementById("google-button-signup"),
-            { theme: "outline", size: "large", width: "100%", type:"icon", shape: "circle",         // ou "rectangular", "circle"
-              logo_alignment: "center",
-              locale: "fr" }
-          );
-          // @ts-ignore
-          google.accounts.id.prompt((notification: PromptMomentNotification) => {});
-
-          this.isEnterprise = false;
-          this.resetFormCommonField();
-          this.signupForm.get("societe").setValidators([]);
-          this.signupForm.get("societe").updateValueAndValidity();
-        }
-      });
     });
+    // @ts-ignore
+    google.accounts.id.renderButton(
+      document.getElementById("google-button-signup"),
+      { theme: "outline", size: "large", width: "100%", type:"icon", shape: "circle",         // ou "rectangular", "circle"
+        logo_alignment: "center",
+        locale: "fr" }
+    );
+    // @ts-ignore
+    google.accounts.id.prompt((notification: PromptMomentNotification) => {});
 
   }
 
   handleCredentialResponse(response: any) {
     this.onLoadForm=true;
-    if(!this.isEnterprise){
-      this.authService.googleSignupParticulier(response.credential).subscribe((res:any)=>{
-        if(!res.success){
-          if(res.message !="already exists"){
-            this.openSnackBarError("Une erreur est survenue lors de la création de votre compte. Veuillez réessayer.");
-          }else{
-
-            this.openSnackBar("Vous avez déjà un compte avec cette adresse e-mail. Veuillez vous connecter.");
-
-          }
+    this.authService.googleSignupParticulier(response.credential).subscribe((res:any)=>{
+      if(!res.success){
+        if(res.message !="already exists"){
+          this.openSnackBarError("Une erreur est survenue lors de la création de votre compte. Veuillez réessayer.");
         }else{
-          localStorage.setItem("newParticulier","1");
-          this.router.navigate(["mlka-home"]);
+
+          this.openSnackBar("Vous avez déjà un compte avec cette adresse e-mail. Veuillez vous connecter.");
+
         }
-        this.onLoadForm = false;
-      },(err)=>{
-        this.onLoadForm=false;
-        this.openSnackBarError("Une erreur est survenue. Veuillez réessayer.");
-        console.log("Erreur signup", err);
-      });
-    }
+      }else{
+        localStorage.setItem("newParticulier","1");
+        this.router.navigate(["mlka-home"]);
+      }
+      this.onLoadForm = false;
+    },(err)=>{
+      this.onLoadForm=false;
+      this.openSnackBarError("Une erreur est survenue. Veuillez réessayer.");
+      console.log("Erreur signup", err);
+    });
   }
 
   signUpWithLinkedin() {
     localStorage.setItem("btnSignup", "linkedin");
     const clientId = environment.LINKEDIN_CLIENT_ID;
-    const redirectUri = 'http://localhost:4200/signup';
+    const redirectUri = `${environment.BASE_URL}/signup`;
     const state = 'mlka-2025'; // Pour sécurité CSRF
     const scope = 'openid profile email';
 
@@ -286,10 +263,8 @@ export class SignupComponent implements OnInit {
   resetFormCommonField(){
     this.signupForm.get("email").reset();
     this.signupForm.get("nom").reset();
-    this.signupForm.get("societe").reset();
     this.signupForm.get("prenom").reset();
     this.signupForm.get("genre").reset();
-    this.signupForm.get("siret").reset();
     this.signupForm.get("rue").reset();
     this.signupForm.get("postal").reset();
     this.signupForm.get("numero").reset();
@@ -335,34 +310,19 @@ export class SignupComponent implements OnInit {
             email:this.signupForm.get("email").value,
             password:this.signupForm.get("password").value
       }*/
-      if(this.isEnterprise){
-        this.authService.signup(this.user).subscribe((res:any)=>{
-          console.log("Response", res);
-          if(!res.success){
-            this.signupFormErrors["email"].found = true;
-          }else{
-              this.isForm=true;
-              let login={
-                email : res?.message?.email,
-                password : res?.signature,
-              };
-              this.onLogin(login);
-          }
-          this.onLoadForm = false;
-        });
-      }else{
-        this.authService.signupParticulier(this.user).subscribe((res:any)=>{
-          console.log("Response", res);
-          if(!res.success){
-            this.signupFormErrors["email"].found = true;
-          }else{
-            this.isForm=true;
-            localStorage.setItem("newParticulier","1");
-            this.router.navigate(["mlka-home"]);
-          }
-          this.onLoadForm = false;
-        });
-      }
+      
+      this.authService.signupParticulier(this.user).subscribe((res:any)=>{
+        console.log("Response", res);
+        if(!res.success){
+          this.signupFormErrors["email"].found = true;
+        }else{
+          this.isForm=true;
+          localStorage.setItem("newParticulier","1");
+          this.router.navigate(["mlka-home"]);
+        }
+        this.onLoadForm = false;
+      });
+      
     }else{
       this.onLoadForm=false;
     }
@@ -422,7 +382,7 @@ export class SignupComponent implements OnInit {
     }
   }
 
-    openSnackBar(message){
+  openSnackBar(message){
     this.snackBar.open(message, 'Fermer',{
       duration:6000,
     })
