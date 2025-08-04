@@ -1,0 +1,35 @@
+<mat-dialog-content class="mat-typography">
+  <div class="text-center" style="padding-top: 25px;"><p class="title-projet-page">Nouvelle tâche</p></div>
+  <div class="row"><div class="col"><hr class="entreprise"></div></div><!--row-->
+  <div>
+    <form [formGroup]="taskFormGroup">
+
+      <div style="margin-bottom: 8px;">
+           <mat-form-field class="example-full-width">
+            <mat-label class="tache_label">Titre de la tâche</mat-label>
+             <input matInput  formControlName="titre" required>
+            </mat-form-field>
+            <div *ngIf="taskFormGroup.get('titre').hasError(champ_validation.input[0].type) &&(taskFormGroup.get('titre').dirty || taskFormGroup.get('titre').touched)">
+              <p class="error_field">{{champ_validation.input[0].message}}</p>
+            </div>
+
+            <div class="row">
+               <div class="col-6">
+                <p class="tache_label">Assignés</p>
+               </div>
+               <div class="col-6">
+                 <mat-form-field class="example-full-width">
+                  <mat-select matInput  formControlName="assignes">
+                    <mat-option *ngFor="let contact of contacts" [value]="contact?._id">{{contact?.nom}} {{contact?.prenom}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+               </div>
+            </div>
+      </div><!--div-->
+    </form>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+   <button mat-button cdkFocusInitial style=" background: #29628b !important;color:#fff;margin-right: 5px" (click)="addTask()">Ajouter</button>
+   <button mat-button mat-dialog-close style=" background: #8a0423 !important;color:#fff">Fermer</button>
+</mat-dialog-actions>

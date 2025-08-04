@@ -1,0 +1,142 @@
+.example-full-width-task{
+  width: 60%;
+}
+
+:host ::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: #ffffff !important;
+}
+
+.stepper {
+  display: flex;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 20px 0;
+}
+
+.step {
+  position: relative;
+  background-color: #f5f6f9;
+  padding: 12px 24px;
+  font-weight: bold;
+  color: #2e3a59;
+  min-width: 120px;
+  text-align: center;
+
+  // Flèche vers la droite
+  &:after {
+    content: '';
+    position: absolute;
+    right: -14px;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 12px solid #ffffff;
+    z-index: 1;
+  }
+
+  // Flèche vers la gauche (pour le chevauchement)
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 12px solid #f5f6f9;
+    z-index: 2;
+  }
+
+  &:first-child {
+    border-radius: 5px 0 0 5px;
+    &:before {
+      display: none;
+    }
+  }
+
+  &:last-child {
+    border-radius: 0 5px 5px 0;
+    &:after {
+      display: none;
+    }
+  }
+
+  &.active {
+    //background-color: #e8f4f4;
+    color: #088;
+
+    &:after {
+      //border-left-color: #e8f4f4;
+    }
+  }
+}
+
+// Supprime la flèche avant pour le premier élément
+.step:first-child::before {
+  display: none;
+}
+
+
+/*.steps {
+  display: flex;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  padding: 8px 15px;
+  background: #f5f6f8;
+  color: #374151;
+  position: relative;
+}
+
+.step.active {
+  background: #f0fafa;
+  color: #000;
+  border: 1px solid #0e7777;
+}
+
+.step small {
+  font-weight: normal;
+  margin-left: 5px;
+  color: #6b7280;
+}
+
+.step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -20px;
+  width: 0;
+  height: 0;
+  border-top: 22px solid transparent;
+  border-bottom: 22px solid transparent;
+  border-left: 20px solid #f5f6f8;
+  z-index: 1;
+}
+
+.step.active:not(:last-child)::after {
+  border-left-color: #f0fafa;
+}
+
+.step:not(:first-child) {
+  margin-left: 20px;
+}
+
+.step:not(:first-child)::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-top: 22px solid transparent;
+  border-bottom: 22px solid transparent;
+  border-left: 20px solid white;
+  z-index: 2;
+}*/

@@ -1,0 +1,130 @@
+.tache_label{
+    font-size: 0.875rem;
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+.time_card{
+  background-color: #ebebeb;
+  border: 1px #F9FAFB solid ;
+  font-size: 12px;
+  width: 48px;
+}
+
+.time_title{
+    --text-opacity: 1;
+    color: rgba(55, 65, 81, 0.76) !important;
+    font-size: 12px;
+}
+
+.time_user{
+  border: 1px #28628B solid;
+  background-color: #28628B;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 26px !important;
+  height: 24px !important;
+  color: #fff;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.time_user_label{
+  //position: relative;
+  //right: 4px;
+  //bottom: 10px;
+}
+
+.time_statut{
+  position: relative;
+  bottom: 0px;
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.statut_afaire{
+  background-color: #E8E9ED;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: transparent;
+  margin-right: 8px !important;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2);
+
+}
+
+.statut_encours{
+  background-color: #E99D00;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: transparent;
+  margin-right: 8px !important;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2);
+
+}
+
+.statut_terminer{
+  background-color: #27A844;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: transparent;
+  margin-right: 8px !important;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2);
+
+}
+
+.user_popup{
+  background-color: #28628B;
+  border-radius: 5px;
+  width: 60px;
+  height: 60px;
+  position: relative;
+  top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user_span_popup{
+  color: #fff;
+  font-size: 36px;
+  font-weight: 500;
+}
+
+.mat-mdc-menu-content {
+  --padding: 16px 16px !important;
+}
+
+.active-statut {
+  background-color: #f3f4f6 !important; /* couleur de sélection */
+  border-left: 4px solid #28628B;       /* barre bleue à gauche */
+  font-weight: bold;
+}
+
+
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 200px;
+}
+
+.full-screen-dialog .mat-dialog-container {
+  height: 95vh;
+  padding: 0;
+  border-radius: 0;
+}
+

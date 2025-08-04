@@ -15,6 +15,7 @@ import { ChatProjetModule } from '../chat-projet/chat-projet.module';
 import { PreparationModule } from './preparation/preparation.module';
 import { ModuleProjetModule } from './module-projet/module-projet.module';
 import { PlanningProjetModule } from './planning-projet/planning-projet.module';
+import { TachesModule } from '../taches/taches.module';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { PlanningProjetModule } from './planning-projet/planning-projet.module';
     ChatProjetModule,
     PreparationModule,
     ModuleProjetModule,
-    PlanningProjetModule
+    PlanningProjetModule,
+    TachesModule
   ],
   providers:[ProjetsService]
 })

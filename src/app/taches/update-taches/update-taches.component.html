@@ -1,0 +1,224 @@
+<!--<mat-dialog-content class="mat-typography">-->
+  <!--<div class="text-center" style="padding-top: 25px;"><p class="title-projet-page">Nouvelle tâche</p></div>
+  <div class="row"><div class="col"><hr class="entreprise"></div></div>-->
+
+
+   <div class="row justify-content-md-center">
+      <div class="col-lg-11 col-md-11 col-md-auto">
+        <div class="row" style="margin-bottom: 10px;padding-top: 10px;">
+          <div class="col">
+            <div style="padding-top: 25px;">
+              <button mat-raised-button color="primary" class="me-2" (click)="updateTask()">Enregistrer</button>
+              <button mat-raised-button color="warn" (click)="openDialog()">Supprimer</button>
+            </div>
+          </div>
+          <div class="col">
+              <div style="float: right;">
+                 <div class="stepper">
+                    <ng-container *ngFor="let step of steps; let last = last">
+                      <div class="step" [class.active]="step.active">
+                        <span>{{ step.label }}</span>
+                        <small *ngIf="step.days">{{ step.days }}</small>
+                      </div>
+                      <div class="arrow" *ngIf="!last"></div>
+                    </ng-container>
+                 </div>
+          </div>
+        </div>
+         <mat-divider></mat-divider>
+
+          <div *ngIf="tache" style="padding-top: 90px;margin-bottom: 30px;">
+            <form [formGroup]="taskFormGroup">
+              <div class="row">
+                <div class="col">
+                  <div>
+                    <mat-form-field class="example-full-width">
+                    <input matInput  formControlName="titre" required style="font-size: 20px !important;font-weight: 600 !important;">
+                    </mat-form-field>
+                    <div *ngIf="taskFormGroup.get('titre').hasError(champ_validation.input[0].type) &&(taskFormGroup.get('titre').dirty || taskFormGroup.get('titre').touched)">
+                      <p class="error_field">{{champ_validation.input[0].message}}</p>
+                    </div>
+                  </div>
+                  <div style="padding-top: 19px;">
+                    <mat-form-field class="example-full-width">
+                      <mat-label class="tache_label">Assignés</mat-label>
+                      <mat-select matInput  formControlName="assignes">
+                        <mat-option *ngFor="let contact of contacts" [value]="contact?._id">{{contact?.nom}} {{contact?.prenom}}</mat-option>
+                      </mat-select>
+                      </mat-form-field>
+                  </div>
+                </div>
+                <div class="col">
+                  <div>
+                    <div class="row">
+                      <div class="col-4">
+                          <mat-form-field class="example-full-width">
+                          <mat-label class="tache_label">Temps alloué</mat-label>
+                          <input type="time" matInput  formControlName="temps">
+                          </mat-form-field>
+                      </div>
+                      <div class="col-2">
+                        <p style="padding-top: 20px;">(0 %)</p>
+                      </div>
+
+                      <div class="col-6">
+                        <mat-form-field class="example-full-width">
+                          <mat-label class="tache_label">Statut</mat-label>
+                          <mat-select matInput  formControlName="statut">
+                            <mat-option value="A Faire">A Faire</mat-option>
+                            <mat-option value="En Cours">En Cours</mat-option>
+                            <mat-option value="Terminer">Terminer</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <label style="font-size: 13px;">Date planifiée</label>
+                    <div class="row">
+                      <div class="col">
+
+                        <mat-form-field class="example-full-width">
+                          <mat-date-range-input  [rangePicker]="picker">
+                          <input matStartDate formControlName="date_debut" placeholder="Début">
+                          <input matEndDate formControlName="date_fin" placeholder="Fin">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                        <!--<input type="date" matInput  formControlName="date_debut">-->
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <div>
+                <mat-form-field class="example-full-width">
+                   <mat-label class="tache_label">Description</mat-label>
+                  <textarea matInput formControlName="description"></textarea>
+                </mat-form-field>
+              </div>
+            </form>
+         </div>
+
+         <div>
+          <mat-tab-group dynamicHeight>
+            <!--<mat-tab label="Description">
+              <div style="padding-top: 20px;">
+                 <form [formGroup]="taskFormGroup">
+                    <mat-form-field class="example-full-width" style="height: 250px !important;">
+                      <textarea matInput formControlName="description"></textarea>
+                    </mat-form-field>
+                 </form>
+              </div>
+            </mat-tab>-->
+            <mat-tab label="Feuilles de temps">
+              <div style="padding-top: 20px;">
+                <form [formGroup]="timesheetForm">
+
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Employé</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Heures passés</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody formArrayName="entries">
+                      <tr *ngFor="let entry of entries.controls; let i = index" [formGroupName]="i">
+                        <td>
+                           <mat-form-field class="example-full-width">
+                              <input matInput [matDatepicker]="picker1" formControlName="date">
+                              <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+                              <mat-datepicker #picker1></mat-datepicker>
+                           </mat-form-field>
+                        </td>
+                        <td>
+                          <mat-form-field class="example-full-width">
+                            <mat-select formControlName="employee" matInput>
+                            <mat-option *ngFor="let contact of contacts" [value]="contact?._id">{{contact?.nom}} {{contact?.prenom}}</mat-option>
+                          </mat-select>
+                          </mat-form-field>
+                        </td>
+                        <td>
+                           <mat-form-field class="example-full-width">
+                            <input type="text" formControlName="description"matInput />
+                          </mat-form-field>
+
+                        </td>
+                        <td>
+                           <mat-form-field class="example-full-width">
+                             <input type="time" formControlName="hours" matInput/>
+                           </mat-form-field>
+
+                        </td>
+                        <td>
+                          <button mat-icon-button  (click)="submitLine(i)" matTooltip="Enregistrer">
+                            <mat-icon>cloud</mat-icon>
+                          </button>
+                          <button mat-icon-button color="warn" (click)="removeLine(i)" matTooltip="Supprimer">
+                            <mat-icon>delete</mat-icon>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a (click)="addLine()" style="cursor:pointer; color: teal;">Ajouter une ligne</a>
+                </form>
+              </div>
+            </mat-tab>
+            <mat-tab label="Sous-tâches">
+              <div class="example-large-box mat-elevation-z4">
+
+                <div style="padding-top: 20px;">
+                <form [formGroup]="subTaskForm">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Titre</th>
+                        <th scope="col">Assignés</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody formArrayName="entriesSubTask">
+                      <tr *ngFor="let entry of entriesSubTask.controls; let i = index" [formGroupName]="i">
+                        <td>
+                           <mat-form-field class="example-full-width">
+                            <input type="text" formControlName="description" matInput />
+                          </mat-form-field>
+                        </td>
+                        <td>
+                          <mat-form-field class="example-full-width">
+                            <mat-select formControlName="assignes" matInput>
+                            <mat-option *ngFor="let contact of contacts" [value]="contact?._id">{{contact?.nom}} {{contact?.prenom}}</mat-option>
+                          </mat-select>
+                          </mat-form-field>
+                        </td>
+
+                        <td>
+                          <button mat-icon-button  (click)="submitLineSubTask(i)" matTooltip="Enregistrer">
+                            <mat-icon>cloud</mat-icon>
+                          </button>
+                          <button mat-icon-button color="warn" (click)="removeLineSubTask(i)" matTooltip="Supprimer">
+                            <mat-icon>delete</mat-icon>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a (click)="addLineSub()" style="cursor:pointer; color: teal;">Ajouter une ligne</a>
+                </form>
+              </div>
+
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+         </div>
+
+      </div>
+  </div>
+
+<!--</mat-dialog-content>-->

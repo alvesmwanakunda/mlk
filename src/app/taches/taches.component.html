@@ -1,0 +1,86 @@
+<div class="container">
+  <div class="content-top-child">
+    <div class="row" style="margin-bottom: 30px;">
+
+        <div class="col-4">
+          <input (keyup)="applyFilter($event)" type="text" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher par titre...">
+        </div><!--col-->
+
+        <div class="col-8" align="right">
+         <button type="button" class="btn btn-piece"  style="margin-right: 10px;" (click)="openDialog()"><i class="fa-solid fa-plus"></i> Nouvelle tâche</button>
+        </div><!--col-->
+     </div><!--row-->
+
+     <div>
+      <div class="row">
+         <div class="col-4" *ngFor="let tache of task">
+          <mat-card style="border: 1px solid #dedede !important;height: 82%;">
+            <mat-card-content>
+              <div (click)="openDialogUpdate(tache?._id)" style="cursor: pointer;">
+                 <p class="tache_label ellipsis" matTooltip="{{tache?.titre}}">{{tache?.titre}}</p>
+                <div style="margin-bottom: 15px;" *ngIf="tache?.date_debut || tache?.date_fin">
+                 <!--<div><span class="time_title">{{ tache?.date_debut | date: 'dd/MM/yyyy HH:mm:ss' }}</span></div>
+                 <div><span class="time_title">{{ tache?.date_fin | date: 'dd/MM/yyyy HH:mm:ss' }}</span></div>-->
+                 <div><span class="time_title">{{ tache?.date_debut | date: 'dd/MM/yyyy' }} - {{ tache?.date_fin | date: 'dd/MM/yyyy' }}</span></div>
+                </div>
+              </div>
+               <div class="row">
+                <div class="col">
+                  <div class="row" style="position: relative;bottom: 5px;" *ngIf="tache?.temps">
+                    <div class="col-2">
+                      <p><i class="fa-regular fa-clock"></i> </p>
+                    </div>
+                    <div class="col-10">
+                      <div class="time_card"><span style="padding: 5px;">{{tache?.temps}}</span></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div style="float: right;position: relative;bottom: 10px;display: flex;">
+                     <button mat-icon-button [matMenuTriggerFor]="menu" class="time_user" *ngIf="tache?.assignes">
+                       <span class="time_user_label">{{tache?.assignes?.nom?.charAt(0) || ''}}</span>
+                     </button>
+                      <button mat-icon-button [matMenuTriggerFor]="menus" class="time_statut" [ngStyle]="{ 'background-color': getColor(tache.statut) }">
+                      </button>
+                  </div>
+                  <mat-menu #menu="matMenu">
+                    <div style="padding: 6px 9px; min-width: 250px;height: 87px;overflow: hidden">
+                        <div class="row">
+                          <div class="col-5">
+                              <div class="user_popup">
+                                <span class="user_span_popup">{{tache?.assignes?.nom?.charAt(0) || ''}}</span>
+                              </div>
+                          </div>
+                          <div class="col-7">
+                            <span style="font-weight: 500 !important;font-size: 12px;">{{tache?.assignes?.nom}}</span>
+                            <br/>
+                            <span style="font-size: 11px;"><i class="fa-solid fa-envelope"></i> {{tache?.assignes?.email}}</span>
+                          </div>
+                        </div>
+                    </div>
+                  </mat-menu>
+                  <mat-menu #menus="matMenu">
+                    <div style="width: 250px;overflow: hidden;">
+                      <button mat-menu-item [ngClass]="{'active-statut': tache?.statut === 'A Faire'}">
+                        <span class="statut_afaire">A</span>
+                        <span style="color: #111827;font-weight: 500;font-size: 13px;">A Faire</span>
+                      </button>
+                      <button mat-menu-item  [ngClass]="{'active-statut': tache?.statut === 'En Cours'}">
+                        <span class="statut_encours">A</span>
+                        <span style="color: #111827;font-weight: 500;font-size: 13px;">En Cours</span>
+                      </button>
+                      <button mat-menu-item  [ngClass]="{'active-statut': tache?.statut === 'Terminer'}">
+                        <span class="statut_terminer">A</span>
+                        <span style="color: #111827;font-weight: 500;font-size: 13px;">Terminer</span>
+                      </button>
+                    </div>
+                  </mat-menu>
+                </div>
+               </div>
+            </mat-card-content>
+          </mat-card>
+         </div>
+      </div>
+     </div>
+  </div>
+</div>
