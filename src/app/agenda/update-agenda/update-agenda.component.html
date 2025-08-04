@@ -11,6 +11,17 @@
         </mat-form-field>
       </div><!--div-->
 
+       <div style="margin-bottom: 8px;">
+        <mat-form-field class="example-full-width">
+          <mat-label>Assigner à</mat-label>
+          <mat-select formControlName="assigne" [(ngModel)]="agenda.assigne" multiple>
+            <mat-option *ngFor="let user of employees" [value]="user._id">
+              {{ user.nom }} {{ user.prenom }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
       <div class="row" style="margin-bottom: 8px;">
         <div class="col">
           <mat-form-field class="example-full-width">
@@ -18,7 +29,7 @@
             <input matInput  type="datetime-local" formControlName="start" [(ngModel)]="agenda.start">
           </mat-form-field>
           <p>{{start}}</p>
-          
+
         </div>
         <div class="col">
           <mat-form-field class="example-full-width">

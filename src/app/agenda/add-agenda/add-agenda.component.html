@@ -10,10 +10,20 @@
           <input matInput  formControlName="title">
         </mat-form-field>
       </div><!--div-->
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Assigner à</mat-label>
+          <mat-select formControlName="assigne" multiple>
+            <mat-option *ngFor="let user of employees" [value]="user._id">
+              {{ user.nom }} {{ user.prenom }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
       <!--type="datetime-local"-->
       <div class="row">
         <mat-label style="margin-bottom: 10px;">Date Événement</mat-label>
-        
+
         <div class="col">
           <mat-form-field class="example-full-width" appearance="outline">
             <!--<input matInput   formControlName="start">-->
@@ -28,7 +38,7 @@
           <mat-form-field class="example-full" appearance="outline">
             <input matInput type="time"  formControlName="heure_start">
           </mat-form-field>
-          - 
+          -
           <mat-form-field class="example-full" appearance="outline">
             <input matInput type="time"  formControlName="heure_end">
           </mat-form-field>

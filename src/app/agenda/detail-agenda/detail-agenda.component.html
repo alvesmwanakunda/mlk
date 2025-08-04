@@ -13,7 +13,7 @@
         <p><span class="card-color" [ngStyle]="{'background-color':agenda?.color}"></span> <span  class="title-projet-page-detail">{{agenda?.title}}</span></p>
       </div>
     </div>
-  
+
     <div>
       <p><span style="margin-right: 12px"><i class='fas fa-clock'></i></span> <span style="font-size:13px;">{{agenda?.start | date:'EEEE, d MMMM'}} ({{agenda?.heure_start}}) <!--({{agenda?.start | date:'HH:mm'}})--></span></p>
     </div>
@@ -27,21 +27,31 @@
     <div style="margin-bottom: 30px;"><p class="title-projet-page">Modifier événement</p></div>
     <div>
       <form [formGroup]="agendaFormGroup" *ngIf="agenda">
-  
+
         <div style="margin-bottom: 8px;">
           <mat-form-field class="example-full-width" appearance="outline">
             <mat-label>Titre</mat-label>
-            <input matInput  formControlName="title" [(ngModel)]="agenda.title">
+            <input matInput  formControlName="title">
           </mat-form-field>
         </div><!--div-->
+        <div style="margin-bottom: 8px;">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Assigner à</mat-label>
+            <mat-select formControlName="assigne" multiple>
+              <mat-option *ngFor="let user of employees" [value]="user._id">
+                {{ user.nom }} {{ user.prenom }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
         <!--type="datetime-local"-->
         <div class="row">
           <mat-label style="margin-bottom: 10px;">Date Événement</mat-label>
-          
+
           <div class="col">
             <mat-form-field class="example-full-width" appearance="outline">
               <!--<input matInput   formControlName="start">-->
-              <input matInput [matDatepicker]="picker" formControlName="start" [(ngModel)]="agenda.start">
+              <input matInput [matDatepicker]="picker" formControlName="start">
               <mat-datepicker-toggle matIconSuffix [for]="picker">
               <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
               </mat-datepicker-toggle>
@@ -50,17 +60,17 @@
           </div>
           <div class="col-4" *ngIf="!isAllDays" align="right">
             <mat-form-field class="example-full" appearance="outline">
-              <input matInput type="time"  formControlName="heure_start" [(ngModel)]="agenda.heure_start">
+              <input matInput type="time"  formControlName="heure_start">
             </mat-form-field>
-            - 
+            -
             <mat-form-field class="example-full" appearance="outline">
-              <input matInput type="time"  formControlName="heure_end" [(ngModel)]="agenda.heure_end">
+              <input matInput type="time"  formControlName="heure_end">
             </mat-form-field>
           </div>
           <div class="col" *ngIf="isAllDays">
             <mat-form-field class="example-full-width" appearance="outline">
               <mat-label></mat-label>
-              <input matInput [matDatepicker]="picker1" formControlName="end" [(ngModel)]="agenda.end">
+              <input matInput [matDatepicker]="picker1" formControlName="end">
               <mat-datepicker-toggle matIconSuffix [for]="picker1">
               <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
               </mat-datepicker-toggle>
@@ -69,12 +79,12 @@
           </div>
         </div><!--div-->
         <div>
-          <mat-checkbox formControlName="isDay" (change)="checkIsDay($event)" [(ngModel)]="agenda.isDay">Toute la journée</mat-checkbox>
+          <mat-checkbox formControlName="isDay" (change)="checkIsDay($event)">Toute la journée</mat-checkbox>
           <mat-form-field class="example-full-color" appearance="outline" style="float:right;">
-            <input matInput type="color" formControlName="color" [(ngModel)]="agenda.color">
+            <input matInput type="color" formControlName="color">
           </mat-form-field>
         </div>
-        
+
       </form>
     </div>
   </mat-dialog-content>

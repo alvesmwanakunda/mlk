@@ -37,6 +37,26 @@
     text-transform: uppercase;
 }
 
+
+
+.assigne-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background-color: #28628B;
+  color: white;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: bold;
+  margin-right: -5px;
+}
+
+.assigne-circle.more {
+  background-color: gray;
+}
+
 // test
 
 

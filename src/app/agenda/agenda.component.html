@@ -28,7 +28,7 @@
                     <mat-icon>chevron_right</mat-icon>
                   </button>
                 </div>
-                
+
               </div>
              </div>
              <div class="col-4">
@@ -49,7 +49,7 @@
                   </mat-select>
                 </mat-form-field>
               </div>
-              
+
              </div>
            </div>
         </div>
@@ -60,7 +60,7 @@
     <div>
      <div class="row">
        <div class="col-3">
-       
+
         <div style="margin-bottom: 10px;">
           <button  mat-stroked-button (click)="openDialogAgenda()" style="width: 42% !important;height: 55px !important;border-radius: 20px !important;">
             <mat-icon>add</mat-icon> Créer
@@ -82,7 +82,7 @@
               <div class="daycgf nSCxEf">{{day}}</div>
             </div>
           </div>
-          
+
           <mat-card-content [style.overflow]="'auto'" [style.height.px]="'400'">
 
             <div [ngSwitch]="view">
@@ -98,7 +98,7 @@
               locale="fr"
               >
               </mwl-calendar-month-view>
-  
+
               <mwl-calendar-week-view
               *ngSwitchCase="CalendarView.Week"
               [viewDate]="viewDate"
@@ -109,7 +109,7 @@
               locale="fr"
               >
               </mwl-calendar-week-view>
-  
+
               <mwl-calendar-day-view
               *ngSwitchCase="CalendarView.Day"
               [viewDate]="viewDate"
@@ -125,9 +125,9 @@
         </mat-card>
 
         <mat-card style="border-radius: 30px !important;" *ngIf="!isPlanning">
-         
+
           <mat-card-content [style.overflow]="'auto'">
-              
+
               <div *ngFor="let day of weekWithEvents" class="day-container">
                   <div class="row">
                      <div class="col-2">
@@ -151,6 +151,20 @@
                             </div>
                             <div class="event-title col">
                               {{ event?.title }}
+
+                              <ng-container *ngIf="event?.assigne?.length">
+                                <!-- Afficher les 5 premiers -->
+                                <span *ngFor="let user of event.assigne.slice(0, 5)"
+                                      class="assigne-circle"
+                                      matTooltip="{{user?.nom}} {{user?.prenom}}">
+                                  {{ user.nom.charAt(0) }}
+                                </span>
+
+                                <!-- Si plus de 5, afficher +X -->
+                                <span *ngIf="event.assigne.length > 5" class="assigne-circle more">
+                                  +{{ event.assigne.length - 5 }}
+                                </span>
+                              </ng-container>
                             </div>
                         </div>
                         </div>
@@ -170,7 +184,7 @@
                     <span class="day-name">{{ day.date | date: 'EEE' }}</span>
                   </div>
                 </div>
-            
+
                 <div class="day-events">
                   <div *ngIf="day.events.length > 0; else noEvents">
                     <div *ngFor="let dayEvents of day.events">
@@ -186,13 +200,13 @@
                 </div>
               </div>
             </div>-->
-            
-            
-            
+
+
+
           </mat-card-content>
         </mat-card>
 
-         
+
        </div>
      </div><!--row-->
 

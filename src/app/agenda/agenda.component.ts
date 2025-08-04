@@ -126,16 +126,17 @@ export class AgendaComponent implements OnInit {
   getAllAgenda(){
     this.agendaService.getAllAgenda().subscribe((res:any)=>{
       if(res.message){
-        this.events = res.message.map((data)=>({
-          _id:data._id,
-          type:data.type,
-          start:new Date(data.start),
-          end:new Date(data.end),
+        this.events = res?.message.map((data)=>({
+           assigne:data?.assigne,
+          _id:data?._id,
+          type:data?.type,
+          start:new Date(data?.start),
+          end:new Date(data?.end),
           //title: `${data.title}, ${data.heure_start} à ${data?.heure_end}`,
-          title: data?.isDay 
-                 ? `${data.title}, ${data.heure_start}` // Si allDay est true, ajoute l'heure de start
-                 : `${data.title}, ${data.heure_start} à ${data?.heure_end}`, // Sinon, inclut les heures
-          color:{primary:'#fff', secondary:data.color},
+          title: data?.isDay
+                 ? `${data?.title}, ${data?.heure_start}` // Si allDay est true, ajoute l'heure de start
+                 : `${data?.title}, ${data?.heure_start} à ${data?.heure_end}`, // Sinon, inclut les heures
+          color:{primary:'#fff', secondary:data?.color},
           allDay:data?.isDay
           //actions: this.actions,
         }));
@@ -164,7 +165,7 @@ export class AgendaComponent implements OnInit {
   }
 
   openDialogAgenda(){
-    const dialogRef = this.dialog.open(AddAgendaComponent,{width:'40%',height:'60%'});
+    const dialogRef = this.dialog.open(AddAgendaComponent,{width:'50%',height:'70%'});
     dialogRef.afterClosed().subscribe((result:any)=>{
        if(result){
         this.getAllAgenda();
@@ -216,7 +217,7 @@ export class AgendaComponent implements OnInit {
     })
   }
 
-  
+
 
   isToday(date: Date): boolean {
     const today = new Date();
@@ -230,11 +231,11 @@ export class AgendaComponent implements OnInit {
 
   prepareEvents(events: any[]): { date: string; events: DisplayEvent[] }[] {
     const tempEvents: { [key: string]: DisplayEvent[] } = {};
-  
+
     events.forEach(event => {
       const startDate = new Date(event.start);
       const endDate = new Date(event.end);
-  
+
       if (event.isDay) {
         let currentDate = new Date(startDate);
         while (currentDate <= endDate) {
@@ -246,7 +247,8 @@ export class AgendaComponent implements OnInit {
             time: 'Toute la journée',
             color: event.color,
             _id:event?._id,
-            type:event?.type
+            type:event?.type,
+            assigne:event?.assigne
           });
           currentDate.setDate(currentDate.getDate() + 1); // Avancer d'un jour
         }
@@ -260,13 +262,14 @@ export class AgendaComponent implements OnInit {
           time: `${event.heure_start} - ${event.heure_end}`,
           color: event.color,
           _id:event?._id,
-          type:event?.type
+          type:event?.type,
+          assigne:event?.assigne
         });
       }
     });
 
     // Regrouper les événements par semaine
-    
+
     this.sortedEvents = Object.keys(tempEvents)
       .sort()
       .map(date => ({
@@ -304,13 +307,13 @@ export class AgendaComponent implements OnInit {
 
   generateWeek(preparedEvents: { date: string; events: DisplayEvent[] }[]): void {
     const currentWeek: DayWithEvents[] = [];
-  
+
     let currentDate = new Date(this.currentWeekStart);
     while (currentDate <= this.currentWeekEnd) {
       const dateKey = currentDate.toISOString().split('T')[0];
       const dayEvents = preparedEvents.find(event => event.date === dateKey);
       console.log("dayEvents", dayEvents);
-  
+
       currentWeek.push({
         date: new Date(currentDate),
         events:[
@@ -320,10 +323,10 @@ export class AgendaComponent implements OnInit {
           }
         ]
       });
-  
+
       currentDate.setDate(currentDate.getDate() + 1);
     }
-  
+
     this.weekWithEvents = currentWeek;
     console.log("week", this.weekWithEvents);
   }
@@ -355,20 +358,20 @@ export class AgendaComponent implements OnInit {
       // Revenir à la semaine précédente
       this.currentWeekStart.setDate(this.currentWeekStart.getDate() + 7);
       this.currentWeekEnd.setDate(this.currentWeekEnd.getDate() + 7);
-  
+
       // Générer la semaine et recharger les événements pour la nouvelle plage
       this.generateWeek(this.sortedEvents);
     } else {
       console.error('Les dates de la semaine actuelle ne sont pas définies.');
     }
   }
-  
+
   previousWeek() {
     if (this.currentWeekStart && this.currentWeekEnd) {
       // Revenir à la semaine précédente
       this.currentWeekStart.setDate(this.currentWeekStart.getDate() - 7);
       this.currentWeekEnd.setDate(this.currentWeekEnd.getDate() - 7);
-  
+
       // Générer la semaine et recharger les événements pour la nouvelle plage
       this.generateWeek(this.sortedEvents);
     } else {

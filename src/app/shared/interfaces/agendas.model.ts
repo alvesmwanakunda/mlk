@@ -7,5 +7,6 @@ export interface Agendas {
   user:string;
   heure_start:string;
   heure_end:string;
-  isDay:boolean
+  isDay:boolean;
+  assigne:[];
 }

@@ -8,6 +8,7 @@ import { DeleteAgendaComponent } from '../delete-agenda/delete-agenda.component'
 import { AgendaComponent } from '../agenda.component';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 
 
@@ -34,6 +35,8 @@ export class DetailAgendaComponent implements OnInit {
   isUpdate:boolean=false;
   isDelete:boolean=false;
   isDetail:boolean=true;
+  employees:any=[];
+
 
 
 
@@ -43,10 +46,12 @@ export class DetailAgendaComponent implements OnInit {
     private _snackBar:MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data:any,
     private  _formBuilder:FormBuilder,
+    private authService: AuthService,
     ){ }
 
   ngOnInit(){
     this.getAgenda();
+    this.getAllEmployes();
   }
 
   onClose() {
@@ -58,7 +63,7 @@ export class DetailAgendaComponent implements OnInit {
   }
 
   getAgenda(){
-    if(this.data.type=="agenda"){
+
         this.agendaService.getAgendaWeb(this.data.id).subscribe((res:any)=>{
           this.agenda = res.message;
           this.isAllDays = this.agenda?.isDay;
@@ -76,6 +81,34 @@ export class DetailAgendaComponent implements OnInit {
               isDay:[this.agenda.isDay,null],
               heure_start:[this.agenda.heure_start,null],
               heure_end:[this.agenda.heure_end,null],
+              assigne: [this.agenda.assigne, null],
+
+            });
+          }
+          console.log("Form======>", this.agendaFormGroup)
+
+      },(error)=>{
+        console.log("Erreur lors de la récupération des données", error);
+      })
+    /*if(this.data.type=="agenda"){
+        this.agendaService.getAgendaWeb(this.data.id).subscribe((res:any)=>{
+          this.agenda = res.message;
+          this.isAllDays = this.agenda?.isDay;
+
+          if(res.message.start || res.message.end){
+            this.start = this.datePipe.transform(res.message.start, 'short');
+            this.end = this.datePipe.transform(res.message.end, 'short');
+          }
+          if(this.agenda){
+            this.agendaFormGroup=this._formBuilder.group({
+              title:[this.agenda.title,null],
+              start:[this.agenda.start,null],
+              end:[this.agenda.end,null],
+              color:[this.agenda.color,null],
+              isDay:[this.agenda.isDay,null],
+              heure_start:[this.agenda.heure_start,null],
+              heure_end:[this.agenda.heure_end,null],
+              assigne: [this.agenda.assigne?.map((u: any) => u._id), null],
 
             });
           }
@@ -100,6 +133,7 @@ export class DetailAgendaComponent implements OnInit {
               isDay:[this.agenda.isDay,null],
               heure_start:[this.agenda.heure_start,null],
               heure_end:[this.agenda.heure_end,null],
+              assigne: [this.agenda?.assigne?.map((u: any) => u._id), null],
 
             });
           }
@@ -107,12 +141,22 @@ export class DetailAgendaComponent implements OnInit {
       },(error)=>{
         console.log("Erreur lors de la récupération des données", error);
       })
-    }
-    
+    }*/
+
   }
 
   updateAgenda():void{
-    if(this.data.type=="agenda"){
+    //console.log("Agenda========>", this.agendaFormGroup.value);
+    this.agendaService.updateAgenda(this.data.id,this.agendaFormGroup.value).subscribe((res:any)=>{
+        this.message='Événement a été modifié avec succès';
+        this.openSnackBar(this.message);
+        this.confirm.emit();
+      },(error)=>{
+        this.message="Une erreur s'est produite veuillez réessayer.";
+        this.openSnackBar(this.message);
+        console.log(error);
+      })
+    /*if(this.data.type=="agenda"){
       this.agendaService.updateAgenda(this.data.id,this.agenda).subscribe((res:any)=>{
         this.message='Événement a été modifié avec succès';
         this.openSnackBar(this.message);
@@ -133,13 +177,24 @@ export class DetailAgendaComponent implements OnInit {
         this.openSnackBar(this.message);
         console.log(error);
       })
-    }
-    
+    }*/
+
   }
 
   deleteAgenda():void{
 
-    if(this.data.type=="agenda"){
+    this.agendaService.deleteAgenda(this.data.id).subscribe((res:any)=>{
+        this.message='Événement a été supprimé avec succès';
+        this.openSnackBar(this.message);
+        //this.dialogRef.close(res)
+        this.confirm.emit();
+      },(error)=>{
+        this.message="Une erreur s'est produite veuillez réessayer.";
+        this.openSnackBar(this.message);
+        console.log(error);
+    })
+
+   /* if(this.data.type=="agenda"){
       this.agendaService.deleteAgenda(this.data.id).subscribe((res:any)=>{
         this.message='Événement a été supprimé avec succès';
         this.openSnackBar(this.message);
@@ -161,8 +216,8 @@ export class DetailAgendaComponent implements OnInit {
         this.openSnackBar(this.message);
         console.log(error);
       })
-    }
-    
+    }*/
+
 }
 
 
@@ -208,7 +263,7 @@ openDialogDelete(){
       dialogRef.close();
       this.getAgenda()
     })
-  
+
   }
   openDialogDelete(){
     this.close.emit();
@@ -224,5 +279,13 @@ openDialogDelete(){
   onNoClick(): void {
     this.close.emit();
   }
+
+  getAllEmployes(){
+    this.authService.listEmployes().subscribe((res:any)=>{
+      this.employees = res?.message;
+    },(error) => {
+      console.log("Erreur lors de la récupération des données", error);
+    })
+}
 
 }

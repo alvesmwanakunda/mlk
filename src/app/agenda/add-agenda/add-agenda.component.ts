@@ -1,10 +1,11 @@
 import { Component,OnInit} from '@angular/core';
 import { Agendas } from 'src/app/shared/interfaces/agendas.model';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { AgendaService } from 'src/app/shared/services/agenda.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AgendaComponent } from '../agenda.component';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-add-agenda',
@@ -21,6 +22,7 @@ export class AddAgendaComponent implements OnInit {
   now = new Date();
   heureStart = this.formatTime(this.now);
   heureEnd = this.formatTime(new Date(this.now.getTime()+20 * 60 * 1000));
+  employees:any=[];
 
   private formatTime(date: Date): string {
     const hours = date.getHours().toString().padStart(2, '0');
@@ -33,6 +35,7 @@ export class AddAgendaComponent implements OnInit {
     private agendaService:AgendaService,
     private _snackBar:MatSnackBar,
     public dialogRef:MatDialogRef<AgendaComponent>,
+    private authService: AuthService,
   ){
     this.agendaFormGroup=this._formBuilder.group({
       title:[''],
@@ -42,12 +45,14 @@ export class AddAgendaComponent implements OnInit {
       isDay:[],
       end:[''],
       color:[''],
+      assigne: [[]],
     });
   }
 
   ngOnInit(){
      this.getDateandHour();
-  } 
+     this.getAllEmployes();
+  }
 
 
   getDateandHour(){
@@ -100,5 +105,30 @@ export class AddAgendaComponent implements OnInit {
       duration:6000,
     })
   }
+
+  // Ajout de plusier utilisateur
+
+  get assigneArray(): FormArray {
+    return this.agendaFormGroup.get('assigne') as FormArray;
+  }
+
+  addAssigne(userId: string) {
+    this.assigneArray.push(new FormControl(userId));
+  }
+
+  removeAssigne(index: number) {
+    this.assigneArray.removeAt(index);
+  }
+
+  // User
+
+  getAllEmployes(){
+         this.authService.listEmployes().subscribe((res:any)=>{
+            this.employees = res?.message;
+         },(error) => {
+          console.log("Erreur lors de la récupération des données", error);
+         })
+  }
+
 
 }

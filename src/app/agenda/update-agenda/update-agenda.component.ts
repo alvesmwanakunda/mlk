@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AgendaComponent } from '../agenda.component';
 import { PlanningProjetComponent } from 'src/app/projet/planning-projet/planning-projet.component';
 import { DatePipe } from '@angular/common';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-update-agenda',
@@ -24,12 +25,14 @@ export class UpdateAgendaComponent implements OnInit {
   @Input() datas: any; // Les données à afficher dans le dialog
   @Output() close = new EventEmitter<void>(); // Événement pour fermer le dialog
   @Output() confirm = new EventEmitter<void>(); // Événement pour confirmer une action
+  employees:any=[];
 
 
   constructor(
     private  _formBuilder:FormBuilder,
     private agendaService:AgendaService,
     private _snackBar:MatSnackBar,
+    private authService: AuthService,
     //private agendaComponent: AgendaComponent,
     //`public dialogRef:MatDialogRef<AgendaComponent>,
     @Inject(MAT_DIALOG_DATA) public data:any,
@@ -37,6 +40,7 @@ export class UpdateAgendaComponent implements OnInit {
 
   ngOnInit(){
     this.getAgenda();
+    this.getAllEmployes();
   }
 
   onClose() {
@@ -62,6 +66,7 @@ export class UpdateAgendaComponent implements OnInit {
               start:[this.agenda.start,null],
               end:[this.agenda.end,null],
               color:[this.agenda.color,null],
+              assigne: [this.agenda.assigne, null],
             });
           }
       },(error)=>{
@@ -82,13 +87,14 @@ export class UpdateAgendaComponent implements OnInit {
               start:[this.agenda.start,null],
               end:[this.agenda.end,null],
               color:[this.agenda.color,null],
+              assigne: [this.agenda.assigne, null],
             });
           }
       },(error)=>{
         console.log("Erreur lors de la récupération des données", error);
       })
     }
-    
+
   }
 
   updateAgenda():void{
@@ -116,13 +122,21 @@ export class UpdateAgendaComponent implements OnInit {
         console.log(error);
       })
     }
-    
+
 }
 
 openSnackBar(message){
  this._snackBar.open(message, 'Fermer',{
    duration:6000,
  })
+}
+
+getAllEmployes(){
+    this.authService.listEmployes().subscribe((res:any)=>{
+      this.employees = res?.message;
+    },(error) => {
+      console.log("Erreur lors de la récupération des données", error);
+    })
 }
 
 }

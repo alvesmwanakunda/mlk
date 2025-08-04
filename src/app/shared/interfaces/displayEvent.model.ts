@@ -1,3 +1,9 @@
+export interface AssignedUser {
+  _id: string;
+  nom: string;
+  prenom: string;
+}
+
 export interface DisplayEvent{
 
   date: Date;
@@ -5,6 +11,7 @@ export interface DisplayEvent{
   time: string | null; // Heure d'affichage ou null
   color:string;
   _id:string;
-  type?:string
+  type?:string;
+  assigne?:AssignedUser[];
 
 }
