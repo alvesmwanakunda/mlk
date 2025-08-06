@@ -19,7 +19,7 @@
       <div class="row">
         <div class="col">
 
-        
+
           <mat-stepper orientation="vertical"  *ngIf="projet">
             <mat-step [stepControl]="firstFormGroup" errorMessage="Veuillez remplir les champs est obligatoire.">
               <form [formGroup]="firstFormGroup">
@@ -50,7 +50,7 @@
                                 <mat-option *ngFor="let entre of entreprises " [value]="entre._id">{{entre?.societe}}</mat-option>
                               </mat-select>
                             </mat-form-field>
-                           
+
                            </div><!--col-8-->
                            <div class="col-4" style="padding-top: 13px;">
                             <button mat-button mat-button class="btn-entreprise" style="font-size:11px;" routerLink="/add/entreprise">Ajouter entreprise</button>
@@ -63,7 +63,7 @@
                       </div><!--div-->
                    </div>
                   </div>
-                  
+
                   <div class="row" style="margin-bottom: 15px;">
                     <div class="col">
                       <mat-form-field class="example-full-width">
@@ -71,7 +71,7 @@
                         <mat-select  formControlName="contact" [(ngModel)]="projet.contact" aria-label="Default select example">
                           <mat-option *ngFor="let cont of contacts " [value]="cont._id">{{cont?.nom}} {{cont?.prenom}}</mat-option>
                         </mat-select>
-                      </mat-form-field>                  
+                      </mat-form-field>
                     </div>
                     <div class="col">
                       <mat-form-field class="example-full-width">
@@ -116,6 +116,12 @@
                           <input  matInput  formControlName="postal"  [(ngModel)]="projet.postal">
                         </mat-form-field>
                       </div><!--div-->
+                      <div style="margin-bottom: 15px;">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Longitude</mat-label>
+                          <input  matInput  formControlName="longitude" [(ngModel)]="projet.longitude">
+                        </mat-form-field>
+                      </div><!--div-->
 
                     </div><!--col-->
                     <div class="col">
@@ -130,6 +136,12 @@
                         <mat-form-field class="example-full-width">
                           <mat-label>Rue</mat-label>
                           <input  matInput  formControlName="rue"  [(ngModel)]="projet.rue">
+                        </mat-form-field>
+                      </div><!--div-->
+                      <div style="margin-bottom: 15px;">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Latitude</mat-label>
+                          <input  matInput  formControlName="latitude" [(ngModel)]="projet.latitude">
                         </mat-form-field>
                       </div><!--div-->
                    </div>
@@ -219,7 +231,7 @@
                       </mat-form-field>
                     </div>
                   </div>
-                 
+
                 </div><!--div-->
               </div>
 

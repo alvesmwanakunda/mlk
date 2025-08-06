@@ -100,7 +100,9 @@ export class AddProjetComponent implements OnInit {
       ville:[''],
       rue:[''],
       postal:[''],
-      numero:['']
+      numero:[''],
+      latitude:[''],
+      longitude:[''],
     });
     this.threeFormGroup=this._formBuilder.group({
       budget:[''],
@@ -156,10 +158,10 @@ export class AddProjetComponent implements OnInit {
       }else{
           this.message='La taille de l\'image ne doit pas dépasser 200 KB.';
           this.openSnackBarError(this.message);
-      } 
+      }
     }
   }
-   
+
   openSnackBar(message){
     this.snackbar.open(message, 'Fermer',{
       duration:6000,
@@ -227,6 +229,8 @@ export class AddProjetComponent implements OnInit {
      formData.append("adresse", this.form2.adresse);
      formData.append("ville", this.form2.ville);
      formData.append("rue", this.form2.rue);
+     formData.append("latitude", this.form2.latitude);
+     formData.append("longitude", this.form2.longitude);
      formData.append("postal", this.form2.postal);
      formData.append("budget", this.form3.budget);
      formData.append("devise", this.form3.devise);
@@ -234,6 +238,7 @@ export class AddProjetComponent implements OnInit {
      formData.append("numero_offre", this.form3.numero_offre);
      formData.append("date_limite", this.form3.date_limite);
      formData.append("date_fin_contrat", this.form3.date_fin_contrat);
+
 
      this.projetService.addProjet(formData).subscribe((res:any)=>{
 
