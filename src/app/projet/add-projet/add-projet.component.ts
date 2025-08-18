@@ -101,8 +101,7 @@ export class AddProjetComponent implements OnInit {
       rue:[''],
       postal:[''],
       numero:[''],
-      latitude:[''],
-      longitude:[''],
+      coordonnees:[''],
     });
     this.threeFormGroup=this._formBuilder.group({
       budget:[''],
@@ -229,8 +228,7 @@ export class AddProjetComponent implements OnInit {
      formData.append("adresse", this.form2.adresse);
      formData.append("ville", this.form2.ville);
      formData.append("rue", this.form2.rue);
-     formData.append("latitude", this.form2.latitude);
-     formData.append("longitude", this.form2.longitude);
+     formData.append("coordonnees", this.form2.coordonnees);
      formData.append("postal", this.form2.postal);
      formData.append("budget", this.form3.budget);
      formData.append("devise", this.form3.devise);

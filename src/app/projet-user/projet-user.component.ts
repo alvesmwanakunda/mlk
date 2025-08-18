@@ -100,7 +100,8 @@ export class ProjetUserComponent {
       ville:[''],
       rue:[''],
       postal:[''],
-      numero:['']
+      numero:[''],
+      coordonnees:[''],
     });
     this.threeFormGroup=this._formBuilder.group({
       budget:[''],
@@ -196,7 +197,7 @@ export class ProjetUserComponent {
      Object.assign(this.form2, this.secondFormGroup.value);
      Object.assign(this.form3, this.threeFormGroup.value)
 
-     
+
      formData.append("uploadfile", this.file);
      formData.append("projet", this.form1.projet);
      formData.append("contact", this.form1.contact);
@@ -209,6 +210,7 @@ export class ProjetUserComponent {
      formData.append("adresse", this.form2.adresse);
      formData.append("ville", this.form2.ville);
      formData.append("rue", this.form2.rue);
+     formData.append("coordonnees", this.form2.coordonnees);
      formData.append("postal", this.form2.postal);
      formData.append("budget", this.form3.budget);
      formData.append("devise", this.form3.devise);

@@ -110,8 +110,7 @@ export class UpdateProjetComponent implements OnInit {
       ville:[''],
       rue:[''],
       postal:[''],
-      latitude:[''],
-      longitude:[''],
+      coordonnees:[''],
     });
     this.threeFormGroup=this._formBuilder.group({
       budget:[''],
@@ -269,8 +268,7 @@ export class UpdateProjetComponent implements OnInit {
      formData.append("numero_offre", this.projet.numero_offre);
      formData.append("date_limite", this.projet.date_limite);
      formData.append("date_fin_contrat", this.projet.date_fin_contrat);
-     formData.append("latitude", this.projet.latitude);
-     formData.append("longitude", this.projet.longitude);
+     formData.append("coordonnees", this.projet.coordonnees);
 
 
      this.projetService.updateProjet(this.idProjet,formData).subscribe((res:any)=>{
