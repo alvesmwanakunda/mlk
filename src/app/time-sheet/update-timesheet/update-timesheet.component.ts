@@ -12,6 +12,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { TimeSheet } from 'src/app/shared/interfaces/timeSheet.model';
+import { ProjetsService } from 'src/app/shared/services/projets.service';
 
 
 
@@ -36,7 +37,7 @@ timesheet:any=[];
 timesheets:any=[];
 filteredTimes:any = [];
 timesheetsControl;
-fixedDate:any; 
+fixedDate:any;
 selected = 'jour';
 isFilter:boolean=false;
 isPresent:boolean=true;
@@ -45,6 +46,7 @@ displayedColumns:string[]=['date','debut','fin','project','user','action'];
 dataSource =new MatTableDataSource<TimeSheet>();
 @ViewChild(MatPaginator) paginator: MatPaginator;
 isUpdate:boolean=false;
+projets:any=[];
 
 constructor(
   private router: Router,
@@ -56,6 +58,8 @@ constructor(
   public dialog: MatDialog,
   private monthService: MonthService,
   private matPaginatorIntl:MatPaginatorIntl,
+  public projetService: ProjetsService
+
 ){
   this.route.params.subscribe((data:any)=>{
     this.idUser = data?.id;
@@ -70,7 +74,7 @@ constructor(
   this.updatetimesheetForm = new FormGroup({
     formArrayName: this.formBuilder.array([])
  })
-  
+
 }
 
 champ_validation={
@@ -88,6 +92,7 @@ ngOnInit(): void {
   //this.getAllTimeSheet();
   this.getAllTimeSheets();
   this.getUser();
+  this.getAllProjet();
   this.timesheetForm = new FormGroup({
     createdAt:new FormControl("",[Validators.required]),
     tache:new FormControl("",null),
@@ -102,7 +107,7 @@ ngOnInit(): void {
     startDate: new FormControl("",[Validators.required]),
     endDate: new FormControl("",null),
   })
-  
+
 }
 
 ngAfterViewInit(){
@@ -112,6 +117,14 @@ ngAfterViewInit(){
 getUser(){
   this.authService.getEmploye(this.idUser).subscribe((res:any)=>{
      this.user = res?.message;
+  },(error) => {
+    console.log("Erreur lors de la récupération des données", error);
+   })
+}
+
+getAllProjet(){
+  this.projetService.getAllProjet().subscribe((res:any)=>{
+     this.projets = res?.message;
   },(error) => {
     console.log("Erreur lors de la récupération des données", error);
    })
@@ -127,7 +140,7 @@ getAllTimeSheets(){
       hour:data?.heure,
       debut:data?.heureDebut,
       fin:data?.heureFin,
-      projet:data?.projet,
+      projet:data?.projet?.projet,
       createdAt:data?.createdAt,
       motifs:data?.motifs,
       types_deplacement:data?.types_deplacement,
@@ -157,7 +170,7 @@ getAllTimeSheets(){
         presence:data?.presence,
         deplacement:data?.deplacement
        }));
-       this.buildForm(res?.message);        
+       this.buildForm(res?.message);
      },(error) => {
       console.log("Erreur lors de la récupération des données", error);
      })
@@ -208,8 +221,8 @@ afterSaveTimesheet(data){
         types_deplacement:new FormControl(data?.types_deplacement, null),
         presence:new FormControl(data?.presence, null),
       })
-    );  
-    //console.log("ArrayName", controlArray);        
+    );
+    //console.log("ArrayName", controlArray);
   },(error) => {
    console.log("Erreur lors de la récupération des données", error);
   })
@@ -231,7 +244,7 @@ afterDeleteTimesheet(index){
     }));
     const controlArray = this.updatetimesheetForm.get('formArrayName') as FormArray;
     controlArray.removeAt(index);
-    //console.log("ArrayName", controlArray);        
+    //console.log("ArrayName", controlArray);
   },(error) => {
    console.log("Erreur lors de la récupération des données", error);
   })

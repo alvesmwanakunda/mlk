@@ -76,6 +76,8 @@ export class AgendaComponent implements OnInit {
   plannigs: Agendas[] = [];
   weekWithEvents: DayWithEvents[] = [];
   sortedEvents:any;
+  selectedDate: Date = new Date();
+
 
 
 
@@ -92,6 +94,38 @@ export class AgendaComponent implements OnInit {
     this.day = this.viewDate.getDate();
     this.currentDay = format(this.viewDate, 'EEEE', { locale: fr }); // Jour formaté en français
 
+  }
+
+  calculateWeekRange(date: Date): void {
+    const dayOfWeek = date.getDay(); // 0 (dimanche) à 6 (samedi)
+
+    // Début de semaine (lundi)
+    this.currentWeekStart = new Date(date);
+    this.currentWeekStart.setDate(date.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+    this.currentWeekStart.setHours(0, 0, 0, 0);
+
+    // Fin de semaine (dimanche)
+    this.currentWeekEnd = new Date(this.currentWeekStart);
+    this.currentWeekEnd.setDate(this.currentWeekStart.getDate() + 6);
+    this.currentWeekEnd.setHours(23, 59, 59, 999);
+  }
+
+
+
+
+  // Changer la date depuis mat-calendar
+  onDateSelected(date: Date) {
+
+    //this.viewDate = date;
+
+    if(this.isPlanning){
+       this.viewDate = date;
+    }else{
+      this.selectedDate = date;
+      this.calculateWeekRange(this.selectedDate);
+      this.generateWeek(this.sortedEvents);
+    }
+    //this.viewDate = date;
   }
 
   dayClicked({date, events}:{date:Date; events:CalendarEvent[]}):void{
@@ -209,6 +243,17 @@ export class AgendaComponent implements OnInit {
 
   openDialogDetailP(idAgenda,type){
     const dialogRef = this.dialog.open(DetailAgendaComponent,{data:{id:idAgenda,type:type},width:'40%'});
+    const instance = dialogRef.componentInstance;
+    instance.close.subscribe(()=> dialogRef.close());
+    instance.confirm.subscribe(()=>{
+        dialogRef.close();
+        this.getAllAgenda();
+    })
+  }
+
+   openDialogD(event:CalendarEvent){
+    this.agenda =event;
+    const dialogRef = this.dialog.open(DetailAgendaComponent,{data:{id:this.agenda._id},width:'40%'});
     const instance = dialogRef.componentInstance;
     instance.close.subscribe(()=> dialogRef.close());
     instance.confirm.subscribe(()=>{

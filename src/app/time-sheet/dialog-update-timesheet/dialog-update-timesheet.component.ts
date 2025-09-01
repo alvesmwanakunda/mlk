@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TimeSheet } from 'src/app/shared/interfaces/timeSheet.model';
 import { TimesheetService } from 'src/app/shared/services/timesheet.service';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ProjetsService } from 'src/app/shared/services/projets.service';
 
 
 
@@ -23,7 +24,8 @@ export class DialogUpdateTimesheetComponent implements OnInit {
   filteredTimes:any = [];
   createdAt:any;
   message:any;
-  
+  projets:any=[];
+
 
 
   constructor(
@@ -32,16 +34,26 @@ export class DialogUpdateTimesheetComponent implements OnInit {
     private formBuilder: FormBuilder,
     public dialogRef:MatDialogRef<DialogUpdateTimesheetComponent>,
     @Inject(MAT_DIALOG_DATA) public data:any,
+    public projetService: ProjetsService
   ){
 
   }
   ngOnInit(){
      this.getTimeSheet();
+     this.getAllProjet();
      this.filterForm = new FormGroup({
       startDate: new FormControl("",[Validators.required]),
       endDate: new FormControl("",null),
     })
   }
+
+  getAllProjet(){
+  this.projetService.getAllProjet().subscribe((res:any)=>{
+     this.projets = res?.message;
+  },(error) => {
+    console.log("Erreur lors de la récupération des données", error);
+   })
+}
 
   getTimeSheet(){
     this.timesheetService.getTimeSheet(this.data.id).subscribe((res:any)=>{
@@ -96,7 +108,7 @@ openSnackBar(message){
 
 
 
-  
+
 
 
 }

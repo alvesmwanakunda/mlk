@@ -43,7 +43,7 @@
                   <mat-label>Filtre</mat-label>
                   <mat-select [disabled]="disableSelect.value" (selectionChange)="isClickPlanning($event)">
                     <mat-option value="Planning">Planning</mat-option>
-                    <mat-option value="Jour" (click)="setView(CalendarView.Day)">Jour</mat-option>
+                    <!--<mat-option value="Jour" (click)="setView(CalendarView.Day)">Jour</mat-option>-->
                     <mat-option value="Semaine" (click)="setView(CalendarView.Week)">Semaine</mat-option>
                     <mat-option value="Mois" (click)="setView(CalendarView.Month)">Mois</mat-option>
                   </mat-select>
@@ -67,7 +67,7 @@
           </button>
         </div>
         <mat-card class="demo-inline-calendar-card">
-          <mat-calendar></mat-calendar>
+          <mat-calendar [selected]="viewDate" (selectedChange)="onDateSelected($event)"></mat-calendar>
         </mat-card>
        </div>
        <div class="col-9">
@@ -110,7 +110,7 @@
               >
               </mwl-calendar-week-view>
 
-              <mwl-calendar-day-view
+              <!--<mwl-calendar-day-view
               *ngSwitchCase="CalendarView.Day"
               [viewDate]="viewDate"
               [events]="events"
@@ -119,7 +119,7 @@
               (eventTimesChanged)="eventTimesChanged($event)"
               locale="fr"
               >
-              </mwl-calendar-day-view>
+              </mwl-calendar-day-view>-->
             </div>
           </mat-card-content>
         </mat-card>

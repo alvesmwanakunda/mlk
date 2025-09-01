@@ -10,6 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CountriesService } from 'src/app/shared/services/countries.service';
 import { MatDialog } from '@angular/material/dialog';
 import { formatDate } from '@angular/common';
+import { ProjetsService } from 'src/app/shared/services/projets.service';
 
 
 
@@ -31,6 +32,7 @@ isPresent:boolean=true;
 isDeplacement:boolean=true
 filterForm: FormGroup;
 months:any=[];
+projets:any=[];
 
 constructor(
   private matPaginatorIntl:MatPaginatorIntl,
@@ -42,6 +44,7 @@ constructor(
   private countrieService: CountriesService,
   private _snackBar:MatSnackBar,
   public dialog: MatDialog,
+  public projetService: ProjetsService
 ){
   this.route.params.subscribe((data:any)=>{
     this.idUser = data?.id
@@ -61,6 +64,7 @@ ngOnInit(): void {
   this.getAllTimeSheet();
   this.getUser();
   this.getMonth();
+  this.getAllProjet();
 
   this.filterForm = new FormGroup({
     startDate: new FormControl("",[Validators.required]),
@@ -99,6 +103,14 @@ ngAfterViewInit(): void {
 getUser(){
   this.authService.getEmploye(this.idUser).subscribe((res:any)=>{
      this.user = res?.message;
+  },(error) => {
+    console.log("Erreur lors de la récupération des données", error);
+   })
+}
+
+getAllProjet(){
+  this.projetService.getAllProjet().subscribe((res:any)=>{
+     this.projets = res?.message;
   },(error) => {
     console.log("Erreur lors de la récupération des données", error);
    })

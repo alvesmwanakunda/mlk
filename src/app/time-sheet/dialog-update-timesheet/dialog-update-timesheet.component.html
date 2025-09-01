@@ -31,7 +31,10 @@
                 <div class="col">
                     <mat-form-field class="example-full-width">
                         <mat-label>Projet</mat-label>
-                        <input matInput formControlName="projet" [ngModel]="timeSheet.projet">
+                       <!--<input matInput formControlName="projet" [ngModel]="timeSheet.projet">-->
+                       <mat-select matInput formControlName="projet">
+                          <mat-option *ngFor="let projet of projets" [value]="projet?._id">{{projet?.projet}}</mat-option>
+                       </mat-select>
                     </mat-form-field>
                 </div>
                 <div class="col">
@@ -104,6 +107,5 @@
 
      <button mat-button cdkFocusInitial (click)="onSubmit()" style=" background: #048a2e !important;color:#fff">Valider</button>
   </mat-dialog-actions>
-  
-  
-  
+
+

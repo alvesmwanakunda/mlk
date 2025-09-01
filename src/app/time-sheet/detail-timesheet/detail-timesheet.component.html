@@ -79,7 +79,10 @@
             <div class="col">
               <mat-form-field class="example-full-width">
                 <mat-label>Projet</mat-label>
-                <input matInput formControlName="projet">
+                <!--<input matInput formControlName="projet">-->
+                <mat-select matInput formControlName="projet">
+                  <mat-option *ngFor="let projet of projets" [value]="projet?._id">{{projet?.projet}}</mat-option>
+               </mat-select>
               </mat-form-field>
             </div>
             <div class="col">
@@ -139,7 +142,7 @@
                    <mat-option value="Journée">Journée</mat-option>
                 </mat-select>
               </mat-form-field>
-            </div>  
+            </div>
           </div>
         </form>
        </div>
@@ -151,40 +154,40 @@
         </div>
         <table mat-table [dataSource]="dataSource">
           <!-- Position Column -->
-    
+
            <!-- Symbol Column -->
            <ng-container matColumnDef="month">
             <th mat-header-cell *matHeaderCellDef>Mois</th>
             <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"> {{element?.month}}</td>
           </ng-container>
-    
+
            <!-- Weight Column -->
            <ng-container matColumnDef="year">
             <th mat-header-cell *matHeaderCellDef>Année</th>
             <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.year}}  </td>
           </ng-container>
-    
+
           <!-- Name Column -->
           <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef>Voir</th>
             <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">
               <button mat-mini-fab color="primary" matTooltip="Détail" (click)="getTimesheet(user?._id, element?.monthInt, element?.year)">
-                <mat-icon>visibility</mat-icon> 
+                <mat-icon>visibility</mat-icon>
               </button>
             </td>
           </ng-container>
-    
-    
+
+
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-    
+
         <mat-paginator [pageSizeOptions]="[10, 20]"
                       showFirstLastButtons
                       aria-label="Select page of periodic elements"
                       >
         </mat-paginator>
-    
-    
+
+
     </div>
 </app-navbar>

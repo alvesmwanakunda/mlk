@@ -50,6 +50,7 @@ export class DetailAgendaComponent implements OnInit {
     ){ }
 
   ngOnInit(){
+    console.log("Data", this.data);
     this.getAgenda();
     this.getAllEmployes();
   }
@@ -65,6 +66,7 @@ export class DetailAgendaComponent implements OnInit {
   getAgenda(){
 
         this.agendaService.getAgendaWeb(this.data.id).subscribe((res:any)=>{
+          console.log("Agenda", res.message);
           this.agenda = res.message;
           this.isAllDays = this.agenda?.isDay;
 
