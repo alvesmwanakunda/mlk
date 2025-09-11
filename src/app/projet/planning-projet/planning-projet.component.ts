@@ -134,7 +134,7 @@ export class PlanningProjetComponent implements OnInit {
           _id:data._id,
           start:new Date(data.start),
           end:new Date(data.end),
-          title: data?.isDay 
+          title: data?.isDay
                  ? `${data.title}, ${data.heure_start}` // Si allDay est true, ajoute l'heure de start
                  : `${data.title}, ${data.heure_start} à ${data?.heure_end}`, // Sinon, inclut les heures
           color:{primary:'#fff', secondary:data.color},
@@ -208,7 +208,7 @@ export class PlanningProjetComponent implements OnInit {
 
   openDialogDetail(event:CalendarEvent){
     this.agenda =event;
-    const dialogRef = this.dialog.open(DetailAgendaComponent,{data:{id:this.agenda._id,type:"planning"},width:'40%'});
+    const dialogRef = this.dialog.open(DetailAgendaComponent,{data:{id:this.agenda._id},width:'40%'});
     const instance = dialogRef.componentInstance;
     instance.close.subscribe(()=> dialogRef.close());
     instance.confirm.subscribe(()=>{
@@ -248,11 +248,11 @@ export class PlanningProjetComponent implements OnInit {
 
   prepareEvents(events: any[]): { date: string; events: DisplayEvent[] }[] {
     const tempEvents: { [key: string]: DisplayEvent[] } = {};
-  
+
     events.forEach(event => {
       const startDate = new Date(event?.start);
       const endDate = new Date(event?.end);
-  
+
       if (event.isDay) {
         let currentDate = new Date(startDate);
         while (currentDate <= endDate) {
@@ -282,7 +282,7 @@ export class PlanningProjetComponent implements OnInit {
     });
 
     // Regrouper les événements par semaine
-    
+
     this.sortedEvents = Object.keys(tempEvents)
       .sort()
       .map(date => ({
@@ -294,18 +294,18 @@ export class PlanningProjetComponent implements OnInit {
     return this.sortedEvents;
   }
 
- 
+
   generateWeek(preparedEvents: { date: string; events: DisplayEvent[] }[]): void {
 
     console.log("ICI ALVES", preparedEvents);
     const currentWeek: DayWithEvents[] = [];
-  
+
     let currentDate = new Date(this.currentWeekStart);
     while (currentDate <= this.currentWeekEnd) {
       const dateKey = currentDate.toISOString().split('T')[0];
       const dayEvents = preparedEvents.find(event => event.date === dateKey);
       console.log("dayEvents", dayEvents);
-  
+
       currentWeek.push({
         date: new Date(currentDate),
         events:[
@@ -315,10 +315,10 @@ export class PlanningProjetComponent implements OnInit {
           }
         ]
       });
-  
+
       currentDate.setDate(currentDate.getDate() + 1);
     }
-  
+
     this.weekWithEvents = currentWeek;
     console.log("week", this.weekWithEvents);
   }
@@ -350,20 +350,20 @@ export class PlanningProjetComponent implements OnInit {
       // Revenir à la semaine précédente
       this.currentWeekStart.setDate(this.currentWeekStart.getDate() + 7);
       this.currentWeekEnd.setDate(this.currentWeekEnd.getDate() + 7);
-  
+
       // Générer la semaine et recharger les événements pour la nouvelle plage
       this.generateWeek(this.sortedEvents);
     } else {
       console.error('Les dates de la semaine actuelle ne sont pas définies.');
     }
   }
-  
+
   previousWeek() {
     if (this.currentWeekStart && this.currentWeekEnd) {
       // Revenir à la semaine précédente
       this.currentWeekStart.setDate(this.currentWeekStart.getDate() - 7);
       this.currentWeekEnd.setDate(this.currentWeekEnd.getDate() - 7);
-  
+
       // Générer la semaine et recharger les événements pour la nouvelle plage
       this.generateWeek(this.sortedEvents);
     } else {

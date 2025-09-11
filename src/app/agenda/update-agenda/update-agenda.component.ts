@@ -8,6 +8,8 @@ import { AgendaComponent } from '../agenda.component';
 import { PlanningProjetComponent } from 'src/app/projet/planning-projet/planning-projet.component';
 import { DatePipe } from '@angular/common';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { dateRangeValidator } from 'src/app/shared/validators/date-range.validator';
+
 
 @Component({
   selector: 'app-update-agenda',
@@ -67,7 +69,7 @@ export class UpdateAgendaComponent implements OnInit {
               end:[this.agenda.end,null],
               color:[this.agenda.color,null],
               assigne: [this.agenda.assigne, null],
-            });
+            },{ validators: dateRangeValidator() });
           }
       },(error)=>{
         console.log("Erreur lors de la récupération des données", error);

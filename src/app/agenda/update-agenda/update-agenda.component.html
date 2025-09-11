@@ -38,6 +38,9 @@
           </mat-form-field>
           <p>{{end}}</p>
         </div>
+          <div *ngIf="agendaFormGroup.errors?.dateRangeInvalid" style="color: rgb(133, 18, 18);">
+          ⚠ La date de début doit être inférieure à la date de fin.
+          </div>
       </div><!--div-->
       <div style="margin-bottom: 8px;">
         <mat-form-field>
@@ -51,5 +54,5 @@
 </mat-dialog-content>
 <mat-dialog-actions align="center">
    <button mat-button mat-dialog-close style="margin-right: 10px;">Fermer</button>
-   <button mat-button cdkFocusInitial style=" background: #0829cf !important;color:#fff" (click)="updateAgenda()">Valider</button>
+   <button mat-button cdkFocusInitial style=" background: #0829cf !important;color:#fff" (click)="updateAgenda()" [disabled]="agendaFormGroup.invalid">Valider</button>
 </mat-dialog-actions>

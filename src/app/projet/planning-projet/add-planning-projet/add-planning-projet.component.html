@@ -12,7 +12,7 @@
       <!--type="datetime-local"-->
       <div class="row">
         <mat-label style="margin-bottom: 10px;">Date Événement</mat-label>
-        
+
         <div class="col">
           <mat-form-field class="example-full-width" appearance="outline">
             <!--<input matInput   formControlName="start">-->
@@ -27,7 +27,7 @@
           <mat-form-field class="example-full" appearance="outline">
             <input matInput type="time"  formControlName="heure_start">
           </mat-form-field>
-          - 
+          -
           <mat-form-field class="example-full" appearance="outline">
             <input matInput type="time"  formControlName="heure_end">
           </mat-form-field>
@@ -43,17 +43,20 @@
           </mat-form-field>
         </div>
       </div><!--div-->
+      <div *ngIf="agendaFormGroup.errors?.dateRangeInvalid" style="color: rgb(133, 18, 18);">
+        ⚠ La date de début doit être inférieure à la date de fin.
+      </div>
       <div>
         <mat-checkbox formControlName="isDay" [(ngModel)]="isAllDays" (change)="checkIsDay($event)">Toute la journée</mat-checkbox>
         <mat-form-field class="example-full-color" appearance="outline" style="float:right;">
           <input matInput type="color" formControlName="color" [(ngModel)]="color">
         </mat-form-field>
       </div>
-    
+
     </form>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions align="center">
    <button mat-flat-button mat-dialog-close style="margin-right: 10px;">Fermer</button>
-   <button mat-flat-button cdkFocusInitial color="primary" (click)="addAgenda()">Valider</button>
+   <button mat-flat-button cdkFocusInitial color="primary" (click)="addAgenda()" [disabled]="agendaFormGroup.invalid">Valider</button>
 </mat-dialog-actions>

@@ -5,6 +5,8 @@ import { AgendaService } from 'src/app/shared/services/agenda.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PlanningProjetComponent } from '../planning-projet.component';
+import { dateRangeValidator } from 'src/app/shared/validators/date-range.validator';
+
 
 @Component({
   selector: 'app-add-planning-projet',
@@ -43,7 +45,7 @@ export class AddPlanningProjetComponent implements OnInit {
       isDay:[],
       end:[''],
       color:[''],
-    });
+    },{ validators: dateRangeValidator() });
   }
 
   ngOnInit(){

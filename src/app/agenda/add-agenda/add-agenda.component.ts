@@ -6,6 +6,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AgendaComponent } from '../agenda.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { dateRangeValidator } from 'src/app/shared/validators/date-range.validator';
 
 @Component({
   selector: 'app-add-agenda',
@@ -46,7 +47,7 @@ export class AddAgendaComponent implements OnInit {
       end:[''],
       color:[''],
       assigne: [[]],
-    });
+    },{ validators: dateRangeValidator() });
   }
 
   ngOnInit(){

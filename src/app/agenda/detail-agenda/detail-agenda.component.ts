@@ -9,6 +9,8 @@ import { AgendaComponent } from '../agenda.component';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { dateRangeValidator } from 'src/app/shared/validators/date-range.validator';
+
 
 
 
@@ -85,7 +87,7 @@ export class DetailAgendaComponent implements OnInit {
               heure_end:[this.agenda.heure_end,null],
               assigne: [this.agenda.assigne, null],
 
-            });
+            },{ validators: dateRangeValidator() });
           }
           console.log("Form======>", this.agendaFormGroup)
 

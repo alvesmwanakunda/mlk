@@ -199,7 +199,7 @@ export class AgendaComponent implements OnInit {
   }
 
   openDialogAgenda(){
-    const dialogRef = this.dialog.open(AddAgendaComponent,{width:'50%',height:'70%'});
+    const dialogRef = this.dialog.open(AddAgendaComponent,{width:'60%',height:'70%'});
     dialogRef.afterClosed().subscribe((result:any)=>{
        if(result){
         this.getAllAgenda();
@@ -210,7 +210,7 @@ export class AgendaComponent implements OnInit {
   openDialogUpadte(event:CalendarEvent){
     console.log("Evenements", event);
     this.agenda =event;
-    const dialogRef = this.dialog.open(UpdateAgendaComponent,{data:{id:this.agenda._id,type:"agenda"},width:'50%',height:'70%'});
+    const dialogRef = this.dialog.open(UpdateAgendaComponent,{data:{id:this.agenda._id,type:"agenda"},width:'60%',height:'70%'});
        const instance = dialogRef.componentInstance;
        instance.close.subscribe(()=> dialogRef.close());
        instance.confirm.subscribe(()=>{
