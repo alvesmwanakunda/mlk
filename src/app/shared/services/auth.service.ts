@@ -79,6 +79,10 @@ export class AuthService {
 
   // Employées
 
+  listEmployesAndAdmins(){
+    return this.httpClient.get(`${environment.BASE_API_URL}/employe/all`,);
+  }
+
   listEmployes(){
     return this.httpClient.get(`${environment.BASE_API_URL}/employe`,);
   }

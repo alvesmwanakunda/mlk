@@ -301,7 +301,8 @@ export class UpdateTachesComponent implements OnInit {
   }
 
    getAllEmployes(){
-         this.authService.listEmployes().subscribe((res:any)=>{
+        //  this.authService.listEmployes().subscribe((res:any)=>{
+         this.authService.listEmployesAndAdmins().subscribe((res:any)=>{
            this.contacts = res?.message;
          },(error) => {
           console.log("Erreur lors de la récupération des données", error);

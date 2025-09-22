@@ -31,7 +31,7 @@ export class TachesService {
 
   // Times
 
-    public addTime(data, idTache){
+  public addTime(data, idTache){
     return this.httpClient.post(`${environment.BASE_API_URL}/time/taches/${idTache}`, data)
   }
 

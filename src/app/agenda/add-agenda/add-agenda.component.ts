@@ -124,7 +124,8 @@ export class AddAgendaComponent implements OnInit {
   // User
 
   getAllEmployes(){
-         this.authService.listEmployes().subscribe((res:any)=>{
+        //  this.authService.listEmployes().subscribe((res:any)=>{
+         this.authService.listEmployesAndAdmins().subscribe((res:any)=>{
             this.employees = res?.message;
          },(error) => {
           console.log("Erreur lors de la récupération des données", error);
