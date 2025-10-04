@@ -51,8 +51,8 @@ export class AddAgendaComponent implements OnInit {
   }
 
   ngOnInit(){
-     this.getDateandHour();
-     this.getAllEmployes();
+    this.getDateandHour();
+    this.getAllEmployes();
   }
 
 

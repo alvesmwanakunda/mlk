@@ -87,6 +87,7 @@ export class AgendaComponent implements OnInit {
   ){
     this.user = JSON.parse(localStorage.getItem('user'));
     this.initializeCurrentWeek();
+    console.log("FUSEAU", new Date().getTimezoneOffset() );
   }
 
   ngOnInit() {
