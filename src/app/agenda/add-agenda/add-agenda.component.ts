@@ -100,13 +100,13 @@ export class AddAgendaComponent implements OnInit {
      console.log('End', end);
 
       let myTimezoneOffset = - new Date().getTimezoneOffset();
-      if (myTimezoneOffset > 0){
+      // if (myTimezoneOffset > 0){
         start.setMinutes(start.getMinutes() - myTimezoneOffset);
         end.setMinutes(end.getMinutes() - myTimezoneOffset);
-      }else{
-        start.setMinutes(start.getMinutes() + myTimezoneOffset);
-        end.setMinutes(end.getMinutes() + myTimezoneOffset);
-      }
+      // }else{
+      //   start.setMinutes(start.getMinutes() + myTimezoneOffset);
+      //   end.setMinutes(end.getMinutes() + myTimezoneOffset);
+      // }
       let heure_start = start.getHours().toString().padStart(2, '0') + ':' + start.getMinutes().toString().padStart(2, '0');
       let heure_end = end.getHours().toString().padStart(2, '0') + ':' + end.getMinutes().toString().padStart(2, '0');
       

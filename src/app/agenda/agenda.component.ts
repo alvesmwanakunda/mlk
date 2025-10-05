@@ -167,13 +167,13 @@ export class AgendaComponent implements OnInit {
             let heure_start = agenda?.heure_start;
             let heure_end = agenda?.heure_end;
             let myTimezoneOffset = - new Date().getTimezoneOffset();
-            if (myTimezoneOffset > 0){
-              start.setMinutes(start.getMinutes() + myTimezoneOffset);
-              end.setMinutes(end.getMinutes() + myTimezoneOffset);
-            }else{
-              start.setMinutes(start.getMinutes() - myTimezoneOffset);
-              end.setMinutes(end.getMinutes() - myTimezoneOffset);
-            }
+            // if (myTimezoneOffset > 0){
+            start.setMinutes(start.getMinutes() + myTimezoneOffset);
+            end.setMinutes(end.getMinutes() + myTimezoneOffset);
+            // }else{
+            //   start.setMinutes(start.getMinutes() - myTimezoneOffset);
+            //   end.setMinutes(end.getMinutes() - myTimezoneOffset);
+            // }
             heure_start = start.getHours().toString().padStart(2, '0') + ':' + start.getMinutes().toString().padStart(2, '0');
             heure_end = end.getHours().toString().padStart(2, '0') + ':' + end.getMinutes().toString().padStart(2, '0');
             

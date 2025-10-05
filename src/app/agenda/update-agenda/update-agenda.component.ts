@@ -65,13 +65,13 @@ export class UpdateAgendaComponent implements OnInit {
             let heure_start = res.message.heure_start;
             let heure_end = res.message.heure_end;
             let myTimezoneOffset = - new Date().getTimezoneOffset();
-            if (myTimezoneOffset > 0){
-              start.setMinutes(start.getMinutes() + myTimezoneOffset);
-              end.setMinutes(end.getMinutes() + myTimezoneOffset);
-            }else{
-              start.setMinutes(start.getMinutes() - myTimezoneOffset);
-              end.setMinutes(end.getMinutes() - myTimezoneOffset);
-            }
+            // if (myTimezoneOffset > 0){
+            start.setMinutes(start.getMinutes() + myTimezoneOffset);
+            end.setMinutes(end.getMinutes() + myTimezoneOffset);
+            // }else{
+            //   start.setMinutes(start.getMinutes() - myTimezoneOffset);
+            //   end.setMinutes(end.getMinutes() - myTimezoneOffset);
+            // }
             heure_start = start.getHours().toString().padStart(2, '0') + ':' + start.getMinutes().toString().padStart(2, '0');
             heure_end = end.getHours().toString().padStart(2, '0') + ':' + end.getMinutes().toString().padStart(2, '0');
             
@@ -109,13 +109,13 @@ export class UpdateAgendaComponent implements OnInit {
             let heure_start = res.message.heure_start;
             let heure_end = res.message.heure_end;
             let myTimezoneOffset = - new Date().getTimezoneOffset();
-            if (myTimezoneOffset > 0){
-              start.setMinutes(start.getMinutes() + myTimezoneOffset);
-              end.setMinutes(end.getMinutes() + myTimezoneOffset);
-            }else{
-              start.setMinutes(start.getMinutes() - myTimezoneOffset);
-              end.setMinutes(end.getMinutes() - myTimezoneOffset);
-            }
+            // if (myTimezoneOffset > 0){
+            start.setMinutes(start.getMinutes() + myTimezoneOffset);
+            end.setMinutes(end.getMinutes() + myTimezoneOffset);
+            // }else{
+            //   start.setMinutes(start.getMinutes() - myTimezoneOffset);
+            //   end.setMinutes(end.getMinutes() - myTimezoneOffset);
+            // }
             heure_start = start.getHours().toString().padStart(2, '0') + ':' + start.getMinutes().toString().padStart(2, '0');
             heure_end = end.getHours().toString().padStart(2, '0') + ':' + end.getMinutes().toString().padStart(2, '0');
             
@@ -154,13 +154,13 @@ export class UpdateAgendaComponent implements OnInit {
       let end = new Date(format(this.agenda.start, 'yyyy-MM-dd')+'T'+this.agenda.heure_end);
      
       let myTimezoneOffset = - new Date().getTimezoneOffset();
-      if (myTimezoneOffset > 0){
-        start.setMinutes(start.getMinutes() - myTimezoneOffset);
-        end.setMinutes(end.getMinutes() - myTimezoneOffset);
-      }else{
-        start.setMinutes(start.getMinutes() + myTimezoneOffset);
-        end.setMinutes(end.getMinutes() + myTimezoneOffset);
-      }
+      // if (myTimezoneOffset > 0){
+      start.setMinutes(start.getMinutes() - myTimezoneOffset);
+      end.setMinutes(end.getMinutes() - myTimezoneOffset);
+      // }else{
+      //   start.setMinutes(start.getMinutes() + myTimezoneOffset);
+      //   end.setMinutes(end.getMinutes() + myTimezoneOffset);
+      // }
       let heure_start = start.getHours().toString().padStart(2, '0') + ':' + start.getMinutes().toString().padStart(2, '0');
       let heure_end = end.getHours().toString().padStart(2, '0') + ':' + end.getMinutes().toString().padStart(2, '0');
       

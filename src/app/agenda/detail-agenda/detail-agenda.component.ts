@@ -3,9 +3,6 @@ import { AgendaService } from 'src/app/shared/services/agenda.service';
 import { Agendas } from 'src/app/shared/interfaces/agendas.model';
 import { DatePipe } from '@angular/common';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { UpdateAgendaComponent } from '../update-agenda/update-agenda.component';
-import { DeleteAgendaComponent } from '../delete-agenda/delete-agenda.component';
-import { AgendaComponent } from '../agenda.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { dateRangeValidator } from 'src/app/shared/validators/date-range.validator';
@@ -80,13 +77,13 @@ export class DetailAgendaComponent implements OnInit {
             let heure_start = res.message.heure_start;
             let heure_end = res.message.heure_end;
             let myTimezoneOffset = - new Date().getTimezoneOffset();
-            if (myTimezoneOffset > 0){
-              start.setMinutes(start.getMinutes() + myTimezoneOffset);
-              end.setMinutes(end.getMinutes() + myTimezoneOffset);
-            }else{
-              start.setMinutes(start.getMinutes() - myTimezoneOffset);
-              end.setMinutes(end.getMinutes() - myTimezoneOffset);
-            }
+            // if (myTimezoneOffset > 0){
+            start.setMinutes(start.getMinutes() + myTimezoneOffset);
+            end.setMinutes(end.getMinutes() + myTimezoneOffset);
+            // }else{
+            //   start.setMinutes(start.getMinutes() - myTimezoneOffset);
+            //   end.setMinutes(end.getMinutes() - myTimezoneOffset);
+            // }
             heure_start = start.getHours().toString().padStart(2, '0') + ':' + start.getMinutes().toString().padStart(2, '0');
             heure_end = end.getHours().toString().padStart(2, '0') + ':' + end.getMinutes().toString().padStart(2, '0');
             
@@ -181,13 +178,13 @@ export class DetailAgendaComponent implements OnInit {
       let end = new Date(format(values.start, 'yyyy-MM-dd')+'T'+values.heure_end);
      
       let myTimezoneOffset = - new Date().getTimezoneOffset();
-      if (myTimezoneOffset > 0){
-        start.setMinutes(start.getMinutes() - myTimezoneOffset);
-        end.setMinutes(end.getMinutes() - myTimezoneOffset);
-      }else{
-        start.setMinutes(start.getMinutes() + myTimezoneOffset);
-        end.setMinutes(end.getMinutes() + myTimezoneOffset);
-      }
+      // if (myTimezoneOffset > 0){
+      start.setMinutes(start.getMinutes() - myTimezoneOffset);
+      end.setMinutes(end.getMinutes() - myTimezoneOffset);
+      // }else{
+      //   start.setMinutes(start.getMinutes() + myTimezoneOffset);
+      //   end.setMinutes(end.getMinutes() + myTimezoneOffset);
+      // }
       let heure_start = start.getHours().toString().padStart(2, '0') + ':' + start.getMinutes().toString().padStart(2, '0');
       let heure_end = end.getHours().toString().padStart(2, '0') + ':' + end.getMinutes().toString().padStart(2, '0');
       
