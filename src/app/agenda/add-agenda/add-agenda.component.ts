@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AgendaComponent } from '../agenda.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { dateRangeValidator } from 'src/app/shared/validators/date-range.validator';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-add-agenda',
@@ -32,7 +33,7 @@ export class AddAgendaComponent implements OnInit {
   }
 
   constructor(
-    private  _formBuilder:FormBuilder,
+    private _formBuilder: FormBuilder,
     private agendaService:AgendaService,
     private _snackBar:MatSnackBar,
     public dialogRef:MatDialogRef<AgendaComponent>,
@@ -88,17 +89,45 @@ export class AddAgendaComponent implements OnInit {
   }
 
   addAgenda():void{
-       this.agenda = this.agendaFormGroup.value;
-       console.log("Agenda", this.agenda);
-       this.agendaService.addAgenda(this.agenda).subscribe((res:any)=>{
-         this.message='Événement a été ajouté avec succès';
-         this.openSnackBar(this.message);
-         this.dialogRef.close(res)
-       },(error)=>{
-         this.message="Une erreur s'est produite veuillez réessayer.";
-         this.openSnackBar(this.message);
-         console.log(error);
-       })
+    let values = this.agendaFormGroup.value;
+    console.log("Values Depart", values);
+    values.timeZoneOffset = - new Date().getTimezoneOffset();
+    if (values.isDay == false){
+       
+      let start = new Date(format(values.start, 'yyyy-MM-dd')+'T'+values.heure_start);
+      let end = new Date(format(values.start, 'yyyy-MM-dd')+'T'+values.heure_end);
+     console.log('Start', start);
+     console.log('End', end);
+
+      let myTimezoneOffset = - new Date().getTimezoneOffset();
+      if (myTimezoneOffset > 0){
+        start.setMinutes(start.getMinutes() - myTimezoneOffset);
+        end.setMinutes(end.getMinutes() - myTimezoneOffset);
+      }else{
+        start.setMinutes(start.getMinutes() + myTimezoneOffset);
+        end.setMinutes(end.getMinutes() + myTimezoneOffset);
+      }
+      let heure_start = start.getHours().toString().padStart(2, '0') + ':' + start.getMinutes().toString().padStart(2, '0');
+      let heure_end = end.getHours().toString().padStart(2, '0') + ':' + end.getMinutes().toString().padStart(2, '0');
+      
+      values.heure_start = heure_start;
+      values.heure_end = heure_end;
+      values.start = format(start, 'yyyy-MM-dd');
+      values.end = format(end, 'yyyy-MM-dd');
+    }
+    console.log("Values", values);
+    this.agenda = values;
+    console.log("Agenda", this.agenda);
+
+    this.agendaService.addAgenda(values).subscribe((res:any)=>{
+      this.message='Événement a été ajouté avec succès';
+      this.openSnackBar(this.message);
+      this.dialogRef.close(res)
+    },(error)=>{
+      this.message="Une erreur s'est produite veuillez réessayer.";
+      this.openSnackBar(this.message);
+      console.log(error);
+    })
    }
 
    openSnackBar(message){

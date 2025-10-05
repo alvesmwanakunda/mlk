@@ -9,6 +9,7 @@ import { PlanningProjetComponent } from 'src/app/projet/planning-projet/planning
 import { DatePipe } from '@angular/common';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { dateRangeValidator } from 'src/app/shared/validators/date-range.validator';
+import { format } from 'date-fns';
 
 
 @Component({
@@ -31,7 +32,7 @@ export class UpdateAgendaComponent implements OnInit {
 
 
   constructor(
-    private  _formBuilder:FormBuilder,
+    private readonly _formBuilder:FormBuilder,
     private agendaService:AgendaService,
     private _snackBar:MatSnackBar,
     private authService: AuthService,
@@ -57,9 +58,32 @@ export class UpdateAgendaComponent implements OnInit {
     if(this.data.type=="agenda"){
         this.agendaService.getAgenda(this.data.id).subscribe((res:any)=>{
           this.agenda = res.message;
+
+          let start = new Date(res.message.start);
+          let end = new Date(res.message.end);
+          if (res.message.isDay == false && res.message.timeZoneOffset != null ){
+            let heure_start = res.message.heure_start;
+            let heure_end = res.message.heure_end;
+            let myTimezoneOffset = - new Date().getTimezoneOffset();
+            if (myTimezoneOffset > 0){
+              start.setMinutes(start.getMinutes() + myTimezoneOffset);
+              end.setMinutes(end.getMinutes() + myTimezoneOffset);
+            }else{
+              start.setMinutes(start.getMinutes() - myTimezoneOffset);
+              end.setMinutes(end.getMinutes() - myTimezoneOffset);
+            }
+            heure_start = start.getHours().toString().padStart(2, '0') + ':' + start.getMinutes().toString().padStart(2, '0');
+            heure_end = end.getHours().toString().padStart(2, '0') + ':' + end.getMinutes().toString().padStart(2, '0');
+            
+            this.agenda = {... res.message, start:start.toString(), end:end.toString(), heure_start:heure_start, heure_end:heure_end};
+          }
+
+
           if(res.message.start || res.message.end){
-            this.start = this.datePipe.transform(res.message.start, 'short');
-            this.end = this.datePipe.transform(res.message.end, 'short');
+            // this.start = this.datePipe.transform(res.message.start, 'short');
+            // this.end = this.datePipe.transform(res.message.end, 'short');
+            this.start = this.datePipe.transform(start, 'short');
+            this.end = this.datePipe.transform(end, 'short');
             console.log("start", this.start);
           }
           if(this.agenda){
@@ -78,9 +102,32 @@ export class UpdateAgendaComponent implements OnInit {
     }else{
         this.agendaService.getAgendaProjet(this.data.id).subscribe((res:any)=>{
           this.agenda = res.message;
+
+          let start = new Date(res.message.start);
+          let end = new Date(res.message.end);
+          if (res.message.isDay == false && res.message.timeZoneOffset != null ){
+            let heure_start = res.message.heure_start;
+            let heure_end = res.message.heure_end;
+            let myTimezoneOffset = - new Date().getTimezoneOffset();
+            if (myTimezoneOffset > 0){
+              start.setMinutes(start.getMinutes() + myTimezoneOffset);
+              end.setMinutes(end.getMinutes() + myTimezoneOffset);
+            }else{
+              start.setMinutes(start.getMinutes() - myTimezoneOffset);
+              end.setMinutes(end.getMinutes() - myTimezoneOffset);
+            }
+            heure_start = start.getHours().toString().padStart(2, '0') + ':' + start.getMinutes().toString().padStart(2, '0');
+            heure_end = end.getHours().toString().padStart(2, '0') + ':' + end.getMinutes().toString().padStart(2, '0');
+            
+            this.agenda = {... res.message, start:start.toString(), end:end.toString(), heure_start:heure_start, heure_end:heure_end};
+          }
+
+
           if(res.message.start || res.message.end){
-            this.start = this.datePipe.transform(res.message.start, 'short');
-            this.end = this.datePipe.transform(res.message.end, 'short');
+            // this.start = this.datePipe.transform(res.message.start, 'short');
+            // this.end = this.datePipe.transform(res.message.end, 'short');
+            this.start = this.datePipe.transform(start, 'short');
+            this.end = this.datePipe.transform(end, 'short');
             console.log("start", this.start);
           }
           if(this.agenda){
@@ -100,6 +147,30 @@ export class UpdateAgendaComponent implements OnInit {
   }
 
   updateAgenda():void{
+    this.agenda.timeZoneOffset = - new Date().getTimezoneOffset();// Enregister le timeZoneOffset
+
+    if (this.agenda.isDay == false){
+      let start = new Date(format(this.agenda.start, 'yyyy-MM-dd')+'T'+this.agenda.heure_start);
+      let end = new Date(format(this.agenda.start, 'yyyy-MM-dd')+'T'+this.agenda.heure_end);
+     
+      let myTimezoneOffset = - new Date().getTimezoneOffset();
+      if (myTimezoneOffset > 0){
+        start.setMinutes(start.getMinutes() - myTimezoneOffset);
+        end.setMinutes(end.getMinutes() - myTimezoneOffset);
+      }else{
+        start.setMinutes(start.getMinutes() + myTimezoneOffset);
+        end.setMinutes(end.getMinutes() + myTimezoneOffset);
+      }
+      let heure_start = start.getHours().toString().padStart(2, '0') + ':' + start.getMinutes().toString().padStart(2, '0');
+      let heure_end = end.getHours().toString().padStart(2, '0') + ':' + end.getMinutes().toString().padStart(2, '0');
+      
+      this.agenda.heure_start = heure_start;
+      this.agenda.heure_end = heure_end;
+      this.agenda.start = start;
+      this.agenda.end = end;
+    }
+
+    
     if(this.data.type=="agenda"){
       this.agendaService.updateAgenda(this.data.id,this.agenda).subscribe((res:any)=>{
         this.message='Événement a été modifié avec succès';

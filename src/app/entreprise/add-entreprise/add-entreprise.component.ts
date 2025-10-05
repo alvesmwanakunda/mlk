@@ -3,8 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 import { EntreprisesService } from 'src/app/shared/services/entreprises.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { CustomValidators } from "ng2-validation";
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { startWith, map, Observable } from 'rxjs';
 import { CountriesService } from 'src/app/shared/services/countries.service';
 import { SearchEntrepriseComponent } from '../search-entreprise/search-entreprise.component';
@@ -46,7 +45,6 @@ export class AddEntrepriseComponent implements OnInit {
 
 
   constructor(
-    private _formBuilder:FormBuilder,
     private _snackBar:MatSnackBar,
     private countryService:CountriesService,
     private router: Router,

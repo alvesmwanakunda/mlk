@@ -9,4 +9,5 @@ export interface Agendas {
   heure_end:string;
   isDay:boolean;
   assigne:[];
+  timeZoneOffset?:number;
 }

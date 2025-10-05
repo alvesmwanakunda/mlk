@@ -6,10 +6,11 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dial
 import { UpdateAgendaComponent } from '../update-agenda/update-agenda.component';
 import { DeleteAgendaComponent } from '../delete-agenda/delete-agenda.component';
 import { AgendaComponent } from '../agenda.component';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { dateRangeValidator } from 'src/app/shared/validators/date-range.validator';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { format } from 'date-fns';
 
 
 
@@ -19,6 +20,7 @@ import { dateRangeValidator } from 'src/app/shared/validators/date-range.validat
 
 @Component({
   selector: 'app-detail-agenda',
+  standalone: false,
   templateUrl: './detail-agenda.component.html',
   styleUrls: ['./detail-agenda.component.scss']
 })
@@ -72,9 +74,30 @@ export class DetailAgendaComponent implements OnInit {
           this.agenda = res.message;
           this.isAllDays = this.agenda?.isDay;
 
+          let start = new Date(res.message.start+'T'+res.message.heure_start);
+          let end = new Date(res.message.end+'T'+res.message.heure_end);
+          if (res.message.isDay == false && res.message.timeZoneOffset != null ){
+            let heure_start = res.message.heure_start;
+            let heure_end = res.message.heure_end;
+            let myTimezoneOffset = - new Date().getTimezoneOffset();
+            if (myTimezoneOffset > 0){
+              start.setMinutes(start.getMinutes() + myTimezoneOffset);
+              end.setMinutes(end.getMinutes() + myTimezoneOffset);
+            }else{
+              start.setMinutes(start.getMinutes() - myTimezoneOffset);
+              end.setMinutes(end.getMinutes() - myTimezoneOffset);
+            }
+            heure_start = start.getHours().toString().padStart(2, '0') + ':' + start.getMinutes().toString().padStart(2, '0');
+            heure_end = end.getHours().toString().padStart(2, '0') + ':' + end.getMinutes().toString().padStart(2, '0');
+            
+            this.agenda = {... res.message, start: format(start, 'yyyy-MM-dd'), end:format(end, 'yyyy-MM-dd'), heure_start:heure_start, heure_end:heure_end};
+          }
+
           if(res.message.start || res.message.end){
-            this.start = this.datePipe.transform(res.message.start, 'short');
-            this.end = this.datePipe.transform(res.message.end, 'short');
+            // this.start = this.datePipe.transform(res.message.start, 'short');
+            // this.end = this.datePipe.transform(res.message.end, 'short');
+            this.start = this.datePipe.transform(format(start, 'yyyy-MM-dd'), 'short');
+            this.end = this.datePipe.transform(format(end, 'yyyy-MM-dd'), 'short');
           }
           if(this.agenda){
             this.agendaFormGroup=this._formBuilder.group({
@@ -151,7 +174,30 @@ export class DetailAgendaComponent implements OnInit {
 
   updateAgenda():void{
     //console.log("Agenda========>", this.agendaFormGroup.value);
-    this.agendaService.updateAgenda(this.data.id,this.agendaFormGroup.value).subscribe((res:any)=>{
+    let values = this.agendaFormGroup.value;
+    values.timeZoneOffset = - new Date().getTimezoneOffset();
+    if (values.isDay == false){
+      let start = new Date(format(values.start, 'yyyy-MM-dd')+'T'+values.heure_start);
+      let end = new Date(format(values.start, 'yyyy-MM-dd')+'T'+values.heure_end);
+     
+      let myTimezoneOffset = - new Date().getTimezoneOffset();
+      if (myTimezoneOffset > 0){
+        start.setMinutes(start.getMinutes() - myTimezoneOffset);
+        end.setMinutes(end.getMinutes() - myTimezoneOffset);
+      }else{
+        start.setMinutes(start.getMinutes() + myTimezoneOffset);
+        end.setMinutes(end.getMinutes() + myTimezoneOffset);
+      }
+      let heure_start = start.getHours().toString().padStart(2, '0') + ':' + start.getMinutes().toString().padStart(2, '0');
+      let heure_end = end.getHours().toString().padStart(2, '0') + ':' + end.getMinutes().toString().padStart(2, '0');
+      
+      values.heure_start = heure_start;
+      values.heure_end = heure_end;
+      values.start = format(start, 'yyyy-MM-dd');
+      values.end = format(end, 'yyyy-MM-dd');
+    }
+
+    this.agendaService.updateAgenda(this.data.id,values).subscribe((res:any)=>{
         this.message='Événement a été modifié avec succès';
         this.openSnackBar(this.message);
         this.confirm.emit();

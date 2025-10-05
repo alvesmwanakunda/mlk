@@ -19,9 +19,9 @@ import {
   format,
 } from 'date-fns';
 import fr from 'date-fns/locale/fr';
-import {FormControl} from '@angular/forms';
 import { Agendas } from '../shared/interfaces/agendas.model';
 import { DisplayEvent } from '../shared/interfaces/displayEvent.model';
+import { FormControl } from '@angular/forms';
 
 
 
@@ -87,14 +87,12 @@ export class AgendaComponent implements OnInit {
   ){
     this.user = JSON.parse(localStorage.getItem('user'));
     this.initializeCurrentWeek();
-    console.log("FUSEAU", new Date().getTimezoneOffset() );
   }
 
   ngOnInit() {
     this.getAllAgenda();
     this.day = this.viewDate.getDate();
     this.currentDay = format(this.viewDate, 'EEEE', { locale: fr }); // Jour formaté en français
-
   }
 
   calculateWeekRange(date: Date): void {
@@ -161,7 +159,31 @@ export class AgendaComponent implements OnInit {
   getAllAgenda(){
     this.agendaService.getAllAgenda().subscribe((res:any)=>{
       if(res.message){
-        this.events = res?.message.map((data)=>({
+        let donnees = [];
+        res?.message.forEach((agenda) => {
+          if (agenda?.isDay == false && agenda?.timeZoneOffset != null ){
+            let start = new Date(agenda?.start);
+            let end = new Date(agenda?.end);
+            let heure_start = agenda?.heure_start;
+            let heure_end = agenda?.heure_end;
+            let myTimezoneOffset = - new Date().getTimezoneOffset();
+            if (myTimezoneOffset > 0){
+              start.setMinutes(start.getMinutes() + myTimezoneOffset);
+              end.setMinutes(end.getMinutes() + myTimezoneOffset);
+            }else{
+              start.setMinutes(start.getMinutes() - myTimezoneOffset);
+              end.setMinutes(end.getMinutes() - myTimezoneOffset);
+            }
+            heure_start = start.getHours().toString().padStart(2, '0') + ':' + start.getMinutes().toString().padStart(2, '0');
+            heure_end = end.getHours().toString().padStart(2, '0') + ':' + end.getMinutes().toString().padStart(2, '0');
+            
+            let data = {... agenda, start:start.toString(), end:end.toString(), heure_start:heure_start, heure_end:heure_end};
+            donnees.push(data);
+          }else{
+            donnees.push(agenda);
+          }
+        });
+        this.events = donnees.map((data)=>({
            assigne:data?.assigne,
           _id:data?._id,
           type:data?.type,
@@ -175,8 +197,11 @@ export class AgendaComponent implements OnInit {
           allDay:data?.isDay
           //actions: this.actions,
         }));
-        this.prepareEvents(res?.message);
-        this.plannigs = res?.message;
+
+        // this.prepareEvents(res?.message);
+        // this.plannigs = res?.message;
+        this.prepareEvents(donnees);
+        this.plannigs = donnees;
       }
 
     },(error) => {
@@ -233,7 +258,7 @@ export class AgendaComponent implements OnInit {
 
   openDialogDetail(event:CalendarEvent){
     this.agenda =event;
-    const dialogRef = this.dialog.open(DetailAgendaComponent,{data:{id:this.agenda._id,type:this.agenda.type},width:'40%'});
+    const dialogRef = this.dialog.open(DetailAgendaComponent,{data:{id:this.agenda._id,type:this.agenda.type},width:'60%'});
     const instance = dialogRef.componentInstance;
     instance.close.subscribe(()=> dialogRef.close());
     instance.confirm.subscribe(()=>{
