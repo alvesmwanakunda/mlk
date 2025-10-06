@@ -10,8 +10,9 @@
           <input matInput  formControlName="title">
         </mat-form-field>
       </div><!--div-->
-      <div>
-        <mat-form-field appearance="outline">
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="example-full-width" appearance="outline">
           <mat-label>Assigner à</mat-label>
           <mat-select formControlName="assigne" multiple>
             <mat-option *ngFor="let user of employees" [value]="user._id">
@@ -19,6 +20,18 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Projet</mat-label>
+          <mat-select formControlName="projet">
+            <mat-option *ngFor="let projet of projets" [value]="projet._id">
+              {{ projet?.projet }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        </div>
+
       </div>
       <!--type="datetime-local"-->
       <div class="row">

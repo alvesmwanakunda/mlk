@@ -8,6 +8,7 @@ import { AgendaComponent } from '../agenda.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { dateRangeValidator } from 'src/app/shared/validators/date-range.validator';
 import { format } from 'date-fns';
+import { ProjetsService } from 'src/app/shared/services/projets.service';
 
 @Component({
   selector: 'app-add-agenda',
@@ -25,6 +26,7 @@ export class AddAgendaComponent implements OnInit {
   heureStart = this.formatTime(this.now);
   heureEnd = this.formatTime(new Date(this.now.getTime()+20 * 60 * 1000));
   employees:any=[];
+  projets:any=[];
 
   private formatTime(date: Date): string {
     const hours = date.getHours().toString().padStart(2, '0');
@@ -38,6 +40,7 @@ export class AddAgendaComponent implements OnInit {
     private _snackBar:MatSnackBar,
     public dialogRef:MatDialogRef<AgendaComponent>,
     private authService: AuthService,
+    private projetService: ProjetsService
   ){
     this.agendaFormGroup=this._formBuilder.group({
       title:[''],
@@ -47,6 +50,7 @@ export class AddAgendaComponent implements OnInit {
       isDay:[],
       end:[''],
       color:[''],
+      projet:[''],
       assigne: [[]],
     },{ validators: dateRangeValidator() });
   }
@@ -54,6 +58,17 @@ export class AddAgendaComponent implements OnInit {
   ngOnInit(){
     this.getDateandHour();
     this.getAllEmployes();
+    this.getAllProjet();
+  }
+
+
+  getAllProjet(){
+    this.projetService.getAllProjet().subscribe((res:any)=>{
+        this.projets = res?.message;
+    },(error)=>{
+      this.message="Une erreur s'est produite veuillez réessayer.";
+      console.log(error);
+    })
   }
 
 
@@ -93,7 +108,7 @@ export class AddAgendaComponent implements OnInit {
     console.log("Values Depart", values);
     values.timeZoneOffset = - new Date().getTimezoneOffset();
     if (values.isDay == false){
-       
+
       let start = new Date(format(values.start, 'yyyy-MM-dd')+'T'+values.heure_start);
       let end = new Date(format(values.start, 'yyyy-MM-dd')+'T'+values.heure_end);
      console.log('Start', start);
@@ -109,7 +124,7 @@ export class AddAgendaComponent implements OnInit {
       // }
       let heure_start = start.getHours().toString().padStart(2, '0') + ':' + start.getMinutes().toString().padStart(2, '0');
       let heure_end = end.getHours().toString().padStart(2, '0') + ':' + end.getMinutes().toString().padStart(2, '0');
-      
+
       values.heure_start = heure_start;
       values.heure_end = heure_end;
       values.start = format(start, 'yyyy-MM-dd');

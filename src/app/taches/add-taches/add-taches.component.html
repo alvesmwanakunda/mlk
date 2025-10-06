@@ -13,6 +13,21 @@
               <p class="error_field">{{champ_validation.input[0].message}}</p>
             </div>
 
+             <mat-form-field class="example-full-width">
+                <mat-label class="tache_label">Date</mat-label>
+                <mat-date-range-input  [rangePicker]="picker">
+                <input matStartDate formControlName="date_debut" placeholder="Début" required>
+                <input matEndDate formControlName="date_fin" placeholder="Fin" required>
+                </mat-date-range-input>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+                        <!--<input type="date" matInput  formControlName="date_debut">-->
+             </mat-form-field>
+             <div>
+              <span class="error_field" *ngIf="taskFormGroup.get('date_debut').hasError(champ_validation.input[0].type) &&(taskFormGroup.get('date_debut').dirty || taskFormGroup.get('date_debut').touched)">{{champ_validation.input[0].message}}</span>
+              <span class="error_field" *ngIf="taskFormGroup.get('date_fin').hasError(champ_validation.input[0].type) &&(taskFormGroup.get('date_fin').dirty || taskFormGroup.get('date_fin').touched)">{{champ_validation.input[0].message}}</span>
+            </div>
+
             <div class="row">
                <div class="col-6">
                 <p class="tache_label">Assignés</p>
@@ -30,6 +45,6 @@
   </div>
 </mat-dialog-content>
 <mat-dialog-actions>
-   <button mat-button cdkFocusInitial style=" background: #29628b !important;color:#fff;margin-right: 5px" (click)="addTask()">Ajouter</button>
+   <button mat-button cdkFocusInitial style=" background: #29628b !important;color:#fff;margin-right: 5px" [disabled]="taskFormGroup.invalid" (click)="addTask()">Ajouter</button>
    <button mat-button mat-dialog-close style=" background: #8a0423 !important;color:#fff">Fermer</button>
 </mat-dialog-actions>

@@ -45,6 +45,8 @@ export class AddTachesComponent implements OnInit {
     this.getAllEmployes();
      this.taskFormGroup=this._formBuilder.group({
       titre:['',Validators.required],
+      date_debut:['',Validators.required],
+      date_fin:['',Validators.required],
       assignes:['',null]
     });
   }

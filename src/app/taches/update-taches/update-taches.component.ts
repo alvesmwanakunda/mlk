@@ -292,7 +292,7 @@ export class UpdateTachesComponent implements OnInit {
       this.tachesService.updateTache(this.taskFormGroup.value, this.idtache).subscribe((res:any)=>{
         this.message='Tâche a été modifié avec succès';
         this.openSnackBar(this.message);
-        //this.dialogRef.close(res)
+        this.dialogRef.close(res)
       },(error)=>{
         this.message="Une erreur s'est produite veuillez réessayer.";
         this.openSnackBar(this.message);
