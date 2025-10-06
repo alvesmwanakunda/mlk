@@ -34,7 +34,29 @@
             <input matInput  formControlName="title">
           </mat-form-field>
         </div><!--div-->
-        <div style="margin-bottom: 8px;">
+        <div class="row" style="margin-bottom: 8px;">
+        <div class="col">
+          <mat-form-field class="example-full-width">
+            <mat-label>Assigner à</mat-label>
+            <mat-select formControlName="assigne" [(ngModel)]="agenda.assigne" multiple>
+              <mat-option *ngFor="let user of employees" [value]="user._id">
+                {{ user.nom }} {{ user.prenom }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+         <div class="col">
+          <mat-form-field class="example-full-width">
+          <mat-label>Projet</mat-label>
+          <mat-select formControlName="projet">
+            <mat-option *ngFor="let projet of projets" [value]="projet._id">
+              {{ projet?.projet }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        </div>
+      </div>
+        <!--<div style="margin-bottom: 8px;">
           <mat-form-field class="example-full-width" appearance="outline">
             <mat-label>Assigner à</mat-label>
             <mat-select formControlName="assigne" multiple>
@@ -43,7 +65,7 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-        </div>
+        </div>-->
         <!--type="datetime-local"-->
         <div class="row">
           <mat-label style="margin-bottom: 10px;">Date Événement</mat-label>

@@ -4,6 +4,7 @@ export interface Agendas {
   start:Date;
   end: Date;
   color:string;
+  projet:string;
   user:string;
   heure_start:string;
   heure_end:string;

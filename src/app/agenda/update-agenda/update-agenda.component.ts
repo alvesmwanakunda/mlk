@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { dateRangeValidator } from 'src/app/shared/validators/date-range.validator';
 import { format } from 'date-fns';
+import { ProjetsService } from 'src/app/shared/services/projets.service';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class UpdateAgendaComponent implements OnInit {
   @Output() close = new EventEmitter<void>(); // Événement pour fermer le dialog
   @Output() confirm = new EventEmitter<void>(); // Événement pour confirmer une action
   employees:any=[];
+  projets:any=[];
 
 
   constructor(
@@ -36,6 +38,7 @@ export class UpdateAgendaComponent implements OnInit {
     private agendaService:AgendaService,
     private _snackBar:MatSnackBar,
     private authService: AuthService,
+    private projetService: ProjetsService,
     //private agendaComponent: AgendaComponent,
     //`public dialogRef:MatDialogRef<AgendaComponent>,
     @Inject(MAT_DIALOG_DATA) public data:any,
@@ -44,6 +47,16 @@ export class UpdateAgendaComponent implements OnInit {
   ngOnInit(){
     this.getAgenda();
     this.getAllEmployes();
+    this.getAllProjet();
+  }
+
+  getAllProjet(){
+    this.projetService.getAllProjet().subscribe((res:any)=>{
+        this.projets = res?.message;
+    },(error)=>{
+      this.message="Une erreur s'est produite veuillez réessayer.";
+      console.log(error);
+    })
   }
 
   onClose() {
@@ -74,7 +87,7 @@ export class UpdateAgendaComponent implements OnInit {
             // }
             heure_start = start.getHours().toString().padStart(2, '0') + ':' + start.getMinutes().toString().padStart(2, '0');
             heure_end = end.getHours().toString().padStart(2, '0') + ':' + end.getMinutes().toString().padStart(2, '0');
-            
+
             this.agenda = {... res.message, start:start.toString(), end:end.toString(), heure_start:heure_start, heure_end:heure_end};
           }
 
@@ -93,6 +106,7 @@ export class UpdateAgendaComponent implements OnInit {
               end:[this.agenda.end,null],
               color:[this.agenda.color,null],
               assigne: [this.agenda.assigne, null],
+              projet: [this.agenda.projet, null],
             },{ validators: dateRangeValidator() });
           }
       },(error)=>{
@@ -118,7 +132,7 @@ export class UpdateAgendaComponent implements OnInit {
             // }
             heure_start = start.getHours().toString().padStart(2, '0') + ':' + start.getMinutes().toString().padStart(2, '0');
             heure_end = end.getHours().toString().padStart(2, '0') + ':' + end.getMinutes().toString().padStart(2, '0');
-            
+
             this.agenda = {... res.message, start:start.toString(), end:end.toString(), heure_start:heure_start, heure_end:heure_end};
           }
 
@@ -152,7 +166,7 @@ export class UpdateAgendaComponent implements OnInit {
     if (this.agenda.isDay == false){
       let start = new Date(format(this.agenda.start, 'yyyy-MM-dd')+'T'+this.agenda.heure_start);
       let end = new Date(format(this.agenda.start, 'yyyy-MM-dd')+'T'+this.agenda.heure_end);
-     
+
       let myTimezoneOffset = - new Date().getTimezoneOffset();
       // if (myTimezoneOffset > 0){
       start.setMinutes(start.getMinutes() - myTimezoneOffset);
@@ -163,14 +177,14 @@ export class UpdateAgendaComponent implements OnInit {
       // }
       let heure_start = start.getHours().toString().padStart(2, '0') + ':' + start.getMinutes().toString().padStart(2, '0');
       let heure_end = end.getHours().toString().padStart(2, '0') + ':' + end.getMinutes().toString().padStart(2, '0');
-      
+
       this.agenda.heure_start = heure_start;
       this.agenda.heure_end = heure_end;
       this.agenda.start = start;
       this.agenda.end = end;
     }
 
-    
+
     if(this.data.type=="agenda"){
       this.agendaService.updateAgenda(this.data.id,this.agenda).subscribe((res:any)=>{
         this.message='Événement a été modifié avec succès';

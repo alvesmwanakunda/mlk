@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { dateRangeValidator } from 'src/app/shared/validators/date-range.validator';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { format } from 'date-fns';
+import { ProjetsService } from 'src/app/shared/services/projets.service';
 
 
 
@@ -37,6 +38,8 @@ export class DetailAgendaComponent implements OnInit {
   isDelete:boolean=false;
   isDetail:boolean=true;
   employees:any=[];
+  projets:any=[];
+
 
 
 
@@ -48,12 +51,24 @@ export class DetailAgendaComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data:any,
     private  _formBuilder:FormBuilder,
     private authService: AuthService,
+    private projetService: ProjetsService,
+
     ){ }
 
   ngOnInit(){
     console.log("Data", this.data);
     this.getAgenda();
     this.getAllEmployes();
+    this.getAllProjet();
+  }
+
+    getAllProjet(){
+    this.projetService.getAllProjet().subscribe((res:any)=>{
+        this.projets = res?.message;
+    },(error)=>{
+      this.message="Une erreur s'est produite veuillez réessayer.";
+      console.log(error);
+    })
   }
 
   onClose() {
@@ -86,7 +101,7 @@ export class DetailAgendaComponent implements OnInit {
             // }
             heure_start = start.getHours().toString().padStart(2, '0') + ':' + start.getMinutes().toString().padStart(2, '0');
             heure_end = end.getHours().toString().padStart(2, '0') + ':' + end.getMinutes().toString().padStart(2, '0');
-            
+
             this.agenda = {... res.message, start: format(start, 'yyyy-MM-dd'), end:format(end, 'yyyy-MM-dd'), heure_start:heure_start, heure_end:heure_end};
           }
 
@@ -106,9 +121,18 @@ export class DetailAgendaComponent implements OnInit {
               heure_start:[this.agenda.heure_start,null],
               heure_end:[this.agenda.heure_end,null],
               assigne: [this.agenda.assigne, null],
+              projet: [this.agenda.projet, null],
 
             },{ validators: dateRangeValidator() });
-          }
+            this.agendaFormGroup.get('start')?.valueChanges.subscribe(value => {
+            const isDay = this.agendaFormGroup.get('isDay')?.value;
+
+            if (isDay === false) {
+              // On met à jour automatiquement heure_end
+              this.agendaFormGroup.patchValue({ end: value }, { emitEvent: false });
+            }
+          });
+                  }
           console.log("Form======>", this.agendaFormGroup)
 
       },(error)=>{
@@ -174,9 +198,10 @@ export class DetailAgendaComponent implements OnInit {
     let values = this.agendaFormGroup.value;
     values.timeZoneOffset = - new Date().getTimezoneOffset();
     if (values.isDay == false){
-      let start = new Date(format(values.start, 'yyyy-MM-dd')+'T'+values.heure_start);
-      let end = new Date(format(values.start, 'yyyy-MM-dd')+'T'+values.heure_end);
-     
+      console.log("start", values.start)
+      let start = new Date(format(new Date(values.start), 'yyyy-MM-dd')+'T'+values.heure_start);
+      let end = new Date(format(new Date(values.start), 'yyyy-MM-dd')+'T'+values.heure_end);
+
       let myTimezoneOffset = - new Date().getTimezoneOffset();
       // if (myTimezoneOffset > 0){
       start.setMinutes(start.getMinutes() - myTimezoneOffset);
@@ -187,7 +212,7 @@ export class DetailAgendaComponent implements OnInit {
       // }
       let heure_start = start.getHours().toString().padStart(2, '0') + ':' + start.getMinutes().toString().padStart(2, '0');
       let heure_end = end.getHours().toString().padStart(2, '0') + ':' + end.getMinutes().toString().padStart(2, '0');
-      
+
       values.heure_start = heure_start;
       values.heure_end = heure_end;
       values.start = format(start, 'yyyy-MM-dd');
