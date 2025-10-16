@@ -113,16 +113,17 @@
                  </form>
               </div>
             </mat-tab>-->
-            <mat-tab label="Feuilles de temps">
+            <!--<mat-tab label="Feuilles de temps">-->
+             <mat-tab label="Sous-tâches">
               <div style="padding-top: 20px;">
                 <form [formGroup]="timesheetForm">
 
                   <table class="table">
                     <thead>
                       <tr>
-                        <th scope="col">Date</th>
-                        <th scope="col">Employé</th>
-                        <th scope="col">Description</th>
+                        <th scope="col">Date *</th>
+                        <th scope="col">Employé *</th>
+                        <th scope="col">Titre</th>
                         <th scope="col">Heures passés</th>
                         <th scope="col"></th>
                       </tr>
@@ -131,21 +132,27 @@
                       <tr *ngFor="let entry of entries.controls; let i = index" [formGroupName]="i">
                         <td>
                            <mat-form-field class="example-full-width">
-                              <input matInput [matDatepicker]="picker1" formControlName="date">
+                              <input matInput [matDatepicker]="picker1" formControlName="date" required>
                               <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
                               <mat-datepicker #picker1></mat-datepicker>
                            </mat-form-field>
+                           <div *ngIf="entry.get('date').hasError(champ_validation.input[0].type) &&(entry.get('date').dirty || entry.get('date').touched)">
+                            <p class="error_field">{{champ_validation.input[0].message}}</p>
+                           </div>
                         </td>
                         <td>
                           <mat-form-field class="example-full-width">
-                            <mat-select formControlName="employee" matInput>
+                            <mat-select formControlName="employee" matInput required>
                             <mat-option *ngFor="let contact of contacts" [value]="contact?._id">{{contact?.nom}} {{contact?.prenom}}</mat-option>
                           </mat-select>
                           </mat-form-field>
+                           <div *ngIf="entry.get('employee').hasError(champ_validation.input[0].type) &&(entry.get('employee').dirty || entry.get('employee').touched)">
+                            <p class="error_field">{{champ_validation.input[0].message}}</p>
+                           </div>
                         </td>
                         <td>
                            <mat-form-field class="example-full-width">
-                            <input type="text" formControlName="description"matInput />
+                            <input type="text" formControlName="description" matInput />
                           </mat-form-field>
 
                         </td>
@@ -166,11 +173,21 @@
                       </tr>
                     </tbody>
                   </table>
-                  <a (click)="addLine()" style="cursor:pointer; color: teal;">Ajouter une ligne</a>
+                  <div class="row">
+                    <div class="col">
+                      <a (click)="addLine()" style="cursor:pointer; color: teal;">Ajouter une ligne</a>
+                    </div>
+                    <div class="col">
+                      <div style="float: right;">
+                        <a (click)="submitAllLine()" *ngIf="entries.length > 0 && hasNewEntries()" style="cursor:pointer; color: rgb(7, 42, 180);"> Ajouter toutes les lignes</a>
+                      </div>
+                    </div>
+                  </div>
+
                 </form>
               </div>
             </mat-tab>
-            <mat-tab label="Sous-tâches">
+           <!-- <mat-tab label="Sous-tâches">
               <div class="example-large-box mat-elevation-z4">
 
                 <div style="padding-top: 20px;">
@@ -214,7 +231,7 @@
               </div>
 
               </div>
-            </mat-tab>
+            </mat-tab>-->
           </mat-tab-group>
          </div>
 

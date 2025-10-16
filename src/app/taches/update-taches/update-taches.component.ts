@@ -149,14 +149,50 @@ export class UpdateTachesComponent implements OnInit {
     }
 
     const newEntry = this._formBuilder.group({
-      _id: [null],
-      date: [''],
-      employee: [''],
+      date: ['', Validators.required],
+      employee: ['', Validators.required],
       description: [''],
       hours: ['']
     });
 
     this.entries.push(newEntry);
+  }
+
+  hasNewEntries(): boolean {
+  if (!this.entries || !this.entries.value) return false;
+
+  const data = this.entries.value;
+  const allEntries = Array.isArray(data) ? data : [data];
+
+  return allEntries.some(entry => !entry._id);
+  }
+
+    submitAllLine() {
+    const entry = this.entries;
+
+    if (entry.invalid) {
+      this.openSnackBar('Champs invalides');
+      return;
+    }
+
+    const data = entry.value;
+    console.log("Sous tache", data);
+
+    const requests = data.map(item => {
+      if (!item._id) {
+        return this.http.post(`${environment.BASE_API_URL}/time/taches/${this.idtache}`, item).toPromise();
+      }
+      return Promise.resolve(null);
+    });
+
+    // Attendre que toutes les requêtes soient terminées
+    Promise.all(requests).then(results => {
+      const successfulAdds = results.filter(res => res && res.success);
+      this.openSnackBar(`${successfulAdds.length} sous-tâche(s) ajoutée(s) avec succès`);
+    }).catch(error => {
+      console.error('Erreur:', error);
+      this.openSnackBar('Erreur lors de l\'ajout des sous-tâches');
+    });
   }
 
   submitLine(index: number) {
@@ -168,19 +204,23 @@ export class UpdateTachesComponent implements OnInit {
     }
 
     const data = entry.value;
+    console.log("Sous tache", data);
 
     if (!data._id) {
       // Nouveau → POST
       this.http.post(`${environment.BASE_API_URL}/time/taches/${this.idtache}`, data).subscribe((res: any) => {
+        console.log("Time", res);
+        //this.openSnackBar('Les sous-tâches est ajoutée avec succès');
         if (res.success && res.message[0]?._id) {
           entry.patchValue({ _id: res.message[0]._id });
-          this.openSnackBar('Ligne ajoutée');
+          this.openSnackBar('Les sous-tâches est ajoutée avec succès');
         }
       });
     } else {
       // Existant → PUT
       this.http.put(`${environment.BASE_API_URL}/time/taches/${data._id}`, data).subscribe((res: any) => {
-        this.openSnackBar('Ligne modifiée');
+        //this.openSnackBar('Ligne modifiée');
+        this.openSnackBar('La sous-tâches est modifiée avec succès');
       });
     }
   }
@@ -194,7 +234,8 @@ export class UpdateTachesComponent implements OnInit {
       // Supprimer dans la base
       this.http.delete(`${environment.BASE_API_URL}/time/taches/${id}`).subscribe(() => {
         this.entries.removeAt(index);
-        this.openSnackBar('Ligne supprimée');
+        //this.openSnackBar('Ligne supprimée');
+         this.openSnackBar('Les sous-tâches est supprimée avec succès');
       });
     } else {
       // Juste retirer du form

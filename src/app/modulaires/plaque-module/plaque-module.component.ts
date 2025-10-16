@@ -60,7 +60,7 @@ export class PlaqueModuleComponent implements OnInit {
     setTimeout(() => {
       html2pdf().set({
         margin: 0,
-        filename: 'plaque.pdf',
+        filename:`plaque_`+this.module?.numero_serie+'.pdf',
         image: { type: 'jpeg', quality: 1 },
         html2canvas: {
           scale: 4,

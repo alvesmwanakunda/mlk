@@ -155,7 +155,7 @@ export class AddStockProjetComponent implements OnInit {
      }else{
       formData.append("entreprise",this.form.entreprise)
      }
-    
+
 
      return this.http.post(`${environment.BASE_API_URL}/affecte/module/${this.data.id}`,formData,{
       reportProgress:true,
@@ -175,6 +175,7 @@ export class AddStockProjetComponent implements OnInit {
           }
         }else{
           if(event.type==HttpEventType.Response){
+            this.dialogRef.close("response");
             this.message='Module a été ajouté avec succès';
             this.openSnackBar(this.message)
           }
@@ -185,6 +186,7 @@ export class AddStockProjetComponent implements OnInit {
         this.progress=null;
         this.message="Une erreur s'est produite veuillez réessayer.";
         this.openSnackBar(this.message);
+        this.dialogRef.close("response");
         return throwError(err.message);
       })
     ).toPromise();

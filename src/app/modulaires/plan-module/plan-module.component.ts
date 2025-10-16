@@ -15,6 +15,7 @@ import { Fichiers } from 'src/app/shared/interfaces/fichiers.model';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewerStandarComponent } from 'src/app/viewer-standar/viewer-standar.component';
+import { MovePlanComponent } from './move-plan/move-plan.component';
 
 
 
@@ -36,6 +37,9 @@ export class PlanModuleComponent implements OnInit,AfterViewInit {
   dataSource =new MatTableDataSource<Fichiers>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   user:any;
+  showBox:boolean=true;
+  showDetailBox:boolean=false;
+  idFolder:any;
 
 
 
@@ -50,6 +54,18 @@ export class PlanModuleComponent implements OnInit,AfterViewInit {
       this.idModule = data.id
      });
      this.user = JSON.parse(localStorage.getItem('user'));
+
+     this.projetService.listDossier.subscribe((message:any)=>{
+      console.log("liste des documents", message );
+      this.getAllFiles();
+    });
+    this.projetService.PrevieusBox.subscribe((message:any)=>{
+      if(message?.idModule){
+        this.idModule = message.idModule;
+        console.log("Ici", message);
+        this.showBoxView(this.idModule);
+      }
+    })
   }
 
   ngOnInit() {
@@ -62,9 +78,25 @@ export class PlanModuleComponent implements OnInit,AfterViewInit {
   }
 
   getAllFiles(){
-    this.projetService.getAllPlanModule(this.idModule).subscribe((res:any)=>{
+    // this.projetService.getAllPlanModule(this.idModule).
+    this.projetService.getAllDocuments(this.idModule).subscribe((res:any)=>{
 
-        this.dataSource.data = res.message.map((data)=>({
+        let dossiers = res.message.dossiers;
+        this.fichiers = dossiers.concat(res.message.fichiers);
+
+        this.dataSource.data = this.fichiers.map((data)=>({
+          id:data._id,
+          nom:data.nom,
+          profondeur:data.profondeur,
+          dateLastUpdate:data.dateLastUpdate,
+          dossierParent:data?.dossierParent,
+          creator:data.creator,
+          chemin:data.chemin,
+          extension:data?.extension,
+          size:data?.size
+         })) as Fichiers[]
+
+        /*this.dataSource.data = res.message.map((data)=>({
           id:data._id,
           nom:data.nom,
           dateLastUpdate:data.dateLastUpdate,
@@ -73,12 +105,44 @@ export class PlanModuleComponent implements OnInit,AfterViewInit {
           url: data.chemin,
           extension:data?.extension,
           size:data?.size
-         })) as Fichiers[]
+         })) as Fichiers[]*/
 
         console.log("Fichiers", this.dataSource.data);
     },(error)=>{
       console.log("Erreur lors de la récupération des données", error);
     })
+  }
+
+  showBoxView(id) {
+    this.showBox = true;
+    this.showDetailBox = false;
+    this.projetService.getAllDocuments(id).subscribe((res:any)=>{
+      let dossiers = res.message.dossiers;
+      this.fichiers = dossiers.concat(res.message.fichiers);
+
+        this.dataSource.data = this.fichiers.map((data)=>({
+          id:data._id,
+          nom:data.nom,
+          profondeur:data.profondeur,
+          dateLastUpdate:data.dateLastUpdate,
+          dossierParent:data?.dossierParent,
+          creator:data.creator,
+          chemin:data.chemin,
+          extension:data?.extension,
+          size:data?.size
+         })) as Fichiers[]
+
+        console.log("Fichiers sous dossiers", this.dataSource.data);
+    },(error)=>{
+      console.log("Erreur lors de la récupération des données", error);
+    })
+  }
+
+  showDetailBoxView(idFile) {
+    this.idFolder = idFile;
+    this.showBox = false;
+    this.showDetailBox = true;
+    //this.router.navigate(['box/projet/detail', idFile, this.idProjet]);
   }
 
   applyFilter(event: Event) {
@@ -96,8 +160,10 @@ export class PlanModuleComponent implements OnInit,AfterViewInit {
   }
 
   addFile(file){
+    console.log("Bonjour Alves");
     this.progress=1;
     const formData:FormData=new FormData();
+    console.log("Data", formData);
     formData.append("uploadfile", file);
     return this.http.post(`${environment.BASE_API_URL}/plan/module/${this.idModule}`,formData,{
       reportProgress:true,
@@ -128,7 +194,9 @@ export class PlanModuleComponent implements OnInit,AfterViewInit {
     })
   }
 
-  openDialogFile(chemin, extension){
+  openDialogFile(idFile,chemin, extension){
+    if(extension){
+
       const dialogRef = this.dialog.open(ViewerStandarComponent,{
         maxWidth:'100vw',
         maxHeight:'100vh',
@@ -141,6 +209,19 @@ export class PlanModuleComponent implements OnInit,AfterViewInit {
           this.getAllFiles();
          }
       })
+
+    }else{
+       this.showDetailBoxView(idFile)
+    }
+
   }
+  openDialogMove(id, extension?){
+      const dialogRef = this.dialog.open(MovePlanComponent,{width:'50%',data:{id:id,extension:extension,idModule:this.idModule}});
+      dialogRef.afterClosed().subscribe((result:any)=>{
+         if(result){
+          this.getAllFiles();
+         }
+      })
+    }
 }
 

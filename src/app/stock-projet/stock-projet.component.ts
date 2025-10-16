@@ -10,6 +10,7 @@ import { Modules } from '../shared/interfaces/modules.model';
 //import { ModuleProjetComponent } from '../modulaires/module-projet/module-projet.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ModuleProjetComponent } from '../projet/module-projet/module-projet.component';
+import { SelectionModel } from '@angular/cdk/collections';
 
 
 
@@ -20,8 +21,10 @@ import { ModuleProjetComponent } from '../projet/module-projet/module-projet.com
 })
 export class StockProjetComponent implements OnInit, AfterViewInit {
 
-  displayedColumns:string[]=['numero','nom','type','hauteur','largeur','longueur','action'];
+  displayedColumns:string[]=['select','numero','nom','type','hauteur','largeur','longueur'];
   dataSource =new MatTableDataSource<Modules>();
+  selection = new SelectionModel<Modules>(true, []); // Sélection multiple
+
   @ViewChild('paginatorStock') paginatorStock: MatPaginator;
   @ViewChild('matSort') matSort: MatSort;
   modules:any=[];
@@ -39,7 +42,7 @@ export class StockProjetComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(){
-      this.matPaginatorIntl.itemsPerPageLabel="Modules par page"; 
+      this.matPaginatorIntl.itemsPerPageLabel="Modules par page";
   }
 
   ngAfterViewInit() {
@@ -54,8 +57,8 @@ export class StockProjetComponent implements OnInit, AfterViewInit {
       if (this.dataSource.paginator) {
         this.dataSource.paginator.firstPage();
       }
-  } 
-  
+  }
+
   openSnackBar(message){
     this._snackBar.open(message, 'Fermer',{
       duration:6000,
@@ -81,10 +84,50 @@ export class StockProjetComponent implements OnInit, AfterViewInit {
         (error) => {
           console.log("Erreur lors de la récupération des données", error);
         });
-      
+
     }
 
-    addModule(idModule){
+    // Méthodes pour la sélection multiple
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  masterToggle() {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
+  addModules(){
+    console.log("Bodys", this.selection.selected)
+    const modules = this.selection.selected.map(module => module?.id);
+    console.log("Body", modules);
+    const data = {
+     modules: modules  // ← C'est ce que votre backend attend
+    };
+
+    if (modules.length === 0) {
+      this.openSnackBar('Veuillez sélectionner au moins un module');
+      return;
+    }
+
+    this.projectService.addStockToProjet(data,this.data.id).subscribe((res:any)=>{
+          this.message='Module a été ajouté avec succès';
+          this.openSnackBar(this.message);
+          this.dialogRef.close(res)
+      },(error)=>{
+        this.message="Une erreur s'est produite veuillez réessayer.";
+        this.openSnackBar(this.message);
+        console.log(error);
+      })
+
+  }
+
+   /* addModule(idModule){
+
+
       this.projectService.addStockToProjet(idModule,this.data.id).subscribe((res:any)=>{
           this.message='Module a été ajouté avec succès';
           this.openSnackBar(this.message);
@@ -94,7 +137,7 @@ export class StockProjetComponent implements OnInit, AfterViewInit {
         this.openSnackBar(this.message);
         console.log(error);
       })
-    }
+    }*/
 
     getSafeUrl(url){
       return  this.sanitizer.bypassSecurityTrustResourceUrl(url);

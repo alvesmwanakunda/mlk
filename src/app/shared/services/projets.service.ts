@@ -2,11 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment} from 'src/environments/environment';
 import imageCompression from 'browser-image-compression';
+import { BehaviorSubject, Observable } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjetsService {
+
+  listDossier:BehaviorSubject<{}>=new BehaviorSubject('');
+  PrevieusBox:BehaviorSubject<{}>=new BehaviorSubject('');
 
   constructor(private readonly httpClient: HttpClient) { }
 
@@ -150,8 +155,8 @@ export class ProjetsService {
     return this.httpClient.get(`${environment.BASE_API_URL}/modules/notsite`);
   }
 
-  public addStockToProjet(idModule, idProjet){
-    return this.httpClient.get(`${environment.BASE_API_URL}/modules/notsite/${idModule}/${idProjet}`);
+  public addStockToProjet(modules, idProjet){
+    return this.httpClient.post(`${environment.BASE_API_URL}/modules/notsite/${idProjet}`,modules);
   }
 
 
@@ -214,6 +219,49 @@ export class ProjetsService {
 
   public getAllPlanModule(id){
     return this.httpClient.get(`${environment.BASE_API_URL}/plans/module/${id}`)
+  }
+
+  public getAllDocuments(idDoc){
+    return this.httpClient.get(`${environment.BASE_API_URL}/dossier/modulaire/module/${idDoc}`)
+  }
+
+  public addFolder(folder,idDoc){
+    return this.httpClient.post(`${environment.BASE_API_URL}/dossier/modulaire/module/${idDoc}`,folder);
+  }
+
+  public getFolderDetailId(idDoc){
+    return this.httpClient.get(`${environment.BASE_API_URL}/dossier/module/${idDoc}`)
+  }
+
+  public getFolderId(idDoc){
+    return this.httpClient.get(`${environment.BASE_API_URL}/dossier/module/read/${idDoc}`)
+  }
+
+  public updateFolder(idDoc, doc){
+    return this.httpClient.put(`${environment.BASE_API_URL}/dossier/module/${idDoc}`,doc)
+  }
+  public deleteFolder(idFolder){
+    return this.httpClient.delete(`${environment.BASE_API_URL}/dossier/module/${idFolder}`)
+  }
+
+  public moveFolder(id,parent){
+  return this.httpClient.get(`${environment.BASE_API_URL}/dossier/module/move/${id}/${parent}`)
+  }
+
+  public moveFile(id,parent){
+    return this.httpClient.get(`${environment.BASE_API_URL}/plan/module/move/${id}/${parent}`)
+  }
+
+  public getPlans(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/module/plans/${id}`)
+  }
+
+  public deletePlans(id){
+    return this.httpClient.delete(`${environment.BASE_API_URL}/module/plans/${id}`)
+  }
+
+  public getAllPlans(id){
+    return this.httpClient.get(`${environment.BASE_API_URL}/module/all/plans/${id}`)
   }
 
 

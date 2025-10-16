@@ -12,6 +12,7 @@ import { PlanModuleModule } from '../plan-module/plan-module.module';
 import { ModuleProjetModule } from '../module-projet/module-projet.module';
 import { FicheTechniqueModule } from '../fiche-technique/fiche-technique.module';
 import { PlaqueModuleModule } from '../plaque-module/plaque-module.module';
+import { PlansModule } from '../plans/plans.module';
 //import { UpdateFicheTechniqueModule } from '../fiche-technique/update-fiche-technique/update-fiche-technique.module';
 
 
@@ -30,7 +31,8 @@ import { PlaqueModuleModule } from '../plaque-module/plaque-module.module';
     PlanModuleModule,
     ModuleProjetModule,
     FicheTechniqueModule,
-    PlaqueModuleModule
+    PlaqueModuleModule,
+    PlansModule
     //UpdateFicheTechniqueModule
   ]
 })

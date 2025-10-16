@@ -1,4 +1,5 @@
 export interface Modules {
+  id:string;
   _id:string;
   type:string;
   dateLastUpdate:Date;
