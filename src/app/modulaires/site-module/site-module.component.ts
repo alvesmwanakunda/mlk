@@ -16,7 +16,7 @@ import { MatSort } from '@angular/material/sort';
 })
 export class SiteModuleComponent implements OnInit,AfterViewInit {
 
-  displayedColumns:string[]=['numero','nom','type','hauteur','largeur','longueur','action'];
+  displayedColumns:string[]=['numero','nom','projet','type','hauteur','largeur','longueur','action'];
   dataSource =new MatTableDataSource<Modules>();
   @ViewChild('paginatorStock') paginatorStock: MatPaginator;
   @ViewChild('matSort') matSort: MatSort;
@@ -34,7 +34,7 @@ export class SiteModuleComponent implements OnInit,AfterViewInit {
   }
 
   ngOnInit(){
-      this.matPaginatorIntl.itemsPerPageLabel="Modules par page"; 
+      this.matPaginatorIntl.itemsPerPageLabel="Modules par page";
   }
 
   ngAfterViewInit() {
@@ -70,7 +70,7 @@ export class SiteModuleComponent implements OnInit,AfterViewInit {
         this.dataSource.data =this.modules.map((data)=>({
           id:data?._id,
           nom:data?.nom,
-          projet:data?.project?.projet,
+          projet:data?.projetNom,
           position:data?.position,
           hauteur:data?.hauteur,
           largeur:data?.largeur,

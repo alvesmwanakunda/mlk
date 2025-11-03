@@ -2,7 +2,18 @@
   <div class="container">
 
     <div class="content-top">
-      <h2 class="content-title">Catégorie - {{module?.categorie}}</h2>
+      <div class="row">
+        <div class="col">
+          <h2 class="content-title">Catégorie - {{module?.categorie}}</h2>
+        </div>
+        <div class="col" *ngIf="returnToTab">
+          <div style="float: right;">
+               <button (click)="goBackToProject()" class="btn btn-secondary mb-3">
+                <i class="fas fa-arrow-left"></i> Retour au projet
+               </button>
+          </div>
+        </div>
+      </div>
       <mat-divider></mat-divider>
     </div><!--content-->
 

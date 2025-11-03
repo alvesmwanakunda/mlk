@@ -58,6 +58,8 @@ export class UpdateModuleComponent implements OnInit {
   entrepriseFiltres:Observable<any[]>;
   isEquipement:boolean=false;
   photo:any;
+  fromProject: string | null = null;
+  returnToTab: string | null = null;
 
 
 
@@ -77,6 +79,11 @@ export class UpdateModuleComponent implements OnInit {
       this.idModule = data.id
      });
      this.user = JSON.parse(localStorage.getItem('user'));
+     const navigation = this.router.getCurrentNavigation();
+     if (navigation?.extras.state) {
+        this.fromProject = navigation.extras.state['fromProject'];
+        this.returnToTab = navigation.extras.state['returnToTab'];
+      }
   }
 
   champ_validation={
@@ -86,6 +93,16 @@ export class UpdateModuleComponent implements OnInit {
         message:"Ce champ est obligatoire"
       }
     ]
+  }
+
+  goBackToProject() {
+    if (this.fromProject && this.returnToTab) {
+      this.router.navigate(['/projet', this.fromProject], {
+        state: { activeTab: this.returnToTab }
+      });
+    } else {
+      window.history.back();
+    }
   }
 
   ngOnInit(): void {

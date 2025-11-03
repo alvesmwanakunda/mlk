@@ -68,6 +68,10 @@ export class ProjetsService {
     return this.httpClient.get(`${environment.BASE_API_URL}/module/qrcode/${idModule}`);
   }
 
+  public getModulesWithQrcode(moduleIds: string[]): Observable<any> {
+     return this.httpClient.post(`${environment.BASE_API_URL}/module/batch-qrcodes`, { moduleIds });
+  }
+
   public getAllModule(){
     return this.httpClient.get(`${environment.BASE_API_URL}/modules`);
   }
