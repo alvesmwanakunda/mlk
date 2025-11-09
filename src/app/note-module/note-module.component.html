@@ -1,0 +1,140 @@
+<div class="notes-module">
+  <div class="notes-container">
+    <div class="notes-list">
+      <div *ngFor="let note of notes"
+          class="note-message"
+          [class.my-note]="note.isMine"
+          [class.other-note]="!note.isMine">
+
+        <!-- Message texte simple -->
+        <div *ngIf="note.type === 'text'" class="message-bubble">
+          <div class="message-content">
+            {{ note.text }}
+          </div>
+          <div class="message-time">
+            {{ note.timestamp | date:'HH:mm' }}
+            <span class="user-avatar" matTooltip="{{note?.createdBy?.nom}}">{{note?.createdBy?.nom.charAt(0)}}</span>
+
+            <!--<i class="fa-solid fa-check-double read-receipt" *ngIf="note.read"></i>-->
+          </div>
+        </div>
+
+        <!-- Message image -->
+        <div *ngIf="note.type === 'mixed' && note.image" class="message-bubble">
+          <div class="image-message">
+            <img [src]="note.image.url" [alt]="note.text || 'Image'" class="message-image">
+            <div *ngIf="note.text" class="image-caption">
+              {{ note.text }}
+            </div>
+          </div>
+          <div class="message-time">
+            {{ note.timestamp | date:'HH:mm' }}
+            <!--<i class="fa-solid fa-check-double read-receipt" *ngIf="note.read"></i>-->
+            <span class="user-avatar" matTooltip="{{note?.createdBy?.nom}}">{{note?.createdBy?.nom.charAt(0)}}</span>
+
+          </div>
+        </div>
+
+        <!-- Message audio -->
+        <div *ngIf="note.type === 'audio'" class="message-bubble">
+          <div class="audio-message">
+            <audio controls class="audio-player">
+              <source [src]="note.audio.url" type="audio/mpeg">
+            </audio>
+            <!--<div class="audio-duration">
+              {{ note.audio.duration }}
+            </div>-->
+          </div>
+          <div class="message-time">
+            {{ note.timestamp | date:'HH:mm' }}
+            <span class="user-avatar" matTooltip="{{note?.createdBy?.nom}}">{{note?.createdBy?.nom.charAt(0)}}</span>
+            <!--<i class="fa-solid fa-check-double read-receipt" *ngIf="note.read"></i>-->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="note-wrapper">
+    <div class="note-input-bar">
+      <label class="icon-button" [class.disabled]="!!audioUrl" title="Ajouter une image">
+        <input #fileInput type="file" accept="image/*" (change)="onImageSelected($event)" [disabled]="!!audioUrl" hidden />
+        <i class="fa-solid fa-image" [style.opacity]="audioUrl ? '0.5' : '1'"></i>
+      </label>
+
+      <!-- texte ou audio preview -->
+      <div class="input-content">
+
+        <!-- Image annotée en preview (au-dessus de l'input) -->
+        <div *ngIf="annotatedImagePreview && !audioUrl" class="annotated-image-top-preview">
+          <div class="image-preview-container" (mouseenter)="isHoveringImage = true" (mouseleave)="isHoveringImage = false">
+            <img [src]="annotatedImagePreview" alt="Image annotée" class="preview-image">
+            <button
+              *ngIf="isHoveringImage"
+              class="remove-image-btn"
+              (click)="removeAnnotatedImage()"
+              title="Supprimer l'image">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+            <div class="image-badge">
+              <i class="fa-solid fa-check"></i>
+              Image annotée
+            </div>
+          </div>
+        </div>
+
+
+
+
+        <!-- Mode texte normal -->
+        <input
+          *ngIf="!audioUrl"
+          type="text"
+          class="note-input"
+          [class.with-image]="annotatedImagePreview"
+          placeholder="Ajouter une note..."
+          [(ngModel)]="text"
+        />
+
+        <!-- Mode audio - preview INSTANTANÉ -->
+        <div *ngIf="audioUrl" class="audio-preview-inline instant-preview">
+          <div class="audio-info">
+            <audio [src]="audioUrl" controls class="inline-audio"></audio>
+            <div class="audio-meta">
+              <span class="audio-ready">✓ Prêt</span>
+              <button class="remove-audio-btn" (click)="removeAudio()" title="Supprimer l'audio">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Audio recorder component -->
+      <app-audio-recorder
+        *ngIf="!annotatedImagePreview"
+        (recordingComplete)="onAudioRecorded($event)"
+        (recordingCanceled)="onAudioCanceled()"
+      ></app-audio-recorder>
+
+      <!-- send button -->
+      <button type="button" class="send-btn" (click)="saveNote()" [disabled]="isSubmitting">
+        Envoyer
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
+<app-image-annotation
+  *ngIf="showImageAnnotation && imageToAnnotate"
+  [imageSrc]="imageToAnnotate"
+  (annotationComplete)="onAnnotationComplete($event)"
+  (annotationCanceled)="onAnnotationCanceled()">
+</app-image-annotation>
+
+
+
+

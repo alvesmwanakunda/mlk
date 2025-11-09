@@ -1,0 +1,29 @@
+<div class="audio-recorder">
+  <!-- Recording indicator -->
+  <div *ngIf="isRecording" class="recording-indicator-inline">
+    <div class="recording-animation-inline">
+      <div class="recording-pulse-inline"></div>
+      <i class="fa-solid fa-microphone recording-icon-inline"></i>
+    </div>
+    <span class="recording-time-inline">{{ displayDuration }}</span>
+    <span class="recording-hint-inline">Enregistrement...</span>
+    <button class="stop-recording-btn-inline" (click)="stopRecording()" title="Arrêter l'enregistrement">
+      <i class="fa-solid fa-square"></i>
+    </button>
+  </div>
+
+  <!-- Record button (when not recording) -->
+  <button *ngIf="!isRecording"
+          type="button"
+          class="record-btn"
+          (click)="toggleRecording()"
+          title="Enregistrer un audio">
+    <i class="fa-solid fa-microphone"></i>
+  </button>
+
+  <!-- Processing indicator -->
+  <!--<div *ngIf="isProcessingAudio" class="processing-audio">
+    <div class="processing-spinner"></div>
+    <span>Traitement...</span>
+  </div>-->
+</div>

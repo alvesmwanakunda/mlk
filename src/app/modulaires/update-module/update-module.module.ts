@@ -13,6 +13,7 @@ import { ModuleProjetModule } from '../module-projet/module-projet.module';
 import { FicheTechniqueModule } from '../fiche-technique/fiche-technique.module';
 import { PlaqueModuleModule } from '../plaque-module/plaque-module.module';
 import { PlansModule } from '../plans/plans.module';
+import { NoteModuleModule } from 'src/app/note-module/note-module.module';
 //import { UpdateFicheTechniqueModule } from '../fiche-technique/update-fiche-technique/update-fiche-technique.module';
 
 
@@ -32,7 +33,8 @@ import { PlansModule } from '../plans/plans.module';
     ModuleProjetModule,
     FicheTechniqueModule,
     PlaqueModuleModule,
-    PlansModule
+    PlansModule,
+    NoteModuleModule
     //UpdateFicheTechniqueModule
   ]
 })
