@@ -19,10 +19,13 @@ export class TranscrireNoteComponent{
   isDicter:boolean=false;
 
 
-  constructor(private ngZone: NgZone) {}
+
+  constructor(private ngZone: NgZone) {
+  }
 
   start() {
-    this.ws = new WebSocket(`${environment.BASE_SOCKET}`);
+     this.ws = new WebSocket(`${environment.BASE_SOCKET}`);
+    //this.ws = new WebSocket('wss://mlka.app/api');
     this.isDicter=true;
     this.ws.onopen = async () => {
       console.log('🎙️ Connecté au serveur WebSocket');
