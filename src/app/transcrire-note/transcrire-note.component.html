@@ -1,0 +1,51 @@
+    <!--<button (click)="start()">🎤 Démarrer</button>
+    <button (click)="stop()">🛑 Stop</button>
+    <p>{{ transcript }}</p>-->
+    <div class="audio-recorder">
+
+      <div *ngIf="isDicter" class="recording-indicator-inline">
+        <div class="recording-animation-inline">
+          <div class="recording-pulse-inline"></div>
+          <i class="fa-solid fa-microphone recording-icon-inline"></i>
+        </div>
+        <span class="recording-hint-inline">Parler...</span>
+        <button class="stop-recording-btn-inline" (click)="stop()" title="Arrêter l'enregistrement">
+          <i class="fa-solid fa-square"></i>
+        </button>
+    </div>
+
+      <button
+          *ngIf="!isDicter"
+          type="button"
+          class="record-btn"
+          (click)="start()"
+          matTooltip="Dicter">
+          <!--<i class="fa-solid fa-microphone-lines"></i>-->
+          <img src="assets/images/audio.png" style="width: 45%;">
+      </button>
+    </div>
+
+
+
+
+
+    <!--<div class="voice-container">
+      <h2>🎧 Transcription vocale en temps réel</h2>
+
+      <div class="controls">
+        <button (click)="start()" [disabled]="isListening">Démarrer 🎤</button>
+        <button (click)="stop()" [disabled]="!isListening">Arrêter 🛑</button>
+      </div>
+
+      <div *ngIf="isListening" class="status">
+        <span class="dot"></span> Écoute en cours...
+      </div>
+
+      <div class="text-output">
+        <p><strong>Texte final :</strong></p>
+        <div class="final-text">{{ finalText }}</div>
+
+        <p *ngIf="interimText"><em>Texte en cours :</em></p>
+        <div class="interim-text">{{ interimText }}</div>
+      </div>
+    </div>-->

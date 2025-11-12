@@ -14,6 +14,7 @@ import { FicheTechniqueModule } from '../fiche-technique/fiche-technique.module'
 import { PlaqueModuleModule } from '../plaque-module/plaque-module.module';
 import { PlansModule } from '../plans/plans.module';
 import { NoteModuleModule } from 'src/app/note-module/note-module.module';
+//import { TranscrireNoteModule } from 'src/app/transcrire-note/transcrire-note.module';
 //import { UpdateFicheTechniqueModule } from '../fiche-technique/update-fiche-technique/update-fiche-technique.module';
 
 
@@ -34,7 +35,8 @@ import { NoteModuleModule } from 'src/app/note-module/note-module.module';
     FicheTechniqueModule,
     PlaqueModuleModule,
     PlansModule,
-    NoteModuleModule
+    NoteModuleModule,
+    //TranscrireNoteModule
     //UpdateFicheTechniqueModule
   ]
 })

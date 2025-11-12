@@ -16,4 +16,16 @@ export class NotesService {
   public getNoteModule(idModule){
     return this.httpClient.get(`${environment.BASE_API_URL}/module/note/${idModule}`);
   }
+
+  public deleteNoteModule(idNote){
+    return this.httpClient.delete(`${environment.BASE_API_URL}/module/note/${idNote}`);
+  }
+
+  public updateNoteModule(idNote, body){
+    return this.httpClient.put(`${environment.BASE_API_URL}/module/note/${idNote}`,body);
+  }
+
+  public getSingleNoteModule(idNote){
+    return this.httpClient.get(`${environment.BASE_API_URL}/module/note/single/${idNote}`);
+  }
 }

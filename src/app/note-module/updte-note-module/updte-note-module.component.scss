@@ -1,0 +1,23 @@
+.note-input-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  padding: 8px 12px;
+  border-radius: 28px;
+  color: #000;
+}
+
+.note-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  color: #040404;
+  font-size: 14px;
+  padding: 8px 6px;
+}
+
+.example-full-width {
+  width: 100%;
+}

@@ -6,6 +6,9 @@ import { NoteModuleComponent } from './note-module.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AudioRecorderModule } from './audio-recorder/audio-recorder.module';
 import { ImageAnnotationModule } from './image-annotation/image-annotation.module';
+import { TranscrireNoteModule } from '../transcrire-note/transcrire-note.module';
+import { DeleteNoteModuleModule } from './delete-note-module/delete-note-module.module';
+import { UpdteNoteModuleModule } from './updte-note-module/updte-note-module.module';
 
 
 @NgModule({
@@ -17,7 +20,10 @@ import { ImageAnnotationModule } from './image-annotation/image-annotation.modul
     ReactiveFormsModule,
     SharedModule,
     AudioRecorderModule,
-    ImageAnnotationModule
+    ImageAnnotationModule,
+    TranscrireNoteModule,
+    DeleteNoteModuleModule,
+    UpdteNoteModuleModule
   ],
   exports:[NoteModuleComponent]
 })

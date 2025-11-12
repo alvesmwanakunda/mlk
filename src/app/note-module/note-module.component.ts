@@ -2,6 +2,10 @@ import { ChangeDetectorRef, Component, OnInit, } from '@angular/core';
 import { NotesService } from '../shared/services/notes.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DeleteNoteModuleComponent } from './delete-note-module/delete-note-module.component';
+import { MatDialogRef,MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { UpdteNoteModuleComponent } from './updte-note-module/updte-note-module.component';
+
 
 
 @Component({
@@ -36,7 +40,8 @@ export class NoteModuleComponent implements OnInit{
     private noteService: NotesService,
     private route: ActivatedRoute,
     public snackbar:MatSnackBar,
-    private cdRef: ChangeDetectorRef // Pour forcer la mise à jour
+    private cdRef: ChangeDetectorRef,// Pour forcer la mise à jour
+    public dialog: MatDialog,
   ) {
     this.route.params.subscribe((data: any) => {
       this.idModule = data.id;
@@ -158,6 +163,14 @@ export class NoteModuleComponent implements OnInit{
 
     this.imageFile = new File([u8arr], filename, { type: mime });
   }
+
+   // ---------------- TRANSCRIPTION -------
+
+    onTranscriptReceived(transcript: string) {
+      // 🔹 Ajoute le texte transcrit à l’input en direct
+      this.text = transcript;
+    }
+
   // ---------------- AUDIO ----------------
   onAudioRecorded(blob: Blob) {
     console.log('Audio reçu instantanément:', blob.size, 'bytes');
@@ -284,49 +297,68 @@ export class NoteModuleComponent implements OnInit{
     return extensions[mimeType] || 'webm';
   }
 
-private getAudioDuration(blob: Blob): Promise<number> {
-  return new Promise((resolve, reject) => {
-    const audio = new Audio();
-    const url = URL.createObjectURL(blob);
+  private getAudioDuration(blob: Blob): Promise<number> {
+    return new Promise((resolve, reject) => {
+      const audio = new Audio();
+      const url = URL.createObjectURL(blob);
 
-    audio.src = url;
+      audio.src = url;
 
-    // Événement quand les métadonnées sont chargées
-    audio.addEventListener('loadedmetadata', () => {
-      console.log('Durée audio chargée:', audio.duration);
+      // Événement quand les métadonnées sont chargées
+      audio.addEventListener('loadedmetadata', () => {
+        console.log('Durée audio chargée:', audio.duration);
 
-      if (audio.duration && isFinite(audio.duration)) {
-        const duration = Math.round(audio.duration);
-        URL.revokeObjectURL(url);
-        resolve(duration);
-      } else {
-        URL.revokeObjectURL(url);
-        resolve(0); // Durée par défaut
-      }
-    });
+        if (audio.duration && isFinite(audio.duration)) {
+          const duration = Math.round(audio.duration);
+          URL.revokeObjectURL(url);
+          resolve(duration);
+        } else {
+          URL.revokeObjectURL(url);
+          resolve(0); // Durée par défaut
+        }
+      });
 
-    // En cas d'erreur
-    audio.addEventListener('error', (error) => {
-      console.error('Erreur chargement audio:', error);
-      URL.revokeObjectURL(url);
-      resolve(0);
-    });
-
-    // Forcer le chargement
-    audio.load();
-
-    // Timeout de secours
-    setTimeout(() => {
-      if (audio.duration && isFinite(audio.duration)) {
-        const duration = Math.round(audio.duration);
-        URL.revokeObjectURL(url);
-        resolve(duration);
-      } else {
+      // En cas d'erreur
+      audio.addEventListener('error', (error) => {
+        console.error('Erreur chargement audio:', error);
         URL.revokeObjectURL(url);
         resolve(0);
-      }
-    }, 2000);
-  });
-}
+      });
+
+      // Forcer le chargement
+      audio.load();
+
+      // Timeout de secours
+      setTimeout(() => {
+        if (audio.duration && isFinite(audio.duration)) {
+          const duration = Math.round(audio.duration);
+          URL.revokeObjectURL(url);
+          resolve(duration);
+        } else {
+          URL.revokeObjectURL(url);
+          resolve(0);
+        }
+      }, 2000);
+    });
+  }
+
+  //delete note
+    openDialogDelete(idNote){
+      const dialogRef = this.dialog.open(DeleteNoteModuleComponent,{width:'35%', data:{id:idNote}});
+      dialogRef.afterClosed().subscribe((result:any)=>{
+        if(result){
+          this.getAllNoteByModule();
+        }
+      })
+    }
+
+    openDialogUpdate(idNote){
+      const dialogRef = this.dialog.open(UpdteNoteModuleComponent,{width:'50%', data:{id:idNote}});
+      dialogRef.afterClosed().subscribe((result:any)=>{
+        if(result){
+          this.getAllNoteByModule();
+        }
+      })
+    }
 
 }

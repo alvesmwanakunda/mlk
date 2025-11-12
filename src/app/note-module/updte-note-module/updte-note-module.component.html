@@ -1,0 +1,12 @@
+  <mat-dialog-content class="mat-typography">
+    <div  style="padding-top: 30px;">
+      <mat-form-field class="example-full-width">
+        <mat-label>Note</mat-label>
+        <textarea matInput [(ngModel)]="text"></textarea>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="center">
+     <button mat-button mat-dialog-close>Fermer</button>
+     <button mat-button (click)="updateNote()" cdkFocusInitial style=" background: #0d5201 !important;color:#fff">Modifier</button>
+  </mat-dialog-actions>

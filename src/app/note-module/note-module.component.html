@@ -14,6 +14,19 @@
           <div class="message-time">
             {{ note.timestamp | date:'HH:mm' }}
             <span class="user-avatar" matTooltip="{{note?.createdBy?.nom}}">{{note?.createdBy?.nom.charAt(0)}}</span>
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="openDialogUpdate(note?._id)">
+                <mat-icon>edit</mat-icon>
+                <span>Editer</span>
+              </button>
+              <button mat-menu-item (click)="openDialogDelete(note?._id)">
+                <mat-icon>delete</mat-icon>
+                <span>Supprimer</span>
+              </button>
+            </mat-menu>
 
             <!--<i class="fa-solid fa-check-double read-receipt" *ngIf="note.read"></i>-->
           </div>
@@ -31,6 +44,15 @@
             {{ note.timestamp | date:'HH:mm' }}
             <!--<i class="fa-solid fa-check-double read-receipt" *ngIf="note.read"></i>-->
             <span class="user-avatar" matTooltip="{{note?.createdBy?.nom}}">{{note?.createdBy?.nom.charAt(0)}}</span>
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="openDialogDelete(note?._id)">
+                <mat-icon>delete</mat-icon>
+                <span>Supprimer</span>
+              </button>
+            </mat-menu>
 
           </div>
         </div>
@@ -48,6 +70,15 @@
           <div class="message-time">
             {{ note.timestamp | date:'HH:mm' }}
             <span class="user-avatar" matTooltip="{{note?.createdBy?.nom}}">{{note?.createdBy?.nom.charAt(0)}}</span>
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="openDialogDelete(note?._id)">
+                <mat-icon>delete</mat-icon>
+                <span>Supprimer</span>
+              </button>
+            </mat-menu>
             <!--<i class="fa-solid fa-check-double read-receipt" *ngIf="note.read"></i>-->
           </div>
         </div>
@@ -117,6 +148,12 @@
         (recordingComplete)="onAudioRecorded($event)"
         (recordingCanceled)="onAudioCanceled()"
       ></app-audio-recorder>
+
+      <!--Transcrire-->
+      <app-transcrire-note
+       *ngIf="!annotatedImagePreview"
+       (transcriptChange)="onTranscriptReceived($event)"
+      ></app-transcrire-note>
 
       <!-- send button -->
       <button type="button" class="send-btn" (click)="saveNote()" [disabled]="isSubmitting">
