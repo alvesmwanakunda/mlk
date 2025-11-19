@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DeleteNoteModuleComponent } from './delete-note-module/delete-note-module.component';
 import { MatDialogRef,MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { UpdteNoteModuleComponent } from './updte-note-module/updte-note-module.component';
+import { ProjetsService } from '../shared/services/projets.service';
 
 
 
@@ -27,6 +28,7 @@ export class NoteModuleComponent implements OnInit{
   isSubmitting = false;
   message = '';
   notes:any=[];
+  projets:any=[];
 
   showImageAnnotation = false;
   imageToAnnotate: string | null = null;
@@ -42,6 +44,7 @@ export class NoteModuleComponent implements OnInit{
     public snackbar:MatSnackBar,
     private cdRef: ChangeDetectorRef,// Pour forcer la mise à jour
     public dialog: MatDialog,
+    private projetService: ProjetsService,
   ) {
     this.route.params.subscribe((data: any) => {
       this.idModule = data.id;
@@ -50,6 +53,7 @@ export class NoteModuleComponent implements OnInit{
 
   ngOnInit() {
     this.getAllNoteByModule();
+    this.getAllModule();
   }
 
   openSnackBar(message){
@@ -58,9 +62,41 @@ export class NoteModuleComponent implements OnInit{
     })
   }
 
+  onProjectChange(projecId){
+    console.log("Projet sélectionner", projecId);
+    if(projecId=='Tous les projets'){
+      this.getAllNoteByModule();
+    }else{
+      this.getAllNoteByProjet(projecId);
+    }
+  }
+
+    getAllModule(){
+    this.projetService.getProjetModule(this.idModule).subscribe((res:any)=>{
+       this.projets = res.message;
+    },(error)=>{
+      console.log(error);
+    })
+  }
 
   getAllNoteByModule(){
     this.noteService.getNoteModule(this.idModule).subscribe((res:any)=>{
+      console.log("Modules", res);
+      this.notes = res?.message?.map(note => ({
+          ...note,
+          timestamp: new Date(note.dateLastUpdate),
+        }));
+
+        // Trier par date
+        this.notes.sort((a, b) => a.timestamp - b.timestamp);
+
+    },(error)=>{
+      console.log(error);
+    })
+  }
+
+    getAllNoteByProjet(idProjet){
+    this.noteService.getNoteProjetModule(idProjet).subscribe((res:any)=>{
       console.log("Modules", res);
       this.notes = res?.message?.map(note => ({
           ...note,

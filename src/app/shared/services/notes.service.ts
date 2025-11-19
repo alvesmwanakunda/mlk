@@ -17,6 +17,10 @@ export class NotesService {
     return this.httpClient.get(`${environment.BASE_API_URL}/module/note/${idModule}`);
   }
 
+  public getNoteProjetModule(idProjet){
+    return this.httpClient.get(`${environment.BASE_API_URL}/module/projet/note/${idProjet}`);
+  }
+
   public deleteNoteModule(idNote){
     return this.httpClient.delete(`${environment.BASE_API_URL}/module/note/${idNote}`);
   }

@@ -1,4 +1,13 @@
 <div class="notes-module">
+ <div>
+   <mat-form-field class="example-full-width">
+      <mat-label>Rechercher par projets</mat-label>
+      <mat-select  formControlName="projet" (selectionChange)="onProjectChange($event.value)" required>
+        <mat-option value="Tous les projets">Tous les projets</mat-option>
+        <mat-option *ngFor="let p of projets" [value]="p?.projet?._id">{{p?.projet?.projet}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+ </div>
   <div class="notes-container">
     <div class="notes-list">
       <div *ngFor="let note of notes"
@@ -119,14 +128,14 @@
 
 
         <!-- Mode texte normal -->
-        <input
+        <textarea
           *ngIf="!audioUrl"
           type="text"
           class="note-input"
           [class.with-image]="annotatedImagePreview"
           placeholder="Ajouter une note..."
           [(ngModel)]="text"
-        />
+        ></textarea>
 
         <!-- Mode audio - preview INSTANTANÉ -->
         <div *ngIf="audioUrl" class="audio-preview-inline instant-preview">
@@ -151,7 +160,6 @@
 
       <!--Transcrire-->
       <app-transcrire-note
-       *ngIf="!annotatedImagePreview"
        (transcriptChange)="onTranscriptReceived($event)"
       ></app-transcrire-note>
 
