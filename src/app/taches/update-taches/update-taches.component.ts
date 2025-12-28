@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { TachesService } from 'src/app/shared/services/taches.service';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { MatDialogRef,MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
@@ -25,6 +25,13 @@ export class UpdateTachesComponent implements OnInit {
     contacts:any
     tache:any;
     steps:any[] = [];
+    imageFile: File | null = null;
+    showImageAnnotation = false;
+    imageToAnnotate: string | null = null;
+    imagePreview: string | null = null;
+    isHoveringImage = false;
+    annotatedImagePreview: string | null = null;
+
 
     constructor(
        private  _formBuilder:FormBuilder,
@@ -35,6 +42,8 @@ export class UpdateTachesComponent implements OnInit {
        private authService:AuthService,
        private readonly http: HttpClient,
        public dialog: MatDialog,
+      private cdRef: ChangeDetectorRef
+
     ){
       this.idtache = this.data.id;
       //console.log("projet", this.data.id);
@@ -66,7 +75,7 @@ export class UpdateTachesComponent implements OnInit {
     this.tachesService.getTache(this.idtache).subscribe((res:any)=>{
 
       this.tache = res?.message;
-      console.log("tache", this.tache?.titre);
+      console.log("tache", this.tache);
       // Récupère les informations de la tâche
         const statut = this.tache?.statut; // ex: 'A_FAIRE', 'EN_COURS', 'TERMINER'
         const dateDebut = new Date(this.tache?.date_debut);
@@ -99,16 +108,15 @@ export class UpdateTachesComponent implements OnInit {
 
         console.log("steps", this.steps)
 
-        this.taskFormGroup=this._formBuilder.group({
-            titre:[this.tache?.titre,Validators.required],
-            assignes:[this.tache?.assignes?._id,null],
-            temps:[this.tache?.temps,null],
-            date_debut:[this.tache?.date_debut,null],
-            date_fin:[this.tache?.date_fin,null],
-            statut : [this.tache?.statut],
-            description : [this.tache?.description]
-
-          });
+        this.taskFormGroup = this._formBuilder.group({
+            titre: [this.tache?.titre || '', Validators.required],
+            assignes: [this.tache?.assignes?._id || '', null],
+            temps: [this.tache?.temps || '', null],
+            date_debut: [this.tache?.date_debut || '', null],
+            date_fin: [this.tache?.date_fin || '', null],
+            statut: [this.tache?.statut || ''],
+            description: [this.tache?.description || '']
+        });
     },(error)=>{
         this.message="Une erreur s'est produite veuillez réessayer.";
         this.openSnackBar(this.message);
@@ -329,8 +337,100 @@ export class UpdateTachesComponent implements OnInit {
 
   // END Sous Tache
 
+    // Annotation Image
+
+  // ---------------- IMAGE ----------------
+  onImageSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
+
+    this.imageFile = input.files[0];
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.imagePreview = e.target.result;
+      // Ouvrir directement l'annotation d'image
+      this.openImageAnnotation(e.target.result);
+    };
+    reader.readAsDataURL(this.imageFile);
+  }
+
+  openImageAnnotation(imageSrc: string) {
+    this.imageToAnnotate = imageSrc;
+    this.showImageAnnotation = true;
+  }
+
+  onAnnotationComplete(annotatedImage: string) {
+    this.annotatedImagePreview = annotatedImage;
+    this.imagePreview = annotatedImage;
+    this.showImageAnnotation = false;
+    this.imageToAnnotate = null;
+
+      // Générer un nom de fichier unique pour l'image
+  const timestamp = new Date().getTime();
+  const randomId = Math.random().toString(36).substring(2, 9);
+  const fileName = `annotated_image_${timestamp}_${randomId}.png`;
+
+    // Convertir data URL en File pour l'envoi
+    this.dataURLtoFile(annotatedImage, fileName);
+
+    console.log('🎯 annotatedImagePreview:', this.annotatedImagePreview ? 'DÉFINI' : 'NULL');
+
+
+    this.cdRef.detectChanges();
+  }
+
+  onAnnotationCanceled() {
+    this.showImageAnnotation = false;
+    this.imageToAnnotate = null;
+    // Optionnel: supprimer l'image si l'annotation est annulée
+    this.imageFile = null;
+    this.imagePreview = null;
+    this.annotatedImagePreview = null;
+  }
+
+  // Supprimer l'image annotée (comme pour l'audio)
+  removeAnnotatedImage() {
+    this.imageFile = null;
+    this.imagePreview = null;
+    this.annotatedImagePreview = null;
+  }
+
+  private dataURLtoFile(dataurl: string, filename: string) {
+    const arr = dataurl.split(',');
+    const mime = arr[0].match(/:(.*?);/)![1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    this.imageFile = new File([u8arr], filename, { type: mime });
+  }
+
+
+  // End Annotation
+
   updateTask(){
-      this.tachesService.updateTache(this.taskFormGroup.value, this.idtache).subscribe((res:any)=>{
+
+     const fd = new FormData();
+     if(this.imageFile){
+        fd.append('image', this.imageFile, this.imageFile.name);
+     }
+    const assignesValue = this.taskFormGroup.get('assignes').value;
+      if (assignesValue && assignesValue !== '') {
+        fd.append('assignes', assignesValue);
+    }
+     fd.append('titre', this.taskFormGroup.get('titre').value);
+     fd.append('date_debut', this.taskFormGroup.get('date_debut').value);
+     fd.append('date_fin', this.taskFormGroup.get('date_fin').value);
+     //fd.append('assignes', this.taskFormGroup.get('assignes').value);
+     fd.append('temps', this.taskFormGroup.get('temps').value);
+     fd.append('statut', this.taskFormGroup.get('statut').value);
+     fd.append('description', this.taskFormGroup.get('description').value);
+
+      this.tachesService.updateTache(fd, this.idtache).subscribe((res:any)=>{
         this.message='Tâche a été modifié avec succès';
         this.openSnackBar(this.message);
         this.dialogRef.close(res)

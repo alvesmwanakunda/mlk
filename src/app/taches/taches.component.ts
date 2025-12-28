@@ -57,7 +57,7 @@ export class TachesComponent implements OnInit {
     }
 
     openDialog(){
-        const dialogRef = this.dialog.open(AddTachesComponent,{width:'35%', data:{id:this.idProjet}});
+        const dialogRef = this.dialog.open(AddTachesComponent,{width:'60%', data:{id:this.idProjet}});
         dialogRef.afterClosed().subscribe((result:any)=>{
            if(result){
             this.getAllTaches();

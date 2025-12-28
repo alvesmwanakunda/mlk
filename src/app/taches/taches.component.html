@@ -14,14 +14,23 @@
      <div>
       <div class="row">
          <div class="col-4" *ngFor="let tache of task">
-          <mat-card style="border: 1px solid #dedede !important;height: 82%;">
+          <mat-card style="border: 1px solid #dedede !important;height: 90%;">
             <mat-card-content>
-              <div (click)="openDialogUpdate(tache?._id)" style="cursor: pointer;">
-                 <p class="tache_label ellipsis" matTooltip="{{tache?.titre}}">{{tache?.titre}}</p>
-                <div style="margin-bottom: 15px;" *ngIf="tache?.date_debut || tache?.date_fin">
-                 <!--<div><span class="time_title">{{ tache?.date_debut | date: 'dd/MM/yyyy HH:mm:ss' }}</span></div>
-                 <div><span class="time_title">{{ tache?.date_fin | date: 'dd/MM/yyyy HH:mm:ss' }}</span></div>-->
-                 <div><span class="time_title">{{ tache?.date_debut | date: 'dd/MM/yyyy' }} - {{ tache?.date_fin | date: 'dd/MM/yyyy' }}</span></div>
+              <div class="row" (click)="openDialogUpdate(tache?._id)" style="cursor: pointer;">
+                <div class="col">
+                  <p class="tache_label ellipsis" matTooltip="{{tache?.titre}}">{{tache?.titre}}</p>
+                  <div style="margin-bottom: 15px;" *ngIf="tache?.date_debut || tache?.date_fin">
+                  <!--<div><span class="time_title">{{ tache?.date_debut | date: 'dd/MM/yyyy HH:mm:ss' }}</span></div>
+                  <div><span class="time_title">{{ tache?.date_fin | date: 'dd/MM/yyyy HH:mm:ss' }}</span></div>-->
+                  <div><span class="time_title">{{ tache?.date_debut | date: 'dd/MM/yyyy' }} - {{ tache?.date_fin | date: 'dd/MM/yyyy' }}</span></div>
+                  </div>
+                </div>
+                <div class="col" *ngIf="tache?.image?.url">
+                  <div  class="annotated-image-top-preview">
+                    <div class="image-preview-container">
+                      <img [src]="tache?.image?.url" alt="Image annotée" class="preview-image">
+                    </div>
+                  </div>
                 </div>
               </div>
                <div class="row">
@@ -36,7 +45,7 @@
                   </div>
                 </div>
                 <div class="col">
-                  <div style="float: right;position: relative;bottom: 10px;display: flex;">
+                  <div style="float: right;position: relative;display: flex;">
                      <button mat-icon-button [matMenuTriggerFor]="menu" class="time_user" *ngIf="tache?.assignes">
                        <span class="time_user_label">{{tache?.assignes?.nom?.charAt(0) || ''}}</span>
                      </button>

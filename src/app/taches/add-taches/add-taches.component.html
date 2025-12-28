@@ -28,12 +28,37 @@
               <span class="error_field" *ngIf="taskFormGroup.get('date_fin').hasError(champ_validation.input[0].type) &&(taskFormGroup.get('date_fin').dirty || taskFormGroup.get('date_fin').touched)">{{champ_validation.input[0].message}}</span>
             </div>
 
+
             <div class="row">
                <div class="col-6">
-                <p class="tache_label">Assignés</p>
+                <div *ngIf="!annotatedImagePreview">
+                  <p class="tache_label">Ajouter une image</p>
+                  <label class="icon-button" title="Ajouter une image">
+                    <input #fileInput type="file" accept="image/*" (change)="onImageSelected($event)"  hidden />
+                    <i class="fa-solid fa-image" style="font-size: 40px;color: #090774;"></i>
+                  </label>
+                </div>
+
+                <div *ngIf="annotatedImagePreview" class="annotated-image-top-preview">
+                  <div class="image-preview-container" (mouseenter)="isHoveringImage = true" (mouseleave)="isHoveringImage = false">
+                    <img [src]="annotatedImagePreview" alt="Image annotée" class="preview-image">
+                    <button
+                      *ngIf="isHoveringImage"
+                      class="remove-image-btn"
+                      (click)="removeAnnotatedImage()"
+                      title="Supprimer l'image">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                    <div class="image-badge">
+                      <i class="fa-solid fa-check"></i>
+                      Image annotée
+                    </div>
+                  </div>
+               </div>
                </div>
                <div class="col-6">
                  <mat-form-field class="example-full-width">
+                  <mat-label class="tache_label">Assignés</mat-label>
                   <mat-select matInput  formControlName="assignes">
                     <mat-option *ngFor="let contact of contacts" [value]="contact?._id">{{contact?.nom}} {{contact?.prenom}}</mat-option>
                   </mat-select>
@@ -48,3 +73,10 @@
    <button mat-button cdkFocusInitial style=" background: #29628b !important;color:#fff;margin-right: 5px" [disabled]="taskFormGroup.invalid" (click)="addTask()">Ajouter</button>
    <button mat-button mat-dialog-close style=" background: #8a0423 !important;color:#fff">Fermer</button>
 </mat-dialog-actions>
+
+<app-image-annotation
+  *ngIf="showImageAnnotation && imageToAnnotate"
+  [imageSrc]="imageToAnnotate"
+  (annotationComplete)="onAnnotationComplete($event)"
+  (annotationCanceled)="onAnnotationCanceled()">
+</app-image-annotation>
