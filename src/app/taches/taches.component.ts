@@ -4,6 +4,7 @@ import { AddTachesComponent } from './add-taches/add-taches.component';
 import { UpdateTachesComponent } from './update-taches/update-taches.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 
 @Component({
@@ -67,9 +68,9 @@ export class TachesComponent implements OnInit {
 
     openDialogUpdate(idTache){
         const dialogRef = this.dialog.open(UpdateTachesComponent,{
-          width: '95vw',
-          height: '95vh',
-          maxWidth: '95vw',
+          width: '100vw',
+          height: '100vh',
+          maxWidth: '100vw',
           panelClass: 'full-screen-dialog',
           data:{id:idTache}});
         dialogRef.afterClosed().subscribe((result:any)=>{
@@ -79,17 +80,43 @@ export class TachesComponent implements OnInit {
         })
     }
 
-    getColor(statut: string): string {
+  getColor(statut: string): string {
     switch (statut) {
       case 'A Faire':
-        return '#E8E9ED';
+        return '#1d4ed8';
       case 'En Cours':
-        return '#E99D00';
+        return '#1d4ed8';
       case 'Terminer':
-        return '#27A844';
+        return '#1d4ed8';
       default:
         return 'transparent';
     }
+ }
+
+ getStatusLabel(statut?: string): string {
+  switch (statut) {
+    case 'A Faire':
+      return 'À faire';
+    case 'En Cours':
+      return 'En cours';
+    case 'Terminer':
+      return 'Terminé';
+    default:
+      return statut ?? '';
+  }
+}
+
+getStatusBadgeClass(statut?: string): string {
+  switch (statut) {
+    case 'A Faire':
+      return 'badge--pending';
+    case 'En Cours':
+      return 'badge--in-progress';
+    case 'Terminer':
+      return 'badge--completed';
+    default:
+      return 'badge--default';
+  }
 }
 
 

@@ -8,6 +8,7 @@ import { AuthService } from '../../shared/services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { environment} from 'src/environments/environment';
 import { DeleteTachesComponent } from '../delete-taches/delete-taches.component';
+import { ViewerStandarComponent } from '../../viewer-standar/viewer-standar.component';
 
 
 @Component({
@@ -37,6 +38,7 @@ export class UpdateTachesComponent implements OnInit {
        private  _formBuilder:FormBuilder,
        private _snackBar:MatSnackBar,
        public dialogRef:MatDialogRef<TachesComponent>,
+       public dialogRefViewer:MatDialogRef<ViewerStandarComponent>,
        private tachesService: TachesService,
        @Inject(MAT_DIALOG_DATA) public data:any,
        private authService:AuthService,
@@ -47,9 +49,9 @@ export class UpdateTachesComponent implements OnInit {
     ){
       this.idtache = this.data.id;
       //console.log("projet", this.data.id);
-       this.timesheetForm = this._formBuilder.group({
-      entries:this._formBuilder.array([])
-      });
+      //  this.timesheetForm = this._formBuilder.group({
+      // entries:this._formBuilder.array([])
+      // });
       this.subTaskForm = this._formBuilder.group({
         entriesSubTask:this._formBuilder.array([])
       });
@@ -67,7 +69,7 @@ export class UpdateTachesComponent implements OnInit {
     ngOnInit() {
       this.getAllEmployes();
       this.getTache();
-      this.getAllTime();
+      //this.getAllTime();
       this.getAllSubTask();
   }
 
@@ -124,137 +126,10 @@ export class UpdateTachesComponent implements OnInit {
       })
   }
 
-  // TimeSheet
-
-  getAllTime(){
-     this.tachesService.getAllTime(this.idtache).subscribe((res:any)=>{
-          res?.message.forEach(data => {
-            this.entries.push(this._formBuilder.group({
-               _id: [data?._id], // <-- Ajoutez ceci pour conserver l'ID
-              date: [data?.date, Validators.required],
-              hours: [data?.hours, Validators.required],
-              description: [data?.description],
-              employee: [data?.employee, Validators.required],
-            }));
-          });
-      },(error)=>{
-        console.log(error);
-     })
-  }
-
-  get entries(): FormArray{
-    return this.timesheetForm.get('entries') as FormArray;
-  }
-
-  addLine() {
-
-    const lastEntry = this.entries.at(this.entries.length - 1)?.value;
-
-    // Vérifie si la dernière ligne est remplie
-    if (lastEntry && (!lastEntry.date || !lastEntry.employee || !lastEntry.hours)) {
-      this.openSnackBar('Veuillez remplir tous les champs avant d’ajouter une nouvelle ligne');
-      return;
-    }
-
-    const newEntry = this._formBuilder.group({
-      date: ['', Validators.required],
-      employee: ['', Validators.required],
-      description: [''],
-      hours: ['']
-    });
-
-    this.entries.push(newEntry);
-  }
-
-  hasNewEntries(): boolean {
-  if (!this.entries || !this.entries.value) return false;
-
-  const data = this.entries.value;
-  const allEntries = Array.isArray(data) ? data : [data];
-
-  return allEntries.some(entry => !entry._id);
-  }
-
-    submitAllLine() {
-    const entry = this.entries;
-
-    if (entry.invalid) {
-      this.openSnackBar('Champs invalides');
-      return;
-    }
-
-    const data = entry.value;
-    console.log("Sous tache", data);
-
-    const requests = data.map(item => {
-      if (!item._id) {
-        return this.http.post(`${environment.BASE_API_URL}/time/taches/${this.idtache}`, item).toPromise();
-      }
-      return Promise.resolve(null);
-    });
-
-    // Attendre que toutes les requêtes soient terminées
-    Promise.all(requests).then(results => {
-      const successfulAdds = results.filter(res => res && res.success);
-      this.openSnackBar(`${successfulAdds.length} sous-tâche(s) ajoutée(s) avec succès`);
-    }).catch(error => {
-      console.error('Erreur:', error);
-      this.openSnackBar('Erreur lors de l\'ajout des sous-tâches');
-    });
-  }
-
-  submitLine(index: number) {
-    const entry = this.entries.at(index);
-
-    if (entry.invalid) {
-      this.openSnackBar('Champs invalides');
-      return;
-    }
-
-    const data = entry.value;
-    console.log("Sous tache", data);
-
-    if (!data._id) {
-      // Nouveau → POST
-      this.http.post(`${environment.BASE_API_URL}/time/taches/${this.idtache}`, data).subscribe((res: any) => {
-        console.log("Time", res);
-        //this.openSnackBar('Les sous-tâches est ajoutée avec succès');
-        if (res.success && res.message[0]?._id) {
-          entry.patchValue({ _id: res.message[0]._id });
-          this.openSnackBar('Les sous-tâches est ajoutée avec succès');
-        }
-      });
-    } else {
-      // Existant → PUT
-      this.http.put(`${environment.BASE_API_URL}/time/taches/${data._id}`, data).subscribe((res: any) => {
-        //this.openSnackBar('Ligne modifiée');
-        this.openSnackBar('La sous-tâches est modifiée avec succès');
-      });
-    }
-  }
-
-  removeLine(index: number) {
-    const entry = this.entries.at(index);
-
-    const id = entry.value._id;
-
-    if (id) {
-      // Supprimer dans la base
-      this.http.delete(`${environment.BASE_API_URL}/time/taches/${id}`).subscribe(() => {
-        this.entries.removeAt(index);
-        //this.openSnackBar('Ligne supprimée');
-         this.openSnackBar('Les sous-tâches est supprimée avec succès');
-      });
-    } else {
-      // Juste retirer du form
-      this.entries.removeAt(index);
-    }
-  }
-  // END Timesheet
 
   // Sous Tache
 
-     getAllSubTask(){
+    getAllSubTask(){
       this.tachesService.getAllSubTask(this.idtache).subscribe((res:any)=>{
             res?.message.forEach(data => {
               this.entriesSubTask.push(this._formBuilder.group({
@@ -268,8 +143,8 @@ export class UpdateTachesComponent implements OnInit {
       })
     }
     get entriesSubTask(): FormArray{
-    return this.subTaskForm.get('entriesSubTask') as FormArray;
-   }
+     return this.subTaskForm.get('entriesSubTask') as FormArray;
+    }
 
   addLineSub() {
 
@@ -464,5 +339,24 @@ export class UpdateTachesComponent implements OnInit {
       }
     })
   }
+
+  close(){
+    this.dialogRef.close()
+  }
+
+openDialogFile(chemin, extension){
+  const dialogRef = this.dialog.open(ViewerStandarComponent,{
+    maxWidth:'100vw',
+    maxHeight:'100vh',
+    width:'100%',
+    height:'100%',
+    panelClass:'full-screen-modal',
+    data:{chemin:chemin,extension:extension}});
+  dialogRef.afterClosed().subscribe((result:any)=>{
+     if(result){
+      //this.getAllDevis();
+     }
+  })
+}
 
 }

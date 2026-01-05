@@ -2,14 +2,30 @@
   <!--<div class="text-center" style="padding-top: 25px;"><p class="title-projet-page">Nouvelle tâche</p></div>
   <div class="row"><div class="col"><hr class="entreprise"></div></div>-->
 
+  <div class="container-fluid">
 
-   <div class="row justify-content-md-center">
+    <div class="row justify-content-md-center">
+
       <div class="col-lg-11 col-md-11 col-md-auto">
+        <div>
+          <div class="row" style="margin-bottom: 10px;padding-top: 15px;">
+            <div class="col">
+              <h1 class="text-3xl font-bold text-gray-900">Tâche</h1>
+            </div>
+            <div class="col" align="right">
+               <button mat-icon-button color="primary" (click)="close()">
+                <mat-icon>close</mat-icon>
+               </button>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+        </div>
+
         <div class="row" style="margin-bottom: 10px;padding-top: 10px;">
           <div class="col">
             <div style="padding-top: 25px;">
-              <button mat-raised-button color="primary" class="me-2" (click)="updateTask()">Enregistrer</button>
-              <button mat-raised-button color="warn" (click)="openDialog()">Supprimer</button>
+              <button mat-raised-button color="primary" class="me-2" (click)="updateTask()"><mat-icon>edit</mat-icon> Modifier</button>
+              <button mat-raised-button color="warn" (click)="openDialog()"><mat-icon>delete</mat-icon> Supprimer</button>
             </div>
           </div>
           <div class="col">
@@ -27,7 +43,7 @@
         </div>
          <mat-divider></mat-divider>
 
-          <div *ngIf="tache" style="padding-top: 90px;margin-bottom: 30px;">
+          <div *ngIf="tache" style="padding-top: 30px;margin-bottom: 30px;">
             <div class="row">
               <div class="col">
                  <form [formGroup]="taskFormGroup">
@@ -48,6 +64,12 @@
                             <mat-option *ngFor="let contact of contacts" [value]="contact?._id">{{contact?.nom}} {{contact?.prenom}}</mat-option>
                           </mat-select>
                           </mat-form-field>
+                      </div>
+                      <div>
+                        <mat-form-field class="example-full-width">
+                          <mat-label class="tache_label">Description</mat-label>
+                          <textarea matInput formControlName="description"></textarea>
+                        </mat-form-field>
                       </div>
                     </div>
                     <div class="col">
@@ -93,219 +115,136 @@
                         </div>
 
                       </div>
+                      <div>
+                        <div class="annotated-image-top-preview">
+                          <div class="image-preview-container">
+                            <div *ngIf="tache?.image?.url">
+                              <img [src]="tache.image.url" class="preview-image" alt="Image de la tâche"/>
+                             <input
+                                  #fileInput
+                                  type="file"
+                                  accept="image/*"
+                                  (change)="onImageSelected($event)"
+                                  #fileUpload
+                                  hidden
+                                />
+                              <button
+                                class="remove-image-btn"
+                                (click)="fileUpload.click()"
+                                matTooltip="Editer l'image">
+                                <i class="fa-solid fa-edit"></i>
+                              </button>
+
+                              <button
+                                class="open-image-btn"
+                                (click)="openDialogFile(tache?.image?.url,'png')"
+                                matTooltip="Voir l'image">
+                                <i class="fa-solid fa-eye"></i>
+                              </button>
+                            </div>
+
+                            <div *ngIf="!tache?.image?.url">
+                                  <img [src]="annotatedImagePreview" class="preview-image" alt="Aperçu image modifiée"  *ngIf="annotatedImagePreview"/>
+                                  <img src="assets/images/task1.png" class="preview-image" alt="Image par défaut" *ngIf="!annotatedImagePreview"/>
+                                  <input
+                                  #fileInput
+                                  type="file"
+                                  accept="image/*"
+                                  (change)="onImageSelected($event)"
+                                  #fileUpload
+                                  hidden
+                                />
+                                <button
+                                  class="remove-image-btn"
+                                  (click)="fileUpload.click()"
+                                  matTooltip="Ajouter l'image">
+                                  <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </div>
+
+                            <!-- 1) Preview locale (nouvelle image/annotation) -->
+                            <!--<img
+                              *ngIf="annotatedImagePreview; else existingOrDefault"
+                              [src]="annotatedImagePreview"
+                              class="preview-image"
+                              alt="Aperçu image modifiée"
+                            />-->
+
+                            <!-- <ng-template #existingOrDefault>
+                              <img
+                                *ngIf="tache?.image?.url; else defaultImg"
+                                [src]="tache.image.url"
+                                class="preview-image"
+                                alt="Image de la tâche"
+                              />
+                             <input
+                                  #fileInput
+                                  type="file"
+                                  accept="image/*"
+                                  (change)="onImageSelected($event)"
+                                  #fileUpload
+                                  hidden
+                                />
+                              <button
+                                class="remove-image-btn"
+                                (click)="fileUpload.click()"
+                                matTooltip="Editer l'image">
+                                <i class="fa-solid fa-edit"></i>
+                              </button>
+
+                              <button
+                                class="open-image-btn"
+                                (click)="removeAnnotatedImage()"
+                                matTooltip="Voir l'image">
+                                <i class="fa-solid fa-eye"></i>
+                              </button>
+                            </ng-template>
+
+                            <ng-template #defaultImg>
+                              <img
+                                src="assets/images/task1.png"
+                                class="preview-image"
+                                alt="Image par défaut"
+                              />
+                              <input
+                                  #fileInput
+                                  type="file"
+                                  accept="image/*"
+                                  (change)="onImageSelected($event)"
+                                  #fileUpload
+                                  hidden
+                                />
+                              <button
+                                class="remove-image-btn"
+                                (click)="fileUpload.click()"
+                                matTooltip="Ajouter l'image">
+                                <i class="fa-solid fa-plus"></i>
+                              </button>
+                            </ng-template> -->
+
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div>
-                    <mat-form-field class="example-full-width">
-                      <mat-label class="tache_label">Description</mat-label>
-                      <textarea matInput formControlName="description"></textarea>
-                    </mat-form-field>
-                  </div>
+
                  </form>
-              </div>
-              <div class="col-4">
-                <div class="annotated-image-top-preview">
-                  <div class="image-preview-container">
-
-                    <!-- 1) Preview locale (nouvelle image/annotation) -->
-                    <img
-                      *ngIf="annotatedImagePreview; else existingOrDefault"
-                      [src]="annotatedImagePreview"
-                      class="preview-image"
-                      alt="Aperçu image modifiée"
-                    />
-
-                    <!-- 2) Sinon: image existante ou default -->
-                    <ng-template #existingOrDefault>
-                      <img
-                        *ngIf="tache?.image?.url; else defaultImg"
-                        [src]="tache.image.url"
-                        class="preview-image"
-                        alt="Image de la tâche"
-                      />
-                    </ng-template>
-
-                    <!-- 3) Default -->
-                    <ng-template #defaultImg>
-                      <img
-                        src="assets/images/task1.png"
-                        class="preview-image"
-                        alt="Image par défaut"
-                      />
-                    </ng-template>
-
-                    <div class="image-badge icon-button" style="cursor: pointer;">
-                      <label class="icon-button" title="Ajouter une image">
-                        <input
-                          #fileInput
-                          type="file"
-                          accept="image/*"
-                          (change)="onImageSelected($event)"
-                          hidden
-                        />
-                        <i class="fa-solid fa-image" style="font-size: 29px;"></i>
-                        <span style="font-size: 13px; position: relative; bottom: 5px; left: 2px;">
-                          Modifier l'image
-                        </span>
-                      </label>
-                    </div>
-
-                  </div>
-                </div>
-
-                <!-- <div  class="annotated-image-top-preview">
-                    <div class="image-preview-container">
-                      <img src="assets/images/task.png"  class="preview-image" *ngIf="!tache?.image">
-                      <img [src]="tache?.image?.url" class="preview-image" *ngIf="!annotatedImagePreview">
-                      <img [src]="annotatedImagePreview" class="preview-image" *ngIf="annotatedImagePreview">
-                      <div class="image-badge icon-button" style="cursor: pointer;">
-                        <label class="icon-button" title="Ajouter une image">
-                        <input #fileInput type="file" accept="image/*" (change)="onImageSelected($event)"  hidden />
-                        <i class="fa-solid fa-image" style="font-size: 29px;"></i> <span style="font-size: 13px;position: relative;bottom: 5px;left: 2px;">Modifier l'image</span>
-                       </label>
-                    </div>
-                    </div>
-                </div> -->
               </div>
             </div>
 
          </div>
 
+         <app-sub-taches></app-sub-taches>
+
          <div>
-          <mat-tab-group dynamicHeight>
-            <!--<mat-tab label="Description">
-              <div style="padding-top: 20px;">
-                 <form [formGroup]="taskFormGroup">
-                    <mat-form-field class="example-full-width" style="height: 250px !important;">
-                      <textarea matInput formControlName="description"></textarea>
-                    </mat-form-field>
-                 </form>
-              </div>
-            </mat-tab>-->
-            <!--<mat-tab label="Feuilles de temps">-->
-             <mat-tab label="Sous-tâches">
-              <div style="padding-top: 20px;">
-                <form [formGroup]="timesheetForm">
 
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">Date *</th>
-                        <th scope="col">Employé *</th>
-                        <th scope="col">Titre</th>
-                        <th scope="col">Heures passés</th>
-                        <th scope="col"></th>
-                      </tr>
-                    </thead>
-                    <tbody formArrayName="entries">
-                      <tr *ngFor="let entry of entries.controls; let i = index" [formGroupName]="i">
-                        <td>
-                           <mat-form-field class="example-full-width">
-                              <input matInput [matDatepicker]="picker1" formControlName="date" required>
-                              <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
-                              <mat-datepicker #picker1></mat-datepicker>
-                           </mat-form-field>
-                           <div *ngIf="entry.get('date').hasError(champ_validation.input[0].type) &&(entry.get('date').dirty || entry.get('date').touched)">
-                            <p class="error_field">{{champ_validation.input[0].message}}</p>
-                           </div>
-                        </td>
-                        <td>
-                          <mat-form-field class="example-full-width">
-                            <mat-select formControlName="employee" matInput required>
-                            <mat-option *ngFor="let contact of contacts" [value]="contact?._id">{{contact?.nom}} {{contact?.prenom}}</mat-option>
-                          </mat-select>
-                          </mat-form-field>
-                           <div *ngIf="entry.get('employee').hasError(champ_validation.input[0].type) &&(entry.get('employee').dirty || entry.get('employee').touched)">
-                            <p class="error_field">{{champ_validation.input[0].message}}</p>
-                           </div>
-                        </td>
-                        <td>
-                           <mat-form-field class="example-full-width">
-                            <input type="text" formControlName="description" matInput />
-                          </mat-form-field>
-
-                        </td>
-                        <td>
-                           <mat-form-field class="example-full-width">
-                             <input type="time" formControlName="hours" matInput/>
-                           </mat-form-field>
-
-                        </td>
-                        <td>
-                          <button mat-icon-button  (click)="submitLine(i)" matTooltip="Enregistrer">
-                            <mat-icon>cloud</mat-icon>
-                          </button>
-                          <button mat-icon-button color="warn" (click)="removeLine(i)" matTooltip="Supprimer">
-                            <mat-icon>delete</mat-icon>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div class="row">
-                    <div class="col">
-                      <a (click)="addLine()" style="cursor:pointer; color: teal;">Ajouter une ligne</a>
-                    </div>
-                    <div class="col">
-                      <div style="float: right;">
-                        <a (click)="submitAllLine()" *ngIf="entries.length > 0 && hasNewEntries()" style="cursor:pointer; color: rgb(7, 42, 180);"> Ajouter toutes les lignes</a>
-                      </div>
-                    </div>
-                  </div>
-
-                </form>
-              </div>
-            </mat-tab>
-           <!-- <mat-tab label="Sous-tâches">
-              <div class="example-large-box mat-elevation-z4">
-
-                <div style="padding-top: 20px;">
-                <form [formGroup]="subTaskForm">
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">Titre</th>
-                        <th scope="col">Assignés</th>
-                        <th scope="col"></th>
-                      </tr>
-                    </thead>
-                    <tbody formArrayName="entriesSubTask">
-                      <tr *ngFor="let entry of entriesSubTask.controls; let i = index" [formGroupName]="i">
-                        <td>
-                           <mat-form-field class="example-full-width">
-                            <input type="text" formControlName="description" matInput />
-                          </mat-form-field>
-                        </td>
-                        <td>
-                          <mat-form-field class="example-full-width">
-                            <mat-select formControlName="assignes" matInput>
-                            <mat-option *ngFor="let contact of contacts" [value]="contact?._id">{{contact?.nom}} {{contact?.prenom}}</mat-option>
-                          </mat-select>
-                          </mat-form-field>
-                        </td>
-
-                        <td>
-                          <button mat-icon-button  (click)="submitLineSubTask(i)" matTooltip="Enregistrer">
-                            <mat-icon>cloud</mat-icon>
-                          </button>
-                          <button mat-icon-button color="warn" (click)="removeLineSubTask(i)" matTooltip="Supprimer">
-                            <mat-icon>delete</mat-icon>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <a (click)="addLineSub()" style="cursor:pointer; color: teal;">Ajouter une ligne</a>
-                </form>
-              </div>
-
-              </div>
-            </mat-tab>-->
-          </mat-tab-group>
          </div>
-
       </div>
   </div>
+
+  </div>
+
+
 <app-image-annotation
   *ngIf="showImageAnnotation && imageToAnnotate"
   [imageSrc]="imageToAnnotate"

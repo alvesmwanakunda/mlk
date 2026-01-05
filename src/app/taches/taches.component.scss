@@ -1,7 +1,38 @@
+
+$white: #ffffff;
+$gray-900: #111827;
+$gray-700: #374151;
+$gray-600: #4b5563;
+$gray-500: #6b7280;
+$gray-200: #e5e7eb;
+$gray-100: #f3f4f6;
+
+$blue-700: #1d4ed8;
+$blue-200: #bfdbfe;
+$blue-50: #eff6ff;
+
+$green-700: #15803d;
+$green-200: #bbf7d0;
+$green-50: #f0fdf4;
+
+$red-700: #b91c1c;
+$red-300: #fca5a5;
+$red-200: #fecaca;
+$red-100: #fee2e2;
+$red-50: #fef2f2;
+
+$orange-500: #f97316;
+$blue-500: #3b82f6;
+$red-500: #ef4444;
+$gray-400: #9ca3af;
+
+$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.10), 0 4px 6px rgba(0, 0, 0, 0.06);
+
 .tache_label{
-    font-size: 0.875rem;
+    font-size: 1.125rem;
     line-height: 1.5;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .time_card{
@@ -12,18 +43,18 @@
 }
 
 .time_title{
-    --text-opacity: 1;
-    color: rgba(55, 65, 81, 0.76) !important;
-    font-size: 12px;
+   // --text-opacity: 1;
+    //color: rgba(55, 65, 81, 0.76) !important;
+    font-size: 13px;
 }
 
 .time_user{
-  border: 1px #28628B solid;
-  background-color: #28628B;
-  border-radius: 5px;
+  //border: 1px #28628B solid;
+  //background-color: #28628B;
+  //border-radius: 5px;
   font-size: 14px;
   width: 26px !important;
-  height: 24px !important;
+  height: 26px !important;
   color: #fff;
   margin-right: 10px;
   display: flex;
@@ -119,7 +150,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 200px;
+  width: 220px;
 }
 
 .full-screen-dialog .mat-dialog-container {
@@ -155,4 +186,100 @@
   }
 }
 
+// Tache
 
+.task-col {
+  display: flex;
+  margin-bottom: 1.5rem; // espace vertical
+}
+
+
+.task-card {
+  position: relative;
+  background: white;
+  border: 2px solid $gray-200;
+  border-radius: 0.5rem; /* ~rounded-lg */
+  cursor: pointer;
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+  height: auto;
+  flex: 1;              // 👈 toutes les cartes même hauteur
+  display: flex;
+  flex-direction: column;
+
+  /* Hover: shadow + lift */
+  &:hover {
+    box-shadow: $shadow-lg;
+    transform: translateY(-0.25rem); /* ~ -translate-y-1 */
+  }
+
+  /* Group hover behavior: show "more" button */
+  &:hover .task-card__more {
+    opacity: 1;
+  }
+
+  &--overdue {
+    border-color: $red-300;
+  }
+
+    &--afaire {
+    border-left: 5px solid $gray-400;
+  }
+
+  &--encours {
+    border-left: 5px solid $blue-500;
+  }
+
+  &--terminer {
+    border-left: 5px solid $red-500;
+  }
+}
+// status
+
+
+.status-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; // gap-2
+}
+
+.badge {
+  padding: 0.25rem 0.75rem; // px-3 py-1
+  font-size: 0.75rem;       // text-xs
+  font-weight: 500;         // font-medium
+  border-radius: 9999px;    // rounded-full
+  border: 1px solid transparent;
+}
+
+/* Statuts */
+.badge--pending {
+  background: #f3f4f6;
+  color: #374151;
+  border-color: #e5e7eb;
+}
+
+.badge--in-progress {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+
+.badge--completed {
+  background: #f0fdf4;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+
+.badge--default {
+  background: #f3f4f6;
+  color: #374151;
+  border-color: #e5e7eb;
+}
+
+/* Overdue */
+.badge--overdue {
+  background: #fee2e2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}

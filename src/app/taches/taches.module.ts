@@ -10,7 +10,7 @@ import { UpdateTachesModule } from './update-taches/update-taches.module';
 
 
 @NgModule({
-  declarations: [TachesComponent],
+  declarations: [TachesComponent,],
   imports: [
     CommonModule,
     TachesRoutingModule,
