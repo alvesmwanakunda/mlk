@@ -1,0 +1,34 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment} from 'src/environments/environment';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PvService {
+
+  constructor(private readonly httpClient: HttpClient) { }
+
+  public createPV(data, idProjet){
+    return this.httpClient.post(`${environment.BASE_API_URL}/pv/create/${idProjet}`, data)
+  }
+
+  public updatePV(data, idPv){
+    return this.httpClient.put(`${environment.BASE_API_URL}/pv/update/${idPv}`, data)
+  }
+
+  public deletePV(idPV){
+    return this.httpClient.delete(`${environment.BASE_API_URL}/pv/${idPV}`)
+  }
+
+  public getPV(idPV){
+    return this.httpClient.get(`${environment.BASE_API_URL}/pv/${idPV}`)
+  }
+
+  public getAllPV(idPV){
+    return this.httpClient.get(`${environment.BASE_API_URL}/pv/all/${idPV}`)
+  }
+
+
+
+}

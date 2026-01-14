@@ -42,7 +42,7 @@ import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 @NgModule({
   declarations: [
     FileSizeConvertPipe,
-    DataAsAgoPipe
+    DataAsAgoPipe,
   ],
   imports: [
     CommonModule,

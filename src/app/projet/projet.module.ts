@@ -16,6 +16,7 @@ import { PreparationModule } from './preparation/preparation.module';
 import { ModuleProjetModule } from './module-projet/module-projet.module';
 import { PlanningProjetModule } from './planning-projet/planning-projet.module';
 import { TachesModule } from '../taches/taches.module';
+import { PvReceptionModule } from '../pv-reception/pv-reception.module';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { TachesModule } from '../taches/taches.module';
     PreparationModule,
     ModuleProjetModule,
     PlanningProjetModule,
-    TachesModule
+    TachesModule,
+    PvReceptionModule,
   ],
   providers:[ProjetsService]
 })

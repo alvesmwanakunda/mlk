@@ -1,0 +1,297 @@
+<div class="container">
+  <div style="padding-top: 14px !important;margin-bottom: 50px;padding-bottom: 50px !important;">
+
+    <div [hidden]="!isBlock">
+      <div [hidden]="isListe">
+        <div class="mb-3">
+          <div align="right">
+            <button type="button" class="btn btn-piece"  style="margin-right: 10px;" (click)="openForm()"><i class="fa-solid fa-plus"></i> Nouveau</button>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+          <table mat-table [dataSource]="dataSource">
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="pv">
+              <th mat-header-cell *matHeaderCellDef class="box-header"> Type de PV </th>
+              <td mat-cell *matCellDef="let element" style="font-size: 13px;">
+                {{element?.declaration}}
+              </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef class="box-header"> Date </th>
+              <td mat-cell *matCellDef="let element" style="font-size: 13px;">
+              Fait à {{element?.place}}, le {{element?.date | date:'dd/MM/yyyy'}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="openDetail(element?.id)">
+                    <mat-icon style="font-size: 18px;">edit</mat-icon>
+                    <span style="font-size: 14px;">Editer</span>
+                  </button>
+                  <button mat-menu-item (click)="openDelete(element?.id)">
+                    <mat-icon style="font-size: 18px;">delete</mat-icon>
+                    <span style="font-size: 14px;">Supprimer</span>
+                  </button>
+                </mat-menu>
+              </td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+          <mat-paginator [pageSizeOptions]="[10, 20]"
+                        showFirstLastButtons
+                        aria-label="Select page of periodic elements">
+          </mat-paginator>
+      </div><!--ISLISTE-->
+      <div [hidden]="!isListe">
+          <div class="mb-2">
+          <div align="right">
+            <button type="button" class="btn btn-piece"  style="margin-right: 10px;" (click)="openList()"><i class="fa-solid fa-arrow-left"></i> Retour</button>
+          </div>
+        </div>
+        <mat-divider class="mb-2"></mat-divider>
+        <form [formGroup]="form" class="pv-form">
+
+        <label id="example-radio-group-label">Le maître d'ouvrage (ou client) déclare que:</label>
+        <mat-radio-group aria-label="Select an option" formControlName="declaration" class="example-radio-group">
+          <mat-radio-button value="WITHOUT_RESERVE" class="example-radio-button">Réception prononcée sans réserve</mat-radio-button>
+          <mat-radio-button value="WITH_RESERVES" class="example-radio-button">Réception prononcée avec réserves</mat-radio-button>
+          <mat-radio-button value="REFUSED" class="example-radio-button">Réception refusée</mat-radio-button>
+          <mat-radio-button value="WITHOUT_RESERVE_WITH_OBSERVATION" class="example-radio-button">Réception prononcée sans réserve mais avec observation</mat-radio-button>
+        </mat-radio-group>
+
+
+        <!-- Avec effet à la date du -->
+        <div>
+          <mat-form-field class="example-full-width">
+            <mat-label class="tache_label">Avec effet à la date du</mat-label>
+              <input matInput [matDatepicker]="picker"  formControlName="effectiveDate" required>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <div *ngIf="form.get('effectiveDate').hasError(champ_validation.input[0].type) &&(form.get('effectiveDate').dirty || form.get('effectiveDate').touched)">
+              <p class="error_field">{{champ_validation.input[0].message}}</p>
+            </div>
+        </div>
+
+
+        <!-- Section WITH_RESERVES: date prochaine réception -->
+        <div  *ngIf="form.value.declaration === 'WITH_RESERVES'">
+          <mat-form-field class="example-full-width">
+            <mat-label class="tache_label">Date prochaine réception</mat-label>
+              <input matInput [matDatepicker]="picker1"  formControlName="nextReceptionDate" required>
+              <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+            <div *ngIf="form.get('nextReceptionDate').hasError(champ_validation.input[0].type) &&(form.get('nextReceptionDate').dirty || form.get('nextReceptionDate').touched)">
+              <p class="error_field">{{champ_validation.input[0].message}}</p>
+            </div>
+        </div>
+
+
+        <div *ngIf="form.value.declaration === 'WITH_RESERVES'" style="margin-bottom: 25px;">
+          <div style="background-color: #28628B;padding: 7px 3px 1px 14px;">
+            <h2 style="color: #fff;">État des réserves</h2>
+          </div>
+
+          <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Nature des réserves</th>
+                    <th>Travaux à exécuter</th>
+                    <th>Photo</th>
+                    <th>État réserve</th>
+                    <th></th>
+                  </tr>
+                </thead>
+
+                <tbody formArrayName="reserves">
+                  <tr *ngFor="let row of reserves.controls; let i=index" [formGroupName]="i">
+                    <td>{{ i+1 }}</td>
+                    <td>
+                      <mat-form-field class="example-full-width">
+                          <input matInput  formControlName="nature">
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <mat-form-field class="example-full-width">
+                          <input matInput  formControlName="travauxAExecuter">
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <button mat-icon-button type="button" (click)="fileInput.click()">
+                        <mat-icon>attach_file</mat-icon>
+                      </button>
+                      <input #fileInput type="file" accept="image/*" class="file-hidden" (change)="onReservePhotoSelected($event, i)"/>
+                      <div class="file-meta">
+                        <span class="file-name" *ngIf="reservePhotoFiles[i]" matTooltip="{{reservePhotoFiles[i]?.name}}">{{ reservePhotoFiles[i]?.name }}</span>
+                        <span class="file-empty" *ngIf="!reservePhotoFiles[i]">Aucun fichier choisi</span>
+                      </div>
+                    </td>
+                    <td>
+                      <mat-form-field class="example-full-width">
+                        <mat-select  formControlName="etat">
+                          <mat-option value="Non levée">Non levée</mat-option>
+                          <mat-option value="Levée">Levée</mat-option>
+                          <mat-option value="Observation">Observation</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </td>
+                    <td><button mat-icon-button color="warn" type="button" (click)="removeReserve(i)"><mat-icon>delete</mat-icon></button></td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+          <button type="button" mat-button color="primary" (click)="addReserve()">Ajouter une réserve</button>
+
+        </div>
+
+        <div *ngIf="form.value.declaration === 'WITH_RESERVES'">
+            <mat-form-field class="example-full-width">
+            <mat-label class="tache_label">Dans un délai de (en jours)</mat-label>
+              <input type="number" matInput  formControlName="reservesExecutionDelayDays" required>
+            </mat-form-field>
+            <div *ngIf="form.get('reservesExecutionDelayDays').hasError(champ_validation.input[0].type) &&(form.get('reservesExecutionDelayDays').dirty || form.get('reservesExecutionDelayDays').touched)">
+              <p class="error_field">{{champ_validation.input[0].message}}</p>
+            </div>
+        </div>
+
+        <div *ngIf="form.value.declaration === 'WITH_RESERVES'">
+            <mat-form-field class="example-full-width">
+            <mat-label class="tache_label">À compter du</mat-label>
+              <input matInput [matDatepicker]="picker2"  formControlName="reservesFromDate" required>
+              <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+            <div *ngIf="form.get('reservesFromDate').hasError(champ_validation.input[0].type) &&(form.get('reservesFromDate').dirty || form.get('reservesFromDate').touched)">
+              <p class="error_field">{{champ_validation.input[0].message}}</p>
+            </div>
+        </div>
+
+        <!-- Fait à -->
+        <div>
+          <mat-form-field class="example-full-width">
+            <mat-label class="tache_label">Fait à</mat-label>
+              <input matInput formControlName="place" required>
+            </mat-form-field>
+            <div *ngIf="form.get('place').hasError(champ_validation.input[0].type) &&(form.get('place').dirty || form.get('place').touched)">
+              <p class="error_field">{{champ_validation.input[0].message}}</p>
+            </div>
+        </div>
+
+          <!-- Section observation -->
+        <div *ngIf="form.value.declaration === 'WITHOUT_RESERVE_WITH_OBSERVATION'" class="row">
+            <mat-form-field class="example-full-width">
+              <mat-label class="tache_label">Observation</mat-label>
+              <textarea matInput formControlName="observation" required></textarea>
+            </mat-form-field>
+            <div *ngIf="form.get('observation').hasError(champ_validation.input[0].type) &&(form.get('observation').dirty || form.get('observation').touched)">
+              <p class="error_field">{{champ_validation.input[0].message}}</p>
+            </div>
+        </div>
+
+        <!-- Section REFUSED -->
+        <div *ngIf="form.value.declaration === 'REFUSED'">
+          <mat-form-field class="example-full-width">
+              <mat-label class="tache_label">Précisez les motifs du refus ou du report de la réception</mat-label>
+              <textarea matInput formControlName="refusalReason" required></textarea>
+            </mat-form-field>
+            <div *ngIf="form.get('refusalReason').hasError(champ_validation.input[0].type) &&(form.get('refusalReason').dirty || form.get('refusalReason').touched)">
+              <p class="error_field">{{champ_validation.input[0].message}}</p>
+            </div>
+        </div>
+
+
+        <!-- Signatures -->
+        <div class="row" style="margin-bottom: 25px;">
+          <div class="col">
+            <label>Signature du représentant de l'entreprise *</label>
+            <br/>
+            <small style="color: rgb(171, 6, 6);">(Après avoir signé, veuillez cliquer sur approuver. )</small>
+            <div>
+              <div style="margin-bottom: 10px;">
+                <canvas #canvas style="background: rgb(172, 169, 169);"></canvas>
+              </div>
+              <div>
+                <button mat-stroked-button (click)="clear()" style="margin-right: 10px;">Effacer</button>
+                <button mat-stroked-button  color="primary" (click)="saveSignature()" cdkFocusInitial *ngIf="!isValide">Approuver</button>
+              </div>
+            </div>
+            <!-- <button type="button" (click)="openSignature('companyRep')">Signer</button>
+            <span *ngIf="form.value.signatures?.companyRep?.signedAt">Signé</span> -->
+          </div>
+
+          <div class="col">
+            <label>Signature du Maître d'Ouvrage (ou client) *</label>
+            <br/>
+            <small style="color: rgb(171, 6, 6);">(Après avoir signé, veuillez cliquer sur approuver. )</small>
+            <div>
+              <div style="margin-bottom: 10px;">
+                <canvas #canvas1 style="background: rgb(172, 169, 169);"></canvas>
+              </div>
+              <div>
+                <button  mat-stroked-button (click)="clearClient()" style="margin-right: 10px;">Effacer</button>
+                <button  mat-stroked-button  color="primary" (click)="saveSignatureClient()" cdkFocusInitial *ngIf="!isValideClient">Approuver</button>
+              </div>
+            </div>
+            <!-- <button type="button" (click)="openSignature('client')">Signer</button>
+            <span *ngIf="form.value.signatures?.client?.signedAt">Signé</span> -->
+          </div>
+        </div>
+
+        <div *ngIf="form.value.declaration === 'WITH_RESERVES'">
+            <section class="example-section">
+              <mat-checkbox class="example-margin" formControlName="allReservesLifted" required>Les réserves mentionnées ci-dessus ont toutes été levées</mat-checkbox>
+              <div *ngIf="form.get('allReservesLifted').hasError(champ_validation.input[0].type) &&(form.get('allReservesLifted').dirty || form.get('allReservesLifted').touched)">
+                  <p class="error_field">{{champ_validation.input[0].message}}</p>
+              </div>
+            </section>
+        </div>
+
+
+        <!-- Etat des réserves (WITH_RESERVES et éventuellement lecture pour observation) -->
+
+
+
+        <div style="float: right;" class="mb-2">
+          <button type="button" mat-raised-button color="primary" (click)="save()">Enregistrer</button>
+          <!--<button type="button" (click)="submit()">Soumettre</button>-->
+        </div>
+        <div *ngIf="isLoad">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
+        </form>
+      </div>
+    </div>
+
+    <div *ngIf="isBlockDetail">
+      <div class="mb-2">
+          <div align="right">
+            <button type="button" class="btn btn-piece"  style="margin-right: 10px;" (click)="openBlock()"><i class="fa-solid fa-arrow-left"></i> Retour</button>
+          </div>
+      </div>
+      <mat-divider class="mb-2"></mat-divider>
+     <app-detail-pv [idPv]="idPv" [idProjet]="idProjet"></app-detail-pv>
+    </div>
+
+
+  </div>
+</div>
+
+<!-- pv-form.component.html -->
+

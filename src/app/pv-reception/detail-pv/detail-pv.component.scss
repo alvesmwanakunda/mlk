@@ -1,0 +1,203 @@
+.example-radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+  align-items: flex-start;
+}
+
+.example-radio-button {
+  margin: 5px;
+}
+
+.reserves-card {
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #e6e6e6;
+  background: #fff;
+}
+
+.reserves-header {
+  background: #1f5e85; // proche du bleu de votre capture
+  color: #fff;
+  padding: 14px 18px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.reserves-table-wrap {
+  padding: 0;
+}
+
+.reserves-table {
+  margin: 0;
+  width: 100%;
+  table-layout: fixed; // important pour l’alignement des colonnes
+}
+
+.reserves-table thead th {
+  font-weight: 600;
+  border-bottom: 1px solid #e9ecef;
+  padding: 12px 10px;
+  vertical-align: middle;
+  background: #fff;
+}
+
+.reserves-table td {
+  padding: 10px;
+  vertical-align: middle; // clé pour aligner les champs
+}
+
+.reserves-row {
+  height: 72px; // ligne stable
+}
+
+/* Colonnes : ajustez selon votre écran */
+.col-index   { width: 50px;  }
+.col-nature  { width: 26%;   }
+.col-travaux { width: 28%;   }
+.col-photo   { width: 24%;   }
+.col-etat    { width: 16%;   }
+.col-actions { width: 60px; text-align: right; }
+
+/* Mat fields : enlever le surplus de hauteur/marge */
+.cell-field {
+  width: 100%;
+}
+
+:host ::ng-deep .cell-field .mat-mdc-form-field-subscript-wrapper {
+  display: none; // enlève l'espace réservé aux erreurs/hints
+}
+
+:host ::ng-deep .cell-field .mat-mdc-form-field-infix {
+  min-height: 40px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* File input */
+.file-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+}
+
+.file-hidden {
+  display: none;
+}
+
+.file-meta {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.file-name {
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-empty {
+  color: #6c757d;
+}
+
+.annotated-image-top-preview {
+  margin-bottom: 12px;
+
+  .image-preview-container {
+    position: relative;
+    display: inline-block;
+    border: 2px dashed #e0e0e0;
+    border-radius: 8px;
+    padding: 8px;
+    background: #fafafa;
+    transition: all 0.3s ease;
+
+    &:hover {
+      border-color: #007bff;
+      background: #f8f9fa;
+    }
+
+    .preview-image {
+      width: 50px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 1px solid #dee2e6;
+    }
+
+    .remove-image-btn {
+      position: absolute;
+      top: -8px;
+      right: 24px;
+      width: 24px;
+      height: 24px;
+      border: none;
+      border-radius: 50%;
+      background: #058443;
+      color: white;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      transition: all 0.2s ease;
+      z-index: 10;
+
+      &:hover {
+        background: #058443;
+        transform: scale(1.1);
+      }
+    }
+
+    .open-image-btn {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      width: 24px;
+      height: 24px;
+      border: none;
+      border-radius: 50%;
+      background: #1024bb;
+      color: white;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      transition: all 0.2s ease;
+      z-index: 10;
+
+      &:hover {
+        background: #1024bb;
+        transform: scale(1.1);
+      }
+    }
+
+    .image-badge {
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #28a745;
+      color: white;
+      padding: 5px 8px;
+      border-radius: 12px;
+      font-size: 10px;
+      font-weight: 500;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      i {
+        font-size: 8px;
+      }
+    }
+  }
+}
