@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { buildPvForm, reserveRow, reservesArray,onReservePhotoSelected } from './pv-form.factory';
+import { buildPvForm, reserveRow, reservesArray,onReservePhotoSelected, personnesArray, personnesRow } from './pv-form.factory';
 import { PvService } from '../shared/services/pv.service';
 import { ActivatedRoute } from '@angular/router';
 import SignaturePad from 'signature_pad';
@@ -12,6 +12,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { DeletePvComponent } from './delete-pv/delete-pv.component';
 import { MatDialogRef,MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { LeveeReserveComponent } from './levee-reserve/levee-reserve.component';
 
 
 
@@ -32,6 +33,8 @@ export class PvReceptionComponent implements OnInit, AfterViewInit {
   user:any;
   contact:any;
   reservePhotoFiles: (File | null)[] = [];
+  reserveLeveePhotoFiles: (File | null)[] = [];
+
   message:any;
   isValide:boolean=false;
   isValideClient:boolean=false;
@@ -40,10 +43,17 @@ export class PvReceptionComponent implements OnInit, AfterViewInit {
   isBlockDetail:boolean=false;
   isLoad:boolean=false;
 
+  imageFile: File | null = null;
+  imageFiles: { [key: number]: File | null } = {};
+  imagePreviews: { [key: number]: string | null } = {};
+  annotatedImagePreviews: { [key: number]: string | null } = {};
+  showImageAnnotation: { [key: number]: boolean } = {};
+  imagesToAnnotate: { [key: number]: string | null } = {};
+
 
   // Tableau
 
-  displayedColumns:string[]=['pv','date','action'];
+  displayedColumns:string[]=['pv','version','date','action'];
   dataSource =new MatTableDataSource<[]>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -66,6 +76,7 @@ export class PvReceptionComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     public snackbar:MatSnackBar,
     private route: ActivatedRoute,
+    private cdRef: ChangeDetectorRef,
     private matPaginatorIntl:MatPaginatorIntl,) {
     this.route.params.subscribe((data:any)=>{
       this.idProjet = data.id
@@ -151,8 +162,13 @@ export class PvReceptionComponent implements OnInit, AfterViewInit {
 
   get reserves() { return reservesArray(this.form); }
 
+  get personnesPresent(){ return personnesArray(this.form)}
+
   addReserve() { this.reserves.push(reserveRow(this.fb)); }
   removeReserve(i: number) { this.reserves.removeAt(i); }
+
+  addPersonne() { this.personnesPresent.push(personnesRow(this.fb)); }
+  removePersonne(i: number) { this.personnesPresent.removeAt(i); }
   //onReservePhotoSelected(event:Event, i:number){return onReservePhotoSelected(event,i)}
 
  onReservePhotoSelected(event: Event, index: number): void {
@@ -160,7 +176,8 @@ export class PvReceptionComponent implements OnInit, AfterViewInit {
     if (!input.files || input.files.length === 0) return;
 
     const file = input.files[0];
-    this.reservePhotoFiles[index] = file;
+    //this.reservePhotoFiles[index] = file;
+    this.reserveLeveePhotoFiles[index]=file;
 
     // reset pour permettre de rechoisir le même fichier
     input.value = '';
@@ -195,7 +212,14 @@ export class PvReceptionComponent implements OnInit, AfterViewInit {
       nature: r.nature,
       travauxAExecuter: r.travauxAExecuter,
       etat: r.etat || 'Non levée',
+      leveeDate: r.leveeDate,
     }));
+
+    const personnesDto = (payload.personnesPresent || []).map((r: any) => ({
+      nom: r.nom,
+      prenom: r.prenom,
+    }));
+
     const signaturesDto = {
     companyRep: {
       signerName: payload.signatures?.companyRep?.signerName || '',
@@ -221,13 +245,18 @@ export class PvReceptionComponent implements OnInit, AfterViewInit {
     if (payload.nextReceptionDate) formData.append('nextReceptionDate', payload.nextReceptionDate);
     if (payload.reservesExecutionDelayDays != null) formData.append('reservesExecutionDelayDays', String(payload.reservesExecutionDelayDays));
     if (payload.reservesFromDate) formData.append('reservesFromDate', payload.reservesFromDate);
-    formData.append('allReservesLifted', String(!!payload.allReservesLifted));
+    //formData.append('allReservesLifted', String(!!payload.allReservesLifted));
     // reserves JSON (le backend fera JSON.parse si string)
     formData.append('reserves', JSON.stringify(reservesDto));
+    formData.append('personnesPresent', JSON.stringify(personnesDto));
     formData.append('signatures', JSON.stringify(signaturesDto));
     for (let i = 0; i < this.reservePhotoFiles.length; i++) {
       const f = this.reservePhotoFiles[i];
       if (f) formData.append('reservePhotos', f);
+    }
+    for (let i = 0; i < this.reserveLeveePhotoFiles.length; i++) {
+      const f = this.reserveLeveePhotoFiles[i];
+      if (f) formData.append('reserveLevee', f);
     }
     //console.log("Form", formData);
 
@@ -282,6 +311,8 @@ export class PvReceptionComponent implements OnInit, AfterViewInit {
           declaration:this.TypePVLabel(data?.declaration),
           date:data?.effectiveDate,
           place:data.place,
+          isLeve:data?.isLeve,
+          version:data?.version,
         })) as []
     },(error) => {
       console.log("Erreur lors de la récupération des données", error);
@@ -331,7 +362,94 @@ export class PvReceptionComponent implements OnInit, AfterViewInit {
         this.getAllPV();
       }
   })
+  }
 
+// Annotation Image
+onImageSelected(event: Event, index: number) {
+  const input = event.target as HTMLInputElement;
+  if (!input.files || input.files.length === 0) return;
+
+  const file = input.files[0];
+  this.imageFiles[index] = file;
+  this.reservePhotoFiles[index] = file;
+
+  const reader = new FileReader();
+  reader.onload = (e: any) => {
+    this.imagePreviews[index] = e.target.result;
+    // Ouvrir directement l'annotation d'image
+    this.openImageAnnotation(e.target.result, index);
+  };
+  reader.readAsDataURL(file);
+}
+
+openImageAnnotation(imageSrc: string, index: number) {
+  this.imagesToAnnotate[index] = imageSrc;
+  this.showImageAnnotation[index] = true;
+}
+
+onAnnotationComplete(annotatedImage: string, index: number) {
+  this.annotatedImagePreviews[index] = annotatedImage;
+  this.imagePreviews[index] = annotatedImage;
+  this.showImageAnnotation[index] = false;
+  this.imagesToAnnotate[index] = null;
+
+  // Générer un nom de fichier unique pour l'image
+  const timestamp = new Date().getTime();
+  const randomId = Math.random().toString(36).substring(2, 9);
+  const fileName = `annotated_image_${timestamp}_${randomId}_${index}.png`;
+
+  // Convertir data URL en File pour l'envoi
+  const file = this.dataURLtoFile(annotatedImage, fileName);
+  this.imageFiles[index] = file;
+  this.reservePhotoFiles[index] = file;
+
+  this.cdRef.detectChanges();
+}
+
+onAnnotationCanceled(index: number) {
+  this.showImageAnnotation[index] = false;
+  this.imagesToAnnotate[index] = null;
+  this.imageFiles[index] = null;
+  this.reservePhotoFiles[index] = null;
+  this.imagePreviews[index] = null;
+  this.annotatedImagePreviews[index] = null;
+}
+
+removeAnnotatedImage(index: number) {
+  this.imageFiles[index] = null;
+  this.reservePhotoFiles[index] = null;
+  this.imagePreviews[index] = null;
+  this.annotatedImagePreviews[index] = null;
+  this.annotatedImagePreviews[index] = null;
+}
+
+private dataURLtoFile(dataurl: string, filename: string): File {
+  const arr = dataurl.split(',');
+  const mime = arr[0].match(/:(.*?);/)![1];
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+
+  return new File([u8arr], filename, { type: mime });
+}
+
+//dialogue
+  openDialogLevee(id){
+        const dialogRef = this.dialog.open(LeveeReserveComponent,{
+          width: '100vw',
+          height: '100vh',
+          maxWidth: '100vw',
+          panelClass: 'full-screen-dialog',
+          data:{id:id, idProje:this.idProjet}});
+        dialogRef.afterClosed().subscribe((result:any)=>{
+           if(result){
+            this.getAllPV();
+           }
+        })
   }
 }
 

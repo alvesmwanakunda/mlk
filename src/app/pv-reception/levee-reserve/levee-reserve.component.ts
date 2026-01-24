@@ -1,0 +1,498 @@
+import { ChangeDetectorRef, Component, Inject, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { buildPvForm, reserveRow, reservesArray, reserveUpdateRow, reserveExistingRow, personnesArray, personnesRow } from '../pv-form.factory';
+import { PvService } from '../../shared/services/pv.service';
+import { ActivatedRoute } from '@angular/router';
+import SignaturePad from 'signature_pad';
+import { ProjetsService } from '../../shared/services/projets.service';
+import { ContactsService } from '../../shared/services/contacts.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ViewerStandarComponent } from '../../viewer-standar/viewer-standar.component';
+import { PvReceptionComponent } from '../pv-reception.component';
+
+@Component({
+  selector: 'app-levee-reserve',
+  templateUrl: './levee-reserve.component.html',
+  styleUrls: ['./levee-reserve.component.scss']
+})
+export class LeveeReserveComponent implements OnInit {
+
+    form!: FormGroup;
+    signaturePad: any;
+    signaturePadClient: any;
+    user:any;
+    contact:any;
+    reservePhotoFiles: (File | null)[] = [];
+    reserveLeveePhotoFiles: (File | null)[] = [];
+    idPv:any;
+    idProjet:any;
+
+
+    message:any;
+    isValide:boolean=false;
+    isValideClient:boolean=false;
+    reception:any;
+    isLoad:boolean=false;
+
+    imageFile: File | null = null;
+    imageFiles: { [key: number]: File | null } = {};
+    imagePreviews: { [key: number]: string | null } = {};
+    annotatedImagePreviews: { [key: number]: string | null } = {};
+    showImageAnnotation: { [key: number]: boolean } = {};
+    imagesToAnnotate: { [key: number]: string | null } = {};
+
+
+    champ_validation={
+        input:[
+          {
+            type:"required",
+            message:"Ce champ est obligatoire"
+          }
+        ]
+    }
+
+    constructor(
+        private fb: FormBuilder,
+        private api: PvService,
+        private projetService: ProjetsService,
+        private contactService: ContactsService,
+        public snackbar:MatSnackBar,
+        private route: ActivatedRoute,
+        private cdRef: ChangeDetectorRef,
+        private dialog: MatDialog,
+        public dialogRef:MatDialogRef<PvReceptionComponent>,
+        @Inject(MAT_DIALOG_DATA) public data:any,
+      ) {
+        this.user = JSON.parse(localStorage.getItem('user'));
+        this.idPv = this.data.id;
+        this.idProjet = this.data.idProjet;
+    }
+
+    ngOnInit(): void {
+        this.form = buildPvForm(this.fb);
+        this.getProjet();
+        this.getPV();
+    }
+
+    getPV(){
+      this.api.getPV(this.idPv).subscribe((res:any)=>{
+        console.log("PV", res);
+        this.reception = res?.message;
+        this.form.patchValue(res?.message);
+        const person = personnesArray(this.form);
+        person.clear();
+        (res?.message?.personnesPresent || []).forEach(()=> person.push(personnesRow(this.fb)));
+
+        person.patchValue(res?.message?.personnesPresent || []);
+        const arr = reservesArray(this.form);
+        arr.clear();
+        (res?.message?.reserves || []).forEach(()=> arr.push(reserveRow(this.fb)));
+        arr.patchValue(res?.message?.reserves || []);
+      },(error) => {
+        console.log("Erreur lors de la récupération des données", error);
+      })
+    }
+
+    getProjet(){
+      this.projetService.getProjet(this.idProjet).subscribe((res:any)=>{
+          if( res.message){
+            this.getResponsable( res.message?.contact)
+          }
+      },(error) => {
+        console.log("Erreur lors de la récupération des données", error);
+      })
+    }
+
+    getResponsable(id){
+        this.contactService.getContact(id).subscribe((res:any)=>{
+          this.contact = res?.message;
+        },(error) => {
+          console.log("Erreur lors de la récupération des données", error);
+        })
+    }
+
+     clear(){
+      this.signaturePad.clear();
+      this.isValide=false;
+    }
+
+    saveSignature(){
+        if(!this.signaturePad.isEmpty()){
+          console.log("Forms",this.form.controls.signatures)
+          this.isValide=true;
+          this.openSnackBar("Signature validé avec avec succès")
+          this.form.get('signatures.companyRep')?.patchValue({
+            signerName: this.user?.user?.nom+" "+this.user?.user?.prenom,
+            signerRole: 'Maître d\'Ouvrage',
+            signatureUrl: this.signaturePad.toDataURL(),
+            signedAt: new Date().toISOString()
+          });
+          // this.form.controls['signatures?.companyRep?.signerName'].setValue(this.user?.user?.nom+" "+this.user?.user?.prenom);
+          // this.form.controls['signatures?.companyRep?.signedUrl'].setValue(this.signaturePadClient.toDataURL());
+        }
+    }
+
+    clearClient(){
+      this.isValideClient=false;
+      this.signaturePadClient.clear();
+    }
+
+    saveSignatureClient(){
+        if(!this.signaturePadClient.isEmpty()){
+          this.openSnackBar("Signature validé avec avec succès")
+          this.isValideClient=true;
+          this.form.get('signatures.client')?.patchValue({
+            signerName: this.contact?.nom+" "+this.contact?.prenom,
+            signerRole: 'Client',
+            signatureUrl: this.signaturePadClient.toDataURL(),
+            signedAt: new Date().toISOString()
+          });
+        }
+    }
+
+    get reserves() { return reservesArray(this.form); }
+
+    addReserve() {
+      this.reserves.push(reserveUpdateRow(this.fb));
+      console.log("reserves liste", this.reserves);
+    }
+    removeReserve(i: number) { this.reserves.removeAt(i); }
+
+    get personnesPresent(){ return personnesArray(this.form)}
+
+    addPersonne() { this.personnesPresent.push(personnesRow(this.fb)); }
+    removePersonne(i: number) { this.personnesPresent.removeAt(i); }
+
+
+
+  onReservePhotoSelected(event: Event, index: number): void {
+    console.log("Index", index);
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
+
+    const file = input.files[0];
+
+    // Assurez-vous que le tableau est assez grand
+    if (!this.reserveLeveePhotoFiles) {
+      this.reserveLeveePhotoFiles = [];
+    }
+
+    // Initialisez toutes les positions jusqu'à l'index si nécessaire
+    for (let i = 0; i <= index; i++) {
+      if (this.reserveLeveePhotoFiles[i] === undefined) {
+        this.reserveLeveePhotoFiles[i] = null;
+      }
+  }
+
+  // Mettez à jour le fichier à l'index spécifique
+  this.reserveLeveePhotoFiles[index] = file;
+
+  console.log("Tableau mis à jour:", this.reserveLeveePhotoFiles);
+  console.log("Fichier à l'index", index, ":", this.reserveLeveePhotoFiles[index]);
+
+    // reset pour permettre de rechoisir le même fichier
+    input.value = '';
+  }
+
+    // Méthode helper pour récupérer un fichier
+    getReserveFile(index: number): File | null {
+      //return this.reservePhotoFiles[index] || null;
+      return this.reserveLeveePhotoFiles[index] || null;
+    }
+
+
+    private validateClientSide(): string[] {
+      const errors: string[] = [];
+      const dec = this.form.value['declaration'];
+
+      if (dec === 'WITH_RESERVES' && this.reserves.length === 0) {
+        errors.push("Au moins une réserve est obligatoire.");
+      }
+      return errors;
+    }
+
+    openSnackBarError(message){
+      this.snackbar.open(message, 'Fermer',{
+        duration:6000,
+        panelClass:['error-snackbar']
+      })
+    }
+
+    openSnackBar(message){
+      this.snackbar.open(message, 'Fermer',{
+        duration:6000,
+      })
+    }
+
+    openDialogFile(chemin, extension){
+    const dialogRef = this.dialog.open(ViewerStandarComponent,{
+      maxWidth:'100vw',
+      maxHeight:'100vh',
+      width:'100%',
+      height:'100%',
+      panelClass:'full-screen-modal',
+      data:{chemin:chemin,extension:extension}});
+    dialogRef.afterClosed().subscribe((result:any)=>{
+       if(result){
+        //this.getAllDevis();
+       }
+    })
+  }
+
+ save() {
+  const errs = this.validateClientSide();
+  if (errs.length) {
+    this.openSnackBarError(errs.join('\n'));
+    return;
+  }
+  this.isLoad = true;
+
+  const payload = this.form.getRawValue();
+
+  // IMPORTANT: Préparer les réserves avec index correct
+  const reservesDto = [];
+  const photoIndexes = [];
+  const leveeIndexes = [];
+
+  const reservesArray = this.reserves.controls;
+
+  for (let i = 0; i < reservesArray.length; i++) {
+    const reserveControl = reservesArray[i];
+    const reserveData = {
+      nature: reserveControl.get('nature')?.value,
+      travauxAExecuter: reserveControl.get('travauxAExecuter')?.value,
+      etat: reserveControl.get('etat')?.value || 'Non levée',
+      leveeDate: reserveControl.get('leveeDate')?.value,
+    };
+
+    reservesDto.push(reserveData);
+
+    // Collecter les fichiers photo avec leurs index
+    if (this.reservePhotoFiles[i]) {
+      photoIndexes.push(i);
+    }
+
+    // Collecter les fichiers levée avec leurs index
+    if (this.reserveLeveePhotoFiles[i]) {
+      leveeIndexes.push(i);
+    }
+  }
+
+  const signaturesDto = {
+    companyRep: {
+      signerName: payload.signatures?.companyRep?.signerName || '',
+      signerRole: payload.signatures?.companyRep?.signerRole || 'Entreprise',
+      signatureUrl: payload.signatures?.companyRep?.signatureUrl || '',
+      signedAt: payload.signatures?.companyRep?.signedAt,
+    },
+    client: {
+      signerName: payload.signatures?.client?.signerName || '',
+      signerRole: payload.signatures?.client?.signerRole || "Maître d'Ouvrage",
+      signatureUrl: payload.signatures?.client?.signatureUrl || '',
+      signedAt: payload.signatures?.client?.signedAt,
+    }
+  };
+
+  const personnesDto = (payload.personnesPresent || []).map((r: any) => ({
+    nom: r.nom,
+    prenom: r.prenom,
+  }));
+
+  const formData = new FormData();
+
+  // Champs simples
+  formData.append('declaration', payload.declaration);
+  formData.append('effectiveDate', payload.effectiveDate);
+  formData.append('place', payload.place);
+
+  if (payload.refusalReason) formData.append('refusalReason', payload.refusalReason);
+  if (payload.observation) formData.append('observation', payload.observation);
+  if (payload.nextReceptionDate) formData.append('nextReceptionDate', payload.nextReceptionDate);
+  if (payload.reservesExecutionDelayDays != null) formData.append('reservesExecutionDelayDays', String(payload.reservesExecutionDelayDays));
+  if (payload.reservesFromDate) formData.append('reservesFromDate', payload.reservesFromDate);
+
+  // Réserves
+  formData.append('reserves', JSON.stringify(reservesDto));
+
+  // Signatures
+  formData.append('signatures', JSON.stringify(signaturesDto));
+
+  // Personnes présentes
+  formData.append('personnesPresent', JSON.stringify(personnesDto));
+
+  // Ajouter les fichiers avec leurs index
+  for (let i = 0; i < this.reservePhotoFiles.length; i++) {
+    const file = this.reservePhotoFiles[i];
+    if (file) {
+      formData.append('reservePhotos', file);
+    }
+  }
+
+  for (let i = 0; i < this.reserveLeveePhotoFiles.length; i++) {
+    const file = this.reserveLeveePhotoFiles[i];
+    if (file) {
+      formData.append('reserveLevee', file);
+    }
+  }
+
+  // Envoyer les index
+  if (photoIndexes.length > 0) {
+    formData.append('reserveIndexes', JSON.stringify(photoIndexes));
+  }
+
+  if (leveeIndexes.length > 0) {
+    formData.append('reserveLeveeIndexes', JSON.stringify(leveeIndexes));
+  }
+
+  // Log pour debug
+  console.log('=== ENVOI FORMDATA ===');
+  console.log('Réserves:', reservesDto);
+  console.log('Index photos:', photoIndexes);
+  console.log('Index levées:', leveeIndexes);
+
+  this.api.createRevision(this.idPv, formData).subscribe((res: any) => {
+    this.message = 'PV a été ajouté avec succès';
+    this.openSnackBar(this.message);
+    this.isLoad = false;
+    this.dialogRef.close(res)
+  }, (error) => {
+    console.log("Erreur lors de la mise à jour:", error);
+    this.message = "Une erreur s'est produite veuillez réessayer.";
+    this.openSnackBarError(this.message);
+    this.isLoad = false;
+  });
+ }
+
+  // Ajoutez cette fonction dans votre composant
+  displayFormData(formData: FormData) {
+    console.log('=== CONTENU DU FORMDATA ===');
+
+    // Cast to any pour contourner l'erreur TypeScript
+    const formDataAny = formData as any;
+
+    for (let pair of formDataAny.entries()) {
+      const key = pair[0];
+      const value = pair[1];
+
+      if (value instanceof File) {
+        console.log(`${key}: File - ${value.name} (${value.type}, ${value.size} bytes)`);
+      } else if (key === 'reserves' || key === 'signatures') {
+        try {
+          const parsed = JSON.parse(value as string);
+          console.log(`${key}:`, JSON.stringify(parsed, null, 2));
+        } catch {
+          console.log(`${key}: ${value}`);
+        }
+      } else {
+        console.log(`${key}: ${value}`);
+      }
+    }
+
+    console.log('=== FIN FORMDATA ===');
+  }
+  extractFilePath(fullUrl: string | null): string | null {
+    if (!fullUrl) return null;
+
+    // Vérifier si c'est une URL Firebase Storage
+    if (fullUrl.includes('pvreception/')) {
+      // Trouver le début de "pvreception/"
+      const startIndex = fullUrl.indexOf('pvreception/');
+
+      // Trouver la fin (soit '?', soit fin de string)
+      const endIndex = fullUrl.indexOf('?', startIndex);
+
+      if (startIndex !== -1) {
+        if (endIndex !== -1) {
+          // Extraire de "pvreception/" jusqu'à "?"
+          return fullUrl.substring(startIndex, endIndex);
+        } else {
+          // Pas de paramètres, prendre jusqu'à la fin
+          return fullUrl.substring(startIndex);
+        }
+      }
+    }
+
+    // Si ce n'est pas une URL Firebase, retourner telle quelle
+    // (pour les data URLs ou autres formats)
+    return fullUrl;
+  }
+
+  // Annotation Image
+  onImageSelected(event: Event, index: number) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
+
+    const file = input.files[0];
+    this.imageFiles[index] = file;
+    this.reservePhotoFiles[index] = file;
+
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.imagePreviews[index] = e.target.result;
+      // Ouvrir directement l'annotation d'image
+      this.openImageAnnotation(e.target.result, index);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  openImageAnnotation(imageSrc: string, index: number) {
+    this.imagesToAnnotate[index] = imageSrc;
+    this.showImageAnnotation[index] = true;
+  }
+
+  onAnnotationComplete(annotatedImage: string, index: number) {
+    this.annotatedImagePreviews[index] = annotatedImage;
+    this.imagePreviews[index] = annotatedImage;
+    this.showImageAnnotation[index] = false;
+    this.imagesToAnnotate[index] = null;
+
+    // Générer un nom de fichier unique pour l'image
+    const timestamp = new Date().getTime();
+    const randomId = Math.random().toString(36).substring(2, 9);
+    const fileName = `annotated_image_${timestamp}_${randomId}_${index}.png`;
+
+    // Convertir data URL en File pour l'envoi
+    const file = this.dataURLtoFile(annotatedImage, fileName);
+    this.imageFiles[index] = file;
+    this.reservePhotoFiles[index] = file;
+
+    this.cdRef.detectChanges();
+  }
+
+  onAnnotationCanceled(index: number) {
+    this.showImageAnnotation[index] = false;
+    this.imagesToAnnotate[index] = null;
+    this.imageFiles[index] = null;
+    this.reservePhotoFiles[index] = null;
+    this.imagePreviews[index] = null;
+    this.annotatedImagePreviews[index] = null;
+  }
+
+  removeAnnotatedImage(index: number) {
+    this.imageFiles[index] = null;
+    this.reservePhotoFiles[index] = null;
+    this.imagePreviews[index] = null;
+    this.annotatedImagePreviews[index] = null;
+    this.annotatedImagePreviews[index] = null;
+  }
+
+  private dataURLtoFile(dataurl: string, filename: string): File {
+    const arr = dataurl.split(',');
+    const mime = arr[0].match(/:(.*?);/)![1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], filename, { type: mime });
+  }
+
+  close(){
+    this.dialogRef.close()
+  }
+
+}

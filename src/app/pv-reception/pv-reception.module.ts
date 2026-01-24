@@ -7,6 +7,9 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { DetailPvModule } from './detail-pv/detail-pv.module';
 import { ViewerStandarModule } from 'src/app/viewer-standar/viewer-standar.module';
 import { DeletePvModule } from './delete-pv/delete-pv.module';
+import { ImageAnnotationModule } from '../note-module/image-annotation/image-annotation.module';
+import { LeveeReserveModule } from './levee-reserve/levee-reserve.module';
+
 
 
 
@@ -20,7 +23,9 @@ import { DeletePvModule } from './delete-pv/delete-pv.module';
     FormsModule,
     DetailPvModule,
     ViewerStandarModule,
-    DeletePvModule
+    DeletePvModule,
+    ImageAnnotationModule,
+    LeveeReserveModule
   ],
   exports:[PvReceptionComponent]
 })

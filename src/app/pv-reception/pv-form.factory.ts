@@ -19,6 +19,7 @@ export function buildPvForm(fb: FormBuilder) {
     allReservesLifted: [false],
 
     reserves: fb.array([]),
+    personnesPresent: fb.array([]),
     signatures: fb.group({
       companyRep: fb.group({
         signerName: [''],
@@ -77,6 +78,8 @@ export function reserveRow(fb: FormBuilder) {
     travauxAExecuter: ['', Validators.required],
     photoUrl: [''],
     etat: ['Non levée'],
+    leveeDate: [null],
+    photoLevee: [null],
   });
 }
 
@@ -85,11 +88,34 @@ export function reserveUpdateRow(fb: FormBuilder) {
     nature: ['', Validators.required],
     travauxAExecuter: ['', Validators.required],
     etat: ['Non levée'],
+    leveeDate: [null],
+  });
+}
+
+export function reserveExistingRow(fb: FormBuilder) {
+  return fb.group({
+    nature: ['', Validators.required],
+    travauxAExecuter: ['', Validators.required],
+    etat: [{ value: 'Non levée', disabled: true }], // ✅ disabled uniquement existant
+    photoUrl: [null],
+    leveeDate: [null],
+    photoLevee: [null],
+  });
+}
+
+export function personnesRow(fb: FormBuilder) {
+  return fb.group({
+    nom: [''],
+    prenom: [''],
   });
 }
 
 export function reservesArray(form: FormGroup): FormArray {
   return form.get('reserves') as FormArray;
+}
+
+export function personnesArray(form: FormGroup): FormArray {
+  return form.get('personnesPresent') as FormArray;
 }
 
 export function onReservePhotoSelected(event: Event, index: number): void {

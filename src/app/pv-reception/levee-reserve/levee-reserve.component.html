@@ -1,0 +1,329 @@
+<div class="container-fluid">
+
+    <div class="row justify-content-md-center">
+      <div class="col-lg-11 col-md-11 col-md-auto">
+        <div>
+          <div class="row" style="margin-bottom: 10px;padding-top: 15px;">
+            <div class="col">
+              <button mat-raised-button color="primary" class="me-2" (click)="save()"><mat-icon>edit</mat-icon> Valider</button>
+            </div>
+            <div class="col" align="right">
+               <button mat-icon-button color="primary" (click)="close()">
+                <mat-icon>close</mat-icon>
+               </button>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+        </div>
+
+        <div>
+          <form [formGroup]="form" class="pv-form">
+
+                  <label id="example-radio-group-label" style="margin-bottom: 20px;font-size: 15px;font-weight: 600;">Personne présente:</label>
+                  <div style="margin-bottom:40px;">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Nom</th>
+                          <th scope="col">Prénom</th>
+                          <th scope="col">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody formArrayName="personnesPresent">
+                        <tr *ngFor="let row of personnesPresent.controls; let i=index" [formGroupName]="i">
+                          <td>{{ i+1 }}</td>
+                          <td>
+                            <mat-form-field class="example-full-width">
+                                <input matInput formControlName="nom">
+                              </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field class="example-full-width">
+                                <input matInput formControlName="prenom">
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <button mat-icon-button color="warn" type="button" (click)="removePersonne(i)">
+                                <mat-icon>delete</mat-icon>
+                              </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                      </table>
+                      <button type="button" mat-button color="primary" (click)="addPersonne()">
+                          Ajouter une personne
+                      </button>
+                  </div>
+
+                  <label id="example-radio-group-label" style="font-size: 15px;font-weight: 600;">Le maître d'ouvrage (ou client) déclare que:</label>
+                  <mat-radio-group aria-label="Select an option" formControlName="declaration" class="example-radio-group">
+                    <mat-radio-button value="WITHOUT_RESERVE" class="example-radio-button">Réception prononcée sans réserve</mat-radio-button>
+                    <mat-radio-button value="WITH_RESERVES" class="example-radio-button">Réception prononcée avec réserves</mat-radio-button>
+                    <mat-radio-button value="REFUSED" class="example-radio-button">Réception refusée</mat-radio-button>
+                    <mat-radio-button value="WITHOUT_RESERVE_WITH_OBSERVATION" class="example-radio-button">Réception prononcée sans réserve mais avec observation</mat-radio-button>
+                  </mat-radio-group>
+
+
+                  <!-- Avec effet à la date du -->
+                  <div>
+                    <mat-form-field class="example-full-width">
+                      <mat-label class="tache_label">Avec effet à la date du</mat-label>
+                        <input matInput [matDatepicker]="picker"  formControlName="effectiveDate" required>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+                      <div *ngIf="form.get('effectiveDate').hasError(champ_validation.input[0].type) &&(form.get('effectiveDate').dirty || form.get('effectiveDate').touched)">
+                        <p class="error_field">{{champ_validation.input[0].message}}</p>
+                      </div>
+                  </div>
+
+
+                  <!-- Section WITH_RESERVES: date prochaine réception -->
+                  <div  *ngIf="form.value.declaration === 'WITH_RESERVES'">
+                    <mat-form-field class="example-full-width">
+                      <mat-label class="tache_label">Date prochaine réception</mat-label>
+                        <input matInput [matDatepicker]="picker1"  formControlName="nextReceptionDate" required>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                      </mat-form-field>
+                      <div *ngIf="form.get('nextReceptionDate').hasError(champ_validation.input[0].type) &&(form.get('nextReceptionDate').dirty || form.get('nextReceptionDate').touched)">
+                        <p class="error_field">{{champ_validation.input[0].message}}</p>
+                      </div>
+                  </div>
+
+
+                  <div *ngIf="form.value.declaration === 'WITH_RESERVES'" style="margin-bottom: 25px;">
+                    <div style="background-color: #28628B;padding: 7px 3px 1px 14px;">
+                      <h2 style="color: #fff;">État des réserves</h2>
+                    </div>
+
+                    <div class="table-responsive" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                        <table class="table" style="min-width: 100%; table-layout: fixed;">
+                          <thead>
+                            <tr>
+                              <th style="width: 40px;">#</th>
+                              <th style="min-width: 150px;">Nature des réserves</th>
+                              <th style="min-width: 150px;">Travaux à exécuter</th>
+                              <th style="width: 120px;">Photo</th>
+                              <th style="min-width: 130px;">État réserve</th>
+                              <th style="width: 120px;">Photo levée</th>
+                              <th style="min-width: 130px;">Date levée</th>
+                              <th style="width: 50px;"></th>
+                            </tr>
+                          </thead>
+
+                          <tbody formArrayName="reserves">
+                            <tr *ngFor="let row of reserves.controls; let i=index" [formGroupName]="i">
+                              <td>{{ i+1 }}</td>
+                              <td>
+                                <mat-form-field class="example-full-width">
+                                    <input matInput  formControlName="nature">
+                                </mat-form-field>
+                              </td>
+                              <td>
+                                <mat-form-field class="example-full-width">
+                                    <input matInput  formControlName="travauxAExecuter">
+                                </mat-form-field>
+                              </td>
+                              <td>
+                                <div class="annotated-image-top-preview">
+                                      <div class="image-preview-container">
+                                        <div *ngIf="row.get('photoUrl')?.value">
+                                          <img [src]="row.get('photoUrl')?.value" class="preview-image" alt="Image de la tâche" *ngIf="!annotatedImagePreviews[i]"/>
+                                          <img [src]="annotatedImagePreviews[i]" class="preview-image" alt="Aperçu image modifiée"  *ngIf="annotatedImagePreviews[i]"/>
+                                          <input #fileInput type="file" accept="image/*" (change)="onImageSelected($event,i)" #fileUpload hidden/>
+                                          <button class="remove-image-btn" (click)="fileUpload.click()" matTooltip="Editer l'image">
+                                            <i class="fa-solid fa-edit"></i>
+                                          </button>
+                                          <button class="open-image-btn" matTooltip="Voir l'image" (click)="openDialogFile(row.get('photoUrl')?.value,'png')">
+                                            <i class="fa-solid fa-eye"></i>
+                                          </button>
+                                        </div>
+
+                                        <div *ngIf="!row.get('photoUrl')?.value">
+                                              <img [src]="annotatedImagePreviews[i]" class="preview-image" alt="Aperçu image modifiée"  *ngIf="annotatedImagePreviews[i]"/>
+                                              <img src="assets/images/task1.png" class="preview-image" alt="Image par défaut" *ngIf="!annotatedImagePreviews[i]"/>
+                                              <input  #fileInput type="file" accept="image/*" (change)="onImageSelected($event,i)" #fileUpload hidden/>
+                                              <button class="remove-image-btn" (click)="fileUpload.click()" matTooltip="Ajouter l'image">
+                                                <i class="fa-solid fa-plus"></i>
+                                              </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                              </td>
+                              <td>
+                                <mat-form-field class="example-full-width">
+                                  <mat-select  formControlName="etat">
+                                    <mat-option value="Non levée">Non levée</mat-option>
+                                    <mat-option value="Levée">Levée</mat-option>
+                                    <mat-option value="Observation">Observation</mat-option>
+                                  </mat-select>
+                                </mat-form-field>
+                              </td>
+                              <td>
+                                <div *ngIf="row.get('photoLevee')?.value">
+                                  <div class="annotated-image-top-preview">
+                                      <div class="image-preview-container">
+                                        <div>
+                                          <img [src]="row.get('photoLevee')?.value" class="preview-image" alt="Image de la tâche"/>
+                                          <input #fileInput type="file" accept="image/*" (change)="onReservePhotoSelected($event,i)" #fileUpload hidden/>
+                                          <button class="remove-image-btn" matTooltip="Editer l'image" (click)="fileUpload.click()">
+                                            <i class="fa-solid fa-edit"></i>
+                                          </button>
+                                          <button class="open-image-btn" matTooltip="Voir l'image" (click)="openDialogFile(row.get('photoLevee')?.value,'png')">
+                                            <i class="fa-solid fa-eye"></i>
+                                          </button>
+                                        </div>
+                                      </div>
+                                </div>
+                                <div class="file-meta">
+                                  <span class="file-name" *ngIf="getReserveFile(i)" matTooltip="{{getReserveFile(i)?.name}}">{{ getReserveFile(i)?.name }}</span>
+                                </div>
+                                </div>
+                                <div *ngIf="!row.get('photoLevee')?.value">
+                                  <input #fileInput type="file" accept="image/*" (change)="onReservePhotoSelected($event,i)" #fileUpload hidden/>
+                                  <button mat-icon-button type="button" (click)="fileUpload.click()"><!--onReservePhotoSelected-->
+                                    <mat-icon>attach_file</mat-icon>
+                                  </button>
+                                  <div class="file-meta">
+                                    <span class="file-name" *ngIf="getReserveFile(i)" matTooltip="{{getReserveFile(i)?.name}}">{{ getReserveFile(i)?.name }}</span>
+                                    <span class="file-empty" *ngIf="!getReserveFile(i)">Aucun fichier choisi</span>
+                                  </div>
+                                </div>
+                              </td>
+                              <td>
+                                <mat-form-field style="width: 100%; min-width: 120px;">
+                                  <input matInput [matDatepicker]="picker4" formControlName="leveeDate">
+                                  <mat-datepicker-toggle matIconSuffix [for]="picker4"></mat-datepicker-toggle>
+                                  <mat-datepicker #picker4></mat-datepicker>
+                                </mat-form-field>
+                              </td>
+                              <td><button mat-icon-button color="warn" type="button" (click)="removeReserve(i)"><mat-icon>delete</mat-icon></button></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                    <button type="button" mat-button color="primary" (click)="addReserve()">Ajouter une réserve</button>
+
+                  </div>
+
+                  <div *ngIf="form.value.declaration === 'WITH_RESERVES'">
+                      <mat-form-field class="example-full-width">
+                      <mat-label class="tache_label">Dans un délai de (en jours)</mat-label>
+                        <input type="number" matInput  formControlName="reservesExecutionDelayDays" required>
+                      </mat-form-field>
+                      <div *ngIf="form.get('reservesExecutionDelayDays').hasError(champ_validation.input[0].type) &&(form.get('reservesExecutionDelayDays').dirty || form.get('reservesExecutionDelayDays').touched)">
+                        <p class="error_field">{{champ_validation.input[0].message}}</p>
+                      </div>
+                  </div>
+
+                  <div *ngIf="form.value.declaration === 'WITH_RESERVES'">
+                      <mat-form-field class="example-full-width">
+                      <mat-label class="tache_label">À compter du</mat-label>
+                        <input matInput [matDatepicker]="picker2"  formControlName="reservesFromDate" required>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+                        <mat-datepicker #picker2></mat-datepicker>
+                      </mat-form-field>
+                      <div *ngIf="form.get('reservesFromDate').hasError(champ_validation.input[0].type) &&(form.get('reservesFromDate').dirty || form.get('reservesFromDate').touched)">
+                        <p class="error_field">{{champ_validation.input[0].message}}</p>
+                      </div>
+                  </div>
+
+                  <!-- Fait à -->
+                  <div>
+                    <mat-form-field class="example-full-width">
+                      <mat-label class="tache_label">Fait à</mat-label>
+                        <input matInput formControlName="place" required>
+                      </mat-form-field>
+                      <div *ngIf="form.get('place').hasError(champ_validation.input[0].type) &&(form.get('place').dirty || form.get('place').touched)">
+                        <p class="error_field">{{champ_validation.input[0].message}}</p>
+                      </div>
+                  </div>
+
+                    <!-- Section observation -->
+                  <div *ngIf="form.value.declaration === 'WITHOUT_RESERVE_WITH_OBSERVATION'" class="row">
+                      <mat-form-field class="example-full-width">
+                        <mat-label class="tache_label">Observation</mat-label>
+                        <textarea matInput formControlName="observation" required></textarea>
+                      </mat-form-field>
+                      <div *ngIf="form.get('observation').hasError(champ_validation.input[0].type) &&(form.get('observation').dirty || form.get('observation').touched)">
+                        <p class="error_field">{{champ_validation.input[0].message}}</p>
+                      </div>
+                  </div>
+
+                  <!-- Section REFUSED -->
+                  <div *ngIf="form.value.declaration === 'REFUSED'">
+                    <mat-form-field class="example-full-width">
+                        <mat-label class="tache_label">Précisez les motifs du refus ou du report de la réception</mat-label>
+                        <textarea matInput formControlName="refusalReason" required></textarea>
+                      </mat-form-field>
+                      <div *ngIf="form.get('refusalReason').hasError(champ_validation.input[0].type) &&(form.get('refusalReason').dirty || form.get('refusalReason').touched)">
+                        <p class="error_field">{{champ_validation.input[0].message}}</p>
+                      </div>
+                  </div>
+
+
+                  <!-- Signatures -->
+                  <div class="row" style="margin-bottom: 25px;">
+                    <div class="col">
+                      <label>Signature du représentant de l'entreprise *</label>
+                      <div *ngIf="reception?.signatures?.companyRep">
+                        <img [src]="reception?.signatures?.companyRep?.signatureUrl">
+                      </div>
+                      <!--<div>
+                        <div style="margin-bottom: 10px;">
+                          <canvas #canvas style="background: rgb(172, 169, 169);"></canvas>
+                        </div>
+                        <div>
+                          <button mat-stroked-button (click)="clear()" style="margin-right: 10px;">Effacer</button>
+                          <button mat-stroked-button  color="primary" (click)="saveSignature()" cdkFocusInitial *ngIf="!isValide">Valider</button>
+                        </div>
+                      </div>-->
+                    </div>
+
+                    <div class="col">
+                      <label>Signature du Maître d'Ouvrage (ou client) *</label>
+                      <div *ngIf="reception?.signatures?.client">
+                        <img [src]="reception?.signatures?.client?.signatureUrl">
+                      </div>
+                      <!--<div>
+                        <div style="margin-bottom: 10px;">
+                          <canvas #canvas1 style="background: rgb(172, 169, 169);"></canvas>
+                        </div>
+                        <div>
+                          <button  mat-stroked-button (click)="clearClient()" style="margin-right: 10px;">Effacer</button>
+                          <button  mat-stroked-button  color="primary" (click)="saveSignatureClient()" cdkFocusInitial *ngIf="!isValideClient">Valider</button>
+                        </div>
+                      </div>-->
+
+                    </div>
+                  </div>
+
+                  <div *ngIf="form.value.allReservesLifted==true">
+                      <section class="example-section">
+                        <mat-checkbox class="example-margin" formControlName="allReservesLifted" required>Les réserves mentionnées ci-dessus ont toutes été levées</mat-checkbox>
+                        <div *ngIf="form.get('allReservesLifted').hasError(champ_validation.input[0].type) &&(form.get('allReservesLifted').dirty || form.get('allReservesLifted').touched)">
+                            <p class="error_field">{{champ_validation.input[0].message}}</p>
+                        </div>
+                      </section>
+                  </div>
+
+                  <!-- Etat des réserves (WITH_RESERVES et éventuellement lecture pour observation) -->
+                  <div *ngIf="isLoad">
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                  </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+</div>
+<div *ngFor="let reserve of reserves.controls; let i = index">
+  <app-image-annotation
+    *ngIf="showImageAnnotation[i] && imagesToAnnotate[i]"
+    [imageSrc]="imagesToAnnotate[i]"
+    (annotationComplete)="onAnnotationComplete($event, i)"
+    (annotationCanceled)="onAnnotationCanceled(i)">
+  </app-image-annotation>
+</div>

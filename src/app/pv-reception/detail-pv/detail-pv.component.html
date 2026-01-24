@@ -1,6 +1,43 @@
 <form [formGroup]="form" class="pv-form">
 
-        <label id="example-radio-group-label">Le maître d'ouvrage (ou client) déclare que:</label>
+        <label id="example-radio-group-label" style="margin-bottom: 20px;font-size: 15px;font-weight: 600;">Personne présente:</label>
+         <div style="margin-bottom:40px;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prénom</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody formArrayName="personnesPresent">
+              <tr *ngFor="let row of personnesPresent.controls; let i=index" [formGroupName]="i">
+                <td>{{ i+1 }}</td>
+                <td>
+                   <mat-form-field class="example-full-width">
+                      <input matInput formControlName="nom">
+                    </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field class="example-full-width">
+                      <input matInput formControlName="prenom">
+                  </mat-form-field>
+                </td>
+                <td>
+                  <button mat-icon-button color="warn" type="button" (click)="removePersonne(i)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+              </tr>
+            </tbody>
+            </table>
+             <button type="button" mat-button color="primary" (click)="addPersonne()">
+                Ajouter une personne
+            </button>
+         </div>
+
+        <label id="example-radio-group-label" style="font-size: 15px;font-weight: 600;">Le maître d'ouvrage (ou client) déclare que:</label>
         <mat-radio-group aria-label="Select an option" formControlName="declaration" class="example-radio-group">
           <mat-radio-button value="WITHOUT_RESERVE" class="example-radio-button">Réception prononcée sans réserve</mat-radio-button>
           <mat-radio-button value="WITH_RESERVES" class="example-radio-button">Réception prononcée avec réserves</mat-radio-button>
@@ -42,16 +79,18 @@
             <h2 style="color: #fff;">État des réserves</h2>
           </div>
 
-          <div class="table-responsive">
-              <table class="table">
+          <div class="table-responsive" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+              <table class="table" style="min-width: 100%; table-layout: fixed;">
                 <thead>
                   <tr>
-                    <th>#</th>
-                    <th>Nature des réserves</th>
-                    <th>Travaux à exécuter</th>
-                    <th>Photo</th>
-                    <th>État réserve</th>
-                    <th></th>
+                    <th style="width: 40px;">#</th>
+                    <th style="min-width: 150px;">Nature des réserves</th>
+                    <th style="min-width: 150px;">Travaux à exécuter</th>
+                    <th style="width: 120px;">Photo</th>
+                    <th style="min-width: 130px;">État réserve</th>
+                    <th style="width: 120px;">Photo levée</th>
+                    <th style="min-width: 130px;">Date levée</th>
+                    <th style="width: 50px;"></th>
                   </tr>
                 </thead>
 
@@ -69,41 +108,30 @@
                       </mat-form-field>
                     </td>
                     <td>
-                      <div *ngIf="row.get('photoUrl')?.value">
-                        <div class="annotated-image-top-preview">
+                       <div class="annotated-image-top-preview">
                             <div class="image-preview-container">
-                              <div>
-                                <img [src]="row.get('photoUrl')?.value" class="preview-image" alt="Image de la tâche"/>
-                                <button
-                                  class="remove-image-btn"
-                                  matTooltip="Editer l'image"
-                                  (click)="triggerFileInput(i)"
-                                  >
+                              <div *ngIf="row.get('photoUrl')?.value">
+                                <img [src]="row.get('photoUrl')?.value" class="preview-image" alt="Image de la tâche" *ngIf="!annotatedImagePreviews[i]"/>
+                                 <img [src]="annotatedImagePreviews[i]" class="preview-image" alt="Aperçu image modifiée"  *ngIf="annotatedImagePreviews[i]"/>
+                                <input #fileInput type="file" accept="image/*" (change)="onImageSelected($event,i)" #fileUpload hidden/>
+                                <button class="remove-image-btn" (click)="fileUpload.click()" matTooltip="Editer l'image">
                                   <i class="fa-solid fa-edit"></i>
                                 </button>
-                                <button
-                                  class="open-image-btn"
-                                  matTooltip="Voir l'image"
-                                  (click)="openDialogFile(row.get('photoUrl')?.value,'png')"
-                                  >
+                                <button class="open-image-btn" matTooltip="Voir l'image" (click)="openDialogFile(row.get('photoUrl')?.value,'png')">
                                   <i class="fa-solid fa-eye"></i>
                                 </button>
+                              </div>
 
+                              <div *ngIf="!row.get('photoUrl')?.value">
+                                    <img [src]="annotatedImagePreviews[i]" class="preview-image" alt="Aperçu image modifiée"  *ngIf="annotatedImagePreviews[i]"/>
+                                    <img src="assets/images/task1.png" class="preview-image" alt="Image par défaut" *ngIf="!annotatedImagePreviews[i]"/>
+                                    <input  #fileInput type="file" accept="image/*" (change)="onImageSelected($event,i)" #fileUpload hidden/>
+                                    <button class="remove-image-btn" (click)="fileUpload.click()" matTooltip="Ajouter l'image">
+                                      <i class="fa-solid fa-plus"></i>
+                                    </button>
                               </div>
                             </div>
-                      </div>
-                      <span class="file-name" *ngIf="getReserveFile(i)" matTooltip="{{getReserveFile(i)?.name}}">{{ getReserveFile(i)?.name }}</span>
-                      </div>
-                      <div *ngIf="!row.get('photoUrl')?.value">
-                        <button mat-icon-button type="button" (click)="triggerFileInput(i)">
-                          <mat-icon>attach_file</mat-icon>
-                        </button>
-                        <!-- <input #fileInputs [id]="'reservePhoto_'+i"  type="file" accept="image/*" class="file-hidden" (change)="onReservePhotoSelected($event, i)"/> -->
-                        <div class="file-meta">
-                          <span class="file-name" *ngIf="getReserveFile(i)" matTooltip="{{getReserveFile(i)?.name}}">{{ getReserveFile(i)?.name }}</span>
-                          <span class="file-empty" *ngIf="!getReserveFile(i)">Aucun fichier choisi</span>
-                        </div>
-                      </div>
+                           </div>
                     </td>
                     <td>
                       <mat-form-field class="example-full-width">
@@ -112,6 +140,44 @@
                           <mat-option value="Levée">Levée</mat-option>
                           <mat-option value="Observation">Observation</mat-option>
                         </mat-select>
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <div *ngIf="row.get('photoLevee')?.value">
+                        <div class="annotated-image-top-preview">
+                            <div class="image-preview-container">
+                              <div>
+                                <img [src]="row.get('photoLevee')?.value" class="preview-image" alt="Image de la tâche"/>
+                                <input #fileInput type="file" accept="image/*" (change)="onReservePhotoSelected($event,i)" #fileUpload hidden/>
+                                <button class="remove-image-btn" matTooltip="Editer l'image" (click)="fileUpload.click()">
+                                  <i class="fa-solid fa-edit"></i>
+                                </button>
+                                <button class="open-image-btn" matTooltip="Voir l'image" (click)="openDialogFile(row.get('photoLevee')?.value,'png')">
+                                  <i class="fa-solid fa-eye"></i>
+                                </button>
+                              </div>
+                            </div>
+                      </div>
+                       <div class="file-meta">
+                         <span class="file-name" *ngIf="getReserveFile(i)" matTooltip="{{getReserveFile(i)?.name}}">{{ getReserveFile(i)?.name }}</span>
+                       </div>
+                      </div>
+                      <div *ngIf="!row.get('photoLevee')?.value">
+                        <input #fileInput type="file" accept="image/*" (change)="onReservePhotoSelected($event,i)" #fileUpload hidden/>
+                        <button mat-icon-button type="button" (click)="fileUpload.click()"><!--onReservePhotoSelected-->
+                          <mat-icon>attach_file</mat-icon>
+                        </button>
+                        <div class="file-meta">
+                          <span class="file-name" *ngIf="getReserveFile(i)" matTooltip="{{getReserveFile(i)?.name}}">{{ getReserveFile(i)?.name }}</span>
+                          <span class="file-empty" *ngIf="!getReserveFile(i)">Aucun fichier choisi</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <mat-form-field style="width: 100%; min-width: 120px;">
+                        <input matInput [matDatepicker]="picker4" formControlName="leveeDate">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker4"></mat-datepicker-toggle>
+                        <mat-datepicker #picker4></mat-datepicker>
                       </mat-form-field>
                     </td>
                     <td><button mat-icon-button color="warn" type="button" (click)="removeReserve(i)"><mat-icon>delete</mat-icon></button></td>
@@ -215,7 +281,7 @@
           </div>
         </div>
 
-        <div *ngIf="form.value.declaration === 'WITH_RESERVES'">
+        <div *ngIf="form.value.allReservesLifted==true">
             <section class="example-section">
               <mat-checkbox class="example-margin" formControlName="allReservesLifted" required>Les réserves mentionnées ci-dessus ont toutes été levées</mat-checkbox>
               <div *ngIf="form.get('allReservesLifted').hasError(champ_validation.input[0].type) &&(form.get('allReservesLifted').dirty || form.get('allReservesLifted').touched)">
@@ -236,4 +302,13 @@
         <div *ngIf="isLoad">
           <mat-progress-bar mode="indeterminate"></mat-progress-bar>
         </div>
-        </form>
+</form>
+
+<div *ngFor="let reserve of reserves.controls; let i = index">
+  <app-image-annotation
+  *ngIf="showImageAnnotation[i] && imagesToAnnotate[i]"
+  [imageSrc]="imagesToAnnotate[i]"
+  (annotationComplete)="onAnnotationComplete($event, i)"
+  (annotationCanceled)="onAnnotationCanceled(i)">
+</app-image-annotation>
+</div>

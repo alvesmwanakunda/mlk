@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { buildPvForm, reserveRow, reservesArray,onReservePhotoSelected, reserveUpdateRow } from '../pv-form.factory';
+import { buildPvForm, reservesArray, reserveUpdateRow, reserveExistingRow, personnesArray, personnesRow } from '../pv-form.factory';
 import { PvService } from '../../shared/services/pv.service';
 import { ActivatedRoute } from '@angular/router';
 import SignaturePad from 'signature_pad';
@@ -29,12 +29,21 @@ export class DetailPvComponent implements OnInit {
   contact:any;
   //reservePhotoFiles: {[key:number]:File} = {};
   reservePhotoFiles: (File | null)[] = [];
+  reserveLeveePhotoFiles: (File | null)[] = [];
+
 
   message:any;
   isValide:boolean=false;
   isValideClient:boolean=false;
   reception:any;
   isLoad:boolean=false;
+
+  imageFile: File | null = null;
+  imageFiles: { [key: number]: File | null } = {};
+  imagePreviews: { [key: number]: string | null } = {};
+  annotatedImagePreviews: { [key: number]: string | null } = {};
+  showImageAnnotation: { [key: number]: boolean } = {};
+  imagesToAnnotate: { [key: number]: string | null } = {};
 
 
   champ_validation={
@@ -73,10 +82,28 @@ export class DetailPvComponent implements OnInit {
       console.log("PV", res);
       this.reception = res?.message;
       this.form.patchValue(res?.message);
+      const person = personnesArray(this.form);
+      person.clear();
+      (res?.message?.personnesPresent || []).forEach(()=> person.push(personnesRow(this.fb)));
+      person.patchValue(res?.message?.personnesPresent || []);
       const arr = reservesArray(this.form);
       arr.clear();
-      (res?.message?.reserves || []).forEach(()=> arr.push(reserveRow(this.fb)));
-      arr.patchValue(res?.message?.reserves || []);
+      const reserves = res?.message?.reserves || [];
+      reserves.forEach((r:any)=>{
+        const row = reserveExistingRow(this.fb);
+        row.patchValue({
+          nature:r.nature,
+          travauxAExecuter:r.travauxAExecuter,
+          etat:r.etat,
+          photoUrl:r.photoUrl || null,
+          photoLevee:r.photoLevee || null,
+          leveeDate:r.leveeDate
+        });
+        arr.push(row);
+      });
+
+      // (res?.message?.reserves || []).forEach(()=> arr.push(reserveRow(this.fb)));
+      // arr.patchValue(res?.message?.reserves || []);
     },(error) => {
       console.log("Erreur lors de la récupération des données", error);
     })
@@ -147,6 +174,11 @@ export class DetailPvComponent implements OnInit {
   }
   removeReserve(i: number) { this.reserves.removeAt(i); }
 
+  get personnesPresent(){ return personnesArray(this.form)}
+
+  addPersonne() { this.personnesPresent.push(personnesRow(this.fb)); }
+  removePersonne(i: number) { this.personnesPresent.removeAt(i); }
+
   // Dans le composant
   triggerFileInput(index: number) {
     // Créez un input file dynamiquement
@@ -156,7 +188,7 @@ export class DetailPvComponent implements OnInit {
     input.style.display = 'none';
 
     input.onchange = (event: any) => {
-      this.onReservePhotoSelected(event, index);
+      //this.onReservePhotoSelected(event, index);
       // Nettoie l'input du DOM
       document.body.removeChild(input);
     };
@@ -166,11 +198,29 @@ export class DetailPvComponent implements OnInit {
   }
 
   onReservePhotoSelected(event: Event, index: number): void {
-    const input = event.target as HTMLInputElement;
-    if (!input.files || input.files.length === 0) return;
+      console.log("Index", index);
+  const input = event.target as HTMLInputElement;
+  if (!input.files || input.files.length === 0) return;
 
-    const file = input.files[0];
-    this.reservePhotoFiles[index] = file;
+  const file = input.files[0];
+
+  // Assurez-vous que le tableau est assez grand
+  if (!this.reserveLeveePhotoFiles) {
+    this.reserveLeveePhotoFiles = [];
+  }
+
+  // Initialisez toutes les positions jusqu'à l'index si nécessaire
+  for (let i = 0; i <= index; i++) {
+    if (this.reserveLeveePhotoFiles[i] === undefined) {
+      this.reserveLeveePhotoFiles[i] = null;
+    }
+  }
+
+  // Mettez à jour le fichier à l'index spécifique
+  this.reserveLeveePhotoFiles[index] = file;
+
+  console.log("Tableau mis à jour:", this.reserveLeveePhotoFiles);
+  console.log("Fichier à l'index", index, ":", this.reserveLeveePhotoFiles[index]);
 
     // reset pour permettre de rechoisir le même fichier
     input.value = '';
@@ -178,7 +228,8 @@ export class DetailPvComponent implements OnInit {
 
   // Méthode helper pour récupérer un fichier
   getReserveFile(index: number): File | null {
-    return this.reservePhotoFiles[index] || null;
+    //return this.reservePhotoFiles[index] || null;
+    return this.reserveLeveePhotoFiles[index] || null;
   }
 
 
@@ -220,29 +271,48 @@ export class DetailPvComponent implements OnInit {
   })
 }
 
+// Dans detail-pv.component.ts
+
 save() {
   const errs = this.validateClientSide();
   if (errs.length) {
     this.openSnackBarError(errs.join('\n'));
     return;
   }
-  this.isLoad=true;
+  this.isLoad = true;
 
   const payload = this.form.getRawValue();
 
-  // IMPORTANT: on envoie reserves en JSON sans File
-    const reservesDto = (payload.reserves || []).map((r: any, index:Number) => {
-      const reserveData:any={
-        nature: r.nature,
-        travauxAExecuter: r.travauxAExecuter,
-        etat: r.etat || 'Non levée',
-        _index:index
-      };
-      return reserveData;
-      //photoUrl: this.extractFilePath(r?.photoUrl) || null,
-    });
+  // IMPORTANT: Préparer les réserves avec index correct
+  const reservesDto = [];
+  const photoIndexes = [];
+  const leveeIndexes = [];
 
-    const signaturesDto = {
+  const reservesArray = this.reserves.controls;
+
+  for (let i = 0; i < reservesArray.length; i++) {
+    const reserveControl = reservesArray[i];
+    const reserveData = {
+      nature: reserveControl.get('nature')?.value,
+      travauxAExecuter: reserveControl.get('travauxAExecuter')?.value,
+      etat: reserveControl.get('etat')?.value || 'Non levée',
+      leveeDate: reserveControl.get('leveeDate')?.value,
+    };
+
+    reservesDto.push(reserveData);
+
+    // Collecter les fichiers photo avec leurs index
+    if (this.reservePhotoFiles[i]) {
+      photoIndexes.push(i);
+    }
+
+    // Collecter les fichiers levée avec leurs index
+    if (this.reserveLeveePhotoFiles[i]) {
+      leveeIndexes.push(i);
+    }
+  }
+
+  const signaturesDto = {
     companyRep: {
       signerName: payload.signatures?.companyRep?.signerName || '',
       signerRole: payload.signatures?.companyRep?.signerRole || 'Entreprise',
@@ -255,55 +325,185 @@ save() {
       signatureUrl: payload.signatures?.client?.signatureUrl || '',
       signedAt: payload.signatures?.client?.signedAt,
     }
-   };
+  };
+
+  const personnesDto = (payload.personnesPresent || []).map((r: any) => ({
+    nom: r.nom,
+    prenom: r.prenom,
+  }));
 
   const formData = new FormData();
 
-  // Champs simples...
+  // Champs simples
   formData.append('declaration', payload.declaration);
   formData.append('effectiveDate', payload.effectiveDate);
   formData.append('place', payload.place);
+
   if (payload.refusalReason) formData.append('refusalReason', payload.refusalReason);
   if (payload.observation) formData.append('observation', payload.observation);
   if (payload.nextReceptionDate) formData.append('nextReceptionDate', payload.nextReceptionDate);
   if (payload.reservesExecutionDelayDays != null) formData.append('reservesExecutionDelayDays', String(payload.reservesExecutionDelayDays));
   if (payload.reservesFromDate) formData.append('reservesFromDate', payload.reservesFromDate);
-  formData.append('allReservesLifted', String(!!payload.allReservesLifted));
-  // Envoyez les réserves avec leurs index
+
+  // Réserves
   formData.append('reserves', JSON.stringify(reservesDto));
+
+  // Signatures
   formData.append('signatures', JSON.stringify(signaturesDto));
 
-    // 2. Collecter les fichiers avec leurs index de réserve
-  const reserveFilesWithIndex: {index: number, file: File}[] = [];
+  // Personnes présentes
+  formData.append('personnesPresent', JSON.stringify(personnesDto));
 
+  // Ajouter les fichiers avec leurs index
   for (let i = 0; i < this.reservePhotoFiles.length; i++) {
-    const f = this.reservePhotoFiles[i];
-    if (f) {
-      // Ajouter le fichier avec l'index de sa réserve
-      formData.append('reservePhotos', f);
-      reserveFilesWithIndex.push({index: i, file: f});
+    const file = this.reservePhotoFiles[i];
+    if (file) {
+      formData.append('reservePhotos', file);
     }
   }
 
-  // 3. Envoyer aussi la liste des index (optionnel mais utile pour debug)
-  if (reserveFilesWithIndex.length > 0) {
-    const indexes = reserveFilesWithIndex.map(item => item.index);
-    formData.append('reserveIndexes', JSON.stringify(indexes));
+  for (let i = 0; i < this.reserveLeveePhotoFiles.length; i++) {
+    const file = this.reserveLeveePhotoFiles[i];
+    if (file) {
+      formData.append('reserveLevee', file);
+    }
   }
 
+  // Envoyer les index
+  if (photoIndexes.length > 0) {
+    formData.append('reserveIndexes', JSON.stringify(photoIndexes));
+  }
 
+  if (leveeIndexes.length > 0) {
+    formData.append('reserveLeveeIndexes', JSON.stringify(leveeIndexes));
+  }
+
+  // Log pour debug
+  console.log('=== ENVOI FORMDATA ===');
+  console.log('Réserves:', reservesDto);
+  console.log('Index photos:', photoIndexes);
+  console.log('Index levées:', leveeIndexes);
 
   this.api.updatePV(formData, this.idPv).subscribe((res: any) => {
     this.message = 'PV a été modifié avec succès';
     this.openSnackBar(this.message);
-    this.isLoad=false;
+    this.isLoad = false;
     this.getPV();
   }, (error) => {
-    console.log("Erreur lors de la récupération des données", error);
+    console.log("Erreur lors de la mise à jour:", error);
     this.message = "Une erreur s'est produite veuillez réessayer.";
     this.openSnackBarError(this.message);
+    this.isLoad = false;
   });
 }
+
+// save() {
+//   const errs = this.validateClientSide();
+//   if (errs.length) {
+//     this.openSnackBarError(errs.join('\n'));
+//     return;
+//   }
+//   this.isLoad=true;
+
+//   const payload = this.form.getRawValue();
+
+//   // IMPORTANT: on envoie reserves en JSON sans File
+//     const reservesDto = (payload.reserves || []).map((r: any, index:Number) => {
+//       const reserveData:any={
+//         nature: r.nature,
+//         travauxAExecuter: r.travauxAExecuter,
+//         etat: r.etat || 'Non levée',
+//         leveeDate: r.leveeDate,
+//         _index:index
+//       };
+//       return reserveData;
+//       //photoUrl: this.extractFilePath(r?.photoUrl) || null,
+//     });
+
+//     const signaturesDto = {
+//     companyRep: {
+//       signerName: payload.signatures?.companyRep?.signerName || '',
+//       signerRole: payload.signatures?.companyRep?.signerRole || 'Entreprise',
+//       signatureUrl: payload.signatures?.companyRep?.signatureUrl || '',
+//       signedAt: payload.signatures?.companyRep?.signedAt,
+//     },
+//     client: {
+//       signerName: payload.signatures?.client?.signerName || '',
+//       signerRole: payload.signatures?.client?.signerRole || "Maître d'Ouvrage",
+//       signatureUrl: payload.signatures?.client?.signatureUrl || '',
+//       signedAt: payload.signatures?.client?.signedAt,
+//     }
+//    };
+
+//    const personnesDto = (payload.personnesPresent || []).map((r: any) => ({
+//       nom: r.nom,
+//       prenom: r.prenom,
+//     }));
+
+//   const formData = new FormData();
+
+//   // Champs simples...
+//   formData.append('declaration', payload.declaration);
+//   formData.append('effectiveDate', payload.effectiveDate);
+//   formData.append('place', payload.place);
+//   if (payload.refusalReason) formData.append('refusalReason', payload.refusalReason);
+//   if (payload.observation) formData.append('observation', payload.observation);
+//   if (payload.nextReceptionDate) formData.append('nextReceptionDate', payload.nextReceptionDate);
+//   if (payload.reservesExecutionDelayDays != null) formData.append('reservesExecutionDelayDays', String(payload.reservesExecutionDelayDays));
+//   if (payload.reservesFromDate) formData.append('reservesFromDate', payload.reservesFromDate);
+//   //formData.append('allReservesLifted', String(!!payload.allReservesLifted));
+//   // Envoyez les réserves avec leurs index
+//   formData.append('reserves', JSON.stringify(reservesDto));
+//   formData.append('signatures', JSON.stringify(signaturesDto));
+//   formData.append('personnesPresent', JSON.stringify(personnesDto));
+//   console.log("Reserve", reservesDto);
+
+
+//     // 2. Collecter les fichiers avec leurs index de réserve
+//   const reserveFilesWithIndex: {index: number, file: File}[] = [];
+//   const reserveLeveeFilesWithIndex:{index: number, file: File}[] = [];
+
+//   for (let i = 0; i < this.reservePhotoFiles.length; i++) {
+//     const f = this.reservePhotoFiles[i];
+//     if (f) {
+//       // Ajouter le fichier avec l'index de sa réserve
+//       formData.append('reservePhotos', f);
+//       reserveFilesWithIndex.push({index: i, file: f});
+//     }
+//   }
+//   for (let i = 0; i < this.reserveLeveePhotoFiles.length; i++) {
+//       const f = this.reserveLeveePhotoFiles[i];
+//       if (f) formData.append('reserveLevee', f);
+//       reserveLeveeFilesWithIndex.push({index: i, file: f});
+
+//     }
+
+//   // 3. Envoyer aussi la liste des index (optionnel mais utile pour debug)
+//   if (reserveFilesWithIndex.length > 0) {
+//     const indexes = reserveFilesWithIndex.map(item => item.index);
+//     console.log("photo index", indexes)
+//     formData.append('reserveIndexes', JSON.stringify(indexes));
+//   }
+
+//   if (reserveLeveeFilesWithIndex.length > 0) {
+//     const indexes = reserveLeveeFilesWithIndex.map(item => item.index);
+//     console.log("levee index", indexes)
+//     formData.append('reserveLeveeIndexes', JSON.stringify(indexes));
+//   }
+
+
+
+//   this.api.updatePV(formData, this.idPv).subscribe((res: any) => {
+//     this.message = 'PV a été modifié avec succès';
+//     this.openSnackBar(this.message);
+//     this.isLoad=false;
+//     this.getPV();
+//   }, (error) => {
+//     console.log("Erreur lors de la récupération des données", error);
+//     this.message = "Une erreur s'est produite veuillez réessayer.";
+//     this.openSnackBarError(this.message);
+//   });
+// }
 
 // Ajoutez cette fonction dans votre composant
 displayFormData(formData: FormData) {
@@ -357,5 +557,79 @@ extractFilePath(fullUrl: string | null): string | null {
   // Si ce n'est pas une URL Firebase, retourner telle quelle
   // (pour les data URLs ou autres formats)
   return fullUrl;
+}
+
+// Annotation Image
+onImageSelected(event: Event, index: number) {
+  const input = event.target as HTMLInputElement;
+  if (!input.files || input.files.length === 0) return;
+
+  const file = input.files[0];
+  this.imageFiles[index] = file;
+  this.reservePhotoFiles[index] = file;
+  console.log("Url", this.reservePhotoFiles);
+
+  const reader = new FileReader();
+  reader.onload = (e: any) => {
+    this.imagePreviews[index] = e.target.result;
+    // Ouvrir directement l'annotation d'image
+    this.openImageAnnotation(e.target.result, index);
+  };
+  reader.readAsDataURL(file);
+}
+
+openImageAnnotation(imageSrc: string, index: number) {
+  this.imagesToAnnotate[index] = imageSrc;
+  this.showImageAnnotation[index] = true;
+}
+
+onAnnotationComplete(annotatedImage: string, index: number) {
+  this.annotatedImagePreviews[index] = annotatedImage;
+  this.imagePreviews[index] = annotatedImage;
+  this.showImageAnnotation[index] = false;
+  this.imagesToAnnotate[index] = null;
+
+  // Générer un nom de fichier unique pour l'image
+  const timestamp = new Date().getTime();
+  const randomId = Math.random().toString(36).substring(2, 9);
+  const fileName = `annotated_image_${timestamp}_${randomId}_${index}.png`;
+
+  // Convertir data URL en File pour l'envoi
+  const file = this.dataURLtoFile(annotatedImage, fileName);
+  this.imageFiles[index] = file;
+  this.reservePhotoFiles[index] = file;
+
+  this.cdRef.detectChanges();
+}
+
+onAnnotationCanceled(index: number) {
+  this.showImageAnnotation[index] = false;
+  this.imagesToAnnotate[index] = null;
+  this.imageFiles[index] = null;
+  this.reservePhotoFiles[index] = null;
+  this.imagePreviews[index] = null;
+  this.annotatedImagePreviews[index] = null;
+}
+
+removeAnnotatedImage(index: number) {
+  this.imageFiles[index] = null;
+  this.reservePhotoFiles[index] = null;
+  this.imagePreviews[index] = null;
+  this.annotatedImagePreviews[index] = null;
+  this.annotatedImagePreviews[index] = null;
+}
+
+private dataURLtoFile(dataurl: string, filename: string): File {
+  const arr = dataurl.split(',');
+  const mime = arr[0].match(/:(.*?);/)![1];
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+
+  return new File([u8arr], filename, { type: mime });
 }
 }

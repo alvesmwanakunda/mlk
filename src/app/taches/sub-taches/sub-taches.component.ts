@@ -434,7 +434,7 @@ submitLine(index: number) {
 
    // ---------------- IMAGE ----------------
 
-  onImageSelected(event: Event, index: number) {
+onImageSelected(event: Event, index: number) {
   const input = event.target as HTMLInputElement;
   if (!input.files || input.files.length === 0) return;
 

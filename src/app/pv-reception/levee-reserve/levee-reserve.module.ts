@@ -1,17 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { DetailPvComponent } from './detail-pv.component';
 import { ViewerStandarModule } from 'src/app/viewer-standar/viewer-standar.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ImageAnnotationModule } from 'src/app/note-module/image-annotation/image-annotation.module';
-
+import { LeveeReserveComponent } from './levee-reserve.component';
 
 
 
 @NgModule({
-  declarations: [DetailPvComponent],
+  declarations: [LeveeReserveComponent],
   imports: [
     CommonModule,
     SharedModule,
@@ -21,6 +20,6 @@ import { ImageAnnotationModule } from 'src/app/note-module/image-annotation/imag
     MatDialogModule,
     ImageAnnotationModule
   ],
-  exports:[DetailPvComponent]
+  exports:[LeveeReserveComponent]
 })
-export class DetailPvModule { }
+export class LeveeReserveModule { }

@@ -29,6 +29,10 @@ export class PvService {
     return this.httpClient.get(`${environment.BASE_API_URL}/pv/all/${idPV}`)
   }
 
+  public createRevision(pvId: string, formData: FormData) {
+    return this.httpClient.post(`${environment.BASE_API_URL}/pv-receptions/${pvId}/revision`, formData);
+  }
+
 
 
 }
