@@ -16,6 +16,12 @@ export class TachesComponent implements OnInit {
 
   task = [];
   idProjet:any;
+  StatutTache: 'ALL' | 'A Faire' | 'En Cours' | 'Terminer' | 'Clôturer';
+  selectedStatut = 'ALL';
+  filteredTasks: any[] = [];
+
+
+
 
   constructor(
       private tacheService: TachesService,
@@ -36,12 +42,28 @@ export class TachesComponent implements OnInit {
     getAllTaches(){
       this.tacheService.getAllTache(this.idProjet).subscribe((data:any)=>{
         this.task = data.message;
+        this.applyFilterStatus();
         console.log("Taches", data);
      },
      (error) => {
        console.log("Erreur lors de la récupération des données", error);
      }
      );
+    }
+
+    onStatutChange(statut:any) {
+      this.selectedStatut = statut;
+      this.applyFilterStatus();
+    }
+
+    applyFilterStatus() {
+      if (this.selectedStatut === 'ALL') {
+        this.filteredTasks = [...this.task]; // tout afficher
+      } else {
+        this.filteredTasks = this.task.filter(
+          t => t?.statut === this.selectedStatut
+        );
+      }
     }
 
     applyFilter(event: Event) {
@@ -58,7 +80,7 @@ export class TachesComponent implements OnInit {
     }
 
     openDialog(){
-        const dialogRef = this.dialog.open(AddTachesComponent,{width:'60%', data:{id:this.idProjet}});
+        const dialogRef = this.dialog.open(AddTachesComponent,{width:'70%', data:{id:this.idProjet}});
         dialogRef.afterClosed().subscribe((result:any)=>{
            if(result){
             this.getAllTaches();
@@ -101,6 +123,8 @@ export class TachesComponent implements OnInit {
       return 'En cours';
     case 'Terminer':
       return 'Terminé';
+    case 'Clôturer':
+      return 'Clôturé'
     default:
       return statut ?? '';
   }
@@ -114,6 +138,8 @@ getStatusBadgeClass(statut?: string): string {
       return 'badge--in-progress';
     case 'Terminer':
       return 'badge--completed';
+    case 'Clôturer':
+      return 'badge--overdue';
     default:
       return 'badge--default';
   }

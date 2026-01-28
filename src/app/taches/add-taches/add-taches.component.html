@@ -4,7 +4,7 @@
   <div>
     <form [formGroup]="taskFormGroup">
 
-      <div style="margin-bottom: 8px;">
+           <div style="margin-bottom: 8px;">
            <mat-form-field class="example-full-width">
             <mat-label class="tache_label">Titre de la tâche</mat-label>
              <input matInput  formControlName="titre" required>
@@ -13,19 +13,26 @@
               <p class="error_field">{{champ_validation.input[0].message}}</p>
             </div>
 
-             <mat-form-field class="example-full-width">
+            <div>
+              <mat-form-field class="example-full-width">
                 <mat-label class="tache_label">Date</mat-label>
                 <mat-date-range-input  [rangePicker]="picker">
-                <input matStartDate formControlName="date_debut" placeholder="Début" required>
-                <input matEndDate formControlName="date_fin" placeholder="Fin" required>
+                <input matStartDate formControlName="date_debut" placeholder="Début">
+                <input matEndDate formControlName="date_fin" placeholder="Fin">
                 </mat-date-range-input>
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
-                        <!--<input type="date" matInput  formControlName="date_debut">-->
-             </mat-form-field>
-             <div>
+              </mat-form-field>
+            </div>
+             <!-- <div>
               <span class="error_field" *ngIf="taskFormGroup.get('date_debut').hasError(champ_validation.input[0].type) &&(taskFormGroup.get('date_debut').dirty || taskFormGroup.get('date_debut').touched)">{{champ_validation.input[0].message}}</span>
               <span class="error_field" *ngIf="taskFormGroup.get('date_fin').hasError(champ_validation.input[0].type) &&(taskFormGroup.get('date_fin').dirty || taskFormGroup.get('date_fin').touched)">{{champ_validation.input[0].message}}</span>
+            </div> -->
+            <div>
+              <mat-form-field class="example-full-width">
+                <mat-label class="tache_label">Description</mat-label>
+                <textarea matInput  formControlName="description"></textarea>
+             </mat-form-field>
             </div>
 
 
@@ -34,7 +41,7 @@
                 <div *ngIf="!annotatedImagePreview">
                   <p class="tache_label">Ajouter une image</p>
                   <label class="icon-button" title="Ajouter une image">
-                    <input #fileInput type="file" accept="image/*" (change)="onImageSelected($event)"  hidden />
+                    <input #fileInput type="file" accept="image/*" (change)="onImagesSelected($event)"  hidden />
                     <i class="fa-solid fa-image" style="font-size: 40px;color: #090774;"></i>
                   </label>
                 </div>
@@ -59,7 +66,7 @@
                <div class="col-6">
                  <mat-form-field class="example-full-width">
                   <mat-label class="tache_label">Assignés</mat-label>
-                  <mat-select matInput  formControlName="assignes">
+                  <mat-select matInput  formControlName="assignes" multiple>
                     <mat-option *ngFor="let contact of contacts" [value]="contact?._id">{{contact?.nom}} {{contact?.prenom}}</mat-option>
                   </mat-select>
                 </mat-form-field>

@@ -31,6 +31,8 @@ import { FileSizeConvertPipe } from './pipes/file-size-convert.pipe';
 import { DataAsAgoPipe } from './pipes/data-as-ago.pipe';
 import {MatBadgeModule} from '@angular/material/badge';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+
 
 
 
@@ -73,7 +75,8 @@ import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
     MatToolbarModule,
     ClipboardModule,
     MatBadgeModule,
-    CanvasJSAngularChartsModule
+    CanvasJSAngularChartsModule,
+    MatButtonToggleModule
   ],
   exports:[
     MatCardModule,
@@ -105,7 +108,8 @@ import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
     FileSizeConvertPipe,
     DataAsAgoPipe,
     MatBadgeModule,
-    CanvasJSAngularChartsModule
+    CanvasJSAngularChartsModule,
+    MatButtonToggleModule
   ],
 })
 export class SharedModule { }

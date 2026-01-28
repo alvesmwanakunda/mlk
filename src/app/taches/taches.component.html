@@ -9,17 +9,29 @@
        </div>
     </div>
     <mat-divider class="mb-3"></mat-divider>
-    <div class="row" style="margin-bottom: 30px;">
-        <div class="col-4">
+    <div class="row" style="margin-bottom: 40px;">
+        <div class="col-6">
+          <mat-button-toggle-group
+            [value]="selectedStatut"
+            (change)="onStatutChange($event.value)"
+            aria-label="Filtre statut">
+
+            <mat-button-toggle value="ALL">Tous</mat-button-toggle>
+            <mat-button-toggle value="A Faire">A Faire</mat-button-toggle>
+            <mat-button-toggle value="En Cours">En Cours</mat-button-toggle>
+            <mat-button-toggle value="Terminer">Terminer</mat-button-toggle>
+            <mat-button-toggle value="Clôturer">Clôturer</mat-button-toggle>
+
+          </mat-button-toggle-group>
         </div><!--col-->
-        <div class="col-8">
-            <input (keyup)="applyFilter($event)" type="text" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher par titre...">
+        <div class="col-6">
+            <input (keyup)="applyFilter($event)" type="text" class="form-control input-search" id="exampleFormControlInput1" style="height: 48px !important;" placeholder="Rechercher par titre...">
         </div><!--col-->
      </div><!--row-->
 
      <div>
       <div class="row">
-         <div class="col-6 task-col" *ngFor="let tache of task">
+         <div class="col-6 task-col" *ngFor="let tache of filteredTasks">
           <mat-card class="task-card" [ngClass]="{'task-card--afaire': tache?.statut === 'A Faire','task-card--encours': tache?.statut === 'En Cours','task-card--terminer': tache?.statut === 'Terminer'}" (click)="openDialogUpdate(tache?._id)" style="cursor: pointer;">
             <mat-card-content>
               <div class="row">
@@ -50,29 +62,33 @@
                 </div>
                 <div class="col">
                   <div style="float: right;position: relative;display: flex;" *ngIf="tache?.assignes" #wrap>
+                     <div *ngFor="let assigne of tache?.assignes">
+
                       <button mat-icon-button
                       [matMenuTriggerFor]="menu"
                       (click)="$event.stopPropagation()"
                       class="time_user" [ngStyle]="{ 'background-color': getColor(tache.statut) }" *ngIf="tache?.assignes">
-                          <span class="time_user_label">{{tache?.assignes?.nom?.charAt(0) || ''}}</span>
+                          <span class="time_user_label">{{assigne?.nom?.charAt(0) || ''}}</span>
                       </button>
 
                       <mat-menu #menu="matMenu">
                         <div style="padding: 6px 9px; min-width: 250px;height: 87px;overflow: hidden">
                             <div class="row">
-                              <div class="col-5">
+                              <!-- <div class="col-5">
                                   <div class="user_popup">
-                                    <span class="user_span_popup">{{tache?.assignes?.nom?.charAt(0) || ''}}</span>
+                                    <span class="user_span_popup">{{assigne?.nom?.charAt(0) || ''}}</span>
                                   </div>
-                              </div>
-                              <div class="col-7">
-                                <span style="font-weight: 500 !important;font-size: 12px;">{{tache?.assignes?.nom}}</span>
+                              </div> -->
+                              <div class="col">
+                                <span style="font-weight: 500 !important;font-size: 12px;">{{assigne?.nom}}</span>
                                 <br/>
-                                <span style="font-size: 11px;"><i class="fa-solid fa-envelope"></i> {{tache?.assignes?.email}}</span>
+                                <span style="font-size: 11px;"><i class="fa-solid fa-envelope"></i> {{assigne?.email}}</span>
                               </div>
                             </div>
                         </div>
                       </mat-menu>
+                     </div>
+
                   </div>
                 </div>
                </div>

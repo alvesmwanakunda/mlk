@@ -10,6 +10,12 @@ import { environment} from 'src/environments/environment';
 import { DeleteTachesComponent } from '../delete-taches/delete-taches.component';
 import { ViewerStandarComponent } from '../../viewer-standar/viewer-standar.component';
 
+type ImageRow = {
+  key: string;                // clé stable
+  kind: 'existing' | 'new';
+  url?: string | null;        // existante (url)
+};
+
 
 @Component({
   selector: 'app-update-taches',
@@ -19,19 +25,24 @@ import { ViewerStandarComponent } from '../../viewer-standar/viewer-standar.comp
 export class UpdateTachesComponent implements OnInit {
 
     taskFormGroup:FormGroup;
-    timesheetForm: FormGroup;
-    subTaskForm: FormGroup;
     message:any;
     idtache:any;
     contacts:any
+    historiques:any;
     tache:any;
     steps:any[] = [];
-    imageFile: File | null = null;
-    showImageAnnotation = false;
-    imageToAnnotate: string | null = null;
-    imagePreview: string | null = null;
+
+    imageRows:ImageRow[] =[];
+    removedUrls:string[]=[];
+
+
+    imageFiles: Record<string, File| null> = {};
+    imagePreviews: Record<string, string| null> = {};
+    annotatedImagePreviews: Record<string, string | null> = {};
+    showImageAnnotation: Record<string, boolean> = {};
+    imagesToAnnotate: Record<string, string | null> = {};
     isHoveringImage = false;
-    annotatedImagePreview: string | null = null;
+    user:any;
 
 
     constructor(
@@ -48,13 +59,9 @@ export class UpdateTachesComponent implements OnInit {
 
     ){
       this.idtache = this.data.id;
-      //console.log("projet", this.data.id);
-      //  this.timesheetForm = this._formBuilder.group({
-      // entries:this._formBuilder.array([])
-      // });
-      this.subTaskForm = this._formBuilder.group({
-        entriesSubTask:this._formBuilder.array([])
-      });
+      this.user = JSON.parse(localStorage.getItem('user'));
+      //console.log("User", this.user);
+
     }
 
      champ_validation={
@@ -66,11 +73,24 @@ export class UpdateTachesComponent implements OnInit {
     ]
   }
 
-    ngOnInit() {
+  ngOnInit() {
       this.getAllEmployes();
       this.getTache();
-      //this.getAllTime();
-      this.getAllSubTask();
+      this.getHistoriques();
+  }
+
+  getHistoriques(){
+
+    this.tachesService.getHistoriqueTask(this.idtache).subscribe((res:any)=>{
+      this.historiques = res?.message;
+      console.log("Historiques", this.historiques);
+
+    },(error)=>{
+        this.message="Une erreur s'est produite veuillez réessayer.";
+        this.openSnackBar(this.message);
+        console.log(error);
+    })
+
   }
 
   getTache(){
@@ -105,205 +125,202 @@ export class UpdateTachesComponent implements OnInit {
             label: 'TERMINER',
             days: statut === 'TERMINER' ? daysText : '',
             active: statut === 'Terminer'
+          },
+          {
+            label: 'CLÔTURER',
+            days: statut === 'CLÔTURER' ? daysText : '',
+            active: statut === 'Clôturer'
           }
         ];
 
-        console.log("steps", this.steps)
+        //console.log("steps", this.steps)
+
+        const assignesIds: string[] = Array.isArray(this.tache?.assignes)
+        ? this.tache.assignes.map((u: any) => u?._id).filter(Boolean)
+        : [];
 
         this.taskFormGroup = this._formBuilder.group({
             titre: [this.tache?.titre || '', Validators.required],
-            assignes: [this.tache?.assignes?._id || '', null],
-            temps: [this.tache?.temps || '', null],
-            date_debut: [this.tache?.date_debut || '', null],
-            date_fin: [this.tache?.date_fin || '', null],
-            statut: [this.tache?.statut || ''],
+            assignes: [assignesIds],
+            temps: [this.tache?.temps || null],
+            date_debut: [this.tache?.date_debut || null],
+            date_fin: [this.tache?.date_fin || null],
+            statut: [this.tache?.statut || 'A Faire'],
             description: [this.tache?.description || '']
         });
+        this.initImageRowsFromTache(this.tache);
     },(error)=>{
         this.message="Une erreur s'est produite veuillez réessayer.";
         this.openSnackBar(this.message);
         console.log(error);
-      })
+    })
   }
 
-
-  // Sous Tache
-
-    getAllSubTask(){
-      this.tachesService.getAllSubTask(this.idtache).subscribe((res:any)=>{
-            res?.message.forEach(data => {
-              this.entriesSubTask.push(this._formBuilder.group({
-                 _id: [data?._id], // <-- Ajoutez ceci pour conserver l'ID
-                description: [data?.description,  Validators.required],
-                assignes: [data?.assignes, Validators.required],
-              }));
-            });
-        },(error)=>{
-          console.log(error);
-      })
-    }
-    get entriesSubTask(): FormArray{
-     return this.subTaskForm.get('entriesSubTask') as FormArray;
-    }
-
-  addLineSub() {
-
-    const lastEntry = this.entriesSubTask.at(this.entriesSubTask.length - 1)?.value;
-
-    // Vérifie si la dernière ligne est remplie
-    if (lastEntry && (!lastEntry.assignes || !lastEntry.description)) {
-      this.openSnackBar('Veuillez remplir tous les champs avant d’ajouter une nouvelle ligne');
-      return;
-    }
-
-    const newEntry = this._formBuilder.group({
-      _id: [null],
-      description: [''],
-      assignes: [''],
+  private initImageRowsFromTache(tache: any) {
+    this.imageRows = (tache?.image ?? []).map((img: any) => {
+      // si tu as img._id => utilise ça : `ex_${img._id}`
+      const key = `ex_${img.url}`;
+      return { key, kind: 'existing', url: img.url };
     });
 
-    this.entriesSubTask.push(newEntry);
+    this.removedUrls = [];
+
+    // reset maps
+    this.imageFiles = {};
+    this.imagePreviews = {};
+    this.annotatedImagePreviews = {};
+    this.showImageAnnotation = {};
+    this.imagesToAnnotate = {};
   }
 
-  submitLineSubTask(index: number) {
-    const entry = this.entriesSubTask.at(index);
+  // =============================
+  // Images UI
+  // =============================
+  addImageRow() {
+    const key = `new_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+    this.imageRows.push({ key, kind: 'new', url: null });
 
-    if (entry.invalid) {
-      this.openSnackBar('Champs invalides');
-      return;
-    }
-
-    const data = entry.value;
-
-    if (!data._id) {
-      // Nouveau → POST
-      this.http.post(`${environment.BASE_API_URL}/sous/taches/${this.idtache}`, data).subscribe((res: any) => {
-        if (res.success && res.message[0]?._id) {
-          entry.patchValue({ _id: res.message[0]._id });
-          this.openSnackBar('Ligne ajoutée');
-        }
-      });
-    } else {
-      // Existant → PUT
-      this.http.put(`${environment.BASE_API_URL}/sous/taches/${data._id}`, data).subscribe((res: any) => {
-        this.openSnackBar('Ligne modifiée');
-      });
-    }
+    this.imageFiles[key] = null;
+    this.imagePreviews[key] = null;
+    this.annotatedImagePreviews[key] = null;
+    this.showImageAnnotation[key] = false;
+    this.imagesToAnnotate[key] = null;
   }
 
-  removeLineSubTask(index: number) {
-    const entry = this.entriesSubTask.at(index);
-    console.log("_id=====>", entry);
+  removeRow(rowKey: string) {
+    const idx = this.imageRows.findIndex(r => r.key === rowKey);
+    if (idx === -1) return;
 
-    const id = entry.value._id;
-
-    if (id) {
-      // Supprimer dans la base
-      this.http.delete(`${environment.BASE_API_URL}/sous/taches/${id}`).subscribe(() => {
-        this.entriesSubTask.removeAt(index);
-        this.openSnackBar('Ligne supprimée');
-      });
-    } else {
-      // Juste retirer du form
-      this.entriesSubTask.removeAt(index);
+    const row = this.imageRows[idx];
+    if (row.kind === 'existing' && row.url) {
+      this.removedUrls.push(row.url);
     }
+
+    // clean maps
+    delete this.imageFiles[rowKey];
+    delete this.imagePreviews[rowKey];
+    delete this.annotatedImagePreviews[rowKey];
+    delete this.showImageAnnotation[rowKey];
+    delete this.imagesToAnnotate[rowKey];
+
+    this.imageRows.splice(idx, 1);
   }
-
-
-  // END Sous Tache
 
     // Annotation Image
 
   // ---------------- IMAGE ----------------
-  onImageSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (!input.files || input.files.length === 0) return;
 
-    this.imageFile = input.files[0];
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.imagePreview = e.target.result;
-      // Ouvrir directement l'annotation d'image
-      this.openImageAnnotation(e.target.result);
-    };
-    reader.readAsDataURL(this.imageFile);
+  onEditExistingImage(event: Event, rowKey: string, oldPath: string) {
+    // oldPath = "taches/xxx.png"
+    if (!this.removedUrls.includes(oldPath)) this.removedUrls.push(oldPath);
+
+    // la ligne doit passer en new pour être uploadée
+    const row = this.imageRows.find(r => r.key === rowKey);
+    if (row) {
+      row.kind = 'new';
+      row.url = null;
+    }
+    // ensuite tu réutilises le flow onImageSelected pour annoter
+    this.onImageSelected(event, rowKey);
   }
 
-  openImageAnnotation(imageSrc: string) {
-    this.imageToAnnotate = imageSrc;
-    this.showImageAnnotation = true;
-  }
 
-  onAnnotationComplete(annotatedImage: string) {
-    this.annotatedImagePreview = annotatedImage;
-    this.imagePreview = annotatedImage;
-    this.showImageAnnotation = false;
-    this.imageToAnnotate = null;
+ onImageSelected(event: Event, index: string) {
+  const input = event.target as HTMLInputElement;
+  if (!input.files || input.files.length === 0) return;
 
-      // Générer un nom de fichier unique pour l'image
+  const file = input.files[0];
+  this.imageFiles[index] = file;
+
+  const reader = new FileReader();
+  reader.onload = (e: any) => {
+    this.imagePreviews[index] = e.target.result;
+    // Ouvrir directement l'annotation d'image
+    this.openImageAnnotation(e.target.result, index);
+  };
+  reader.readAsDataURL(file);
+}
+
+openImageAnnotation(imageSrc: string, index: string) {
+  this.imagesToAnnotate[index] = imageSrc;
+  this.showImageAnnotation[index] = true;
+}
+
+onAnnotationComplete(annotatedImage: string, index: string) {
+  this.annotatedImagePreviews[index] = annotatedImage;
+  this.imagePreviews[index] = annotatedImage;
+  this.showImageAnnotation[index] = false;
+  this.imagesToAnnotate[index] = null;
+
+  // Générer un nom de fichier unique pour l'image
   const timestamp = new Date().getTime();
   const randomId = Math.random().toString(36).substring(2, 9);
-  const fileName = `annotated_image_${timestamp}_${randomId}.png`;
+  const fileName = `annotated_image_${timestamp}_${randomId}_${index}.png`;
 
-    // Convertir data URL en File pour l'envoi
-    this.dataURLtoFile(annotatedImage, fileName);
+  // Convertir data URL en File pour l'envoi
+  const file = this.dataURLtoFile(annotatedImage, fileName);
+  this.imageFiles[index] = file;
+  this.cdRef.detectChanges();
+}
 
-    console.log('🎯 annotatedImagePreview:', this.annotatedImagePreview ? 'DÉFINI' : 'NULL');
+onAnnotationCanceled(index: string) {
+  this.showImageAnnotation[index] = false;
+  this.imagesToAnnotate[index] = null;
+  this.imageFiles[index] = null;
+  this.imagePreviews[index] = null;
+  this.annotatedImagePreviews[index] = null;
+}
 
+removeAnnotatedImage(index: string) {
+  this.imageFiles[index] = null;
+  this.imagePreviews[index] = null;
+  this.annotatedImagePreviews[index] = null;
+  this.annotatedImagePreviews[index] = null;
+}
 
-    this.cdRef.detectChanges();
+private dataURLtoFile(dataurl: string, filename: string): File {
+  const arr = dataurl.split(',');
+  const mime = arr[0].match(/:(.*?);/)![1];
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
   }
 
-  onAnnotationCanceled() {
-    this.showImageAnnotation = false;
-    this.imageToAnnotate = null;
-    // Optionnel: supprimer l'image si l'annotation est annulée
-    this.imageFile = null;
-    this.imagePreview = null;
-    this.annotatedImagePreview = null;
-  }
-
-  // Supprimer l'image annotée (comme pour l'audio)
-  removeAnnotatedImage() {
-    this.imageFile = null;
-    this.imagePreview = null;
-    this.annotatedImagePreview = null;
-  }
-
-  private dataURLtoFile(dataurl: string, filename: string) {
-    const arr = dataurl.split(',');
-    const mime = arr[0].match(/:(.*?);/)![1];
-    const bstr = atob(arr[1]);
-    let n = bstr.length;
-    const u8arr = new Uint8Array(n);
-
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-
-    this.imageFile = new File([u8arr], filename, { type: mime });
-  }
+  return new File([u8arr], filename, { type: mime });
+}
 
 
   // End Annotation
 
-  updateTask(){
+updateTask(){
 
      const fd = new FormData();
-     if(this.imageFile){
-        fd.append('image', this.imageFile, this.imageFile.name);
-     }
-    const assignesValue = this.taskFormGroup.get('assignes').value;
-      if (assignesValue && assignesValue !== '') {
-        fd.append('assignes', assignesValue);
+
+    // champs simples (sauf assignes)
+    Object.keys(this.taskFormGroup.controls).forEach(key => {
+      if (key === 'assignes') return;
+      const v = this.taskFormGroup.get(key)?.value;
+      if (v !== null && v !== undefined && v !== '') fd.append(key, v);
+    });
+
+    // assignes => JSON
+    fd.append('assignes', JSON.stringify(this.taskFormGroup.value.assignes ?? []));
+    // removedUrls (suppression existantes)
+    if (this.removedUrls.length) {
+      fd.append('removedUrls', JSON.stringify(this.removedUrls));
     }
-     fd.append('titre', this.taskFormGroup.get('titre').value);
-     fd.append('date_debut', this.taskFormGroup.get('date_debut').value);
-     fd.append('date_fin', this.taskFormGroup.get('date_fin').value);
-     //fd.append('assignes', this.taskFormGroup.get('assignes').value);
-     fd.append('temps', this.taskFormGroup.get('temps').value);
-     fd.append('statut', this.taskFormGroup.get('statut').value);
-     fd.append('description', this.taskFormGroup.get('description').value);
+
+    // nouvelles images: only rows kind=new + file present (après annotation)
+    this.imageRows
+      .filter(r => r.kind === 'new')
+      .forEach(r => {
+        const f = this.imageFiles[r.key];
+        if (f) fd.append('image', f, f.name);
+      });
+
 
       this.tachesService.updateTache(fd, this.idtache).subscribe((res:any)=>{
         this.message='Tâche a été modifié avec succès';
@@ -314,35 +331,35 @@ export class UpdateTachesComponent implements OnInit {
         this.openSnackBar(this.message);
         console.log(error);
       })
-  }
+}
 
-   getAllEmployes(){
-        //  this.authService.listEmployes().subscribe((res:any)=>{
-         this.authService.listEmployesAndAdmins().subscribe((res:any)=>{
-           this.contacts = res?.message;
-         },(error) => {
-          console.log("Erreur lors de la récupération des données", error);
-         })
-    }
+getAllEmployes(){
+      //  this.authService.listEmployes().subscribe((res:any)=>{
+        this.authService.listEmployesAndAdmins().subscribe((res:any)=>{
+          this.contacts = res?.message;
+        },(error) => {
+        console.log("Erreur lors de la récupération des données", error);
+        })
+}
 
-  openSnackBar(message){
-      this._snackBar.open(message, 'Fermer',{
-        duration:6000,
-      })
-  }
-
-  openDialog(){
-    const dialogRef = this.dialog.open(DeleteTachesComponent,{width:'35%', data:{id:this.idtache}});
-    dialogRef.afterClosed().subscribe((result:any)=>{
-      if(result){
-        this.dialogRef.close(result)
-      }
+openSnackBar(message){
+    this._snackBar.open(message, 'Fermer',{
+      duration:6000,
     })
-  }
+}
 
-  close(){
-    this.dialogRef.close()
-  }
+openDialog(){
+  const dialogRef = this.dialog.open(DeleteTachesComponent,{width:'35%', data:{id:this.idtache}});
+  dialogRef.afterClosed().subscribe((result:any)=>{
+    if(result){
+      this.dialogRef.close(result)
+    }
+  })
+}
+
+close(){
+  this.dialogRef.close()
+}
 
 openDialogFile(chemin, extension){
   const dialogRef = this.dialog.open(ViewerStandarComponent,{

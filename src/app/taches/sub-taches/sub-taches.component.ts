@@ -36,9 +36,6 @@ export class SubTachesComponent implements OnInit {
   idtache:any;
   contacts:any
 
-
-
-
   constructor(
     private  _formBuilder:FormBuilder,
     private _snackBar:MatSnackBar,
@@ -99,11 +96,14 @@ getAllTime(){
       // Convertir la date string en objet Date
       const dateValue = data?.date ? new Date(data.date) : '';
 
+
+
       this.entries.push(this._formBuilder.group({
         _id: [data?._id],
         date: [dateValue, Validators.required], // <-- Date objet maintenant
-        hours: [data?.hours, Validators.required],
+        hours: [data?.hours],
         description: [data?.description],
+        statut: [data?.statut || 'A Faire'],
         employee: [data?.employee, Validators.required],
         image: [data?.image?.url]
       }));
@@ -134,15 +134,16 @@ private formatDateForBackend(date: Date | string): string {
     const lastEntry = this.entries.at(this.entries.length - 1)?.value;
 
     // Vérifie si la dernière ligne est remplie
-    if (lastEntry && (!lastEntry.date || !lastEntry.employee || !lastEntry.hours)) {
+    if (lastEntry && (!lastEntry.date || !lastEntry.employee)) {
       this.openSnackBar('Veuillez remplir tous les champs avant d’ajouter une nouvelle ligne');
       return;
     }
 
     const newEntry = this._formBuilder.group({
       date: ['', Validators.required],
-      employee: ['', Validators.required],
+      employee: [[], Validators.required],
       description: [''],
+      statut: [''],
       hours: ['']
     });
 
@@ -277,11 +278,24 @@ submitAllLine() {
     }
 
     // Ajouter les autres champs
-    if (item?.employee) {
-      fd.append('employee', item.employee);
-    }
+    // if (item?.employee) {
+    //   fd.append('employee', item.employee);
+    // }
+
+    //  Object.keys(this.timesheetForm.controls).forEach(key => {
+    //   if (key === 'employee') return;
+    //   const v = this.timesheetForm.get(key)?.value;
+    //   if (v !== null && v !== undefined && v !== '') fd.append(key, v);
+    // });
+
+
+    // assignes => JSON
+    const employees = item.employee ?? [];
+    // sécurité : toujours envoyer un tableau
+    fd.append('employee', JSON.stringify(Array.isArray(employees) ? employees : [employees]));
 
     fd.append('date', item.date);
+    fd.append('statut', item.statut);
     fd.append('hours', item.hours);
     fd.append('description', item.description || '');
 
@@ -367,14 +381,16 @@ submitLine(index: number) {
     fd.append('image', imageFile, imageFile.name);
   }
 
-  const assignesValue = entry.get('employee').value;
-  if (assignesValue && assignesValue !== '') {
-    fd.append('employee', assignesValue);
-  }
-  //fd.append('date', entry.get('date').value);
+  // assignes => JSON
+  const employees = entry.get('employee')?.value ?? [];
+
+  // sécurité : toujours envoyer un tableau
+  fd.append('employee', JSON.stringify(Array.isArray(employees) ? employees : [employees]));
   fd.append('date', this.formatDateForBackend(entry.get('date').value));
   fd.append('hours', entry.get('hours').value);
   fd.append('description', entry.get('description').value);
+  fd.append('statut', entry.get('statut').value);
+
 
   if (!data._id) {
     // Nouveau → POST

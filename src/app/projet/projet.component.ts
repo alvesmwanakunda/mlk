@@ -71,9 +71,8 @@ export class ProjetComponent implements OnInit, AfterViewInit {
   getProjet(){
     this.projetService.getProjet(this.idProjet).subscribe((res:any)=>{
         this.projet = res.message;
-
         if(res.message?.entreprise){
-          this.getEntreprise(res.message?.entreprise);
+          this.getEntreprise(res.message?.entreprise?._id);
         }
 
         if(this.projet?.contact){
