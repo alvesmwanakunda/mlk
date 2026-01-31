@@ -8,24 +8,24 @@
 
       <div class="col-lg-11 col-md-11 col-md-auto">
         <div>
-          <div class="row" style="margin-bottom: 10px;padding-top: 15px;">
+          <div class="row" style="margin-bottom: 5px;padding-top: 15px;">
             <div class="col">
               <h1 class="text-3xl font-bold text-gray-900">Tâche</h1>
             </div>
             <div class="col" align="right">
-               <button mat-icon-button color="primary" (click)="close()">
-                <mat-icon>close</mat-icon>
+              <button  mat-raised-button color="primary" class="me-2" (click)="updateTask()"><mat-icon>edit</mat-icon> Enregistre</button>
+              <button *ngIf="user?.user?._id==tache?.user" class="me-2" mat-raised-button color="warn" (click)="openDialog()"><mat-icon>delete</mat-icon> Supprimer</button>
+               <button mat-raised-button (click)="close()">
+                <mat-icon>close</mat-icon> Fermer
                </button>
             </div>
           </div>
           <mat-divider></mat-divider>
         </div>
 
-        <div class="row" style="margin-bottom: 10px;padding-top: 10px;">
+        <div class="row" style="margin-bottom: 5px;padding-top: 10px;">
           <div class="col">
             <div style="padding-top: 25px;">
-              <button  mat-raised-button color="primary" class="me-2" (click)="updateTask()"><mat-icon>edit</mat-icon> Modifier</button>
-              <button *ngIf="user?.user?._id==tache?.user" mat-raised-button color="warn" (click)="openDialog()"><mat-icon>delete</mat-icon> Supprimer</button>
             </div>
           </div>
           <div class="col">
@@ -200,10 +200,10 @@
 
          </div>
 
-         <mat-tab-group dynamicHeight>
+         <mat-tab-group dynamicHeight class="custom-header">
             <!--<mat-tab label="Feuilles de temps">-->
              <mat-tab label="Sous-tâches">
-              <app-sub-taches></app-sub-taches>
+              <app-sub-taches (refreshRequested)="refreshDonnees()"></app-sub-taches>
              </mat-tab>
              <mat-tab label="Historique tâche">
               <div style="padding-top: 20px;">

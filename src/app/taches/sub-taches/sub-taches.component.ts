@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { TachesService } from 'src/app/shared/services/taches.service';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth.service';
@@ -32,6 +32,8 @@ export class SubTachesComponent implements OnInit {
   showImageAnnotation: { [key: number]: boolean } = {};
   imagesToAnnotate: { [key: number]: string | null } = {};
 
+   @Output() refreshRequested = new EventEmitter<void>();
+
 
   idtache:any;
   contacts:any
@@ -53,7 +55,8 @@ export class SubTachesComponent implements OnInit {
 
      this.timesheetForm = this._formBuilder.group({
       entries:this._formBuilder.array([])
-      });
+    });
+
   }
 
   champ_validation={
@@ -68,6 +71,10 @@ export class SubTachesComponent implements OnInit {
   ngOnInit(){
    this.getAllTime();
    this.getAllEmployes();
+  }
+
+  demanderRefresh() {
+    this.refreshRequested.emit();
   }
 
 
@@ -410,6 +417,7 @@ submitLine(index: number) {
     // Existant → PUT
     this.http.put(`${environment.BASE_API_URL}/time/taches/${data._id}`, fd).subscribe((res: any) => {
       this.openSnackBar('La sous-tâches est modifiée avec succès');
+      this.demanderRefresh();
     });
   }
 }

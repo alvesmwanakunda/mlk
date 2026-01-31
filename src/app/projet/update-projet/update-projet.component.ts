@@ -93,32 +93,36 @@ export class UpdateProjetComponent implements OnInit {
     this.getAllEntreprises();
     this.getContry();
     this.getDevis();
+  }
 
-    this.firstFormGroup=this._formBuilder.group({
-      projet:['',Validators.required],
-      entreprise:['',Validators.required],
-      etat:['',null],
-      genre:['',null],
-      nom:['',null],
-      prenom:['',null],
-      plan:['',null],
-      contact:['',null]
+  getProjet(){
+    this.projetService.getProjet(this.idProjet).subscribe((res:any)=>{
+      this.projet = res.message;
+      this.firstFormGroup=this._formBuilder.group({
+      projet:[this.projet?.projet,Validators.required],
+      entreprise:[this.projet?.entreprise?._id,Validators.required],
+      etat:[this.projet?.etat,null],
+      genre:[this.projet?.genre,null],
+      nom:[this.projet?.nom,null],
+      prenom:[this.projet?.prenom,null],
+      plan:[this.projet?.plan,null],
+      contact:[this.projet?.contact,null]
     });
     this.secondFormGroup=this._formBuilder.group({
-      pays:[''],
-      adresse:[''],
-      ville:[''],
-      rue:[''],
-      postal:[''],
-      coordonnees:[''],
+      pays:[this.projet?.pays],
+      adresse:[this.projet?.adresse],
+      ville:[this.projet?.ville],
+      rue:[this.projet?.rue],
+      postal:[this.projet?.postal],
+      coordonnees:[this.projet?.coordonnees],
     });
     this.threeFormGroup=this._formBuilder.group({
-      budget:[''],
-      devise:[''],
-      site_offre:[''],
-      date_limite:[''],
-      date_fin_contrat:[''],
-      numero_offre:[''],
+      budget:[this.projet?.budget],
+      devise:[this.projet?.devise],
+      site_offre:[this.projet?.site_offre],
+      date_limite:[this.projet?.date_limite],
+      date_fin_contrat:[this.projet?.date_fin_contrat],
+      numero_offre:[this.projet?.numero_offre],
     });
 
     this.paysFiltres = this.secondFormGroup.get('pays').valueChanges.pipe(
@@ -130,14 +134,10 @@ export class UpdateProjetComponent implements OnInit {
       startWith(''),
       map((val)=> this.filterDevis(val))
     )
-  }
-
-  getProjet(){
-    this.projetService.getProjet(this.idProjet).subscribe((res:any)=>{
-      this.projet = res.message;
+    console.log("Projet", this.projet);
       if(this.projet){
-        this.getContact(this.projet.entreprise);
-      }
+        this.getContact(this.projet?.entreprise?._id);
+    }
       //this.image = this.sanitizer.bypassSecurityTrustResourceUrl(`data:image/png;base64, ${res.message.photo}`);
       this.image = this.sanitizer.bypassSecurityTrustResourceUrl(res.message.photo);
       this.jours = new Date(res.message.date_limite).toISOString().split('T')[0];
@@ -239,53 +239,136 @@ export class UpdateProjetComponent implements OnInit {
     })
   }
 
-  updateProjet():void{
+//  updateProjet():void{
 
-    this.onLoadForm=true;
-     const formData:FormData=new FormData();
-     Object.assign(this.projet, this.firstFormGroup.value);
-     Object.assign(this.projet, this.secondFormGroup.value);
-     Object.assign(this.projet, this.threeFormGroup.value)
+//     this.onLoadForm=true;
+//      const formData:FormData=new FormData();
+//      Object.assign(this.projet, this.firstFormGroup.value);
+//      Object.assign(this.projet, this.secondFormGroup.value);
+//      Object.assign(this.projet, this.threeFormGroup.value)
 
-     formData.append("uploadfile", this.file);
-     formData.append("nom", this.projet.nom);
-     formData.append("prenom", this.projet.prenom);
-     formData.append("contact", this.projet.contact);
-     formData.append("genre", this.projet.genre);
-     formData.append("projet", this.projet.projet);
-     formData.append("entreprise", this.projet.entreprise);
-     formData.append("etat", this.projet.etat);
-     formData.append("plan", this.projet.plan);
-     formData.append("responsable", this.projet.responsable);
-     formData.append("pays", this.projet.pays);
-     formData.append("adresse", this.projet.adresse);
-     formData.append("ville", this.projet.ville);
-     formData.append("rue", this.projet.rue);
-     formData.append("postal", this.projet.postal);
-     formData.append("budget", this.projet.budget);
-     formData.append("devise", this.projet.devise);
-     formData.append("site_offre", this.projet.site_offre);
-     formData.append("numero_offre", this.projet.numero_offre);
-     formData.append("date_limite", this.projet.date_limite);
-     formData.append("date_fin_contrat", this.projet.date_fin_contrat);
-     formData.append("coordonnees", this.projet.coordonnees);
+//      formData.append("uploadfile", this.file);
+//      formData.append("nom", this.projet.nom);
+//      formData.append("prenom", this.projet.prenom);
+//      formData.append("contact", this.projet.contact);
+//      formData.append("genre", this.projet.genre);
+//      formData.append("projet", this.projet.projet);
+//      formData.append("entreprise", this.projet.entreprise);
+//      formData.append("etat", this.projet.etat);
+//      formData.append("plan", this.projet.plan);
+//      formData.append("responsable", this.projet.responsable);
+//      formData.append("pays", this.projet.pays);
+//      formData.append("adresse", this.projet.adresse);
+//      formData.append("ville", this.projet.ville);
+//      formData.append("rue", this.projet.rue);
+//      formData.append("postal", this.projet.postal);
+//      formData.append("budget", this.projet.budget);
+//      formData.append("devise", this.projet.devise);
+//      formData.append("site_offre", this.projet.site_offre);
+//      formData.append("numero_offre", this.projet.numero_offre);
+//      formData.append("date_limite", this.projet.date_limite);
+//      formData.append("date_fin_contrat", this.projet.date_fin_contrat);
+//      formData.append("coordonnees", this.projet.coordonnees);
 
 
-     this.projetService.updateProjet(this.idProjet,formData).subscribe((res:any)=>{
+//      this.projetService.updateProjet(this.idProjet,formData).subscribe((res:any)=>{
 
-       try {
-            this.onLoadForm=false;
-            this.message='Projet a été modifié avec succès';
-            this.openSnackBar(this.message);
-            this.router.navigate(["projet",res.message._id]);
-       } catch (error) {
-           this.onLoadForm=false;
-           this.message="Une erreur s'est produite veuillez réessayer.";
-           this.openSnackBar(this.message);
-       }
+//        try {
+//             this.onLoadForm=false;
+//             this.message='Projet a été modifié avec succès';
+//             this.openSnackBar(this.message);
+//             this.router.navigate(["projet",res.message._id]);
+//        } catch (error) {
+//            this.onLoadForm=false;
+//            this.message="Une erreur s'est produite veuillez réessayer.";
+//            this.openSnackBar(this.message);
+//        }
 
-     })
- }
+//      })
+//  }
+
+updateProjet(): void {
+  this.onLoadForm = true;
+
+  const formData: FormData = new FormData();
+
+  // Ajouter le fichier s'il existe
+  if (this.file) {
+    formData.append("uploadfile", this.file);
+  }
+
+  // Récupérer les valeurs des formulaires
+  const firstFormValues = this.firstFormGroup.value;
+  const secondFormValues = this.secondFormGroup.value;
+  const threeFormValues = this.threeFormGroup.value;
+
+  // Fusionner toutes les valeurs
+  const allValues = {
+    ...firstFormValues,
+    ...secondFormValues,
+    ...threeFormValues
+  };
+
+  // Ajouter chaque valeur individuellement dans FormData
+  Object.keys(allValues).forEach(key => {
+    if (allValues[key] !== null && allValues[key] !== undefined) {
+      // Convertir les dates en string ISO
+      if (allValues[key] instanceof Date) {
+        formData.append(key, allValues[key].toISOString());
+      }
+      // Pour les objets (comme entreprise qui est un _id)
+      else if (typeof allValues[key] === 'object' && allValues[key] !== null) {
+        // Si c'est un pays sélectionné depuis l'autocomplete
+        if (key === 'pays' && allValues[key].name) {
+          formData.append(key, allValues[key].name);
+        }
+        // Si c'est une devise sélectionnée depuis l'autocomplete
+        else if (key === 'devise' && allValues[key].nom) {
+          formData.append(key, allValues[key].nom);
+        }
+        // Sinon, essayer de prendre l'_id ou stringifier
+        else if (allValues[key]._id) {
+          formData.append(key, allValues[key]._id);
+        } else {
+          formData.append(key, JSON.stringify(allValues[key]));
+        }
+      }
+      // Pour les valeurs simples
+      else {
+        formData.append(key, allValues[key].toString());
+      }
+    }
+  });
+
+  // Afficher le contenu de FormData pour débogage
+  this.logFormData(formData);
+
+  this.projetService.updateProjet(this.idProjet, formData).subscribe((res: any) => {
+    try {
+      this.onLoadForm = false;
+      this.message = 'Projet a été modifié avec succès';
+      this.openSnackBar(this.message);
+      this.router.navigate(["projet", res.message._id]);
+    } catch (error) {
+      this.onLoadForm = false;
+      this.message = "Une erreur s'est produite veuillez réessayer.";
+      this.openSnackBar(this.message);
+    }
+  }, (error) => {
+    this.onLoadForm = false;
+    this.message = "Erreur lors de la mise à jour: " + (error.error?.message || error.message);
+    this.openSnackBar(this.message);
+  });
+}
+
+// Méthode pour déboguer le contenu de FormData
+logFormData(formData: FormData) {
+  console.log('=== Contenu de FormData ===');
+  for (const pair of (formData as any).entries()) {
+    console.log(pair[0] + ': ' + pair[1]);
+  }
+  console.log('===========================');
+}
 
 doSomething(event:any){
   this.getContact(event?.value);

@@ -88,11 +88,11 @@ export class AddProjetComponent implements OnInit {
     this.firstFormGroup=this._formBuilder.group({
       projet:['',Validators.required],
       entreprise:['',Validators.required],
-      nom:['',null],
-      prenom:['',null],
-      genre:['',null],
-      plan:['',null],
-      contact:['',null]
+      nom:[''],
+      prenom:[''],
+      genre:[''],
+      plan:[''],
+      contact:['']
     });
     this.secondFormGroup=this._formBuilder.group({
       pays:[''],

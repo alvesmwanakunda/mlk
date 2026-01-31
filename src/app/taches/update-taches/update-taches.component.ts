@@ -79,6 +79,12 @@ export class UpdateTachesComponent implements OnInit {
       this.getHistoriques();
   }
 
+  refreshDonnees() {
+    console.log('Refresh demandé par enfant');
+    // Logique de rafraîchissement
+    this.getHistoriques();
+  }
+
   getHistoriques(){
 
     this.tachesService.getHistoriqueTask(this.idtache).subscribe((res:any)=>{
