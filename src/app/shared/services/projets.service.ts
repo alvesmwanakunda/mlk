@@ -38,6 +38,16 @@ export class ProjetsService {
   public updateProjet(idProjet, projet){
     return this.httpClient.put(`${environment.BASE_API_URL}/projet/${idProjet}`,projet)
   }
+  public updateProjetStatut(idProjet, statut:string){
+    return this.httpClient.put(`${environment.BASE_API_URL}/projet/statut/${idProjet}`,{statut})
+  }
+  public updateProjetStatutMultiple(ids:string[], statut:string){
+    return this.httpClient.put(`${environment.BASE_API_URL}/projet/statut/multiple`,{
+      projetIds:ids,
+      statut:statut
+    })
+  }
+  ///projet/delete/multiple
 
   public updateProjetEntreprise(idProjet, projet){
     return this.httpClient.put(`${environment.BASE_API_URL}/projet/entreprise/${idProjet}`,projet)
@@ -45,6 +55,10 @@ export class ProjetsService {
 
   public deleteProjet(idProjet){
     return this.httpClient.delete(`${environment.BASE_API_URL}/projet/${idProjet}`)
+  }
+
+  public deleteProjetMultiple(ids:string[]){
+    return this.httpClient.post(`${environment.BASE_API_URL}/projet/delete/multiple`,{projetIds:ids})
   }
 
   public updateProjetPhoto(idProjet, projet){

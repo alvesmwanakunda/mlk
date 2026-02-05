@@ -20,11 +20,16 @@ export class TimeSheetComponent implements OnInit, AfterViewInit {
 
   displayedColumns:string[]=['nom','email','action'];
   dataSource =new MatTableDataSource<Contacts>();
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('paginator') paginator: MatPaginator;
+
+  displayedColumnsTimes:string[]=['employe','projet','debut', 'pause','fin'];
+  dataSourceTimes =new MatTableDataSource<[]>();
+  @ViewChild('paginatorTime') paginatorTime: MatPaginator;
   user:any;
   filterForm: FormGroup;
   months:any=[];
   employes:any=[];
+  timesheets:any=[];
 
 
   constructor(
@@ -50,7 +55,8 @@ export class TimeSheetComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.getAllEmployes();
-    this.matPaginatorIntl.itemsPerPageLabel="Employées par page";
+    this.getAllTimes();
+    this.matPaginatorIntl.itemsPerPageLabel="Données par page";
     this.getMonth();
 
     this.filterForm = new FormGroup({
@@ -61,6 +67,7 @@ export class TimeSheetComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.dataSource.paginator=this.paginator;
+    this.dataSourceTimes.paginator=this.paginatorTime;
   }
 
   getMonth(){
@@ -83,6 +90,23 @@ export class TimeSheetComponent implements OnInit, AfterViewInit {
           prenom:data?.prenom,
           email:data?.email,
          })) as Contacts[]
+
+       },(error) => {
+        console.log("Erreur lors de la récupération des données", error);
+       })
+  }
+
+  getAllTimes(){
+       this.timesheetService.getAllTimeSheetToDay().subscribe((res:any)=>{
+        this.timesheets = res?.message;
+        this.dataSourceTimes.data = this.timesheets.map((data)=>({
+          id:data?._id,
+          user:data?.user?.nom +" "+ data?.user?.prenom,
+          projet:data?.projet?.projet,
+          debut:data?.heureDebut,
+          pause:data?.pause,
+          fin:data?.heureFin,
+         })) as []
 
        },(error) => {
         console.log("Erreur lors de la récupération des données", error);

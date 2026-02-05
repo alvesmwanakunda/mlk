@@ -3,7 +3,7 @@
       <div class="content-top">
         <div class="row">
           <div class="col">
-              <h2 class="content-title">Produit</h2>
+              <h2 class="welcome-title">Produit</h2>
           </div>
           <div class="col" align="right">
               <button type="button" class="btn btn-projet-annule" routerLink="/produit" style="margin-right: 10px;">Annuler</button>
@@ -22,7 +22,7 @@
                     <form [formGroup]="firstFormGroup">
                       <div style="margin-bottom: 40px;">
                         <h3 class="title_champ">Récapitulatif</h3>
-                        <editor 
+                        <editor
                             apiKey="yimjymys4ncgnyjba52651rzyas8c049jditk61x087va3yn"
                             [init]="{
                               skin: 'borderless',
@@ -35,7 +35,7 @@
                         </div>
                        <div>
                         <h3 class="title_champ">Description</h3>
-                        <editor 
+                        <editor
                             apiKey="yimjymys4ncgnyjba52651rzyas8c049jditk61x087va3yn"
                             [init]="{
                               skin: 'borderless',
@@ -46,9 +46,9 @@
                             }"
                             formControlName="description" required></editor>
                         </div>
-                     
 
-                    </form>  
+
+                    </form>
                   </mat-card-content>
                  </mat-card>
                </div>
@@ -57,7 +57,7 @@
               <div style="padding-top: 20px;">
                 <mat-card>
                  <mat-card-content>
-                  <form [formGroup]="twoFormGroup" style="padding-top:31px;"> 
+                  <form [formGroup]="twoFormGroup" style="padding-top:31px;">
 
                     <h3 class="title_champ">Catégories</h3>
                     <div class="row" style="margin-bottom: 30px;">
@@ -66,7 +66,7 @@
                         <mat-chip-listbox>
                           <mat-chip-option selected color="accent">Accueil</mat-chip-option>
                         </mat-chip-listbox>
-                       </div> 
+                       </div>
                     </div>
                     <div class="row">
                       <div class="col">
@@ -79,7 +79,7 @@
                             </mat-chip>
                           </mat-chip-grid>
                           <input matInput #categorieInput formControlName="categories"
-                            [matChipInputFor]="chipGrid" 
+                            [matChipInputFor]="chipGrid"
                             [matAutocomplete]="auto"
                             (matChipInputTokenEnd)="add($event)" required />
                           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="add($event)">
@@ -88,10 +88,10 @@
                             </mat-option>
                           </mat-autocomplete>
                         </mat-form-field>
-                       </div> 
+                       </div>
                     </div>
                   </form>
-                  
+
                  </mat-card-content>
                 </mat-card>
               </div>

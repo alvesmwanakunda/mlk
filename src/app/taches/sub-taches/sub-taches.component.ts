@@ -102,13 +102,13 @@ getAllTime(){
     res?.message.forEach(data => {
       // Convertir la date string en objet Date
       const dateValue = data?.date ? new Date(data.date) : '';
-
-
+      const dateFin = data?.date_fin ? new Date(data.date_fin) : '';
 
       this.entries.push(this._formBuilder.group({
         _id: [data?._id],
         date: [dateValue, Validators.required], // <-- Date objet maintenant
-        hours: [data?.hours],
+        date_fin: [dateFin],
+        //hours: [data?.hours],
         description: [data?.description],
         statut: [data?.statut || 'A Faire'],
         employee: [data?.employee, Validators.required],
@@ -302,6 +302,7 @@ submitAllLine() {
     fd.append('employee', JSON.stringify(Array.isArray(employees) ? employees : [employees]));
 
     fd.append('date', item.date);
+    fd.append('date_fin', item.date_fin);
     fd.append('statut', item.statut);
     fd.append('hours', item.hours);
     fd.append('description', item.description || '');
@@ -394,7 +395,8 @@ submitLine(index: number) {
   // sécurité : toujours envoyer un tableau
   fd.append('employee', JSON.stringify(Array.isArray(employees) ? employees : [employees]));
   fd.append('date', this.formatDateForBackend(entry.get('date').value));
-  fd.append('hours', entry.get('hours').value);
+  fd.append('date_fin', this.formatDateForBackend(entry.get('date_fin').value));
+  //fd.append('hours', entry.get('hours').value);
   fd.append('description', entry.get('description').value);
   fd.append('statut', entry.get('statut').value);
 

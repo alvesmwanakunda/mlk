@@ -2105,6 +2105,365 @@ hr.entreprise{
   margin-right: 5px;
 }
 
+// New design
+
+.welcome-title {
+    font-size: 1.875rem !important; /* 30px - équivalent à text-3xl */
+    line-height: 2.25rem !important; /* 36px */
+    font-weight: 700 !important; /* font-bold */
+    color: #0f172a !important; /* text-slate-900 */
+    margin-bottom: 0.25rem !important; /* mb-1 */
+}
+
+.welcome-subtitle {
+    color: #64748b; /* text-slate-500 */
+}
+
+.list-title {
+    font-size: 20px; /* 30px - équivalent à text-3xl */
+    line-height: 2.25rem; /* 36px */
+    font-weight: 700; /* font-bold */
+    color: #0f172a; /* text-slate-900 */
+}
+
+.nouveau-projet-btn {
+    padding: 0.75rem 1.5rem;
+    background-color: #28628B;
+    color: #ffffff;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(18, 29, 54, 0.2);
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+.nouveau-projet-btn:hover {
+    background-color: #28628B;
+    box-shadow: 0 20px 25px -5px rgba(18, 29, 54, 0.2);
+    transform: translateY(-2px);
+}
+
+.nouveau-projet-btn svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+/* Classe unique pour l'input */
+.search-input {
+  width: 100%;
+  padding-left: 3rem; /* 48px */
+  padding-right: 1rem; /* 16px */
+  padding-top: 1rem;    /* 16px */
+  padding-bottom: 1rem; /* 16px */
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem; /* 12px */
+  color: #0f172a;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease-in-out;
+  outline: none;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Placeholder */
+.search-input::placeholder {
+  color: #94a3b8;
+  opacity: 1; /* Pour certains navigateurs */
+}
+
+/* États focus */
+.search-input:focus {
+  outline: none;
+  border-color: transparent;
+  box-shadow: 0 0 0 2px #112144;
+}
+
+.tableau-title{
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.view-toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.view-toggle-wrapper {
+    display: flex;
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    border: 1px solid #e2e8f0;
+    padding: 0.25rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.view-toggle-btn {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+}
+
+.view-toggle-btn svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+/* Styles pour le mode actif (grid) */
+.view-toggle-btn.active-grid {
+    background-color: #28628B;
+    color: #ffffff;
+}
+
+/* Styles pour le mode inactif (grid) */
+.view-toggle-btn.inactive-grid {
+    color: #94a3b8;
+}
+
+.view-toggle-btn.inactive-grid:hover {
+    color: #475569;
+}
+
+/* Styles pour le mode actif (list) */
+.view-toggle-btn.active-list {
+    background-color: #28628B;
+    color: #ffffff;
+}
+
+/* Styles pour le mode inactif (list) */
+.view-toggle-btn.inactive-list {
+    color: #94a3b8;
+}
+
+.view-toggle-btn.inactive-list:hover {
+    color: #475569;
+}
+
+
+/* Conteneur principal de la grille */
+.projects-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* grid-cols-1 */
+  gap: 1.5rem; /* gap-6 = 24px */
+}
+
+@media (min-width: 768px) { /* md: */
+  .projects-grid {
+    grid-template-columns: repeat(2, 1fr); /* md:grid-cols-2 */
+  }
+}
+
+@media (min-width: 1024px) { /* lg: */
+  .projects-grid {
+    grid-template-columns: repeat(2, 1fr); /* lg:grid-cols-2 */
+  }
+}
+
+/* Carte de projet */
+.project-card {
+  background-color: #ffffff !important; /* bg-white */
+  border-radius: 1rem !important; /* rounded-2xl = 16px */
+  border: 1px solid #e2e8f0 !important; /* border border-slate-200 */
+  overflow: hidden; /* overflow-hidden */
+  transition: all 0.3s ease-in-out; /* transition-all duration-300 */
+}
+
+/* Effets au survol de la carte */
+.project-card:hover {
+  transform: translateY(-4px); /* hover:-translate-y-1 */
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.1); /* hover:shadow-2xl hover:shadow-slate-900/10 */
+}
+
+/* Conteneur d'image */
+.project-image-container {
+  position: relative;
+  height: 12rem; /* h-48 = 192px */
+  overflow: hidden;
+  background-color: #f1f5f9; /* bg-slate-100 */
+}
+
+/* Image du projet */
+.project-image {
+  width: 100%; /* w-full */
+  height: 100%; /* h-full */
+  object-fit: cover; /* object-cover */
+  transition: transform 0.5s ease-in-out; /* transition-transform duration-500 */
+}
+
+.project-card:hover .project-image {
+  transform: scale(1.1); /* group-hover:scale-110 */
+}
+
+/* Badge de statut */
+.project-badge {
+  position: absolute;
+  top: 1rem; /* top-4 = 16px */
+  left: 1rem; /* left-4 = 16px */
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem; /* px-3 py-1 */
+  background-color: #3b82f6; /* Couleur par défaut (à adapter) */
+  color: #ffffff; /* text-white */
+  font-size: 0.875rem; /* text-sm = 14px */
+  font-weight: 600; /* font-semibold */
+  border-radius: 9999px; /* rounded-full */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); /* shadow-lg */
+}
+
+/* Contenu de la carte */
+.project-content {
+  padding: 1.5rem; /* p-6 = 24px */
+}
+
+/* Titre du projet */
+.project-title {
+  font-size: 1.25rem; /* text-xl = 20px */
+  font-weight: 700; /* font-bold */
+  color: #0f172a; /* text-slate-900 */
+  margin-bottom: 0.5rem; /* mb-2 = 8px */
+  transition: color 0.3s ease-in-out; /* transition-colors */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.project-card:hover .project-title {
+  color: #334155; /* group-hover:text-slate-700 */
+}
+
+/* Client */
+.project-client {
+  color: #475569; /* text-slate-600 */
+  font-weight: 500; /* font-medium */
+  margin-bottom: 1rem; /* mb-4 = 16px */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* Détails du projet */
+.project-details {
+  margin-bottom: 1.25rem; /* mb-5 = 20px */
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* gap-2 = 8px */
+  font-size: 0.875rem; /* text-sm = 14px */
+  color: #64748b; /* text-slate-500 */
+  margin-bottom: 0.75rem; /* space-y-3 sur le parent */
+}
+
+.detail-item:last-child {
+  margin-bottom: 0;
+}
+
+.icon {
+  width: 1rem; /* w-4 = 16px */
+  height: 1rem; /* h-4 = 16px */
+}
+
+/* Barre de progression */
+.project-progress {
+  margin-bottom: 1rem; /* mb-4 = 16px */
+}
+
+.progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem; /* text-sm = 14px */
+  margin-bottom: 0.5rem; /* mb-2 = 8px */
+}
+
+.progress-label {
+  color: #475569; /* text-slate-600 */
+  font-weight: 500; /* font-medium */
+}
+
+.progress-value {
+  color: #0f172a; /* text-slate-900 */
+  font-weight: 700; /* font-bold */
+}
+
+.progress-bar {
+  height: 0.5rem; /* h-2 = 8px */
+  background-color: #f1f5f9; /* bg-slate-100 */
+  border-radius: 9999px; /* rounded-full */
+  overflow: hidden; /* overflow-hidden */
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #3b82f6; /* Couleur par défaut (à adapter) */
+  border-radius: 9999px;
+  transition: width 0.5s ease-in-out; /* transition-all duration-500 */
+}
+
+/* Bouton */
+.details-button {
+  width: 100%; /* w-full */
+  padding: 0.75rem; /* py-3 = 12px */
+  background-color: #f8fafc; /* bg-slate-50 */
+  color: #0f172a; /* text-slate-900 */
+  border: 1px solid #e2e8f0; /* border border-slate-200 */
+  border-radius: 0.75rem; /* rounded-xl = 12px */
+  font-weight: 600; /* font-semibold */
+  transition: all 0.2s ease-in-out; /* transition-all duration-200 */
+  cursor: pointer;
+}
+
+.details-button:hover {
+  background-color: #28628B; /* hover:bg-slate-900 */
+  color: #ffffff; /* hover:text-white */
+  border-color: #28628B; /* hover:border-slate-900 */
+}
+
+.filter-bar {
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 20px;
+}
+.filter-bar .tabs { display: flex; gap: 4px; }
+.tab {
+  padding: 7px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  transition: background 0.2s, color 0.2s;
+}
+.tab:hover { background: rgba(0,0,0,0.04); }
+.tab.active { background: #28628B; color: #fff; }
+
+.tableau-title{
+  font-size: 15px;
+  font-weight: 600;
+}
+
+
+
 
 
 

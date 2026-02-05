@@ -1,17 +1,17 @@
 <app-navbar>
     <div class="container">
-  
+
       <div class="content-top">
         <div class="row">
             <div class="col">
-                <h2 class="content-title">Produits</h2>
+                <h2 class="welcome-title">Produits</h2>
             </div>
             <div class="col" align="right">
                 <!--<button type="button" class="btn btn-projet" routerLink="/produit"><i class="fa-solid fa-plus"></i> Nouveau Produit</button>-->
             </div>
         </div>
         <br/>
-       
+
         <mat-divider></mat-divider>
       </div><!--content-->
 
@@ -19,7 +19,7 @@
         <div class="col">
             <div class="row">
              <div class="col">
-               <input (keyup)="applyFilter($event)" type="text" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher par nom">
+               <input (keyup)="applyFilter($event)" type="text" class="search-input" id="exampleFormControlInput1" placeholder="Rechercher par nom">
              </div>
             </div><!--row-->
         </div><!--col-->
@@ -38,14 +38,14 @@
             {{element?.name}}
           </td>
         </ng-container>
-  
+
         <!-- Name Column -->
         <ng-container matColumnDef="price">
           <th mat-header-cell *matHeaderCellDef class="box-header"> Prix </th>
           <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"  (click)="getProduit(element?.id)">{{element?.price | number:'1.0-0'}} €</td>
         </ng-container>
-  
-        
+
+
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef>Action</th>
           <td mat-cell *matCellDef="let element">
@@ -60,12 +60,12 @@
             </mat-menu>
           </td>
         </ng-container>
-  
-  
+
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
-  
+
       <mat-paginator [pageSizeOptions]="[10, 20]"
                     showFirstLastButtons
                     aria-label="Select page of periodic elements">

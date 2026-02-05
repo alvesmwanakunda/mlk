@@ -1,0 +1,236 @@
+.confirm-dialog-container {
+  max-width: 500px;
+  min-width: 300px;
+  border-radius: 12px;
+  overflow: hidden;
+
+  .dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px 0 24px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+
+    .dialog-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: #2c3e50;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .dialog-icon {
+        color: #e74c3c; // Couleur par défaut pour l'icône warning
+        font-size: 24px;
+        height: 24px;
+        width: 24px;
+      }
+    }
+
+    .close-button {
+      color: #95a5a6;
+
+      &:hover {
+        color: #7f8c8d;
+        background-color: rgba(0, 0, 0, 0.04);
+      }
+    }
+  }
+
+  .dialog-content {
+    padding: 24px;
+    max-height: 60vh;
+    overflow-y: auto;
+
+    .message-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 16px;
+
+      .message-icon {
+        font-size: 48px;
+        height: 48px;
+        width: 48px;
+        color: #e74c3c;
+        margin-bottom: 8px;
+      }
+
+      .message-text {
+        font-size: 16px;
+        line-height: 1.5;
+        color: #34495e;
+        white-space: pre-line;
+
+        // Style pour les messages avec HTML
+        p {
+          margin: 0 0 12px 0;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+
+        strong {
+          color: #2c3e50;
+          font-weight: 600;
+        }
+
+        .highlight {
+          background-color: #fff3cd;
+          padding: 2px 6px;
+          border-radius: 4px;
+          color: #856404;
+        }
+      }
+    }
+  }
+
+  .dialog-actions {
+    padding: 16px 24px 20px 24px;
+    margin: 0;
+    border-top: 1px solid #e9ecef;
+    background-color: #f8f9fa;
+    gap: 12px;
+
+    .cancel-button {
+      color: #6c757d;
+      font-weight: 500;
+
+      &:hover {
+        background-color: rgba(108, 117, 125, 0.04);
+      }
+    }
+
+    .confirm-button {
+      font-weight: 500;
+      padding: 8px 24px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+
+      &:hover:not([disabled]) {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      &:active:not([disabled]) {
+        transform: translateY(0);
+      }
+
+      // Style spécifique pour chaque couleur
+      &.mat-warn {
+        background-color: #e74c3c;
+
+        &:hover:not([disabled]) {
+          background-color: #c0392b;
+        }
+      }
+
+      &.mat-primary {
+        background-color: #3498db;
+
+        &:hover:not([disabled]) {
+          background-color: #2980b9;
+        }
+      }
+
+      &.mat-accent {
+        background-color: #9b59b6;
+
+        &:hover:not([disabled]) {
+          background-color: #8e44ad;
+        }
+      }
+    }
+  }
+}
+
+// Thème sombre
+@media (prefers-color-scheme: dark) {
+  .confirm-dialog-container {
+    //background-color: #2c3e50;
+
+    .dialog-header {
+      //background-color: #34495e;
+      //border-bottom-color: #4a6278;
+
+      .dialog-title {
+        color: #040404;
+      }
+
+      .close-button {
+        color: #bdc3c7;
+
+        &:hover {
+          color: #ecf0f1;
+          background-color: rgba(255, 255, 255, 0.1);
+        }
+      }
+    }
+
+    .dialog-content {
+      .message-text {
+        color: #ecf0f1;
+
+        strong {
+          color: #ffffff;
+        }
+
+        .highlight {
+          background-color: #f39c12;
+          color: #2c3e50;
+        }
+      }
+    }
+
+    .dialog-actions {
+      //background-color: #34495e;
+      //border-top-color: #4a6278;
+
+      .cancel-button {
+        color: #95a5a6;
+
+        &:hover {
+          background-color: rgba(149, 165, 166, 0.1);
+        }
+      }
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 600px) {
+  .confirm-dialog-container {
+    min-width: 280px;
+    max-width: 95vw;
+
+    .dialog-header {
+      padding: 16px 20px 0 20px;
+
+      .dialog-title {
+        font-size: 16px;
+      }
+    }
+
+    .dialog-content {
+      padding: 20px;
+
+      .message-text {
+        font-size: 15px;
+      }
+    }
+
+    .dialog-actions {
+      padding: 16px 20px;
+      flex-direction: column-reverse;
+
+      button {
+        width: 100%;
+        margin: 0 !important;
+      }
+    }
+  }
+}

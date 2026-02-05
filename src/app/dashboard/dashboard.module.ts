@@ -7,6 +7,7 @@ import { NavbarModule } from '../navbar/navbar.module';
 import { ProjetsService } from '../shared/services/projets.service';
 import { AuthGuardService } from '../shared/services/auth-guard.service';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { ConfirmDialogModule } from '../confirm-dialog/confirm-dialog.module';
 
 export function jwtOptionsFactory() {
   return {
@@ -29,6 +30,7 @@ export function jwtOptionsFactory() {
     DashboardRoutingModule,
     SharedModule,
     NavbarModule,
+    ConfirmDialogModule,
     JwtModule.forRoot({
       jwtOptionsProvider: {
         provide: JWT_OPTIONS,

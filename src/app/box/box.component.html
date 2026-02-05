@@ -2,7 +2,7 @@
   <div class="container">
 
     <div class="content-top">
-      <h2 class="content-title">Box</h2>
+      <h2 class="welcome-title">Box</h2>
       <mat-divider></mat-divider>
     </div><!--content-->
     <div>
@@ -12,7 +12,7 @@
         <div class="col">
             <div class="row">
              <div class="col">
-               <input (keyup)="applyFilter($event)" type="text" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher par nom de dossier ou fichier">
+               <input (keyup)="applyFilter($event)" type="text" class="search-input" id="exampleFormControlInput1" placeholder="Rechercher par nom de dossier ou fichier">
              </div>
             </div><!--row-->
         </div><!--col-->
@@ -29,7 +29,7 @@
 
       <!-- Position Column -->
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef class="box-header"> Nom </th>
+        <th mat-header-cell *matHeaderCellDef class="box-header" class="tableau-title"> Nom </th>
         <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;" (click)="openDialogFile(element.id, element.extension)">
           <p class="box-title" matTooltip="{{element?.nom}}">
             <img src="assets/images/dossier.png" *ngIf="!element.extension" style="margin-right: 10px;margin-top: -4px;">
@@ -45,24 +45,24 @@
 
       <!-- Name Column -->
       <ng-container matColumnDef="size">
-        <th mat-header-cell *matHeaderCellDef class="box-header"> Taille </th>
+        <th mat-header-cell *matHeaderCellDef class="box-header" class="tableau-title"> Taille </th>
         <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"><span *ngIf="element.size">{{element?.size|fileSizeConvert}}</span></td>
       </ng-container>
 
       <!-- Weight Column -->
       <ng-container matColumnDef="modified">
-        <th mat-header-cell *matHeaderCellDef class="box-header"> Modifié </th>
+        <th mat-header-cell *matHeaderCellDef class="box-header" class="tableau-title"> Modifié </th>
         <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">  {{element?.dateLastUpdate|dataAsAgo}}  </td>
       </ng-container>
 
       <!-- Symbol Column -->
       <ng-container matColumnDef="modifiedby">
-        <th mat-header-cell *matHeaderCellDef class="box-header">Modifié par</th>
+        <th mat-header-cell *matHeaderCellDef class="box-header" class="tableau-title">Modifié par</th>
         <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"> {{element?.creator?.nom}} {{element?.creator?.prenom}} </td>
       </ng-container>
 
       <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <th mat-header-cell *matHeaderCellDef class="tableau-title">Actions</th>
         <td mat-cell *matCellDef="let element">
           <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
             <mat-icon>more_vert</mat-icon>

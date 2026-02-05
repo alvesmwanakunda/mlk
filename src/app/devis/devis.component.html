@@ -1,18 +1,27 @@
 <app-navbar>
   <div class="container">
     <div class="content-top">
-      <h2 class="content-title">Mes demandes de devis</h2>
-      <mat-divider></mat-divider>
+      <div class="row">
+        <div class="col">
+          <h2 class="welcome-title">Mes devis</h2>
+        </div>
+        <div class="col">
+          <div style="float: right;">
+           <button class="nouveau-projet-btn" routerLink="/new/devis">
+              <svg class="icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" /></svg>
+              Nouveau
+           </button>
+        </div>
+        </div>
+      </div>
     </div><!--content-->
+    <mat-divider style="margin-bottom: 30px;"></mat-divider>
   </div>
   <div>
-    <div class="row" style="margin-bottom: 35px;">
-      <div class="col">
-        <input type="text"  (keyup)="applyFilter($event)" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher">
-      </div>
-      <div class="col"  align="right">
-        <button type="button" class="btn btn-projet" routerLink="/new/devis"><i class="fa-solid fa-plus"></i> Nouveau devis</button>
-      </div>
+    <div class="row justify-content-center" style="margin-bottom: 35px;">
+        <div class="col-10">
+          <input type="text" class="search-input" id="exampleFormControlInput1" placeholder="Rechercher..."  (keyup)="applyFilter($event)">
+        </div>
     </div>
 
     <table mat-table [dataSource]="dataSource">
@@ -20,31 +29,31 @@
 
        <!-- Symbol Column -->
        <ng-container matColumnDef="numero">
-        <th mat-header-cell *matHeaderCellDef>Numéro</th>
+        <th mat-header-cell *matHeaderCellDef  class="tableau-title">Numéro</th>
         <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;" [routerLink]="'/devis/' + element?.id"> {{element?.numero}}</td>
       </ng-container>
 
        <!-- Weight Column -->
        <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef>Date de création</th>
+        <th mat-header-cell *matHeaderCellDef  class="tableau-title">Date de création</th>
         <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;" [routerLink]="'/devis/' + element?.id">{{element?.date |date :'dd MMMM yyyy'}}  </td>
       </ng-container>
 
        <!-- Name Column -->
        <ng-container matColumnDef="projet">
-        <th mat-header-cell *matHeaderCellDef>Projet</th>
+        <th mat-header-cell *matHeaderCellDef  class="tableau-title">Projet</th>
         <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;" [routerLink]="'/devis/' + element?.id">{{element?.projet}}</td>
       </ng-container>
 
       <!-- Name Column -->
       <ng-container matColumnDef="total">
-        <th mat-header-cell *matHeaderCellDef>Total</th>
+        <th mat-header-cell *matHeaderCellDef  class="tableau-title">Total</th>
         <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;" [routerLink]="'/devis/' + element?.id">{{element?.total}} €</td>
       </ng-container>
 
 
       <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef>Action</th>
+        <th mat-header-cell *matHeaderCellDef  class="tableau-title">Action</th>
         <td mat-cell *matCellDef="let element">
           <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
             <mat-icon>more_vert</mat-icon>

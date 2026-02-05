@@ -16,8 +16,8 @@
     <div>
       <div class="row">
          <div class="col" align="right">
-          <button type="button" class="btn btn-projet-action" style="margin-right: 5px;" matTooltip="Modifier" (click)="updateProjet(projet._id)"><i class="fa-regular fa-pen-to-square btn-icon-projet-update"></i></button>
-          <button type="button" class="btn btn-projet-action" style="margin-right: 5px;" matTooltip="Supprimer" (click)="openDialogDelete(projet._id)"><i class="fa-solid fa-trash btn-icon-projet-delete"></i></button>
+          <button mat-raised-button type="button" color="primary" style="margin-right: 5px;" matTooltip="Modifier" (click)="updateProjet(projet._id)"><i class="fa-regular fa-pen-to-square"></i> Modifier</button>
+          <!-- <button type="button" class="btn btn-projet-action" style="margin-right: 5px;" matTooltip="Supprimer" (click)="openDialogDelete(projet._id)"><i class="fa-solid fa-trash btn-icon-projet-delete"></i></button> -->
           <!--<button type="button" class="btn btn-projet" [routerLink]="['/add/projet']"><i class="fa-solid fa-plus"></i> Nouveau Projet</button>-->
          </div><!--col-->
       </div><!--row-->

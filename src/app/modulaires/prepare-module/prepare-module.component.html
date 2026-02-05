@@ -1,10 +1,15 @@
 
-<div class="row" style="margin-bottom: 15px;">
+<!-- <div class="row" style="margin-bottom: 15px;">
   <div class="col">
     <input type="text"  (keyup)="applyFilter($event)" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher">
   </div>
   <div class="col"  align="right">
   </div>
+</div> -->
+<div class="row justify-content-center" style="margin-bottom: 35px;">
+    <div class="col-10">
+      <input type="text" class="search-input" id="exampleFormControlInput1" placeholder="Rechercher..."  (keyup)="applyFilter($event)">
+    </div>
 </div>
 <table mat-table [dataSource]="dataSource" matSort #matSort="matSort">
     <!-- Position Column -->

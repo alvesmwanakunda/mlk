@@ -8,7 +8,7 @@
           <th scope="col">Date *</th>
           <th scope="col">Employé *</th>
           <th scope="col">Titre</th>
-          <th scope="col">Heures passés</th>
+          <!-- <th scope="col">Heures passés</th> -->
           <th scope="col">Statut</th>
           <th scope="col">Image</th>
           <th scope="col"></th>
@@ -17,10 +17,18 @@
       <tbody formArrayName="entries">
         <tr *ngFor="let entry of entries.controls; let i = index" [formGroupName]="i">
           <td>
-              <mat-form-field class="example-full-width">
+              <!-- <mat-form-field class="example-full-width">
                 <input matInput [matDatepicker]="picker1" formControlName="date" required>
                 <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
                 <mat-datepicker #picker1></mat-datepicker>
+              </mat-form-field> -->
+               <mat-form-field  class="example-full-width">
+                  <mat-date-range-input  [rangePicker]="picker">
+                  <input matStartDate formControlName="date" placeholder="Début" required>
+                  <input matEndDate formControlName="date_fin" placeholder="Fin">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
               </mat-form-field>
               <div *ngIf="entry.get('date').hasError(champ_validation.input[0].type) &&(entry.get('date').dirty || entry.get('date').touched)">
               <p class="error_field">{{champ_validation.input[0].message}}</p>
@@ -42,11 +50,11 @@
             </mat-form-field>
 
           </td>
-          <td>
+          <!-- <td>
               <mat-form-field class="example-full-width">
                 <input type="time" formControlName="hours" matInput/>
               </mat-form-field>
-          </td>
+          </td> -->
           <td>
             <mat-form-field class="example-full-width">
               <mat-label class="tache_label">Statut</mat-label>

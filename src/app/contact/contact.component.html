@@ -2,28 +2,51 @@
   <div class="container">
 
     <div class="content-top">
-      <h2 class="content-title">Nos contacts</h2>
-      <mat-divider></mat-divider>
+       <div class="row">
+        <div class="col">
+          <h2 class="welcome-title">Nos contacts</h2>
+        </div>
+        <div class="col">
+          <div style="float: right;">
+           <button class="nouveau-projet-btn"  routerLink="/add/contact">
+              <svg class="icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" /></svg>
+              Nouveau
+           </button>
+        </div>
+        </div>
+      </div>
+      <!-- <h2 class="content-title">Nos contacts</h2>
+      <mat-divider></mat-divider> -->
     </div><!--content-->
+    <mat-divider style="margin-bottom: 30px;"></mat-divider>
 
     <div>
 
-      <div class="row" style="margin-bottom: 30px;">
+       <div class="row" style="margin-bottom: 30px;">
 
         <div class="col">
-            <div class="row">
-             <div class="col">
-               <input type="text" (keyup)="applyFilter($event)" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher par nom,tél,email...">
-             </div>
-            </div><!--row-->
+          <input type="text" class="search-input" id="exampleFormControlInput1" placeholder="Rechercher..."  (keyup)="applyFilter($event)">
         </div><!--col-->
 
-        <div class="col" align="right">
-         <button type="button" class="btn" style="margin-right: 10px;" matTooltip="Tableau" *ngIf="!isListe" (click)="getList()"><i class="fa-solid fa-table btn-icon-projet"></i></button>
-         <button type="button" class="btn" style="margin-right: 10px;" matTooltip="Liste" *ngIf="isListe" (click)="getList()"><i class="fa-solid fa-grip btn-icon-projet"></i></button>
-         <button type="button" class="btn btn-projet" routerLink="/add/contact"><i class="fa-solid fa-plus"></i> Nouveau Contact</button>
+        <div class="col">
+          <div style="float: right;">
+            <div class="view-toggle-container">
+              <div class="view-toggle-wrapper">
+                  <!-- Bouton Vue Grille -->
+                  <button  (click)="getList()" class="view-toggle-btn" [ngClass]="{'active-grid': !isListe, 'inactive-grid': isListe}">
+                    <i class="fa-solid fa-grip" style="font-size: 19px"></i>
+                  </button>
+
+                  <!-- Bouton Vue Liste -->
+                  <button  (click)="getList()" class="view-toggle-btn" [ngClass]="{'active-list': isListe, 'inactive-list': !isListe}">
+                      <i class="fa-solid fa-table" style="font-size: 19px"></i>
+                  </button>
+              </div>
+            </div>
+          </div>
         </div><!--col-->
      </div><!--row-->
+
 
      <div class="bloc-projets" [hidden]="contacts.length">
       <p class="notdata">Aucune donnée(s)</p>
@@ -33,7 +56,7 @@
         <div [hidden]="isListe">
           <div class="row">
             <div class="col-4"  *ngFor="let contact of contacts" style="margin-bottom: 15px;">
-             <div class="card card-contact">
+             <div class="card project-card">
                  <!--<img src="assets/images/int.png" class="card-img-top card-img-projet" alt="...">-->
                  <div class="card-body">
                    <p class="user-int">{{contact?.nom}} {{contact?.prenom}}</p>
@@ -71,30 +94,30 @@
 
             <!-- Position Column -->
             <ng-container matColumnDef="nom">
-              <th mat-header-cell *matHeaderCellDef> Nom & Prénom </th>
+              <th mat-header-cell *matHeaderCellDef class="tableau-title"> Nom & Prénom </th>
               <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;"> {{element?.nom}} {{element?.prenom}} </td>
             </ng-container>
 
              <!-- Symbol Column -->
              <ng-container matColumnDef="poste">
-              <th mat-header-cell *matHeaderCellDef>Poste</th>
+              <th mat-header-cell *matHeaderCellDef class="tableau-title">Poste</th>
               <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"> {{element?.poste}} </td>
             </ng-container>
 
             <!-- Name Column -->
             <ng-container matColumnDef="email">
-              <th mat-header-cell *matHeaderCellDef>Email</th>
+              <th mat-header-cell *matHeaderCellDef class="tableau-title">Email</th>
               <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.email}}</td>
             </ng-container>
 
             <!-- Weight Column -->
             <ng-container matColumnDef="phone">
-              <th mat-header-cell *matHeaderCellDef>Téléphone</th>
+              <th mat-header-cell *matHeaderCellDef class="tableau-title">Téléphone</th>
               <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">({{element?.indicatif}}){{element?.phone}}  </td>
             </ng-container>
 
             <ng-container matColumnDef="action">
-              <th mat-header-cell *matHeaderCellDef>Action</th>
+              <th mat-header-cell *matHeaderCellDef class="tableau-title">Action</th>
               <td mat-cell *matCellDef="let element">
                 <button type="button" class="btn btn-outline-secondary btn-update-projet" style="margin-right:10px;" (click)="getContact(element._id)">Modifier</button>
                 <button type="button" class="btn btn-outline-secondary btn-detail-projet" (click)="openDialogDelete(element._id)">Supprimer</button>

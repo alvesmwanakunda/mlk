@@ -26,4 +26,5 @@ export interface Projets {
   createdDate:Date;
   plan:string;
   contact:string;
+  statut:string;
 }
