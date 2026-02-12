@@ -326,7 +326,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: 'Suppression multiple',
-        message: `Voulez-vous vraiment supprimer ${count} projet(s) ?\n\n${noms}`
+        message: `Voulez-vous vraiment supprimer ${count} projet(s) ?\n\n${noms}\n\nCette suppression entraînera l’effacement de l’ensemble des données liées à ces projets dans la base. Veuillez procéder à un archivage préalable si vous souhaitez conserver ces informations.`
       }
     });
 

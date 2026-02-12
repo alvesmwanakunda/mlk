@@ -24,4 +24,5 @@ export interface Entreprises {
  prenom:string;
  numero:string;
  nbr_projet:string;
+ statut:string;
 }

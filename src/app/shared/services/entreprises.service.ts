@@ -87,6 +87,20 @@ export class EntreprisesService {
     return this.httpClient.get(`${environment.BASE_API_URL}/open/fichier/${encodedPath}`);
   }
 
+  public deleteEntrepriseMultiple(ids:string[]){
+    return this.httpClient.post(`${environment.BASE_API_URL}/entreprise/delete/multiple`,{entrepriseIds:ids})
+  }
+
+  public updateEntrepriseStatut(idEntreprise, statut:string){
+    return this.httpClient.put(`${environment.BASE_API_URL}/entreprise/statut/${idEntreprise}`,{statut})
+  }
+  public updateEntrepriseStatutMultiple(ids:string[], statut:string){
+    return this.httpClient.put(`${environment.BASE_API_URL}/entreprise/statut/multiple`,{
+      entrepriseIds:ids,
+      statut:statut
+    })
+  }
+
   downloadFile(url){
     const link = document.createElement('a');
     link.href = url;
