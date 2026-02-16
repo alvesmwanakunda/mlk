@@ -37,7 +37,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   visibleProjets: any[] = []; // Projets visibles (pagination Grid)
 
   // Filtres
-  selectedStatus: string = 'all'; // Statut sélectionné
+  selectedStatus: string = 'En Cours'; // Statut sélectionné
   searchQuery: string = ''; // Texte de recherche
 
   // UI

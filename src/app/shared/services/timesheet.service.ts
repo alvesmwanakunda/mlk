@@ -53,5 +53,23 @@ export class TimesheetService {
     return this.httpClient.get(`${environment.BASE_API_URL}/timesheet/today`)
   }
 
+  getTimesheetsByMonth(month: string){
+   return this.httpClient.get(`${environment.BASE_API_URL}/timesheet/month/${month}`);
+  }
+
+  getTimesheetsByDay(date: string){
+    return this.httpClient.get(`${environment.BASE_API_URL}/timesheet/day/${date}`);
+  }
+
+  getTimesheetsByPeriod(startDate: string, endDate: string) {
+    return this.httpClient.get(`${environment.BASE_API_URL}/timesheet/period`, {
+      params: { startDate, endDate }
+    });
+  }
+
+  getTimesheetsAdvanced(filters: any) {
+    return this.httpClient.get(`${environment.BASE_API_URL}/timesheet/advanced`, { params: filters });
+  }
+
 
 }

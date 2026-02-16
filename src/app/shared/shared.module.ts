@@ -32,6 +32,7 @@ import { DataAsAgoPipe } from './pipes/data-as-ago.pipe';
 import {MatBadgeModule} from '@angular/material/badge';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 
@@ -76,7 +77,8 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     ClipboardModule,
     MatBadgeModule,
     CanvasJSAngularChartsModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatProgressSpinnerModule
   ],
   exports:[
     MatCardModule,
@@ -109,7 +111,8 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     DataAsAgoPipe,
     MatBadgeModule,
     CanvasJSAngularChartsModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatProgressSpinnerModule
   ],
 })
 export class SharedModule { }

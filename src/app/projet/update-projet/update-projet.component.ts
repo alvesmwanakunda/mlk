@@ -3,11 +3,15 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CountriesService } from 'src/app/shared/services/countries.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { startWith, map, Observable } from 'rxjs';
+import { startWith, map, Observable, debounceTime, distinctUntilChanged, of, switchMap, catchError } from 'rxjs';
 import { ProjetsService } from 'src/app/shared/services/projets.service';
 import { EntreprisesService } from 'src/app/shared/services/entreprises.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ContactsService } from 'src/app/shared/services/contacts.service';
+import { HttpClient } from '@angular/common/http';
+import { environment} from 'src/environments/environment';
+
+
 
 
 @Component({
@@ -40,7 +44,7 @@ export class UpdateProjetComponent implements OnInit {
   devis:any=[];
   devisFiltres:Observable<any[]>;
   contacts:any;
-
+  suggestions$!: Observable<Suggestion[]>;
 
 
   constructor(
@@ -52,7 +56,8 @@ export class UpdateProjetComponent implements OnInit {
     private entrepriseService:EntreprisesService,
     private route: ActivatedRoute,
     private sanitizer :DomSanitizer,
-    private contactService:ContactsService
+    private contactService:ContactsService,
+    private http: HttpClient
   ) {
     this.route.params.subscribe((data:any)=>{
       this.idProjet = data.id
@@ -64,6 +69,51 @@ export class UpdateProjetComponent implements OnInit {
       etat:{},
       responsable:{},
     };
+    this.firstFormGroup = this._formBuilder.group({
+      projet: ['', Validators.required],
+      entreprise: ['', Validators.required],
+      etat: [null],
+      genre: [null],
+      nom: [null],
+      prenom: [null],
+      plan: [null],
+      contact: [null],
+    });
+
+    this.secondFormGroup = this._formBuilder.group({
+      pays: [''],
+      adresse: [''],
+      ville: [''],
+      rue: [''],
+      postal: [''],
+      coordonnees: [''],
+      addressSearch: [{ value: '', disabled: true }, Validators.required],
+    });
+
+    this.threeFormGroup = this._formBuilder.group({
+      budget: [''],
+      devise: [''],
+      site_offre: [''],
+      date_limite: [''],
+      date_fin_contrat: [''],
+      numero_offre: [''],
+    });
+    this.secondFormGroup.get('pays')?.valueChanges.subscribe((pays) => {
+      // reset champs adresse
+      this.secondFormGroup.patchValue({
+        adresse: '',
+        ville: '',
+        rue: '',
+        postal: '',
+        coordonnees: '',
+        addressSearch: '',
+      }, { emitEvent: false });
+
+      const ctrl = this.secondFormGroup.get('addressSearch');
+      if (pays) ctrl?.enable({ emitEvent: false });
+      else ctrl?.disable({ emitEvent: false });
+    });
+
   }
 
   champ_validation={
@@ -89,84 +139,185 @@ export class UpdateProjetComponent implements OnInit {
 
   ngOnInit(){
 
+    this.paysFiltres = this.secondFormGroup.get('pays')!.valueChanges.pipe(
+      startWith(''),
+      map(val => this.filterPays(val))
+    );
+
+    this.devisFiltres = this.threeFormGroup.get('devise')!.valueChanges.pipe(
+      startWith(''),
+      map(val => this.filterDevis(val))
+    );
+
+    this.suggestions$ = this.secondFormGroup.get('addressSearch')!.valueChanges.pipe(
+      startWith(''),
+      map(v => (typeof v === 'string' ? v : v?.label ?? '').trim()),
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(q => {
+        const pays = this.secondFormGroup.get('pays')?.value;
+        const countryCode = this.getCountryCode(pays);
+        if (!countryCode || q.length < 3) return of([]);
+
+        return this.http.get<Suggestion[]>(`${environment.BASE_API_URL}/geo/address/suggest`, {
+          params: { country: countryCode, q }
+        }).pipe(
+          catchError(err => {
+            console.error('API suggest error', err);
+            return of([]);
+          })
+        );
+      })
+    );
+
     this.getProjet();
     this.getAllEntreprises();
     this.getContry();
     this.getDevis();
+
   }
 
-  getProjet(){
-    this.projetService.getProjet(this.idProjet).subscribe((res:any)=>{
+  getProjet() {
+    this.projetService.getProjet(this.idProjet).subscribe((res: any) => {
       this.projet = res.message;
-      this.firstFormGroup=this._formBuilder.group({
-      projet:[this.projet?.projet,Validators.required],
-      entreprise:[this.projet?.entreprise?._id,Validators.required],
-      etat:[this.projet?.etat,null],
-      genre:[this.projet?.genre,null],
-      nom:[this.projet?.nom,null],
-      prenom:[this.projet?.prenom,null],
-      plan:[this.projet?.plan,null],
-      contact:[this.projet?.contact,null]
-    });
-    this.secondFormGroup=this._formBuilder.group({
-      pays:[this.projet?.pays],
-      adresse:[this.projet?.adresse],
-      ville:[this.projet?.ville],
-      rue:[this.projet?.rue],
-      postal:[this.projet?.postal],
-      coordonnees:[this.projet?.coordonnees],
-    });
-    this.threeFormGroup=this._formBuilder.group({
-      budget:[this.projet?.budget],
-      devise:[this.projet?.devise],
-      site_offre:[this.projet?.site_offre],
-      date_limite:[this.projet?.date_limite],
-      date_fin_contrat:[this.projet?.date_fin_contrat],
-      numero_offre:[this.projet?.numero_offre],
-    });
 
-    this.paysFiltres = this.secondFormGroup.get('pays').valueChanges.pipe(
-      startWith(''),
-      map((val) => this.filterPays(val))
-    );
+      this.firstFormGroup.patchValue({
+        projet: this.projet?.projet ?? '',
+        entreprise: this.projet?.entreprise?._id ?? '',
+        etat: this.projet?.etat ?? null,
+        genre: this.projet?.genre ?? null,
+        nom: this.projet?.nom ?? null,
+        prenom: this.projet?.prenom ?? null,
+        plan: this.projet?.plan ?? null,
+        contact: this.projet?.contact ?? null,
+      }, { emitEvent: false });
 
-    this.devisFiltres = this.threeFormGroup.get('devise').valueChanges.pipe(
-      startWith(''),
-      map((val)=> this.filterDevis(val))
-    )
-    console.log("Projet", this.projet);
-      if(this.projet){
-        this.getContact(this.projet?.entreprise?._id);
-    }
-      //this.image = this.sanitizer.bypassSecurityTrustResourceUrl(`data:image/png;base64, ${res.message.photo}`);
+      this.secondFormGroup.patchValue({
+        pays: this.projet?.pays ?? '',
+        adresse: this.projet?.adresse ?? '',
+        ville: this.projet?.ville ?? '',
+        rue: this.projet?.rue ?? '',
+        postal: this.projet?.postal ?? '',
+        coordonnees: this.projet?.coordonnees ?? '',
+        addressSearch: this.projet?.addressSearch ?? '', // ✅ valeur par défaut
+      }, { emitEvent: false });
+
+      this.threeFormGroup.patchValue({
+        budget: this.projet?.budget ?? '',
+        devise: this.projet?.devise ?? '',
+        site_offre: this.projet?.site_offre ?? '',
+        date_limite: this.projet?.date_limite ?? '',
+        date_fin_contrat: this.projet?.date_fin_contrat ?? '',
+        numero_offre: this.projet?.numero_offre ?? '',
+      }, { emitEvent: false });
+
+      // enable/disable addressSearch selon pays
+      const pays = this.secondFormGroup.get('pays')?.value;
+      if (pays) this.secondFormGroup.get('addressSearch')?.enable({ emitEvent: false });
+      else this.secondFormGroup.get('addressSearch')?.disable({ emitEvent: false });
+
+      if (this.projet?.entreprise?._id) this.getContact(this.projet.entreprise._id);
+
       this.image = this.sanitizer.bypassSecurityTrustResourceUrl(res.message.photo);
       this.jours = new Date(res.message.date_limite).toISOString().split('T')[0];
       this.fin = new Date(res.message.date_fin_contrat).toISOString().split('T')[0];
-    },(error) => {
+    }, (error) => {
       console.log("Erreur lors de la récupération des données", error);
-    })
+    });
   }
 
-  filterPays(value:string){
-    const filtre = value.toLowerCase();
-    return this.countries.filter(option=> option.name.toLocaleLowerCase().includes(filtre));
+  private getCountryCode(pays: any): string | null {
+    if (!pays) return null;
+
+    // Si c’est déjà l’objet {name, code...}
+    if (typeof pays === 'object') return pays.code ?? null;
+
+    // Si c’est une string ("France" ou "FR")
+    const v = String(pays).trim().toLowerCase();
+    const found = this.countries.find((c: any) =>
+      c.name?.toLowerCase() === v || c.code?.toLowerCase() === v
+    );
+    console.log("Found===============>", found);
+
+    return found?.code ?? null;
   }
+
+  private decimalToDms(value: number, type: 'lat' | 'lon'): string {
+
+    const abs = Math.abs(value);
+    const deg = Math.floor(abs);
+    const minFloat = (abs - deg) * 60;
+    const min = Math.floor(minFloat);
+    const sec = ((minFloat - min) * 60);
+
+    const hemisphere =
+      type === 'lat'
+        ? (value >= 0 ? 'N' : 'S')
+        : (value >= 0 ? 'E' : 'W');
+
+    return `${deg}°${min}'${sec.toFixed(2)}"${hemisphere}`;
+  }
+
+  // displayCountry(country: any): string {
+  //  return country?.name || '';
+  // }
+
+  filterPays(value: any) {
+    const filtre =
+      typeof value === 'string'
+        ? value.toLowerCase()
+        : value?.name?.toLowerCase() ?? '';
+
+    return this.countries.filter(option =>
+      option.name.toLowerCase().includes(filtre)
+    );
+  }
+
+  displayAddress = (s: Suggestion | string | null): string => {
+    if (!s) return '';
+    return typeof s === 'string' ? s : s.description;
+  };
+
+  onAddressSelected(s: any): void {
+
+
+  //adresse = numéro (si tu veux garder "adresse" comme numéro)
+    this.http.get(`${environment.BASE_API_URL}/geo/address/detail`,{
+      params:{place_id:s.place_id}
+    }).subscribe((detail:any) => {
+      console.log("Détail", detail);
+        const latDms = this.decimalToDms(detail.lat, 'lat');
+        const lonDms = this.decimalToDms(detail.lon, 'lon');
+        this.secondFormGroup.patchValue({
+          addressSearch: s.description,
+          adresse: detail?.numero ?? '',
+          rue: detail?.rue ?? '',
+          postal: detail?.postal ?? '',
+          ville: detail?.ville ?? '',
+          coordonnees: `${latDms},${lonDms}`
+        }, { emitEvent: false });
+
+
+      // this.secondFormGroup.patchValue({
+      //   adresse: detail.numero ?? '',
+      //   rue: detail.rue ?? '',
+      //   postal: detail.postal ?? '',
+      //   ville: detail.ville ?? '',
+      //   coordonnees: `${detail.lat ?? ''},${detail.lon ?? ''}`.replace(/^,|,$/g, ''),
+      // }, { emitEvent: false });
+    })
+
+  }
+
+  // filterPays(value:string){
+  //   const filtre = value.toLowerCase();
+  //   return this.countries.filter(option=> option.name.toLocaleLowerCase().includes(filtre));
+  // }
 
   filterDevis(value:string){
     const filtre = value.toLowerCase();
     return this.devis.filter(option=> option.nom.toLocaleLowerCase().includes(filtre));
   }
-
-  /*onFileSelected(event){
-    this.file = event.target.files[0];
-    this.fileName = this.file.name;
-    const reader = new FileReader();
-    reader.onload=()=>{
-      this.selectedImage = reader.result as string;
-    };
-    reader.readAsDataURL(this.file);
-
-  }*/
 
   onFileSelected(event){
     this.file = event.target.files[0];
@@ -382,3 +533,16 @@ getContact(idEntreprise){
 }
 
 }
+
+type Suggestion = {
+  description: string;
+  label: string;
+  lat?: string;
+  lon?: string;
+  components: {
+    numero: string;
+    rue: string;
+    codePostal: string;
+    ville: string;
+  };
+};
