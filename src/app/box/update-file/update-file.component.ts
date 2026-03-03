@@ -56,7 +56,7 @@ export class UpdateFileComponent implements OnInit {
     this.progress=1;
     const formData:FormData=new FormData();
     formData.append("uploadfile", file);
-    return this.http.put(`${environment.BASE_API_URL}/fichier/${this.data.id}`,formData,{
+    return this.http.put(`${environment.BASE_API_URL}/fichier/projet/${this.data.id}`,formData,{
       reportProgress:true,
       observe:'events'
     })

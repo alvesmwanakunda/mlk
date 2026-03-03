@@ -9,6 +9,8 @@ import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@ang
 import { CountriesService } from '../shared/services/countries.service';
 import { ExcelService } from '../shared/services/excel.service';
 import { TimesheetService } from '../shared/services/timesheet.service';
+import { MatSort } from '@angular/material/sort';
+import { SelectionModel } from '@angular/cdk/collections';
 
 
 @Component({
@@ -18,13 +20,17 @@ import { TimesheetService } from '../shared/services/timesheet.service';
 })
 export class TimeSheetComponent implements OnInit, AfterViewInit {
 
-  displayedColumns:string[]=['nom','email','action'];
+  displayedColumns:string[]=['select','nom','email','action'];
   dataSource =new MatTableDataSource<Contacts>();
-  @ViewChild('paginator') paginator: MatPaginator;
 
-  displayedColumnsTimes:string[]=['employe','projet','debut', 'pause','fin'];
-  dataSourceTimes =new MatTableDataSource<[]>();
+  @ViewChild('paginator') paginator: MatPaginator;
+  // SelectionModel pour gérer les utilisateurs sélectionnés
+  selection = new SelectionModel<Contacts>(true, []);
+
+  displayedColumnsTimes:string[]=['employe','projet','date','debut', 'pause','fin'];
+  dataSourceTimes =new MatTableDataSource<TimesheetDisplay>();
   @ViewChild('paginatorTime') paginatorTime: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
   user:any;
   filterForm: FormGroup;
   months:any=[];
@@ -35,6 +41,8 @@ export class TimeSheetComponent implements OnInit, AfterViewInit {
   selectedFilter:string='today';
   isLoading:boolean = false;
   filterPeriodForm: FormGroup; // Nouveau formulaire pour la période
+  isDownloading: boolean = false;
+
 
 
   // Statistiques
@@ -96,11 +104,35 @@ export class TimeSheetComponent implements OnInit, AfterViewInit {
       this.selectedFilter = value;
       this.updateValidators();
     });
+
+      this.dataSourceTimes.sortingDataAccessor = (item, property) => {
+    switch(property) {
+      case 'date':
+        // Convertir la date string en timestamp pour un tri correct
+        return item.originalDate ? item.originalDate.getTime() : 0;
+      case 'debut':
+        // Convertir l'heure en minutes pour un tri correct
+        if (item.debut && item.debut !== '-') {
+          const [hours, minutes] = item.debut.split(':').map(Number);
+          return hours * 60 + minutes;
+        }
+        return 0;
+      case 'fin':
+        if (item.fin && item.fin !== '-') {
+          const [hours, minutes] = item.fin.split(':').map(Number);
+          return hours * 60 + minutes;
+        }
+        return 0;
+      default:
+        return item[property];
+    }
+  };
   }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator=this.paginator;
     this.dataSourceTimes.paginator=this.paginatorTime;
+    this.dataSourceTimes.sort = this.sort;
   }
 
   updateValidators(): void {
@@ -152,16 +184,49 @@ export class TimeSheetComponent implements OnInit, AfterViewInit {
        this.authService.listEmployes().subscribe((res:any)=>{
         this.employes = res?.message.filter(item => item.valid==true);
         this.dataSource.data = this.employes.map((data)=>({
-          id:data?._id,
+          _id:data?._id,
           nom:data?.nom,
           prenom:data?.prenom,
           email:data?.email,
          })) as Contacts[]
+         this.selection.clear();
 
        },(error) => {
         console.log("Erreur lors de la récupération des données", error);
        })
   }
+
+  // Selectionner
+  get selectedUsers(): Contacts[] {
+    return this.selection.selected;
+  }
+    // ==================== MÉTHODES DE SÉLECTION ====================
+
+  /** Sélectionner ou désélectionner tous les utilisateurs */
+  toggleSelectAll() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+    } else {
+      this.selection.select(...this.dataSource.data);
+    }
+  }
+
+  /** Vérifier si tous les utilisateurs sont sélectionnés */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Label pour la checkbox */
+  checkboxLabel(row?: Contacts): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.nom}`;
+  }
+
+  // Fin selectionner
 
   getAllTimes(){
        this.timesheetService.getAllTimeSheetToDay().subscribe((res:any)=>{
@@ -179,6 +244,7 @@ export class TimeSheetComponent implements OnInit, AfterViewInit {
         console.log("Erreur lors de la récupération des données", error);
        })
   }
+
 
     // ==================== MÉTHODES DE FILTRAGE ====================
 
@@ -301,16 +367,30 @@ export class TimeSheetComponent implements OnInit, AfterViewInit {
   processTimesheetsData(data: any[]): void {
     this.timesheets = data;
 
-    this.dataSourceTimes.data = this.timesheets.map((item) => ({
-      id: item?._id,
-      user: item?.user ? `${item.user.prenom || ''} ${item.user.nom || ''}`.trim() : 'Non assigné',
-      projet: item?.projet?.projet || 'Non assigné',
-      debut: item?.heureDebut || '-',
-      pause: item?.pause || '-',
-      fin: item?.heureFin || '-',
-      statut: item?.status || 'En cours',
-      date: item?.createdAt ? new Date(item.createdAt).toLocaleDateString() : '-'
-    }));
+    // Créer un tableau d'objets typés TimesheetDisplay
+    const displayData: TimesheetDisplay[] = this.timesheets.map((item) => {
+      const dateObj = item?.createdAt ? new Date(item.createdAt) : new Date(0);
+
+      return {
+        id: item?._id || '',
+        user: item?.user ? `${item.user.prenom || ''} ${item.user.nom || ''}`.trim() : 'Non assigné',
+        projet: item?.projet?.projet || 'Non assigné',
+        debut: item?.heureDebut || '-',
+        pause: item?.pause || '-',
+        fin: item?.heureFin || '-',
+        statut: item?.status || 'En cours',
+        date: dateObj ? dateObj.toLocaleDateString('fr-FR') : '-',
+        originalDate: dateObj
+      };
+    });
+
+    this.dataSourceTimes.data = displayData;
+
+    // Maintenir la référence au paginator et sort après mise à jour des données
+    setTimeout(() => {
+      this.dataSourceTimes.paginator = this.paginatorTime;
+      this.dataSourceTimes.sort = this.sort;
+    });
   }
 
   // Réinitialiser les filtres
@@ -335,8 +415,10 @@ downloadFile(){
     //console.log("Valeur", this.filterForm.value.startDate);
     let month = this.filterForm.value.startDate;
     let year = this.filterForm.value.endDate;
+    this.isDownloading = true;
     this.timesheetService.getTimeSheetDonwload(this.filterForm.value.startDate,this.filterForm.value.endDate).subscribe((res:any)=>{
       console.log("Data", res);
+      this.isDownloading = false;
       this.excelService.generateExcelTimeSheet(res.message,month,year);
     },(error) => {
      console.log("Erreur lors de la récupération des données", error);
@@ -344,8 +426,59 @@ downloadFile(){
   }
 }
 
+downloadSelectedUsers() {
+  if (this.filterForm.valid && this.selectedUsers.length > 0) {
+    const month = this.filterForm.value.startDate;
+    const year = this.filterForm.value.endDate;
+
+    // Récupérer les IDs des utilisateurs sélectionnés
+    const selectedUserIds = this.selectedUsers.map(user => user._id);
+
+    this.isDownloading = true;
+
+    this.timesheetService.getTimeSheetDonwload(month, year).subscribe(
+      (res: any) => {
+        console.log("Données reçues:", res);
+
+        // Filtrer les données pour ne garder que les utilisateurs sélectionnés
+        const filteredData = res.message.filter(userGroup =>
+          selectedUserIds.includes(userGroup.user._id)
+        );
+
+        console.log("Données filtrées:", filteredData);
+
+        // Générer l'Excel avec les données filtrées
+        this.excelService.generateExcelTimeSheet(filteredData, month, year);
+        this.isDownloading = false;
+
+        // Optionnel : réinitialiser la sélection après téléchargement
+        // this.selection.clear();
+      },
+      (error) => {
+        console.log("Erreur lors de la récupération des données", error);
+        this.isDownloading = false;
+      }
+    );
+  } else {
+    if (this.selectedUsers.length === 0) {
+      alert("Veuillez sélectionner au moins un utilisateur");
+    }
+  }
+}
+
 getTimesheet(id){
   this.router.navigate(['/timesheet', id])
 }
 
+}
+export interface TimesheetDisplay {
+  id: string;
+  user: string;
+  projet: string;
+  debut: string;
+  pause: string;
+  fin: string;
+  statut: string;
+  date: string;
+  originalDate: Date; // Optionnel pour le tri
 }

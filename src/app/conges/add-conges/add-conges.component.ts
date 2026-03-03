@@ -62,6 +62,7 @@ export class AddCongesComponent implements OnInit {
       if(!this.signaturePad.isEmpty()){
         console.log("image", this.signaturePad.toDataURL());
         this.congeForm.controls['signature_user'].setValue(this.signaturePad.toDataURL());
+        this.saveConge();
         this.isSigne=true;
       }
   }

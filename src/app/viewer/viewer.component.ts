@@ -23,11 +23,11 @@ export class ViewerComponent implements OnInit {
   page: number = 1;
   totalPages: number = 0;
   isLoaded: boolean = false;
-  zoom_to:number=0.8;
+  zoom_to:number=1;
   //page-width:any;
-  width = 475;
-  height = 673;
-  percent=60;
+  width = 927;
+  height = 981;
+  percent=100;
   fit:boolean=false;
   chemin:any;
 
@@ -60,7 +60,11 @@ export class ViewerComponent implements OnInit {
 
     if ( extension == "pdf" ){
       this.isPdf=true;
-       this.src=chemin;
+      this.src=chemin;
+      this.zoom_to = 1;
+      this.percent = 100;
+      this.width = 927;
+      this.height = 981;
       //this.src="https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf"
     }else if(extension === "xlsx" || extension === "docx" || extension === "pptx"){
         this.isOffice=true;
@@ -113,21 +117,21 @@ export class ViewerComponent implements OnInit {
 
   zoom_in() {
 
-    if (this.zoom_to < 1){
+    if (this.zoom_to < 2){
       this.zoom_to = this.zoom_to + 0.1;
       this.width= +this.width +  226;
       this.height= +this.height +  154;
-      this.percent=+this.percent + 20;
+      this.percent = Math.round(this.zoom_to * 100);
     }
   }
 
   zoom_out() {
 
-    if (this.zoom_to > 0,8){
+    if (this.zoom_to > 0.8){
         this.zoom_to = this.zoom_to - 0.1;
         this.width= +this.width -  226;
         this.height= +this.height -  154;
-        this.percent=+this.percent - 20;
+        this.percent = Math.round(this.zoom_to * 100);
     }
   }
 

@@ -15,6 +15,7 @@ import { UpdateFileComponent } from 'src/app/box/update-file/update-file.compone
 import { MoveFolderProjetComponent } from './move-folder-projet/move-folder-projet.component';
 import { forkJoin } from 'rxjs';
 import { DialogService } from 'src/app/shared/services/dialog.service';
+import { RenameFileProjetComponent } from './rename-file-projet/rename-file-projet.component';
 
 
 @Component({
@@ -149,6 +150,19 @@ export class BoxProjetComponent implements OnInit,AfterViewInit {
         this.getAllFiles();
        }
     })
+  }
+
+  openDialogRenameFile(idFile: string, currentName: string) {
+    const dialogRef = this.dialog.open(RenameFileProjetComponent, {
+      width: '30%',
+      data: { id: idFile, nom: currentName }
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.getAllFiles();
+      }
+    });
   }
 
   /*openDialogFileDelete(idFile){

@@ -98,6 +98,24 @@ public openFile(url){
   return this.httpClient.get(`${environment.BASE_API_URL}/open/fichier/${encodedPath}`);
 }
 
+public renameFile(id,body){
+  return this.httpClient.put(`${environment.BASE_API_URL}/fichier/rename/${id}`, body)
+}
+
+// File projet
+
+public renameFileProjet(id,body){
+  return this.httpClient.put(`${environment.BASE_API_URL}/fichier/projet/rename/${id}`, body)
+}
+
+public deleteProjetFile(idFile){
+    return this.httpClient.delete(`${environment.BASE_API_URL}/fichier/projet/${idFile}`)
+}
+
+public updateProjetFile(idFile,file){
+    return this.httpClient.put(`${environment.BASE_API_URL}/fichier/${idFile}`,file);
+}
+
 
 
 

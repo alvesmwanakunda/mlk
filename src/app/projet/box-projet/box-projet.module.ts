@@ -13,6 +13,7 @@ import { UpdateFileModule } from 'src/app/box/update-file/update-file.module';
 import { FileBoxModule } from './file-box/file-box.module';
 import { DetailFolderModule } from './detail-folder/detail-folder.module';
 import { MoveFolderProjetModule } from './move-folder-projet/move-folder-projet.module';
+import { RenameFileProjetModule } from './rename-file-projet/rename-file-projet.module';
 //import { DeleteFileProjetModule } from './delete-file-projet/delete-file-projet.module';
 
 
@@ -32,6 +33,7 @@ import { MoveFolderProjetModule } from './move-folder-projet/move-folder-projet.
     FileBoxModule,
     DetailFolderModule,
     MoveFolderProjetModule,
+    RenameFileProjetModule,
     //DeleteFileProjetModule
   ],
   exports:[BoxProjetComponent],

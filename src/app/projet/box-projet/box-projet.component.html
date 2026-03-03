@@ -57,9 +57,13 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
+              <button mat-menu-item *ngIf="element.extension" (click)="openDialogRenameFile(element.id, element.nom)">
+                <mat-icon style="font-size: 18px;">drive_file_rename_outline</mat-icon>
+                <span style="font-size: 14px;">Renommer</span>
+              </button>
               <button mat-menu-item *ngIf="element.extension" (click)="openDialogFileUpdate(element.id)">
                 <mat-icon style="font-size: 18px;">edit</mat-icon>
-                <span style="font-size: 14px;">Editer</span>
+                <span style="font-size: 14px;">Modifier</span>
               </button>
               <button mat-menu-item *ngIf="!element.extension" (click)="openDialogDossierUpdate(element.id)">
                 <mat-icon style="font-size: 18px;">edit</mat-icon>

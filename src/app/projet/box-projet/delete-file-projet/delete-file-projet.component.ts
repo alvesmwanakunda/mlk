@@ -24,7 +24,7 @@ export class DeleteFileProjetComponent implements OnInit {
   }
 
   deleteBox():void{
-    this.boxService.deleteFile(this.data.id).subscribe((res:any)=>{
+    this.boxService.deleteProjetFile(this.data.id).subscribe((res:any)=>{
       this.message='Fichier a été supprimé avec succès';
       this.openSnackBar(this.message);
       this.dialogRef.close(res)

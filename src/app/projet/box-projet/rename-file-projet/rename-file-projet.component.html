@@ -1,0 +1,14 @@
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="renameFormGroup">
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Nom du fichier</mat-label>
+      <input matInput formControlName="nom" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button mat-button mat-dialog-close>Fermer</button>
+  <button mat-button (click)="rename()" [disabled]="renameFormGroup?.invalid" cdkFocusInitial style="background: #0f6f80 !important;color:#fff">
+    Renommer
+  </button>
+</mat-dialog-actions>
