@@ -1,23 +1,14 @@
 <app-navbar>
-    <div class="container">
-      <div class="content-top">
-        <div class="row">
-          <div class="col">
-            <h2 class="welcome-title">Congés</h2>
-          </div>
-          <div class="col">
-            <div style="float: right;">
-            <button class="nouveau-projet-btn" routerLink="/conge">
-                <svg class="icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" /></svg>
-                Nouveau
-            </button>
-          </div>
-          </div>
+  <div class="topbar">
+        <div class="topbar-left">
+          <h1>Congés</h1>
         </div>
-      </div><!--content-->
-       <mat-divider style="margin-bottom: 30px;"></mat-divider>
-    </div>
-    <div>
+        <div class="topbar-right">
+          <button class="topbar-btn btn-primary" [routerLink]="['/conges/nouveau']"> + Nouveau</button>
+        </div>
+  </div>
+  <div class="content">
+     <div>
         <div class="row" style="margin-bottom: 35px;">
           <div class="col">
             <input type="text"  (keyup)="applyFilter($event)" class="search-input" id="exampleFormControlInput1" placeholder="Rechercher">
@@ -86,4 +77,5 @@
 
 
     </div>
+  </div>
 </app-navbar>

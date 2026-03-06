@@ -1,81 +1,73 @@
 <app-navbar>
-  <div class="container">
-    <div class="content-top">
-      <div class="row">
-        <div class="col-2">
-          <h2 class="content-title">Mon agenda</h2>
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1>Mon agenda</h1>
+    </div>
+    <div class="topbar-right"></div>
+  </div>
+
+  <div class="content agenda-shell">
+    <div class="agenda-toolbar-card">
+      <div class="row align-items-center g-3">
+        <div class="col-md-4">
+          <div class="agenda-nav-controls" *ngIf="isPlanning">
+            <button mat-stroked-button class="agenda-btn" mwlCalendarToday [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">Aujourd'hui</button>
+            <button mat-icon-button mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+              <mat-icon>chevron_left</mat-icon>
+            </button>
+            <button mat-icon-button mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+              <mat-icon>chevron_right</mat-icon>
+            </button>
+          </div>
+
+          <div class="agenda-nav-controls" *ngIf="!isPlanning">
+            <button mat-stroked-button class="agenda-btn" (click)="goToCurrentWeek()">Aujourd'hui</button>
+            <button mat-icon-button (click)="previousWeek()">
+              <mat-icon>chevron_left</mat-icon>
+            </button>
+            <button mat-icon-button (click)="nextWeek()">
+              <mat-icon>chevron_right</mat-icon>
+            </button>
+          </div>
         </div>
-        <div class="col">
-           <div class="row">
-             <div class="col-3">
-              <div style="top: 46px;position: absolute;">
-                <div *ngIf="isPlanning">
-                  <button mat-stroked-button style="margin-right: 40px;font-weight: 500 !important;" class="content-title" mwlCalendarToday  [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()" [(viewDate)]="viewDate">Aujourd'hui</button>
-                  <button mat-icon-button mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()" style="position:relative;top:8px;">
-                    <mat-icon>chevron_left</mat-icon>
-                  </button>
-                  <button mat-icon-button mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()" style="position:relative;top:8px;">
-                    <mat-icon>chevron_right</mat-icon>
-                  </button>
-                </div>
 
-                <div *ngIf="!isPlanning">
-                  <button mat-stroked-button style="margin-right: 40px;font-weight: 500 !important;" class="content-title"  (click)="goToCurrentWeek()">Aujourd'hui</button>
-                  <button mat-icon-button (click)="previousWeek()" style="position:relative;top:8px;">
-                    <mat-icon>chevron_left</mat-icon>
-                  </button>
-                  <button mat-icon-button (click)="nextWeek()"   style="position:relative;top:8px;">
-                    <mat-icon>chevron_right</mat-icon>
-                  </button>
-                </div>
+        <div class="col-md-4 text-center">
+          <p class="agenda-title" *ngIf="isPlanning">{{ viewDate | calendarDate:(view + 'ViewTitle'):'fr' }}</p>
+          <p class="agenda-title" *ngIf="!isPlanning">{{ currentWeekStart | date:'MMM yyyy' | uppercase }}</p>
+        </div>
 
-              </div>
-             </div>
-             <div class="col-4">
-                <p class="agenda-title" style="font-size: 20px;font-weight: 500;position: relative;bottom: 5px;" *ngIf="isPlanning">{{ viewDate | calendarDate:(view + 'ViewTitle'):'fr' }}</p>
-                <p class="agenda-title" style="font-size: 20px;font-weight: 500;position: relative;bottom: 5px;" *ngIf="!isPlanning">
-                  {{ currentWeekStart | date:'MMM yyyy' | uppercase }}
-                </p>
-             </div>
-             <div class="col-5">
-              <div style="position: relative;bottom: 24px;">
-                <mat-form-field appearance="fill" class="example-full-width">
-                  <mat-label>Filtre</mat-label>
-                  <mat-select [disabled]="disableSelect.value" (selectionChange)="isClickPlanning($event)">
-                    <mat-option value="Planning">Planning</mat-option>
-                    <!--<mat-option value="Jour" (click)="setView(CalendarView.Day)">Jour</mat-option>-->
-                    <mat-option value="Semaine" (click)="setView(CalendarView.Week)">Semaine</mat-option>
-                    <mat-option value="Mois" (click)="setView(CalendarView.Month)">Mois</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-
-             </div>
-           </div>
+        <div class="col-md-4 d-flex justify-content-md-end">
+          <mat-form-field appearance="fill" class="agenda-filter-field">
+            <mat-label>Filtre</mat-label>
+            <mat-select [disabled]="disableSelect.value" (selectionChange)="isClickPlanning($event)">
+              <mat-option value="Planning">Planning</mat-option>
+              <mat-option value="Semaine" (click)="setView(CalendarView.Week)">Semaine</mat-option>
+              <mat-option value="Mois" (click)="setView(CalendarView.Month)">Mois</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
       </div>
-      <mat-divider></mat-divider>
-    </div><!--content-->
+    </div>
 
-    <div>
-     <div class="row">
-       <div class="col-3">
-
-        <div style="margin-bottom: 10px;">
-          <button  mat-stroked-button (click)="openDialogAgenda()" style="width: 42% !important;height: 55px !important;border-radius: 20px !important;">
-            <mat-icon>add</mat-icon> Créer
+    <div class="row g-3">
+      <div class="col-lg-3">
+        <div class="agenda-side-panel">
+          <button mat-stroked-button (click)="openDialogAgenda()" class="create-btn">
+            <mat-icon>add</mat-icon>
+            Créer
           </button>
+          <mat-card class="mini-calendar-card">
+            <mat-calendar [selected]="viewDate" (selectedChange)="onDateSelected($event)"></mat-calendar>
+          </mat-card>
         </div>
-        <mat-card class="demo-inline-calendar-card">
-          <mat-calendar [selected]="viewDate" (selectedChange)="onDateSelected($event)"></mat-calendar>
-        </mat-card>
-       </div>
-       <div class="col-9">
-        <mat-card style="border-radius: 30px !important;" *ngIf="isPlanning">
-          <div class="row">
-            <div class="col-2">
-              <p style="padding: 29px;color: #444746 !important;font-weight: 500;" *ngIf="view!='month'">GMT <small>+00</small></p>
-              <p style="padding: 29px;color: #444746 !important;font-weight: 500;" *ngIf="view=='month'">MOIS</p>
+      </div>
+
+      <div class="col-lg-9">
+        <mat-card class="agenda-main-card" *ngIf="isPlanning">
+          <div class="agenda-main-header row align-items-center">
+            <div class="col-3 col-md-2">
+              <p class="agenda-zone" *ngIf="view!='month'">GMT <small>+00</small></p>
+              <p class="agenda-zone" *ngIf="view=='month'">MOIS</p>
             </div>
             <div class="col" *ngIf="!isDay">
               <div class="dayL">{{currentDay}}</div>
@@ -83,134 +75,84 @@
             </div>
           </div>
 
-          <mat-card-content [style.overflow]="'auto'" [style.height.px]="'400'">
-
+          <mat-card-content class="agenda-scroll-content">
             <div [ngSwitch]="view">
               <mwl-calendar-month-view
-              *ngSwitchCase="CalendarView.Month"
-              [viewDate]="viewDate"
-              [events]="events"
-              [refresh]="refresh"
-              [activeDayIsOpen]="activeDayIsOpen"
-              (dayClicked)="dayClicked($event.day)"
-              (eventClicked)="openDialogDetail($event.event)"
-              (eventTimesChanged)="eventTimesChanged($event)"
-              locale="fr"
-              >
+                *ngSwitchCase="CalendarView.Month"
+                [viewDate]="viewDate"
+                [events]="events"
+                [refresh]="refresh"
+                [activeDayIsOpen]="activeDayIsOpen"
+                (dayClicked)="dayClicked($event.day)"
+                (eventClicked)="openDialogDetail($event.event)"
+                (eventTimesChanged)="eventTimesChanged($event)"
+                locale="fr">
               </mwl-calendar-month-view>
 
               <mwl-calendar-week-view
-              *ngSwitchCase="CalendarView.Week"
-              [viewDate]="viewDate"
-              [events]="events"
-              [refresh]="refresh"
-              (eventClicked)="openDialogDetail($event.event)"
-              (eventTimesChanged)="eventTimesChanged($event)"
-              locale="fr"
-              >
+                *ngSwitchCase="CalendarView.Week"
+                [viewDate]="viewDate"
+                [events]="events"
+                [refresh]="refresh"
+                (eventClicked)="openDialogDetail($event.event)"
+                (eventTimesChanged)="eventTimesChanged($event)"
+                locale="fr">
               </mwl-calendar-week-view>
-
-              <!--<mwl-calendar-day-view
-              *ngSwitchCase="CalendarView.Day"
-              [viewDate]="viewDate"
-              [events]="events"
-              [refresh]="refresh"
-              (eventClicked)="openDialogDetail($event.event)"
-              (eventTimesChanged)="eventTimesChanged($event)"
-              locale="fr"
-              >
-              </mwl-calendar-day-view>-->
             </div>
           </mat-card-content>
         </mat-card>
 
-        <mat-card style="border-radius: 30px !important;" *ngIf="!isPlanning">
-
-          <mat-card-content [style.overflow]="'auto'">
-
-              <div *ngFor="let day of weekWithEvents" class="day-container">
-                  <div class="row">
-                     <div class="col-2">
-                      <div class="day-header">
-                        <div [ngClass]="{ 'circle-today': isToday(day.date) }" class="date-circle">
-                          <div [ngClass]="{ 'circle-today': isToday(day.date) }" class="day-number">
-                            {{ day.date | date: 'd' }}
-                          </div>
-                        </div>
-                        <div [ngClass]="{ 'day-label-active': isToday(day.date) }" class="day-label">
-                          {{ day.date | date: 'EEE, MMM.' | uppercase }}
-                        </div>
+        <mat-card class="agenda-main-card" *ngIf="!isPlanning">
+          <mat-card-content class="agenda-scroll-content">
+            <div *ngFor="let day of weekWithEvents" class="day-container">
+              <div class="row">
+                <div class="col-3 col-md-2">
+                  <div class="day-header">
+                    <div [ngClass]="{ 'circle-today': isToday(day.date) }" class="date-circle">
+                      <div [ngClass]="{ 'circle-today': isToday(day.date) }" class="day-number">
+                        {{ day.date | date: 'd' }}
                       </div>
-                     </div>
-                     <div class="col">
-                      <div *ngIf="day.events.length > 0; else noEvents">
-                        <div *ngFor="let dayEvents of day.events">
-                           <div class=" row event-item" *ngFor="let event of dayEvents.events" style="cursor: pointer;" (click)="openDialogDetailP(event?._id,event?.type)">
-                            <div class="event-time col-3" *ngIf="event?.time">
-                              <span class="round-color" [ngStyle]="{'background-color': event?.color}"></span> {{ event?.time }}
-                            </div>
-                            <div class="event-title col">
-                              {{ event?.title }}
-
-                              <ng-container *ngIf="event?.assigne?.length">
-                                <!-- Afficher les 5 premiers -->
-                                <span *ngFor="let user of event.assigne.slice(0, 5)"
-                                      class="assigne-circle"
-                                      matTooltip="{{user?.nom}} {{user?.prenom}}">
-                                  {{ user.nom.charAt(0) }}
-                                </span>
-
-                                <!-- Si plus de 5, afficher +X -->
-                                <span *ngIf="event.assigne.length > 5" class="assigne-circle more">
-                                  +{{ event.assigne.length - 5 }}
-                                </span>
-                              </ng-container>
-                            </div>
-                        </div>
-                        </div>
-                      </div>
-                      <ng-template #noEvents>
-                        <div class="no-event">Aucun événement</div>
-                      </ng-template>
-                     </div>
-                  </div>
-                  <mat-divider></mat-divider>
-              </div>
-            <!--<div class="calendar-container">
-              <div class="calendar-day" *ngFor="let day of weekWithEvents">
-                <div class="day-header">
-                  <div class="day-date">
-                    <span class="day-number">{{ day.date | date: 'd' }}</span>
-                    <span class="day-name">{{ day.date | date: 'EEE' }}</span>
+                    </div>
+                    <div [ngClass]="{ 'day-label-active': isToday(day.date) }" class="day-label">
+                      {{ day.date | date: 'EEE, MMM.' | uppercase }}
+                    </div>
                   </div>
                 </div>
 
-                <div class="day-events">
+                <div class="col">
                   <div *ngIf="day.events.length > 0; else noEvents">
                     <div *ngFor="let dayEvents of day.events">
-                      <div *ngFor="let event of dayEvents.events" class="event" [style.background-color]="event.color">
-                        <span class="event-title">{{ event.title }}</span>
-                        <span class="event-time">{{ event.time }}</span>
+                      <div class="row event-item" style="cursor: pointer;" *ngFor="let event of dayEvents.events" (click)="openDialogDetailP(event?._id,event?.type)">
+                        <div class="event-time col-md-3" *ngIf="event?.time">
+                          <span class="round-color" [ngStyle]="{'background-color': event?.color}"></span> {{ event?.time }}
+                        </div>
+                        <div class="event-title col">
+                          {{ event?.title }}
+
+                          <ng-container *ngIf="event?.assigne?.length">
+                            <span *ngFor="let user of event.assigne.slice(0, 5)" class="assigne-circle" matTooltip="{{user?.nom}} {{user?.prenom}}">
+                              {{ user.nom.charAt(0) }}
+                            </span>
+
+                            <span *ngIf="event.assigne.length > 5" class="assigne-circle more">
+                              +{{ event.assigne.length - 5 }}
+                            </span>
+                          </ng-container>
+                        </div>
                       </div>
                     </div>
                   </div>
+
                   <ng-template #noEvents>
                     <div class="no-event">Aucun événement</div>
                   </ng-template>
                 </div>
               </div>
-            </div>-->
-
-
-
+              <mat-divider></mat-divider>
+            </div>
           </mat-card-content>
         </mat-card>
-
-
-       </div>
-     </div><!--row-->
-
+      </div>
     </div>
   </div>
 </app-navbar>
-

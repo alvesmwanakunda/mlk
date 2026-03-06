@@ -1,0 +1,20 @@
+.file-input {
+  display: none;
+}
+
+.drop-tree-zone {
+  border: 2px dashed #c5c5c5;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+  text-align: center;
+  color: #616161;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.drop-tree-zone-active {
+  border-color: #f46c2f;
+  background-color: #fff4ee;
+  color: #d4581f;
+}

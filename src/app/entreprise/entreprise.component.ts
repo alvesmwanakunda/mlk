@@ -67,7 +67,7 @@ export class EntrepriseComponent implements OnInit, AfterViewInit {
   }
 
   getEntreprise(idEntreprise){
-    this.router.navigate(['detail/entreprise',idEntreprise]);
+    this.router.navigate(['entreprises/detail',idEntreprise]);
   }
 
   updateTableData(entreprises): void {

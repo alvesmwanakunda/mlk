@@ -1,26 +1,23 @@
 <app-navbar>
-  <div class="container">
-    <div class="content-top">
-      <div class="row">
-        <div class="col">
-          <p class="title-projet-page">Nouvel article <button class="btn" type="button" [routerLink]="['/modulaires']"><i class="fa-solid fa-arrow-left" style="color:#28628B;"></i></button></p>
+   <div class="topbar">
+        <div class="topbar-left">
+          <h1>Nouveau</h1>
         </div>
-        <div class="col">
-           <div align="right">
-            <i class="fa-solid fa-cube" style="font-size: 30px;color: #666C7E;"></i>
-           </div>
+        <div class="topbar-right">
+          <button class="topbar-btn btn-primary" [routerLink]="['/modulaires']"> Retour</button>
         </div>
-      </div><!--row-->
-      <div class="row">
+  </div>
+  <div class="content">
+    <div class="row">
         <div class="col">
-          <hr class="entreprise">
-        </div>
-      </div><!--row-->
+          <div class="module-form-layout">
+            <div class="module-meta-card">
+              <div class="meta-title">Nouveau module</div>
+              <div class="meta-value">Renseignez les caractéristiques techniques et les fichiers liés</div>
+            </div>
 
-      <div class="row">
-        <div class="col">
-          <form [formGroup]="moduleForm" style="margin-bottom: 35px;">
-            <div class="row" style="margin-bottom: 15px;">
+          <form [formGroup]="moduleForm" class="module-form-grid">
+            <div class="row form-row">
               <div class="col">
                 <mat-form-field class="example-full-width">
                   <mat-label>Nom d'article</mat-label>
@@ -54,7 +51,7 @@
                 </div>
               </div>
             </div><!--div-->
-            <div class="row" style="margin-bottom: 15px;">
+            <div class="row form-row">
               <div class="col">
                 <mat-form-field class="example-full-width" *ngIf="user?.user.role!='user'">
                   <mat-label>Propriétaire</mat-label>
@@ -88,7 +85,7 @@
                 </mat-form-field>
               </div><!--div-->
             </div>
-            <div class="row" style="margin-bottom: 15px;">
+            <div class="row form-row">
               <div class="col">
                 <mat-form-field class="example-full-width">
                   <mat-label>Détail</mat-label>
@@ -106,7 +103,7 @@
                 </mat-form-field>
               </div><!--div-->
             </div>
-            <div class="row" style="margin-bottom: 15px;">
+            <div class="row form-row">
               <div class="col">
                 <mat-form-field class="example-full-width">
                   <mat-label>Hauteur(mm)</mat-label>
@@ -127,40 +124,44 @@
               </div>
             </div>
 
-           <div class="row" style="margin-bottom: 15px;">
-            <div class="col">
-             <label class="label-entreprise">Image module <span *ngIf="imageName">({{imageName}})</span></label>
-             <br/>
-             <div *ngIf="isSize">
-              <mat-chip disabled color="accent">{{isSize}}</mat-chip>
-             </div>
-             <input type="file" class="file-input" accept='image/*' (change)="onFileSelectedImage($event)" #fileUpload>
-             <button type="button" (click)="fileUpload.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> charger la photo</button>
+            <div class="row form-row">
+              <div class="col">
+                <div class="upload-card">
+                  <label class="upload-title">Image module <span *ngIf="imageName">({{imageName}})</span></label>
+                  <div class="upload-helper">Format image - taille recommandée inférieure à 17 Mo</div>
+                  <div *ngIf="isSize" class="upload-alert">
+                    <mat-chip disabled color="accent">{{isSize}}</mat-chip>
+                  </div>
+                  <input type="file" class="file-input" accept='image/*' (change)="onFileSelectedImage($event)" #fileUpload>
+                  <button type="button" (click)="fileUpload.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> Charger la photo</button>
+                </div>
+              </div>
+              <div class="col">
+                <div class="upload-card">
+                  <label class="upload-title">Plan module <span *ngIf="fileName">({{fileName}})</span></label>
+                  <div class="upload-helper">Format PDF</div>
+                  <input type="file" class="file-input" accept='.pdf' (change)="onFileSelectedPlan($event)" #fileUpload1>
+                  <button type="button" (click)="fileUpload1.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> Charger le plan</button>
+                </div>
+              </div>
             </div>
-            <div class="col">
-             <label class="label-entreprise">Plan module <span *ngIf="fileName">({{fileName}})</span></label>
-             <br/>
-             <input type="file" class="file-input" accept='.pdf' (change)="onFileSelectedPlan($event)" #fileUpload1>
-             <button type="button" (click)="fileUpload1.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> charger le plan</button>
-            </div>
-         </div>
 
           </form>
-          <div align="right">
+          </div>
+          <div class="module-actions">
             <button mat-button routerLink="/modulaires" class="btn-entreprise-back" style="margin-right: 10px;"><i class="fa-solid fa-chevron-left"></i> ANNULER</button>
             <button mat-button  class="btn-entreprise" (click)="addModule()" [disabled]="moduleForm.invalid">VALIDER</button>
           </div>
         </div>
       </div>
-    </div>
-    <div id="snackbar" *ngIf="progress">
-      <br/>
-      <div class="progress">
-        <div class="progress-bar" role="progressbar" [style.width]="progress + '%'">{{progress}}%</div>
+      <div id="snackbar" *ngIf="progress">
+        <br/>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" [style.width]="progress + '%'">{{progress}}%</div>
+        </div>
+        <br/>
+        <p style="font-size: 12px;" *ngIf="progress<100">Fichier {{fileName}} est en cours de chargement...</p>
+        <p style="font-size: 12px;color: rgb(16, 93, 38);" *ngIf="progress==100">Fichier {{fileName}} est chargé avec succès</p>
       </div>
-      <br/>
-      <p style="font-size: 12px;" *ngIf="progress<100">Fichier {{fileName}} est en cours de chargement...</p>
-      <p style="font-size: 12px;color: rgb(16, 93, 38);" *ngIf="progress==100">Fichier {{fileName}} est chargé avec succès</p>
-    </div>
   </div>
 </app-navbar>

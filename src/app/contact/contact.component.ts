@@ -124,7 +124,7 @@ export class ContactComponent implements OnInit,AfterViewInit {
   }
 
   getContact(idContact){
-    this.router.navigate(['update/contact', idContact])
+    this.router.navigate(['contact', idContact])
   }
 
   openDialogDelete(idContact){

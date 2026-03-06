@@ -1,21 +1,13 @@
 <app-navbar>
-  <div class="container">
-    <div class="content-top">
-      <div class="row">
-        <div class="col">
-          <h2 class="welcome-title">Stockages</h2>
+   <div class="topbar">
+        <div class="topbar-left">
+          <h1>Stockages</h1>
         </div>
-        <div class="col">
-          <div style="float: right;">
-           <button class="nouveau-projet-btn" routerLink="/modulaire" *ngIf="user?.user?.role!='user'" >
-              <svg class="icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" /></svg>
-              Nouveau
-           </button>
+        <div class="topbar-right">
+          <button class="topbar-btn btn-primary" *ngIf="user?.user?.role!='user'" routerLink="/modulaires/nouveau"> Nouveau</button>
         </div>
-        </div>
-      </div>
-    </div><!--content-->
-    <mat-divider style="margin-bottom: 30px;"></mat-divider>
+  </div>
+  <div class="content">
     <div style="margin-bottom: 30px;">
         <div class="row" style="margin-bottom: 10px;">
           <div class="col">

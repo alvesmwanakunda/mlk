@@ -7,7 +7,6 @@ import { NavbarModule } from '../../navbar/navbar.module';
 import { AuthGuardService } from '../../shared/services/auth-guard.service';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { ProduitsService } from 'src/app/shared/services/produits.service';
-import { NgImageSliderModule } from 'ng-image-slider';
 
 export function jwtOptionsFactory() {
   return {
@@ -29,7 +28,6 @@ export function jwtOptionsFactory() {
     DetailProduitRoutingModule,
     SharedModule,
     NavbarModule,
-    NgImageSliderModule,
     JwtModule.forRoot({
       jwtOptionsProvider: {
         provide: JWT_OPTIONS,

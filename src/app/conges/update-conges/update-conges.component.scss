@@ -1,3 +1,138 @@
 ::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) {
     background-color: #fff !important;
+}
+
+.conge-detail-view,
+.conge-edit-view {
+  padding-top: 20px;
+}
+
+.conge-panel {
+  background: #fff;
+  border: 1px solid #e8ebf0;
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.panel-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.panel-divider {
+  margin-bottom: 20px;
+}
+
+.status-line,
+.motif-line,
+.responsable-line {
+  margin: 0 0 6px 0;
+  font-weight: 600;
+}
+
+.status-line {
+  color: #0477c9;
+}
+
+.motif-line {
+  color: #c90442;
+}
+
+.responsable-line {
+  color: #111827;
+}
+
+.info-card {
+  background: #f8fafc;
+  border: 1px solid #e8ebf0;
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.info-card + .info-card {
+  margin-top: 12px;
+}
+
+.warning-card {
+  border-color: #dbeafe;
+  background: #eff6ff;
+}
+
+.refus-card {
+  border-color: #fecdd3;
+  background: #fff1f2;
+}
+
+.card-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 10px;
+}
+
+.conge-form-grid {
+  background: #fff;
+}
+
+.form-section + .form-section {
+  margin-top: 18px;
+}
+
+.section-title {
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #111827;
+}
+
+.optional-label {
+  color: #054aec;
+}
+
+.file-preview,
+.file-actions {
+  margin-bottom: 10px;
+}
+
+.file-preview img {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.canvas-wrapper {
+  margin-bottom: 10px;
+}
+
+.canvas-wrapper canvas {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.inline-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 767px) {
+  .conge-panel {
+    padding: 14px;
   }
+
+  .panel-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

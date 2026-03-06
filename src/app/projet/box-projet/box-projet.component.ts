@@ -16,6 +16,12 @@ import { MoveFolderProjetComponent } from './move-folder-projet/move-folder-proj
 import { forkJoin } from 'rxjs';
 import { DialogService } from 'src/app/shared/services/dialog.service';
 import { RenameFileProjetComponent } from './rename-file-projet/rename-file-projet.component';
+import { HttpEventType } from '@angular/common/http';
+
+interface ProjectTreeUploadFile {
+  file: File;
+  relativePath: string;
+}
 
 
 @Component({
@@ -38,6 +44,10 @@ export class BoxProjetComponent implements OnInit,AfterViewInit {
   //@Input() idProjet?:any;
   idProjet:any;
   user:any;
+  isDragOver:boolean=false;
+  treeUploadProgress:number|null=null;
+  treeUploadError:string|null=null;
+  treeUploadFileName:string|null=null;
 
   constructor(
     private boxService :BoxService,
@@ -189,6 +199,157 @@ export class BoxProjetComponent implements OnInit,AfterViewInit {
         this.getAllFiles();
        }
     })
+  }
+
+  // drag on drop
+
+  onDragOver(event: DragEvent){
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver = true;
+  }
+
+  onDragLeave(event: DragEvent){
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver = false;
+  }
+
+  async onDrop(event: DragEvent){
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver = false;
+
+    const files = await this.extractDroppedFiles(event);
+    if(!files.length){
+      return;
+    }
+
+    this.uploadProjectTree(files);
+  }
+
+  onFolderTreeSelected(event: Event){
+    const input = event.target as HTMLInputElement;
+    const selectedFiles = Array.from(input?.files || []);
+    if(!selectedFiles.length){
+      return;
+    }
+
+    const files = selectedFiles.map((file:any) => ({
+      file,
+      relativePath: file.webkitRelativePath || file.name
+    }));
+
+    this.uploadProjectTree(files);
+    input.value = '';
+  }
+
+  private async extractDroppedFiles(event: DragEvent): Promise<ProjectTreeUploadFile[]>{
+    const dataTransfer = event.dataTransfer;
+    if(!dataTransfer){
+      return [];
+    }
+
+    if(dataTransfer.items && dataTransfer.items.length){
+      const requests: Array<Promise<ProjectTreeUploadFile[]>> = [];
+
+      for(const item of Array.from(dataTransfer.items)){
+        if(item.kind !== 'file'){
+          continue;
+        }
+
+        const entry = (item as any).webkitGetAsEntry?.();
+        if(entry){
+          requests.push(this.readEntry(entry, ''));
+          continue;
+        }
+
+        const file = item.getAsFile();
+        if(file){
+          requests.push(Promise.resolve([{ file, relativePath: file.name }]));
+        }
+      }
+
+      const filesByEntry = await Promise.all(requests);
+      return filesByEntry.flat();
+    }
+
+    return Array.from(dataTransfer.files || []).map((file:any) => ({
+      file,
+      relativePath: file.webkitRelativePath || file.name
+    }));
+  }
+
+  private readEntry(entry: any, parentPath: string): Promise<ProjectTreeUploadFile[]>{
+    if(entry.isFile){
+      return new Promise((resolve) => {
+        entry.file((file: File) => {
+          const path = parentPath ? `${parentPath}/${file.name}` : file.name;
+          resolve([{ file, relativePath: path }]);
+        }, () => resolve([]));
+      });
+    }
+
+    if(entry.isDirectory){
+      const dirPath = parentPath ? `${parentPath}/${entry.name}` : entry.name;
+      return this.readDirectory(entry, dirPath);
+    }
+
+    return Promise.resolve([]);
+  }
+
+  private readDirectory(directoryEntry: any, directoryPath: string): Promise<ProjectTreeUploadFile[]>{
+    const reader = directoryEntry.createReader();
+    return new Promise((resolve) => {
+      const entries: any[] = [];
+
+      const readEntries = () => {
+        reader.readEntries(async (batch: any[]) => {
+          if(!batch.length){
+            const nested = await Promise.all(entries.map((entry) => this.readEntry(entry, directoryPath)));
+            resolve(nested.flat());
+            return;
+          }
+
+          entries.push(...batch);
+          readEntries();
+        }, () => resolve([]));
+      };
+
+      readEntries();
+    });
+  }
+
+  private uploadProjectTree(files: ProjectTreeUploadFile[]){
+    const formData = new FormData();
+    files.forEach((item) => {
+      formData.append('uploadfile', item.file, item.file.name);
+      formData.append('relativePaths', item.relativePath);
+    });
+
+    this.treeUploadError = null;
+    this.treeUploadProgress = 1;
+    this.treeUploadFileName = files.length === 1 ? files[0].file.name : `${files.length} fichiers`;
+
+    this.boxService.createProjectTree(this.idProjet, formData).subscribe({
+      next: (event:any) => {
+        if(event.type === HttpEventType.UploadProgress){
+          this.treeUploadProgress = event.total ? Math.round((100 / event.total) * event.loaded) : 0;
+          return;
+        }
+
+        if(event.type === HttpEventType.Response){
+          this.treeUploadProgress = null;
+          this.treeUploadFileName = null;
+          this.boxService.listDossier.next({nom:'tree-upload'});
+          this.getAllFiles();
+        }
+      },
+      error: (error:any) => {
+        this.treeUploadProgress = null;
+        this.treeUploadError = error?.error?.message || error?.message || 'Erreur lors du chargement.';
+      }
+    });
   }
 
   showBoxView(id) {

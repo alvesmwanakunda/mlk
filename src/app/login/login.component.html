@@ -1,109 +1,111 @@
-<app-navbar-user></app-navbar-user>
-
-<div style="background-color: white !important;">
-  <div class="d-flex justify-content-between" style="background-color: white !important; padding-top: 4rem;">
-   
-    <div class="d-flex align-items-end" style="background-image: url('assets/images/left_side.jpg');  width: 60%; min-height: calc(100vh - 4rem); background-size: cover; background-repeat: no-repeat; padding: 0 0 45px 45px;">
-      <h3 style="font-size: 32px; font-weight:700; letter-spacing: 1.5px; line-height: 40px; background-color: rgba(255, 255, 255, 0.5); padding: 25px;">
-        CONSTRUISEZ L'<span style="color: #265e86;">AVENIR</span>, <br>
-        <span style="color: #265e86;">MODULEZ</span> VOTRE ESPACE !
-      </h3>
+<div class="login-page">
+  <section class="left-panel">
+    <div class="brand">
+      <div class="brand-logo">
+        <!-- <i class="fa-solid fa-helmet-safety"></i> -->
+         <img src="assets/images/mlka_logo.png" style="width: 109%;">
+      </div>
+      <h1>MLKA Groupe</h1>
+      <p>Plateforme de gestion de projets BTP</p>
     </div>
-    
-    <div style="background-color: white !important; min-height: calc(100vh - 6rem); width: 40%; display: flex; align-items: center !important;">
-      <div class="container-lg justify-content-md-center d-flex" style=" height:fit-content !important;">
-          <mat-card style="background-color: #ffffff !important; box-shadow: 0px 0px 0px rgba(0, 0, 0, 0) !important; width: 100%;">
-            <mat-card-content style="padding-top: 30px !important;padding-bottom: 30px !important;">
-              <h1 class="content-form" style="margin-bottom: 40px;">
-                <span class="title-login">Se connecter</span>
-              </h1>
 
-              <form [formGroup]="loginForm" novalidate style="margin-bottom: 20px;">
+    <div class="tagline">
+      <h2>Construisez <span>l'avenir</span>,<br>Modulez votre espace</h2>
+      <p>Gerez vos projets, equipes et chantiers<br>depuis une seule plateforme intelligente.</p>
+    </div>
 
-                <div *ngIf="testValidation">
-                  <p class="text-danger text-center">Veuillez remplir tous les champs</p>
-                </div>
-                <div class="content-form">
-                  <div class="row">
-                    <div class="col">
-                      <mat-form-field class="example-full-login">
-                        <mat-label>E-mail</mat-label>
-                        <input matInput formControlName="email">
-                      </mat-form-field>
-                      <div *ngIf="loginForm.get('email').hasError(account_validation_messages.email[0].type) && ((loginForm.get('email').dirty || loginForm.get('email').touched))">
-                        <p class="error_field">{{account_validation_messages.email[0].message}}</p>
-                      </div>
-                      <div *ngIf="loginForm.get('email').hasError(account_validation_messages.email[1].type) && ((loginForm.get('email').dirty || loginForm.get('email').touched))">
-                        <p class="error_field">{{account_validation_messages.email[1].message}}</p>
-                      </div>
-                      <div *ngIf="loginFormErrors.email.notfound">
-                        <p style="color:#BA0237">Adresse email ou le mot de passe invalide.</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col">
-                      <mat-form-field class="example-full-login">
-                        <mat-label>Mot de passe</mat-label>
-                        <input matInput formControlName="password" [type]="hideP ? 'password' : 'text'">
-                        <button *ngIf="loginForm.get('password').value && loginForm.get('password').value!=''" mat-icon-button matSuffix (click)="hideP = !hideP" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideP">
-                          <mat-icon>{{hideP ? 'visibility_off' : 'visibility'}}</mat-icon>
-                        </button>
-                      </mat-form-field>
-                    </div>
-                  </div>
-                  <div style="display: flex; justify-content: center;">
-                    <div style="margin-bottom: 20px; display: flex; justify-content: end; width: 75%;">
-                      <button mat-button color="primary" [routerLink]="'/reset'">Mot de passe oubliée ?</button>
-                    </div>
-                  </div>
-                  <div align="center" style="margin-bottom: 30px;">
-                    <button mat-raised-button [disabled]="onLoadForm" type="submit" (click)="onLogin()" class="sizeButtonLogin" style="color: #fff;">Se connecter</button>
-                  </div>
-                  <div>
-                    <p >Pas encore de compte Mlka Groupe ? <a class=" fw-bold text-black" role="button" [routerLink]="'/signup'" > S'inscrire</a></p>
-                  </div>
-                  <div class="d-flex justify-content-center align-items-center" style="margin-bottom: 20px; margin-top: 20px;">
-                    <hr style="width: 33%; color: #000; margin-right: 10px;"> Ou <hr style="width: 33%; color: #000; margin-left: 10px;">
-                  </div>
-                  <div class="d-flex gap-3 justify-content-center align-items-center position-relative">
-                    <div class="icon-box d-flex justify-content-center position-relative">
-                      <div #googleBtn class="" id="google-button" style="position: absolute; top:5px; z-index: 10; opacity: 0;"></div>
-                      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class=" icons" style="width: 30px; height: 30px; position: relative;">
-                        <g>
-                          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
-                          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
-                          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
-                          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
-                          <path fill="none" d="M0 0h48v48H0z"></path>
-                        </g>
-                      </svg>
-                    </div>
-
-                    <div class="icon-box pointer-event" (click)="signInWithLinkedin()">
-                      <svg  height="33" width="33" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                        <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-                        <path fill="#0a66b8" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/>
-                      </svg>
-                    </div>
-                    
-                  </div>
-                </div>
-            </form>
-             
-               
-
-            </mat-card-content>
-            <mat-card-footer>
-              <div *ngIf="onLoadForm">
-                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-              </div>
-            </mat-card-footer>
-          </mat-card>
+    <div class="features">
+      <div class="feature-item">
+        <span class="feature-icon"><i class="fa-solid fa-chart-line"></i></span>
+        <span class="feature-text">Suivi en temps reel de vos chantiers</span>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon"><i class="fa-solid fa-users"></i></span>
+        <span class="feature-text">Collaboration multi-profils</span>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon"><i class="fa-solid fa-box-open"></i></span>
+        <span class="feature-text">Gestion de stock integree</span>
       </div>
     </div>
-  </div>
+  </section>
+
+  <section class="right-panel">
+    <div class="login-header">
+      <h2>Bon retour</h2>
+      <p>Connectez-vous a votre espace MLKA</p>
+    </div>
+
+    <div class="role-selector">
+      <button type="button" class="role-btn">
+        <span><i class="fa-solid fa-user-tie"></i></span>Chef de Projet
+      </button>
+      <button type="button" class="role-btn">
+        <span><i class="fa-solid fa-helmet-safety"></i></span>Ouvrier
+      </button>
+      <button type="button" class="role-btn">
+        <span><i class="fa-solid fa-users"></i></span>Client
+      </button>
+    </div>
+
+    <form [formGroup]="loginForm" novalidate (ngSubmit)="onLogin()" class="login-form">
+      <div *ngIf="testValidation" class="error-global">
+        Veuillez remplir tous les champs
+      </div>
+
+      <div class="form-group">
+        <label for="email">Adresse e-mail</label>
+        <input id="email" type="email" formControlName="email" placeholder="exemple@email.com">
+
+        <div *ngIf="loginForm.get('email').hasError(account_validation_messages.email[0].type) && ((loginForm.get('email').dirty || loginForm.get('email').touched))" class="error-field">
+          {{account_validation_messages.email[0].message}}
+        </div>
+        <div *ngIf="loginForm.get('email').hasError(account_validation_messages.email[1].type) && ((loginForm.get('email').dirty || loginForm.get('email').touched))" class="error-field">
+          {{account_validation_messages.email[1].message}}
+        </div>
+        <div *ngIf="loginFormErrors.email.notfound" class="error-field">
+          Adresse email ou le mot de passe invalide.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <div class="input-wrapper">
+          <input id="password" [type]="hideP ? 'password' : 'text'" formControlName="password" placeholder="••••••••••••">
+          <button type="button" class="input-icon" *ngIf="loginForm.get('password').value" (click)="hideP = !hideP">
+            <mat-icon>{{hideP ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="forgot">
+        <a [routerLink]="'/reset'">Mot de passe oublie ?</a>
+      </div>
+
+      <button class="btn-login" type="submit" [disabled]="onLoadForm">
+        SE CONNECTER
+      </button>
+    </form>
+
+    <div class="divider"><span>ou continuer avec</span></div>
+
+    <div class="social-btns">
+      <div class="social-btn google-btn-wrapper">
+        <div #googleBtn id="google-button" class="google-real-button"></div>
+        <span class="social-icon">G</span>
+        <span>Google</span>
+      </div>
+
+      <button class="social-btn" type="button" (click)="signInWithLinkedin()">
+        <span class="social-icon">in</span>
+        <span>LinkedIn</span>
+      </button>
+    </div>
+
+    <!-- <p class="signup-link">Pas encore de compte ? <a [routerLink]="'/signup'">S'inscrire</a></p> -->
+
+    <div class="progress-wrap" *ngIf="onLoadForm">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+  </section>
 </div>
-
-
-

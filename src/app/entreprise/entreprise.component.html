@@ -1,30 +1,16 @@
 <app-navbar>
-  <div class="container">
 
-    <div class="content-top">
-      <div class="row">
-        <div class="col">
-          <h2 class="welcome-title">Entreprises</h2>
+  <div class="topbar">
+        <div class="topbar-left">
+          <h1>Entreprises</h1>
         </div>
-        <div class="col">
-          <div style="float: right;">
-           <button class="nouveau-projet-btn" [routerLink]="['/add/entreprise']">
-              <svg class="icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" /></svg>
-              Nouveau
-           </button>
+        <div class="topbar-right">
+          <button class="topbar-btn btn-primary" [routerLink]="['/entreprises/nouveau']"> + Nouveau</button>
         </div>
-        </div>
-      </div>
-    </div><!--content-->
-    <mat-divider style="margin-bottom: 30px;"></mat-divider>
-
+  </div>
+  <div class="content">
     <div>
-
       <div class="row" style="margin-bottom: 30px;">
-
-        <div class="col">
-          <input type="text" class="search-input" id="exampleFormControlInput1" placeholder="Rechercher..."  (keyup)="applyFilter($event)">
-        </div><!--col-->
         <div class="col">
             <div class="filter-bar">
               <div class="tabs">
@@ -57,159 +43,164 @@
             </div>
           </div>
         </div><!--col-->
-     </div><!--row-->
-
-    <div class="bloc-projets" [hidden]="entreprises">
-        <p class="notdata">Aucun données</p>
-    </div><!--bloc-->
-
-     <div class="bloc-projets" [hidden]="!entreprises">
-      <div class="row" [hidden]="isListe">
-
-        <div class="col-3" *ngFor="let entreprise of visibleEntreprises" style="margin-bottom: 15px;">
-          <div class="card project-card">
-              <div class="project-image-container">
-                <img src="{{entreprise?.photo}}" *ngIf="entreprise?.photo" class="project-image"/>
-                <img src="assets/images/ent.png" *ngIf="!entreprise?.photo"  class="project-image"/>
-                <div class="project-badge">
-                  <span class="status-badge" style="margin-right: 10px;">{{entreprise?.nbr_projet}}</span>
-                   <span class="status-badge">{{entreprise?.statut}}</span>
-                </div>
-              </div>
-              <div class="card-body  project-content">
-                <p class="project-client" matTooltip="{{entreprise?.societe}}">{{entreprise?.societe}}</p>
-                <p align="center">
-                  <button type="button" class="details-button" (click)="getEntreprise(entreprise?._id)">Détail</button>
-                </p>
-              </div>
-          </div>
+        <div class="col">
+          <input type="text" class="search-input" id="exampleFormControlInput1" placeholder="Rechercher..."  (keyup)="applyFilter($event)">
         </div><!--col-->
       </div><!--row-->
-      <div [hidden]="!isListe">
-        <!-- <app-tab-entreprise></app-tab-entreprise> -->
+      <mat-divider style="margin-bottom: 20px;"></mat-divider>
 
-         <div class="row" style="margin-bottom: 20px;" *ngIf="selection.hasValue()">
-            <div class="col">
-              <div  class="selection-actions-bar" style="padding-top: 16px;">
-                  <div class="selection-info">
-                    <span class="selected-count">
-                      <i class="fa fa-check-square"></i>
-                      {{selection.selected.length}} élément(s) sélectionné(s)
-                    </span>
+      <div class="bloc-projets" [hidden]="entreprises">
+          <p class="notdata">Aucun données</p>
+      </div><!--bloc-->
 
-                    <button mat-stroked-button  color="warn" (click)="selection.clear()" class="btn-clear">
-                      <i class="fa fa-times"></i> Annuler
-                    </button>
+      <div class="bloc-projets" [hidden]="!entreprises">
+        <div class="row" [hidden]="isListe">
 
+          <div class="col-3" *ngFor="let entreprise of visibleEntreprises" style="margin-bottom: 15px;">
+            <div class="card project-card">
+                <div class="project-image-container">
+                  <img src="{{entreprise?.photo}}" *ngIf="entreprise?.photo" class="project-image"/>
+                  <img src="assets/images/ent.png" *ngIf="!entreprise?.photo"  class="project-image"/>
+                  <div class="project-badge">
+                    <span class="status-badge" style="margin-right: 10px;">{{entreprise?.nbr_projet}}</span>
+                    <span class="status-badge">{{entreprise?.statut}}</span>
                   </div>
+                </div>
+                <div class="card-body  project-content">
+                  <p class="project-client" matTooltip="{{entreprise?.societe}}">{{entreprise?.societe}}</p>
+                  <p align="center">
+                    <button type="button" class="details-button" (click)="getEntreprise(entreprise?._id)">Détail</button>
+                  </p>
+                </div>
+            </div>
+          </div><!--col-->
+        </div><!--row-->
+        <div [hidden]="!isListe">
+          <!-- <app-tab-entreprise></app-tab-entreprise> -->
+
+          <div class="row" style="margin-bottom: 20px;" *ngIf="selection.hasValue()">
+              <div class="col">
+                <div  class="selection-actions-bar" style="padding-top: 16px;">
+                    <div class="selection-info">
+                      <span class="selected-count">
+                        <i class="fa fa-check-square"></i>
+                        {{selection.selected.length}} élément(s) sélectionné(s)
+                      </span>
+
+                      <button mat-stroked-button  color="warn" (click)="selection.clear()" class="btn-clear">
+                        <i class="fa fa-times"></i> Annuler
+                      </button>
+
+                    </div>
+                </div>
+              </div>
+              <div class="col">
+                <div style="float: right;">
+                  <div class="selection-actions">
+                      <mat-form-field class="statut-select" style="margin-right: 32px;">
+                        <mat-label>Changer le statut</mat-label>
+                        <mat-select #statutSelect placeholder="Choisir un statut" (selectionChange)="changeStatutForSelected(statutSelect.value)">
+                          <mat-option *ngFor="let option of statutOptions" [value]="option.value">
+                            {{option.label}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+
+                      <button mat-raised-button color="warn" (click)="deleteSelected()" class="btn-delete-multiple">
+                        <i class="fa fa-trash"></i> Supprimer la sélection
+                      </button>
+                  </div>
+                </div>
               </div>
             </div>
-             <div class="col">
-              <div style="float: right;">
-                <div class="selection-actions">
-                    <mat-form-field class="statut-select" style="margin-right: 32px;">
-                      <mat-label>Changer le statut</mat-label>
-                      <mat-select #statutSelect placeholder="Choisir un statut" (selectionChange)="changeStatutForSelected(statutSelect.value)">
-                        <mat-option *ngFor="let option of statutOptions" [value]="option.value">
-                          {{option.label}}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
 
+          <table mat-table [dataSource]="dataSource">
 
-                    <button mat-raised-button color="warn" (click)="deleteSelected()" class="btn-delete-multiple">
-                      <i class="fa fa-trash"></i> Supprimer la sélection
-                    </button>
-                </div>
-              </div>
-             </div>
-          </div>
-
-        <table mat-table [dataSource]="dataSource">
-
-          <ng-container matColumnDef="select">
-              <th mat-header-cell *matHeaderCellDef style="width: 50px;">
-                <mat-checkbox
-                  (change)="$event ? toggleAllRows() : null"
-                  [checked]="selection.hasValue() && isAllSelected()"
-                  [indeterminate]="selection.hasValue() && !isAllSelected()"
-                  aria-label="Sélectionner tout">
-                </mat-checkbox>
-              </th>
-              <td mat-cell *matCellDef="let row" style="width: 50px;">
-                <mat-checkbox
-                  (click)="$event.stopPropagation()"
-                  (change)="$event ? selection.toggle(row) : null"
-                  [checked]="selection.isSelected(row)"
-                  aria-label="Sélectionner la ligne">
-                </mat-checkbox>
-              </td>
-          </ng-container>
-
-          <!-- Position Column -->
-          <ng-container matColumnDef="nom">
-            <th mat-header-cell *matHeaderCellDef class="tableau-title"> Entreprise </th>
-            <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;"> {{element?.nom}} </td>
-          </ng-container>
-
-          <!-- Name Column -->
-        <!-- <ng-container matColumnDef="commercial">
-            <th mat-header-cell *matHeaderCellDef> Nom Commercial </th>
-            <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.commercial}}</td>
-          </ng-container>-->
-
-          <!-- Weight Column -->
-          <ng-container matColumnDef="phone">
-            <th mat-header-cell *matHeaderCellDef class="tableau-title"> Téléphone </th>
-            <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"> ({{element?.indicatif}}) {{element?.phone}}  </td>
-          </ng-container>
-
-          <!-- Symbol Column -->
-          <ng-container matColumnDef="adresse">
-            <th mat-header-cell *matHeaderCellDef class="tableau-title">Adresse</th>
-            <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"> {{element?.rue}} {{element?.postal}} {{element?.ville}} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="statut">
-              <th mat-header-cell *matHeaderCellDef class="tableau-title">Statut</th>
-              <td mat-cell *matCellDef="let element">
-                <mat-form-field  class="statut-field" style="padding-top: 10px">
-                  <mat-select
-                    [(value)]="element.statut"
-                    (selectionChange)="onStatutChange(element, $event.value)"
-                    [class]="'statut-' + element.statut">
-                    <mat-option *ngFor="let option of statutOptions" [value]="option.value">
-                      {{option.label}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <div class="current-statut" [class]="'badge statut-' + element.statut">
-                  {{getStatutLabel(element.statut)}}
-                </div>
-              </td>
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef style="width: 50px;">
+                  <mat-checkbox
+                    (change)="$event ? toggleAllRows() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()"
+                    aria-label="Sélectionner tout">
+                  </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row" style="width: 50px;">
+                  <mat-checkbox
+                    (click)="$event.stopPropagation()"
+                    (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)"
+                    aria-label="Sélectionner la ligne">
+                  </mat-checkbox>
+                </td>
             </ng-container>
 
-          <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef class="tableau-title">Détail</th>
-            <td mat-cell *matCellDef="let element">  <button type="button" class="btn btn-outline-secondary btn-detail-projet" (click)="getEntreprise(element?._id)">Détail</button> </td>
-          </ng-container>
+            <!-- Position Column -->
+            <ng-container matColumnDef="nom">
+              <th mat-header-cell *matHeaderCellDef class="tableau-title"> Entreprise </th>
+              <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 12px;"> {{element?.nom}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+          <!-- <ng-container matColumnDef="commercial">
+              <th mat-header-cell *matHeaderCellDef> Nom Commercial </th>
+              <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;">{{element?.commercial}}</td>
+            </ng-container>-->
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="phone">
+              <th mat-header-cell *matHeaderCellDef class="tableau-title"> Téléphone </th>
+              <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"> ({{element?.indicatif}}) {{element?.phone}}  </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="adresse">
+              <th mat-header-cell *matHeaderCellDef class="tableau-title">Adresse</th>
+              <td mat-cell *matCellDef="let element" style="font-size: 12px;cursor: pointer;"> {{element?.rue}} {{element?.postal}} {{element?.ville}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="statut">
+                <th mat-header-cell *matHeaderCellDef class="tableau-title">Statut</th>
+                <td mat-cell *matCellDef="let element">
+                  <mat-form-field  class="statut-field" style="padding-top: 10px">
+                    <mat-select
+                      [(value)]="element.statut"
+                      (selectionChange)="onStatutChange(element, $event.value)"
+                      [class]="'statut-' + element.statut">
+                      <mat-option *ngFor="let option of statutOptions" [value]="option.value">
+                        {{option.label}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div class="current-statut" [class]="'badge statut-' + element.statut">
+                    {{getStatutLabel(element.statut)}}
+                  </div>
+                </td>
+              </ng-container>
+
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef class="tableau-title">Détail</th>
+              <td mat-cell *matCellDef="let element">  <button type="button" class="btn btn-outline-secondary btn-detail-projet" (click)="getEntreprise(element?._id)">Détail</button> </td>
+            </ng-container>
 
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
 
-        <mat-paginator [pageSizeOptions]="[10, 20]"
-                      showFirstLastButtons
-                      aria-label="Select page of periodic elements">
-        </mat-paginator>
+          <mat-paginator [pageSizeOptions]="[10, 20]"
+                        showFirstLastButtons
+                        aria-label="Select page of periodic elements">
+          </mat-paginator>
 
 
-      </div>
-     </div><!--projets-->
-
+        </div>
+      </div><!--projets-->
 
     </div><!--content-top-->
   </div>
+
+
 </app-navbar>
 

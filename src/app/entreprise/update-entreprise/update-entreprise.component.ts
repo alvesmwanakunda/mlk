@@ -215,7 +215,7 @@ export class UpdateEntrepriseComponent implements OnInit {
  }
 
   getDetail(idEntreprise){
-    this.router.navigate(['detail/entreprise',idEntreprise]);
+    this.router.navigate(['entreprises/detail',idEntreprise]);
   }
 
   openSnackBar(message){

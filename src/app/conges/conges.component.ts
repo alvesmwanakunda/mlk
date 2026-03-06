@@ -79,7 +79,7 @@ export class CongesComponent implements OnInit, AfterViewInit {
 }
 
 getConge(id){
-  this.router.navigate(['conge', id])
+  this.router.navigate(['conges', id])
 }
 
 

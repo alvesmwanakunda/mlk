@@ -101,6 +101,7 @@ getAllTime(){
   this.tachesService.getAllTime(this.idtache).subscribe((res:any)=>{
     res?.message.forEach(data => {
       // Convertir la date string en objet Date
+      console.log("Sous tache", data);
       const dateValue = data?.date ? new Date(data.date) : '';
       const dateFin = data?.date_fin ? new Date(data.date_fin) : '';
 
@@ -148,6 +149,7 @@ private formatDateForBackend(date: Date | string): string {
 
     const newEntry = this._formBuilder.group({
       date: ['', Validators.required],
+      date_fin:[''],
       employee: [[], Validators.required],
       description: [''],
       statut: [''],

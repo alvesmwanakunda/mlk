@@ -1,22 +1,15 @@
 <app-navbar>
-  <div class="container">
-    <div class="content-top">
-      <div class="row">
-        <div class="col">
-          <p class="title-projet-page">Projet : {{projet?.nom}} <button class="btn" type="button" [routerLink]="['/dashboard']"><i class="fa-solid fa-arrow-left" style="color:#28628B;"></i></button></p>
+
+  <div class="topbar">
+        <div class="topbar-left">
+          <h1>Projet : {{projet?.projet}}</h1>
         </div>
-        <div class="col">
-           <div align="right">
-            <i class="fa-solid fa-city" style="font-size: 30px;color: #666C7E;"></i>
-           </div>
+        <div class="topbar-right">
+          <button class="topbar-btn btn-primary" [routerLink]="['/dashboard']"><i class="fa-solid fa-arrow-left" style="color:#28628B;"></i> Retour</button>
         </div>
-      </div><!--row-->
-      <div class="row">
-        <div class="col">
-          <hr class="entreprise">
-        </div>
-      </div><!--row-->
-      <div class="row">
+  </div>
+  <div class="content">
+    <div class="row">
         <div class="col" *ngIf="projet">
 
 
@@ -262,7 +255,6 @@
 
         </div><!--col-->
       </div><!--row-->
-    </div>
   </div>
 </app-navbar>
 

@@ -24,7 +24,7 @@ export class ListProduitsComponent implements OnInit {
     private route: Router
   ){}
 
-  
+
 
   ngOnInit() {
     this.getAllProduits();
@@ -56,7 +56,7 @@ export class ListProduitsComponent implements OnInit {
   }
 
   getProduit(id){
-    this.route.navigate(['produit',id])
+    this.route.navigate(['produits',id])
   }
 }
 

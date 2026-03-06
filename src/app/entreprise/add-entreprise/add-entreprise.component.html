@@ -1,25 +1,22 @@
 <app-navbar>
-  <div class="container">
-    <div class="content-top">
-      <div class="row">
-        <div class="col">
-          <p class="title-projet-page">Création Entreprise <button class="btn" type="button" [routerLink]="['/entreprises']"><i class="fa-solid fa-arrow-left" style="color:#28628B;"></i></button></p>
+  <div class="topbar">
+        <div class="topbar-left">
+          <h1>Nouveau</h1>
         </div>
-        <div class="col">
-           <div align="right">
-            <i class="fa-solid fa-city" style="font-size: 30px;color: #666C7E;"></i>
-           </div>
+        <div class="topbar-right">
+          <button class="topbar-btn btn-primary" [routerLink]="['/entreprises']"> Retour</button>
         </div>
-      </div><!--row-->
-      <div class="row">
+  </div>
+  <div class="content">
+    <div class="row">
         <div class="col">
-          <hr class="entreprise">
-        </div>
-      </div><!--row-->
-      <div class="row">
-        <div class="col">
+          <div class="entreprise-form-layout">
+            <div class="entreprise-meta-card">
+              <div class="meta-title">Nouvelle entreprise</div>
+              <div class="meta-value">Complétez les informations de la société</div>
+            </div>
 
-          <form [formGroup]="signupForm" novalidate>
+          <form [formGroup]="signupForm" novalidate class="entreprise-form-grid">
             <div class="row">
               <div class="col">
                 <mat-form-field class="example-full-width">
@@ -193,17 +190,16 @@
               </div>-->
             </div>
 
-            <div class="text-center">
+            <div class="entreprise-actions">
               <button mat-raised-button [disabled]="onLoadForm" type="submit" (click)="addEntreprise()" class="sizeButtonSignup" style="color: #fff;">ENREGISTRER</button>
             </div>
           </form>
+          </div>
           <div *ngIf="onLoadForm">
             <mat-progress-bar mode="indeterminate"></mat-progress-bar>
           </div>
 
         </div><!--col-->
       </div><!--row-->
-    </div>
   </div>
 </app-navbar>
-

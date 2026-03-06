@@ -22,6 +22,7 @@ export class DetailProduitComponent implements OnInit {
   resume:any;
   description:any;
   images:any=[];
+  selectedImageIndex:number=0;
 
   // PDF
   urlImage="assets/images/logo.png";
@@ -78,11 +79,11 @@ export class DetailProduitComponent implements OnInit {
     this.produitService.getProduitById(this.idProduit).subscribe((res:any)=>{
       console.log("Produits", res.message);
       this.produit = res?.message;
-      this.images = res?.message?.images.map((data)=>({
-        image: 'data:image/jpeg;base64,' + data?.base64,
-        thumbImage: 'data:image/jpeg;base64,' + data?.base64,
-         alt: 'Image',
+      this.images = (res?.message?.images || []).map((data)=>({
+        src: `data:image/jpeg;base64,${data?.base64}`,
+        alt: this.produit?.name || 'Image produit'
       }));
+      this.selectedImageIndex = 0;
       //PDF
       // Modify the HTML content to add custom font size to paragraphs
       let modifiedHtmlContent = this.produit?.description.replace(/<p>/g, '<p style="font-size: 11pt;">');
@@ -104,6 +105,24 @@ export class DetailProduitComponent implements OnInit {
    },(error)=>{
      console.log("Erreur lors de la récupération des données", error);
    })
+  }
+
+  selectImage(index:number){
+    this.selectedImageIndex = index;
+  }
+
+  previousImage(){
+    if(!this.images?.length){
+      return;
+    }
+    this.selectedImageIndex = this.selectedImageIndex === 0 ? this.images.length - 1 : this.selectedImageIndex - 1;
+  }
+
+  nextImage(){
+    if(!this.images?.length){
+      return;
+    }
+    this.selectedImageIndex = this.selectedImageIndex === this.images.length - 1 ? 0 : this.selectedImageIndex + 1;
   }
 
   generatePDF(){

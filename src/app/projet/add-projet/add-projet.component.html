@@ -1,22 +1,17 @@
 <app-navbar>
-  <div class="container">
-    <div class="content-top">
-      <div class="row">
-        <div class="col">
-          <p class="title-projet-page">Création Projet <button class="btn" type="button" [routerLink]="['/dashboard']"><i class="fa-solid fa-arrow-left" style="color:#28628B;"></i></button></p>
+
+  <div class="topbar">
+        <div class="topbar-left">
+          <h1>Nouveau Projet</h1>
+          <!--<p>Gérez vos projets efficacement</p>-->
         </div>
-        <div class="col">
-           <div align="right">
-            <i class="fa-solid fa-city" style="font-size: 30px;color: #666C7E;"></i>
-           </div>
+        <div class="topbar-right">
+          <button class="topbar-btn btn-primary" [routerLink]="['/dashboard']"><i class="fa-solid fa-arrow-left" style="color:#28628B;"></i> Retour</button>
         </div>
-      </div><!--row-->
-      <div class="row">
-        <div class="col">
-          <hr class="entreprise">
-        </div>
-      </div><!--row-->
-      <div class="row">
+  </div>
+  <div class="content">
+
+     <div class="row">
         <div class="col">
 
           <mat-stepper orientation="vertical">
@@ -187,63 +182,6 @@
                 </div><!--col-->
                 <div class="col-md-9"></div>
               </div><!--row-->
-              <!--<div>
-                <div style="margin-bottom: 15px;">
-                  <mat-form-field class="example-full-width">
-                    <mat-label>Budget Prévisionnel du projet</mat-label>
-                    <input  matInput type="number" formControlName="budget">
-                  </mat-form-field>
-                </div>
-                <div style="margin-bottom: 15px;">
-                  <mat-form-field class="example-full-width">
-                    <mat-label>Devise du projet</mat-label>
-                    <input  matInput formControlName="devise"  [matAutocomplete]="auto">
-                    <mat-autocomplete #auto="matAutocomplete">
-                      <mat-option *ngFor="let dev of devisFiltres | async" [value]="dev.symbole">
-                        {{dev.nom}}
-                      </mat-option>
-                    </mat-autocomplete>
-                  </mat-form-field>
-                </div>
-                <div style="margin-bottom: 15px;">
-                  <mat-form-field class="example-full-width">
-                    <mat-label>Site d'offre</mat-label>
-                    <input  matInput  formControlName="site_offre">
-                  </mat-form-field>
-                </div>
-                <div style="margin-bottom: 15px;">
-                  <mat-form-field class="example-full-width">
-                    <mat-label>Numéro d'offre</mat-label>
-                    <input  matInput formControlName="numero_offre">
-                  </mat-form-field>
-                </div>
-                <div style="margin-bottom: 15px;">
-                  <div class="row">
-                    <div class="col">
-                      <mat-form-field class="example-full-width">
-                        <mat-label>Date limite remise d'offre</mat-label>
-                        <input matInput [matDatepicker]="picker" formControlName="date_limite">
-                        <mat-datepicker-toggle matIconSuffix [for]="picker">
-                          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-                        </mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                      </mat-form-field>
-                    </div>
-                    <div class="col">
-                      <mat-form-field class="example-full-width">
-                        <mat-label>Fin du contrat </mat-label>
-                        <input matInput [matDatepicker]="picker1" formControlName="date_fin_contrat">
-                        <mat-datepicker-toggle matIconSuffix [for]="picker1">
-                          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-                        </mat-datepicker-toggle>
-                        <mat-datepicker #picker1></mat-datepicker>
-                      </mat-form-field>
-                    </div>
-                  </div>
-
-                </div>
-              </div>-->
-
               </form>
               <div align="right">
                 <button mat-button matStepperPrevious class="btn-entreprise-back" style="margin-right: 10px;"><i class="fa-solid fa-chevron-left"></i> PRECEDENT</button>
@@ -254,7 +192,7 @@
 
         </div><!--col-->
       </div><!--row-->
-    </div>
+
   </div>
 </app-navbar>
 

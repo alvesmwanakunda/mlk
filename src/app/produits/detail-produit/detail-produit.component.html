@@ -1,33 +1,44 @@
 <app-navbar>
-    <div class="container">
-  
-      <div class="content-top">
-        <div class="row">
-            <div class="col">
-                <h2 class="content-title">Produit</h2>
-            </div>
-            <div class="col">
-                <div align="right" *ngIf="produit">
-                    <button mat-raised-button color="primary" (click)="generatePDF()">La fiche technique</button>
-                   </div>
-            </div>
+  <div class="topbar">
+        <div class="topbar-left">
+          <h1>Produit</h1>
         </div>
-        <br/>
-        <mat-divider></mat-divider>
-      </div><!--content-->
-
-       <div *ngIf="!produit">
+        <div class="topbar-right">
+          <button class="topbar-btn btn-primary"  (click)="generatePDF()">La fiche technique</button>
+        </div>
+  </div>
+  <div class="content">
+    <div *ngIf="!produit">
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
        </div>
 
        <div *ngIf="produit">
-        <div class="row" style="margin-bottom: 25px;">
+          <div class="row" style="margin-bottom: 25px;">
             <div class="col">
-                <ng-image-slider
-                [images]="images"
-                [imageSize]="{width:'100%', height:500}"
-                >
-                </ng-image-slider>
+                <div class="product-gallery" *ngIf="images?.length">
+                  <div class="main-image-wrap">
+                    <button type="button" class="gallery-nav prev" (click)="previousImage()" *ngIf="images.length > 1">
+                      <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <img class="main-image" [src]="images[selectedImageIndex]?.src" [alt]="images[selectedImageIndex]?.alt">
+                    <button type="button" class="gallery-nav next" (click)="nextImage()" *ngIf="images.length > 1">
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                  </div>
+
+                  <div class="thumb-list" *ngIf="images.length > 1">
+                    <button type="button"
+                            class="thumb-item"
+                            [class.active]="selectedImageIndex === i"
+                            *ngFor="let image of images; let i = index"
+                            (click)="selectImage(i)">
+                      <img [src]="image.src" [alt]="image.alt">
+                    </button>
+                  </div>
+                </div>
+                <div class="product-gallery-empty" *ngIf="!images?.length">
+                  Aucune image disponible
+                </div>
             </div>
             <div class="col">
                 <h1 class="name_details">{{produit?.name}}</h1>
@@ -55,6 +66,5 @@
             </div>
           </div>
        </div>
-    
-    </div>
+  </div>
 </app-navbar>

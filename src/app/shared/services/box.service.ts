@@ -116,6 +116,13 @@ public updateProjetFile(idFile,file){
     return this.httpClient.put(`${environment.BASE_API_URL}/fichier/${idFile}`,file);
 }
 
+public createProjectTree(idProjet, formData){
+  return this.httpClient.post(`${environment.BASE_API_URL}/fichier/projet/tree/${idProjet}`, formData, {
+    reportProgress: true,
+    observe: 'events'
+  });
+}
+
 
 
 

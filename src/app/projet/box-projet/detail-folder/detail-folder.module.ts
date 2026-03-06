@@ -13,6 +13,7 @@ import { FileBoxModule } from '../file-box/file-box.module';
 import { DetailFolderComponent } from './detail-folder.component';
 import { MoveFolderProjetModule } from '../move-folder-projet/move-folder-projet.module';
 import { DeleteFileProjetModule } from '../delete-file-projet/delete-file-projet.module';
+import { RenameFileProjetModule } from '../rename-file-projet/rename-file-projet.module';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { DeleteFileProjetModule } from '../delete-file-projet/delete-file-projet
     UpdateFileModule,
     FileBoxModule,
     MoveFolderProjetModule,
-    DeleteFileProjetModule
+    DeleteFileProjetModule,
+    RenameFileProjetModule
   ],
   providers:[BoxService, BreadcrumbService],
   exports:[DetailFolderComponent]

@@ -96,11 +96,11 @@ const routes: Routes = [
     loadChildren:()=>import('./contact/contact.module').then(m=>m.ContactModule),
   },
   {
-    path:"add/contact",
+    path:"contact/nouveau",
     loadChildren:()=>import('./contact/add-contact/add-contact.module').then(m=>m.AddContactModule),
   },
   {
-    path:"update/contact/:id",
+    path:"contact/:id",
     loadChildren:()=>import('./contact/update-contact/update-contact.module').then(m=>m.UpdateContactModule),
   },
   {
@@ -120,15 +120,15 @@ const routes: Routes = [
     loadChildren:()=>import('./entreprise/entreprise.module').then(m=>m.EntrepriseModule),
   },
   {
-    path:'detail/entreprise/:id',
+    path:'entreprises/detail/:id',
     loadChildren:()=>import('./entreprise/detail-entreprise/detail-entreprise.module').then(m=>m.DetailEntrepriseModule),
   },
   {
-    path:'add/entreprise',
+    path:'entreprises/nouveau',
     loadChildren:()=>import('./entreprise/add-entreprise/add-entreprise.module').then(m=>m.AddEntrepriseModule),
   },
   {
-    path:'entreprise/:id',
+    path:'entreprises/:id',
     loadChildren:()=>import('./entreprise/update-entreprise/update-entreprise.module').then(m=>m.UpdateEntrepriseModule),
   },
   {
@@ -145,7 +145,7 @@ const routes: Routes = [
     loadChildren:()=>import('./modulaires/modulaires.module').then(m=>m.ModulairesModule),
   },
   {
-    path:'modulaire',
+    path:'modulaires/nouveau',
     loadChildren:()=>import('./modulaires/add-module/add-module.module').then(m=>m.AddModuleModule),
   },
   {
@@ -209,7 +209,7 @@ const routes: Routes = [
     loadChildren:()=>import('./produits/list-produits/list-produits.module').then(m=>m.ListProduitsModule)
   },
   {
-    path:'produit/:id',
+    path:'produits/:id',
     loadChildren:()=>import('./produits/detail-produit/detail-produit.module').then(m=>m.DetailProduitModule)
   },
   {
@@ -217,11 +217,11 @@ const routes: Routes = [
     loadChildren:()=>import('./conges/conges.module').then(m=>m.CongesModule)
   },
   {
-    path:'conge',
+    path:'conges/nouveau',
     loadChildren:()=>import('./conges/add-conges/add-conges.module').then(m=>m.AddCongesModule)
   },
   {
-    path:'conge/:id',
+    path:'conges/:id',
     loadChildren:()=>import('./conges/update-conges/update-conges.module').then(m=>m.UpdateCongesModule)
   },
   {

@@ -1,25 +1,13 @@
 <app-navbar>
-  <div class="container">
-
-    <div class="content-top">
-       <div class="row">
-        <div class="col">
-          <h2 class="welcome-title">Nos contacts</h2>
+   <div class="topbar">
+        <div class="topbar-left">
+          <h1>Nos contacts</h1>
         </div>
-        <div class="col">
-          <div style="float: right;">
-           <button class="nouveau-projet-btn"  routerLink="/add/contact">
-              <svg class="icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" /></svg>
-              Nouveau
-           </button>
+        <div class="topbar-right">
+          <button class="topbar-btn btn-primary" [routerLink]="['/contact/nouveau']"> + Nouveau</button>
         </div>
-        </div>
-      </div>
-      <!-- <h2 class="content-title">Nos contacts</h2>
-      <mat-divider></mat-divider> -->
-    </div><!--content-->
-    <mat-divider style="margin-bottom: 30px;"></mat-divider>
-
+  </div>
+  <div class="content">
     <div>
 
        <div class="row" style="margin-bottom: 30px;">

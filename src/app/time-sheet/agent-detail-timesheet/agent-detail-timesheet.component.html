@@ -1,12 +1,13 @@
 <app-navbar>
-    <div class="container">
-      <div class="content-top">
-        <h2 class="content-title">Feuille de temps : {{month}}/{{year}}</h2>
-        <mat-divider></mat-divider>
-      </div><!--content-->
-    </div>
-    <div>
-       
+    <div class="topbar">
+        <div class="topbar-left">
+          <h1>Feuille de temps : {{month}}/{{year}}</h1>
+        </div>
+        <div class="topbar-right">
+        </div>
+  </div>
+  <div class="content">
+     <div>
        <div>
         <table class="table table-striped">
             <thead>
@@ -24,7 +25,8 @@
                 </tr>
               </tbody>
         </table>
-            
+
        </div>
     </div>
+  </div>
 </app-navbar>

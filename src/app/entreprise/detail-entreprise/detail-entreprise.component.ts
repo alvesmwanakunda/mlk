@@ -44,7 +44,7 @@ export class DetailEntrepriseComponent implements OnInit {
   }
 
   updateEntreprise(idEntreprise){
-    this.router.navigate(['entreprise',idEntreprise]);
+    this.router.navigate(['entreprises',idEntreprise]);
   }
 
   openDialogDelete(idEntreprise){

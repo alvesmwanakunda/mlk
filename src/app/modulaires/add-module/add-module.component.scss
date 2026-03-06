@@ -1,4 +1,70 @@
 ::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) {
     background-color: #fff !important;
-  }
+}
+
+.module-form-layout {
+  padding-top: 8px;
+}
+
+.module-meta-card {
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #e8ebf0;
+}
+
+.meta-title {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 2px;
+}
+
+.meta-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.module-form-grid {
+  background: #fff;
+  border: 1px solid #e8ebf0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.form-row {
+  margin-bottom: 15px;
+}
+
+.upload-card {
+  border: 1px dashed #cfd8e3;
+  border-radius: 10px;
+  background: #fcfdff;
+  padding: 14px;
+}
+
+.upload-title {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.upload-helper {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 10px;
+}
+
+.upload-alert {
+  margin-bottom: 10px;
+}
+
+.module-actions {
+  display: flex;
+  justify-content: flex-end;
+}
   
