@@ -282,7 +282,19 @@
 </div>
 </div>
  -->
-<aside class="sidebar">
+<button
+  type="button"
+  class="mobile-menu-toggle"
+  (click)="toggleMobileMenu()"
+  [attr.aria-expanded]="isMobileMenuOpen"
+  aria-label="Ouvrir le menu"
+>
+  <i class="fa-solid" [ngClass]="isMobileMenuOpen ? 'fa-xmark' : 'fa-bars'"></i>
+</button>
+
+<div class="sidebar-backdrop" [class.show]="isMobileMenuOpen" (click)="closeMobileMenu()"></div>
+
+<aside class="sidebar" [class.mobile-open]="isMobileMenuOpen">
     <div class="sidebar-logo">
       <div class="logo-icon"><img src="assets/images/mlka_logo.png" style="width: 109%;"></div>
       <span>MLKA GROUPE</span>
@@ -290,26 +302,26 @@
 
     <div class="sidebar-section">
       <div class="sidebar-section-label">Principal</div>
-      <div class="nav-item" [routerLink]="['/dashboard']" [routerLinkActive]="['active']"><span class="nav-icon"><i class="fa-solid fa-house"></i></span> Accueil</div>
-      <div class="nav-item" [routerLink]="['/produits']" [routerLinkActive]="['active']"><span class="nav-icon"><i class="fa-solid fa-box-open"></i></span> Produits</div>
+      <div class="nav-item" [routerLink]="['/dashboard']" [routerLinkActive]="['active']" (click)="closeMobileMenu()"><span class="nav-icon"><i class="fa-solid fa-house"></i></span> Accueil</div>
+      <div class="nav-item" [routerLink]="['/produits']" [routerLinkActive]="['active']" (click)="closeMobileMenu()"><span class="nav-icon"><i class="fa-solid fa-box-open"></i></span> Produits</div>
       <!-- <div class="nav-item"  [routerLink]="['/devis']" [routerLinkActive]="['active']"><span class="nav-icon"><i class="fa-regular fa-file-lines"></i></span> Devis</div> -->
     </div>
 
     <div class="sidebar-section">
       <div class="sidebar-section-label">Gestion</div>
-      <div class="nav-item" [routerLink]="['/entreprises']" [routerLinkActive]="['active']" *ngIf="user?.user?.role=='admin'"><span class="nav-icon"><i class="fa-regular fa-building"></i></span> Entreprises</div>
-      <div class="nav-item" [routerLink]="['/contact']" [routerLinkActive]="['active']" *ngIf="user?.user?.role=='admin'"><span class="nav-icon"><i class="fa-regular fa-address-book"></i></span> Contacts</div>
-      <div class="nav-item" [routerLink]="['/modulaires']" [routerLinkActive]="['active']"><span class="nav-icon"><i class="fa-solid fa-cubes"></i></span> Stock</div>
+      <div class="nav-item" [routerLink]="['/entreprises']" [routerLinkActive]="['active']" *ngIf="user?.user?.role=='admin'" (click)="closeMobileMenu()"><span class="nav-icon"><i class="fa-regular fa-building"></i></span> Entreprises</div>
+      <div class="nav-item" [routerLink]="['/contact']" [routerLinkActive]="['active']" *ngIf="user?.user?.role=='admin'" (click)="closeMobileMenu()"><span class="nav-icon"><i class="fa-regular fa-address-book"></i></span> Contacts</div>
+      <div class="nav-item" [routerLink]="['/modulaires']" [routerLinkActive]="['active']" (click)="closeMobileMenu()"><span class="nav-icon"><i class="fa-solid fa-cubes"></i></span> Stock</div>
       <!-- <div class="nav-item" [routerLink]="['/box']" [routerLinkActive]="['active']"><span class="nav-icon"><i class="fa-solid fa-box-archive"></i></span> Box</div> -->
     </div>
 
     <div class="sidebar-section">
       <div class="sidebar-section-label">RH</div>
-      <div class="nav-item" [routerLink]="['/agenda']" [routerLinkActive]="['active']"><span class="nav-icon"><i class="fa-regular fa-calendar-days"></i></span> Agenda</div>
-      <div class="nav-item" [routerLink]="['/users']" [routerLinkActive]="['active']" *ngIf="user?.user?.role=='admin'"><span class="nav-icon"><i class="fa-solid fa-users"></i></span> Employés</div>
-      <div class="nav-item" [routerLink]="['/conges']" [routerLinkActive]="['active']"><span class="nav-icon"><i class="fa-solid fa-umbrella-beach"></i></span> Congés</div>
-      <div class="nav-item" [routerLink]="['/timesheet']" [routerLinkActive]="['active']" *ngIf="user?.user?.role=='admin'"><span class="nav-icon"><i class="fa-regular fa-clock"></i></span> Feuille de temps</div>
-      <div class="nav-item" [routerLink]="['/agent/timesheet']" [routerLinkActive]="['active']" *ngIf="user?.user?.role=='agent'"><span class="nav-icon"><i class="fa-regular fa-clock"></i></span> Feuille de temps</div>
+      <div class="nav-item" [routerLink]="['/agenda']" [routerLinkActive]="['active']" (click)="closeMobileMenu()"><span class="nav-icon"><i class="fa-regular fa-calendar-days"></i></span> Agenda</div>
+      <div class="nav-item" [routerLink]="['/users']" [routerLinkActive]="['active']" *ngIf="user?.user?.role=='admin'" (click)="closeMobileMenu()"><span class="nav-icon"><i class="fa-solid fa-users"></i></span> Employés</div>
+      <div class="nav-item" [routerLink]="['/conges']" [routerLinkActive]="['active']" (click)="closeMobileMenu()"><span class="nav-icon"><i class="fa-solid fa-umbrella-beach"></i></span> Congés</div>
+      <div class="nav-item" [routerLink]="['/timesheet']" [routerLinkActive]="['active']" *ngIf="user?.user?.role=='admin'" (click)="closeMobileMenu()"><span class="nav-icon"><i class="fa-regular fa-clock"></i></span> Feuille de temps</div>
+      <div class="nav-item" [routerLink]="['/agent/timesheet']" [routerLinkActive]="['active']" *ngIf="user?.user?.role=='agent'" (click)="closeMobileMenu()"><span class="nav-icon"><i class="fa-regular fa-clock"></i></span> Feuille de temps</div>
 
     </div>
 

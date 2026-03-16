@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, HostListener } from '@angular/core';
 import { AuthService } from '../shared/services/auth.service';
 import { EntreprisesService } from '../shared/services/entreprises.service';
 import { ChatService } from '../shared/services/chat.service';
@@ -19,6 +19,7 @@ export class NavbarComponent implements OnInit {
   user:any;
   company:any;
   number=0;
+  isMobileMenuOpen = false;
 
 
   constructor(
@@ -100,6 +101,21 @@ export class NavbarComponent implements OnInit {
 
   goToSettings(){
     
+  }
+
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  closeMobileMenu(): void {
+    this.isMobileMenuOpen = false;
+  }
+
+  @HostListener('window:resize')
+  onResize(): void {
+    if (window.innerWidth > 992 && this.isMobileMenuOpen) {
+      this.closeMobileMenu();
+    }
   }
 
 }

@@ -14,14 +14,74 @@
     }
 }
 
-.mat-badge-content {
+.module-tab-badge {
+  display: inline-block;
+  position: relative;
+  padding-right: 28px;
+}
+
+:host ::ng-deep .module-tab-badge .mat-badge-content {
   width: auto;
   display: grid;
-  min-width: 37px;
-  min-height: 37px;
+  min-width: 28px;
+  min-height: 28px;
   text-align: center;
   align-items: center;
-  padding: 5px 3px;
-  top: -16px !important;
-  right: -40px !important;
+  padding: 2px 6px;
+  top: -8px !important;
+  right: -14px !important;
+  font-size: 11px;
+}
+
+.modulaires-summary {
+  margin-bottom: 24px;
+}
+
+.modulaires-count-row {
+  row-gap: 10px;
+}
+
+.modulaires-chart-wrap {
+  width: 100%;
+}
+
+@media (max-width: 992px) {
+  .modulaires-chart-wrap {
+    overflow-x: auto;
+  }
+
+  :host ::ng-deep .mat-mdc-tab-header {
+    overflow-x: auto;
+  }
+
+  :host ::ng-deep .mat-mdc-tab-label-container {
+    overflow-x: auto;
+  }
+
+  :host ::ng-deep .mat-mdc-tab {
+    min-width: fit-content;
+    padding: 0 12px;
+  }
+}
+
+@media (max-width: 640px) {
+  .modulaires-new-btn {
+    width: 100%;
+  }
+
+  :host ::ng-deep .canvasjs-chart-container {
+    height: 280px !important;
+  }
+
+  .module-tab-badge {
+    padding-right: 24px;
+  }
+
+  :host ::ng-deep .module-tab-badge .mat-badge-content {
+    min-width: 24px;
+    min-height: 24px;
+    top: -6px !important;
+    right: -10px !important;
+    font-size: 10px;
+  }
 }

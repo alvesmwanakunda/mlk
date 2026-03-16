@@ -1,9 +1,9 @@
-  <mat-dialog-content class="mat-typography">
-    <div class="row" style="margin-bottom: 15px;">
-        <div class="col">
+  <mat-dialog-content class="mat-typography stock-dialog-content">
+    <div class="row stock-toolbar-row" style="margin-bottom: 15px;">
+        <div class="col-12 col-md-6">
           <input type="text"  (keyup)="applyFilter($event)" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher">
         </div>
-        <div class="col"  align="right">
+        <div class="col-12 col-md-6 stock-toolbar-actions">
            <button mat-raised-button color="primary"
             (click)="addModules()"
             [disabled]="selection.selected.length === 0"
@@ -12,6 +12,7 @@
           </button>
         </div>
       </div>
+      <div class="stock-table-wrap">
       <table mat-table [dataSource]="dataSource" matSort #matSort="matSort">
           <!-- Position Column -->
            <ng-container matColumnDef="select">
@@ -73,6 +74,7 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
+      </div>
 
         <mat-paginator #paginatorStock [pageSizeOptions]="[10, 20]"
                       showFirstLastButtons

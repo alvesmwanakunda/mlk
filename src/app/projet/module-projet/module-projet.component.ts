@@ -242,7 +242,11 @@ generatePDF() {
 }*/
 
 async printAll() {
-    const pdf = new jsPDF({ unit: 'cm', format: [16, 8], orientation: 'landscape' });
+    const pageWidth = 16;
+    const pageHeight = 8;
+    const bottomMargin = 0.4;
+    const printableHeight = pageHeight - bottomMargin;
+    const pdf = new jsPDF({ unit: 'cm', format: [pageWidth, pageHeight], orientation: 'landscape' });
     this.loading = true;
 
     for (let i = 0; i < this.modulesWithQrcode.length; i++) {
@@ -265,7 +269,7 @@ async printAll() {
       const imgData = canvas.toDataURL('image/jpeg', 1.0);
 
       if (i > 0) pdf.addPage();
-      pdf.addImage(imgData, 'JPEG', 0, 0, 16, 8);
+      pdf.addImage(imgData, 'JPEG', 0, 0, pageWidth, printableHeight);
     }
 
     pdf.save('plaquettes_mlka.pdf');

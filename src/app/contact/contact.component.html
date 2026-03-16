@@ -43,7 +43,7 @@
       <div [hidden]="!contacts.length">
         <div [hidden]="isListe">
           <div class="row">
-            <div class="col-4"  *ngFor="let contact of contacts" style="margin-bottom: 15px;">
+            <div class="col-12 col-sm-6 col-lg-4"  *ngFor="let contact of contacts" style="margin-bottom: 15px;">
              <div class="card project-card">
                  <!--<img src="assets/images/int.png" class="card-img-top card-img-projet" alt="...">-->
                  <div class="card-body">
@@ -78,7 +78,9 @@
         </div><!--row-->
         <div [hidden]="!isListe">
 
-          <table mat-table [dataSource]="dataSource">
+          <div class="dashboard-table-wrap">
+
+            <table mat-table [dataSource]="dataSource">
 
             <!-- Position Column -->
             <ng-container matColumnDef="nom">
@@ -122,6 +124,8 @@
                         aria-label="Select page of periodic elements"
                         >
           </mat-paginator>
+
+          </div>
 
         </div><!--isListe-->
       </div>

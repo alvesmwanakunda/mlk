@@ -9,16 +9,16 @@
   </div>
   <div class="content">
     <div>
-      <div class="row">
-         <div class="col" align="right">
+      <div class="row content-toolbar-row project-toolbar-row">
+         <div class="col-12 project-toolbar-actions">
           <button mat-raised-button type="button" color="primary" style="margin-right: 5px;" matTooltip="Modifier" (click)="updateProjet(projet._id)"><i class="fa-regular fa-pen-to-square"></i> Modifier</button>
          </div><!--col-->
       </div><!--row-->
     </div><!--content-->
 
     <div class="list-projet">
-      <div class="row">
-        <div class="col-3">
+      <div class="row projet-layout-row">
+        <div class="col-12 col-lg-4 col-xl-3 projet-summary-col">
 
           <div class="card card-projet">
             <img src="{{projet.photo}}" *ngIf="projet?.photo" class="card-img-top card-img-projet" alt="...">
@@ -84,9 +84,9 @@
           </div>
 
         </div><!--col-->
-        <div class="col">
+        <div class="col-12 col-lg-8 col-xl-9 projet-tabs-col">
 
-          <nav>
+          <nav class="project-tabs-wrap">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
               <button class="nav-link tabprojet active" id="nav-file-tab" data-bs-toggle="tab" data-bs-target="#nav-file" type="button" role="tab" aria-controls="nav-file" aria-selected="true">Fiche</button>
               <button class="nav-link tabprojet" id="nav-piece-tab" data-bs-toggle="tab" data-bs-target="#nav-piece" type="button" role="tab" aria-controls="nav-piece" aria-selected="false">Documents</button>
@@ -122,4 +122,3 @@
   </div>
 
 </app-navbar>
-

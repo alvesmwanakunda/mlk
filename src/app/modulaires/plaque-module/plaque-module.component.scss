@@ -89,3 +89,63 @@
         bottom: 80px;
         right: 20px;
     }
+
+    .plaque-toolbar-row {
+      margin-bottom: 8px;
+    }
+
+    .plaque-toolbar-actions {
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .plaque-preview-wrap {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 8px;
+    }
+
+    .plaque-preview-wrap .card {
+      margin: 0 auto;
+    }
+
+    @media (max-width: 992px) {
+      .plaque-toolbar-actions {
+        justify-content: flex-start;
+      }
+
+      .plaque-preview-wrap .card {
+        margin: 0;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .plaque-print-btn {
+        width: 100%;
+      }
+
+      .plaque-preview-wrap {
+        padding-bottom: 12px;
+      }
+
+      .sub-text {
+        left: 16px;
+        bottom: 12px;
+        line-height: 1.45rem;
+        font-size: 11px;
+        color: #111;
+        z-index: 5;
+      }
+
+      .sub-text span {
+        display: block;
+      }
+
+      .box,
+      .box2 {
+        left: 138px;
+        width: 210px;
+        z-index: 4;
+      }
+    }

@@ -1,8 +1,7 @@
 <div class="container">
     <div class="content-top-child">
-      <div >
-        <div class="row" style="margin-bottom: 30px;">
-          <div class="col">
+        <div class="row content-toolbar-row module-toolbar-row" style="margin-bottom: 30px;">
+          <div class="col-12 col-lg">
              <div class="mb-3">
                 <button
                   type="button"
@@ -13,13 +12,10 @@
                   <i class="fa-solid fa-download"></i>
                   {{ loading ? 'Génération en cours...' : 'Télécharger toutes les plaques' }}
                 </button>
-                <!--<span class="ms-2 text-muted" *ngIf="modules.length > 0">
-                  ({{ modules.length }} module(s))
-                </span>-->
              </div>
           </div>
-          <div class="col">
-            <div align="right">
+          <div class="col-12 col-lg-auto module-toolbar-actions">
+            <div>
               <button type="button" class="btn btn-projet" (click)="openDialog()" style="margin-right: 10px;"><i class="fa-solid fa-plus"></i> Ajouter un article</button>
               <button type="button" class="btn btn-projet" (click)="openDialogProjet()"><i class="fa-solid fa-cubes"></i> Nouvel article</button>
 
@@ -27,16 +23,18 @@
           </div>
         </div>
 
-        <div class="row" style="margin-bottom: 30px;">
-          <div class="col-4">
+        <div class="row content-toolbar-row module-filter-row" style="margin-bottom: 30px;">
+          <div class="col-12 col-md-6 col-lg-4">
             <input (keyup)="applyFilter($event)" type="text" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher par nom">
           </div><!--col-->
-          <div class="col">
-            <div align="right">
+          <div class="col-12 col-md-6 col-lg-8 module-total-col">
+            <div>
                <h2 style="font-size: 14px;color: #292375e8;">Total matériels : {{dataSource.data.length}}</h2>
             </div>
           </div>
         </div><!--row-->
+
+        <div class="module-table-wrap">
 
           <table mat-table [dataSource]="dataSource" matSort #sort="matSort">
             <!-- Position Column -->
@@ -89,49 +87,19 @@
             </tr>
           </table>
 
+
           <mat-paginator #paginator [pageSizeOptions]="[10, 20]"
                         showFirstLastButtons
                         aria-label="Select page of periodic elements"
                         >
           </mat-paginator>
 
+        </div>
 
-      </div><!--box-->
     </div>
-    <!-- Conteneur caché pour générer le PDF -->
-    <!-- <div class="card" id="pdf-card">
-      <div *ngFor="let module of modulesWithQrcode; let i = index" class="plaque-item"
-            [class.page-break]="i > 0 && i % 4 === 0">
+  </div>
 
-        <div style="margin: 2px;">
-        <img src="assets/images/innov2025.png"  height="110" width="110">
-        <br/>
-        <img src="assets/images/exp.png"  height="30" width="40" style="position: absolute;left: 39px;">
-      </div>
-      <div class="text">
-        <strong >MLKA INNOVATION</strong><br/>
-        18 PL. DES NYMPHÉAS, 93420 VILLEPINTE, FRANCE<br/>
-        Tél : +33 87 66 98 54 <br/>
-        Email : {{email}} <br/>
-        Site web : www.mlka-groupe.fr
-      </div>
-
-      <div class="sub-text">
-        <span><strong>PROPRIETAIRE</strong> </span> <br>
-        <span><strong>NUMERO</strong> </span>
-      </div>
-      <div class="box">{{module?.module?.entreprise?.societe}}</div>
-      <div class="box2">{{module?.module?.numero_serie}}</div>
-
-      <div class="img">
-        <img [src]="module?.qrcode" height="150" width="150" alt="">
-      </div>
-
-      </div>
-    </div>-->
-    <!-- module-projet.component.html -->
-
-    <div id="plaques-container" style="opacity: 0; position: absolute; top: 0; left: 0;">
+  <div id="plaques-container" style="opacity: 0; position: absolute; top: 0; left: 0;">
       <div *ngFor="let module of modulesWithQrcode; let i = index">
         <div class="card" id="pdf-card-{{i}}">
           <div style="margin: 2px;">
@@ -161,14 +129,10 @@
           </div>
         </div>
       </div>
+  </div>
+  <div *ngIf="loading" class="text-center mt-3">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Chargement...</span>
     </div>
-
-  <!-- Loader -->
-    <div *ngIf="loading" class="text-center mt-3">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Chargement...</span>
-      </div>
-      <p class="mt-2">Génération des plaques en cours...</p>
-    </div>
-
+    <p class="mt-2">Génération des plaques en cours...</p>
   </div>

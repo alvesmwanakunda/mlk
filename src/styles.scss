@@ -2476,6 +2476,27 @@ hr.entreprise{
   margin-bottom: 20px;
 }
 .filter-bar .tabs { display: flex; gap: 4px; }
+.dashboard-controls-col {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.dashboard-controls {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.dashboard-table-wrap {
+  width: 100%;
+  overflow-x: visible;
+}
+
+.dashboard-table-wrap table {
+  width: 100%;
+  min-width: 100%;
+}
 .tab {
   padding: 7px 16px;
   border-radius: 8px;
@@ -2496,9 +2517,15 @@ hr.entreprise{
   font-weight: 600;
 }
 
-// New css
+// New css ==================================>
 
  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+ .app-navbar,
+ app-navbar {
+  display: block;
+  width: 100%;
+ }
 
 
 /* SIDEBAR */
@@ -2550,9 +2577,52 @@ hr.entreprise{
   .user-info { flex: 1; }
   .user-name { color: #fff; font-size: 13px; font-weight: 600; }
   .user-role { color: rgba(255,255,255,0.4); font-size: 11px; }
+  .mobile-menu-toggle,
+  .sidebar-backdrop { display: none; }
+
+  .mobile-menu-toggle {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    background: #1B4F8A;
+    color: #fff;
+    font-size: 18px;
+    align-items: center;
+    justify-content: center;
+    z-index: 1300;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(13, 36, 71, 0.25);
+  }
+
+  .sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(11, 22, 46, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    z-index: 1190;
+  }
+
+  .sidebar-backdrop.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
 
   /* MAIN */
-  .main { margin-left: 220px; flex: 1; }
+  .main {
+    margin-left: 220px;
+    width: calc(100% - 220px);
+    max-width: calc(100vw - 220px);
+    min-height: 100vh;
+    flex: 1;
+    min-width: 0;
+    overflow-x: hidden;
+  }
 
   /* TOPBAR */
   .topbar {
@@ -2571,7 +2641,7 @@ hr.entreprise{
   .btn-icon { background: #F4F5F7; color: #374151; width: 38px; height: 38px; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-size: 17px; }
 
   /* CONTENT */
-  .content { padding: 28px; }
+  .content { padding: 28px; overflow-x: hidden; }
 
   /* KPI CARDS */
   .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
@@ -2629,6 +2699,164 @@ hr.entreprise{
   .progress-fill.orange { background: #F4871A; }
   .progress-fill.green { background: #059669; }
   .progress-label { display: flex; justify-content: space-between; margin-top: 6px; font-size: 11px; color: #7A8499; }
+
+  @media (max-width: 992px) {
+    .mobile-menu-toggle {
+      display: flex;
+    }
+
+    .sidebar-backdrop {
+      display: block;
+    }
+
+    .sidebar {
+      width: min(280px, 85vw);
+      z-index: 1200;
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+      box-shadow: 18px 0 40px rgba(13, 36, 71, 0.28);
+    }
+
+    .sidebar.mobile-open {
+      transform: translateX(0);
+    }
+
+    .main {
+      margin-left: 0;
+      width: 100%;
+      max-width: 100vw;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      padding: 0 16px 0 64px;
+    }
+
+    .content {
+      padding: 16px;
+    }
+
+    .dashboard-table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .dashboard-table-wrap table {
+      width: auto;
+      min-width: 700px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .mobile-menu-toggle {
+      top: 10px;
+      left: 10px;
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .topbar {
+      padding: 0 12px 0 56px;
+    }
+
+    .topbar-left h1 {
+      font-size: 28px;
+    }
+
+    .topbar-right {
+      gap: 8px;
+    }
+
+    .topbar-btn {
+      padding: 8px 12px;
+      font-size: 12px;
+    }
+
+    .content {
+      padding: 12px;
+    }
+
+    .list-projet .row {
+      row-gap: 10px;
+    }
+
+    .list-projet .row > [class*='col'] {
+      width: 100%;
+      max-width: 100%;
+      flex: 0 0 100%;
+    }
+
+    .content-toolbar-row {
+      row-gap: 10px;
+    }
+
+    .dashboard-controls-col,
+    .dashboard-controls {
+      justify-content: flex-start;
+    }
+
+    .view-toggle-container {
+      width: 100%;
+    }
+
+    .filter-bar {
+      overflow-x: auto;
+    }
+
+    .filter-bar .tabs {
+      min-width: max-content;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .topbar {
+      height: auto;
+      min-height: 56px;
+      padding: 10px 10px 10px 52px;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .topbar-left h1 {
+      font-size: 22px;
+      line-height: 1.2;
+      word-break: break-word;
+    }
+
+    .topbar-right {
+      margin-left: auto;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .topbar-btn {
+      padding: 7px 10px;
+      font-size: 11px;
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+
+    .search-input {
+      padding: 0.75rem 0.875rem;
+      font-size: 0.95rem;
+    }
+
+    .project-content {
+      padding: 1rem;
+    }
+
+    .project-title {
+      font-size: 1rem;
+    }
+
+    .detail-item {
+      font-size: 0.8rem;
+    }
+  }
 // Fin css
 
 
@@ -2642,4 +2870,3 @@ hr.entreprise{
 @import 'assets/css/calendar.scss';
 @import "../node_modules/angular-calendar/css/angular-calendar.css";
 @import "~@ng-select/ng-select/themes/default.theme.css";
-

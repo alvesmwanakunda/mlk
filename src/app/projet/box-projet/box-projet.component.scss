@@ -18,3 +18,50 @@
   background-color: #fff4ee;
   color: #d4581f;
 }
+
+.box-toolbar-row {
+  row-gap: 10px;
+}
+
+.box-toolbar-actions-wrap {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.box-toolbar-actions {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.box-toolbar-actions .btn-piece {
+  margin-right: 0 !important;
+}
+
+.box-toolbar-actions app-file-box {
+  display: inline-flex;
+}
+
+@media (max-width: 992px) {
+  .box-toolbar-actions-wrap,
+  .box-toolbar-actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .drop-tree-zone {
+    font-size: 11px;
+    padding: 10px;
+  }
+
+  .box-toolbar-actions .btn-piece {
+    width: 100%;
+  }
+
+  .box-toolbar-actions app-file-box {
+    width: 100%;
+  }
+}

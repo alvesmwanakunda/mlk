@@ -10,8 +10,8 @@
   </div>
   <div class="content">
     <div>
-      <div class="row" style="margin-bottom: 30px;">
-        <div class="col">
+      <div class="row content-toolbar-row" style="margin-bottom: 30px;">
+        <div class="col-12 col-md">
             <div class="filter-bar">
               <div class="tabs">
                     <button class="tab" [class.active]="selectedStatus === 'all'" (click)="filterByStatus('all')">
@@ -26,8 +26,8 @@
               </div>
             </div>
         </div>
-        <div class="col-2">
-          <div style="float: right;">
+        <div class="col-12 col-md-auto dashboard-controls-col">
+          <div class="dashboard-controls">
             <div class="view-toggle-container">
               <div class="view-toggle-wrapper">
                   <!-- Bouton Vue Grille -->
@@ -43,7 +43,7 @@
             </div>
           </div>
         </div><!--col-->
-        <div class="col">
+        <div class="col-12 col-md">
           <input type="text" class="search-input" id="exampleFormControlInput1" placeholder="Rechercher..."  (keyup)="applyFilter($event)">
         </div><!--col-->
       </div><!--row-->
@@ -56,7 +56,7 @@
       <div class="bloc-projets" [hidden]="!entreprises">
         <div class="row" [hidden]="isListe">
 
-          <div class="col-3" *ngFor="let entreprise of visibleEntreprises" style="margin-bottom: 15px;">
+          <div class="col-12 col-sm-6 col-lg-3" *ngFor="let entreprise of visibleEntreprises" style="margin-bottom: 15px;">
             <div class="card project-card">
                 <div class="project-image-container">
                   <img src="{{entreprise?.photo}}" *ngIf="entreprise?.photo" class="project-image"/>
@@ -78,8 +78,8 @@
         <div [hidden]="!isListe">
           <!-- <app-tab-entreprise></app-tab-entreprise> -->
 
-          <div class="row" style="margin-bottom: 20px;" *ngIf="selection.hasValue()">
-              <div class="col">
+          <div class="row content-toolbar-row" style="margin-bottom: 20px;" *ngIf="selection.hasValue()">
+              <div class="col-12 col-lg">
                 <div  class="selection-actions-bar" style="padding-top: 16px;">
                     <div class="selection-info">
                       <span class="selected-count">
@@ -94,8 +94,8 @@
                     </div>
                 </div>
               </div>
-              <div class="col">
-                <div style="float: right;">
+              <div class="col-12 col-lg-auto dashboard-controls-col">
+                <div class="dashboard-controls">
                   <div class="selection-actions">
                       <mat-form-field class="statut-select" style="margin-right: 32px;">
                         <mat-label>Changer le statut</mat-label>
@@ -203,4 +203,3 @@
 
 
 </app-navbar>
-

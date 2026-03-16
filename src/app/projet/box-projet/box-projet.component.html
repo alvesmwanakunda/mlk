@@ -3,17 +3,19 @@
 
     <div *ngIf="showBox">
 
-      <div class="row" style="margin-bottom: 30px;">
+      <div class="row content-toolbar-row box-toolbar-row" style="margin-bottom: 30px;">
 
-        <div class="col-4">
+        <div class="col-12 col-lg-5">
           <input (keyup)="applyFilter($event)" type="text" class="form-control input-search" id="exampleFormControlInput1" placeholder="Rechercher par nom de dossier ou fichier">
         </div><!--col-->
 
-        <div class="col-8" align="right" *ngIf="user?.user?.role!='user'">
-         <button type="button" class="btn btn-piece"  style="margin-right: 10px;" (click)="openDialogDossier()"><i class="fa-solid fa-plus"></i> Nouveau Dossier</button>
+        <div class="col-12 col-lg-7 box-toolbar-actions-wrap" *ngIf="user?.user?.role!='user'">
+         <div class="box-toolbar-actions">
+         <button type="button" class="btn btn-piece" (click)="openDialogDossier()"><i class="fa-solid fa-plus"></i> Nouveau Dossier</button>
          <input #folderTreeUpload type="file" class="file-input" webkitdirectory directory multiple (change)="onFolderTreeSelected($event)">
-         <button type="button" class="btn btn-piece" style="margin-right: 10px;" (click)="folderTreeUpload.click()"><i class="fa-solid fa-folder-tree"></i> Charger dossier</button>
+         <button type="button" class="btn btn-piece" (click)="folderTreeUpload.click()"><i class="fa-solid fa-folder-tree"></i> Charger dossier</button>
          <app-file-box [idProjet]="idProjet"></app-file-box>
+         </div>
         </div><!--col-->
      </div><!--row-->
 
@@ -37,6 +39,7 @@
       </div>
       <p style="font-size: 12px;color:red;" *ngIf="treeUploadError">{{treeUploadError}}</p>
 
+      <div class="dashboard-table-wrap">
       <table mat-table [dataSource]="dataSource">
 
         <!-- Position Column -->
@@ -113,6 +116,7 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
+      </div>
       <mat-paginator [pageSizeOptions]="[10, 20]"
                     showFirstLastButtons
                     aria-label="Select page of periodic elements">

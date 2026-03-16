@@ -30,8 +30,8 @@
             </div>
           </div>
 
-          <div class="col-2">
-            <div style="float: right;">
+          <div class="col-12 col-md-auto dashboard-controls-col">
+            <div class="dashboard-controls">
               <div class="view-toggle-container">
                 <div class="view-toggle-wrapper">
                     <!-- Bouton Vue Grille -->
@@ -64,7 +64,7 @@
       <div class="bloc-projets" [hidden]="!filteredProjets.length">
 
         <div class="row" [hidden]="!isListe">
-          <div class="col-3" *ngFor="let projet of visibleProjets" style="margin-bottom: 15px;">
+          <div class="col-12 col-sm-6 col-lg-3" *ngFor="let projet of visibleProjets" style="margin-bottom: 15px;">
             <div class="card project-card">
               <div class="project-image-container">
                 <img src="{{projet?.photo}}" *ngIf="projet?.photo" class="project-image"/>
@@ -147,6 +147,7 @@
 
           <!-- Barre d'actions pour sélection multiple -->
 
+          <div class="dashboard-table-wrap">
           <table mat-table [dataSource]="dataSource">
 
             <ng-container matColumnDef="select">
@@ -208,6 +209,7 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
           </table>
+          </div>
 
           <mat-paginator #paginator [pageSizeOptions]="[10, 20]"
                         showFirstLastButtons
@@ -221,7 +223,6 @@
   </div><!--content-->
 
 </app-navbar>
-
 
 
 

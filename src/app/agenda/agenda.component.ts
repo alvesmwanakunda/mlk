@@ -225,7 +225,7 @@ export class AgendaComponent implements OnInit {
   }
 
   openDialogAgenda(){
-    const dialogRef = this.dialog.open(AddAgendaComponent,{width:'60%',height:'70%'});
+    const dialogRef = this.dialog.open(AddAgendaComponent,this.getResponsiveDialogConfig('form'));
     dialogRef.afterClosed().subscribe((result:any)=>{
        if(result){
         this.getAllAgenda();
@@ -236,7 +236,10 @@ export class AgendaComponent implements OnInit {
   openDialogUpadte(event:CalendarEvent){
     console.log("Evenements", event);
     this.agenda =event;
-    const dialogRef = this.dialog.open(UpdateAgendaComponent,{data:{id:this.agenda._id,type:"agenda"},width:'60%',height:'70%'});
+    const dialogRef = this.dialog.open(UpdateAgendaComponent,{
+      ...this.getResponsiveDialogConfig('form'),
+      data:{id:this.agenda._id,type:"agenda"}
+    });
        const instance = dialogRef.componentInstance;
        instance.close.subscribe(()=> dialogRef.close());
        instance.confirm.subscribe(()=>{
@@ -247,7 +250,10 @@ export class AgendaComponent implements OnInit {
 
   openDialogDelete(event:CalendarEvent){
     this.agenda =event;
-    const dialogRef = this.dialog.open(DeleteAgendaComponent,{data:{id:this.agenda._id,type:"agenda"},width:'30%'});
+    const dialogRef = this.dialog.open(DeleteAgendaComponent,{
+      ...this.getResponsiveDialogConfig('delete'),
+      data:{id:this.agenda._id,type:"agenda"}
+    });
     const instance = dialogRef.componentInstance;
     instance.close.subscribe(()=> dialogRef.close());
     instance.confirm.subscribe(()=>{
@@ -258,7 +264,10 @@ export class AgendaComponent implements OnInit {
 
   openDialogDetail(event:CalendarEvent){
     this.agenda =event;
-    const dialogRef = this.dialog.open(DetailAgendaComponent,{data:{id:this.agenda._id,type:this.agenda.type},width:'60%'});
+    const dialogRef = this.dialog.open(DetailAgendaComponent,{
+      ...this.getResponsiveDialogConfig('detail'),
+      data:{id:this.agenda._id,type:this.agenda.type}
+    });
     const instance = dialogRef.componentInstance;
     instance.close.subscribe(()=> dialogRef.close());
     instance.confirm.subscribe(()=>{
@@ -268,7 +277,10 @@ export class AgendaComponent implements OnInit {
   }
 
   openDialogDetailP(idAgenda,type){
-    const dialogRef = this.dialog.open(DetailAgendaComponent,{data:{id:idAgenda,type:type},width:'40%'});
+    const dialogRef = this.dialog.open(DetailAgendaComponent,{
+      ...this.getResponsiveDialogConfig('detail'),
+      data:{id:idAgenda,type:type}
+    });
     const instance = dialogRef.componentInstance;
     instance.close.subscribe(()=> dialogRef.close());
     instance.confirm.subscribe(()=>{
@@ -279,13 +291,50 @@ export class AgendaComponent implements OnInit {
 
    openDialogD(event:CalendarEvent){
     this.agenda =event;
-    const dialogRef = this.dialog.open(DetailAgendaComponent,{data:{id:this.agenda._id},width:'40%'});
+    const dialogRef = this.dialog.open(DetailAgendaComponent,{
+      ...this.getResponsiveDialogConfig('detail'),
+      data:{id:this.agenda._id}
+    });
     const instance = dialogRef.componentInstance;
     instance.close.subscribe(()=> dialogRef.close());
     instance.confirm.subscribe(()=>{
         dialogRef.close();
         this.getAllAgenda();
     })
+  }
+
+  private getResponsiveDialogConfig(kind: 'form' | 'delete' | 'detail') {
+    const viewportWidth = window.innerWidth;
+    const isMobile = viewportWidth <= 640;
+    const isTablet = viewportWidth > 640 && viewportWidth <= 992;
+
+    if (kind === 'form') {
+      if (isMobile) {
+        return { width: '96vw', maxWidth: '96vw', height: '90vh', maxHeight: '90vh' };
+      }
+      if (isTablet) {
+        return { width: '84vw', maxWidth: '84vw', height: '80vh', maxHeight: '80vh' };
+      }
+      return { width: '60%', maxWidth: '60vw', height: '70%', maxHeight: '70vh' };
+    }
+
+    if (kind === 'delete') {
+      if (isMobile) {
+        return { width: '92vw', maxWidth: '92vw' };
+      }
+      if (isTablet) {
+        return { width: '56vw', maxWidth: '56vw' };
+      }
+      return { width: '30%', maxWidth: '30vw' };
+    }
+
+    if (isMobile) {
+      return { width: '94vw', maxWidth: '94vw', maxHeight: '88vh' };
+    }
+    if (isTablet) {
+      return { width: '72vw', maxWidth: '72vw', maxHeight: '82vh' };
+    }
+    return { width: '40%', maxWidth: '40vw', maxHeight: '80vh' };
   }
 
 
@@ -468,4 +517,3 @@ interface DayWithEvents {
   date: Date;            // La date du jour
   events: { date:string; events: DisplayEvent[] }[];  // Les événements associés à ce jour
 }
-

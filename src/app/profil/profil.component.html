@@ -1,10 +1,22 @@
 <app-navbar>
-  <div class="container">
+  <div class="topbar">
+        <div class="topbar-left">
+          <h1>Informations personnelles</h1>
+        </div>
+        <div class="topbar-right">
+          <button mat-raised-button color="primary" *ngIf="!isEditer" (click)="editProfil()">Editer votre profil</button>
+          <button mat-raised-button color="primary" *ngIf="isEditer" (click)="editProfil()"> Mon profile</button>
+          <button mat-raised-button color="warning" *ngIf="!isEditer" [routerLink]="'/profil/password'">Nouveau mot de passe</button>
+        </div>
+  </div>
+  <div class="content">
+
+    <div class="container">
 
     <div class="row justify-content-md-center">
       <div class="col-lg-8 col-md-auto" *ngIf="!isEditer">
 
-        <div class="content-top">
+        <!-- <div class="content-top">
           <div class="row">
             <div class="col">
               <h2 class="content-title">Informations personnelles <button mat-mini-fab color="primary" (click)="editProfil()"><mat-icon>edit</mat-icon></button></h2>
@@ -15,7 +27,7 @@
               </div>
             </div>
           </div>
-        </div><!--content-->
+        </div> -->
 
         <div style="margin-bottom: 25px;">
           <mat-card class="example-card">
@@ -47,23 +59,10 @@
           </mat-card>
         </div>
 
-        <!--<div>
-          <mat-card class="example-card">
-            <mat-card-header style="margin-bottom: 50px;">
-              <mat-card-title style="font-weight: normal !important;">Adresse</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <mat-list>
-                <mat-list-item><span class="text-profil" style="margin-right: 235px;">Adresse</span> <span>{{user?.adresse}}</span></mat-list-item>
-                <mat-divider></mat-divider>
-              </mat-list>
-            </mat-card-content>
-          </mat-card>
-        </div>-->
 
       </div><!--col-->
       <div class="row justify-content-md-center" *ngIf="isEditer">
-        <div class="content-top">
+        <!-- <div class="content-top">
           <div class="row">
             <div class="col">
               <h2 class="content-title">Editer mes informations personnelles</h2>
@@ -74,7 +73,7 @@
               </div>
             </div>
           </div>
-        </div><!--content-->
+        </div> -->
         <div class="col-lg-8 col-md-auto">
 
           <mat-card class="example-card">
@@ -120,6 +119,8 @@
         </div>
       </div>
     </div>
+  </div>
+
   </div>
 
 </app-navbar>

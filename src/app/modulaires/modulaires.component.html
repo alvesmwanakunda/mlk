@@ -4,18 +4,18 @@
           <h1>Stockages</h1>
         </div>
         <div class="topbar-right">
-          <button class="topbar-btn btn-primary" *ngIf="user?.user?.role!='user'" routerLink="/modulaires/nouveau"> Nouveau</button>
+          <button class="topbar-btn btn-primary modulaires-new-btn" *ngIf="user?.user?.role!='user'" routerLink="/modulaires/nouveau"> Nouveau</button>
         </div>
   </div>
   <div class="content">
-    <div style="margin-bottom: 30px;">
-        <div class="row" style="margin-bottom: 10px;">
-          <div class="col">
+    <div class="modulaires-summary" style="margin-bottom: 30px;">
+        <div class="row modulaires-count-row" style="margin-bottom: 10px;">
+          <div class="col-12">
             <h2 style="margin-bottom: 15px;">Total matériels : {{countModules?.module}}</h2>
           </div>
         </div>
         <div class="row">
-          <div class="col" *ngIf="dataCount">
+          <div class="col-12 modulaires-chart-wrap" *ngIf="dataCount">
             <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height:'360px',}"></canvasjs-chart>
           </div>
         </div>
@@ -24,7 +24,7 @@
       <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedIndexChange)="onTabChange($event)">
         <mat-tab>
           <ng-template mat-tab-label>
-            <span matBadge="{{countModules?.stock}}" matBadgeOverlap="false">Parc</span>
+            <span class="module-tab-badge" matBadge="{{countModules?.stock}}" matBadgeOverlap="false">Parc</span>
           </ng-template>
           <div style="padding-top: 40px;">
             <app-stock-module></app-stock-module>
@@ -32,7 +32,7 @@
         </mat-tab>
         <mat-tab *ngIf="user?.user?.role!='user'">
           <ng-template mat-tab-label>
-            <span matBadge="{{countModules?.preparation}}" matBadgeOverlap="false">En préparation</span>
+            <span class="module-tab-badge" matBadge="{{countModules?.preparation}}" matBadgeOverlap="false">En préparation</span>
           </ng-template>
           <div style="padding-top: 40px;">
            <app-prepare-module></app-prepare-module>
@@ -40,7 +40,7 @@
         </mat-tab>
         <mat-tab *ngIf="user?.user?.role!='user'">
           <ng-template mat-tab-label>
-            <span matBadge="{{countModules?.pret}}" matBadgeOverlap="false">Prêt à partir</span>
+            <span class="module-tab-badge" matBadge="{{countModules?.pret}}" matBadgeOverlap="false">Prêt à partir</span>
           </ng-template>
           <div style="padding-top: 40px;">
             <app-ready-module></app-ready-module>
@@ -48,7 +48,7 @@
         </mat-tab>
         <mat-tab>
           <ng-template mat-tab-label>
-            <span matBadge="{{countModules?.site}}" matBadgeOverlap="false">Site</span>
+            <span class="module-tab-badge" matBadge="{{countModules?.site}}" matBadgeOverlap="false">Site</span>
           </ng-template>
           <div style="padding-top: 40px;">
             <app-site-module></app-site-module>

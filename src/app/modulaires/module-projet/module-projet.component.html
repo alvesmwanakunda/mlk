@@ -1,8 +1,8 @@
 <div class="container">
-  <div class="row" style="margin-bottom: 20px;"  *ngIf="user?.user?.role!='user'">
-    <form [formGroup]="moduleForm">
-      <div class="row">
-         <div class="col">
+  <div class="row module-affect-row" style="margin-bottom: 20px;"  *ngIf="user?.user?.role!='user'">
+    <form [formGroup]="moduleForm" class="module-affect-form">
+      <div class="row module-affect-fields">
+         <div class="col-12 col-lg-6">
           <div>
             <mat-form-field class="example-full-width">
               <mat-label>Projet</mat-label>
@@ -21,18 +21,18 @@
               <mat-label>Position</mat-label>
               <input matInput formControlName="position">
             </mat-form-field> 
-          </div>
+         </div>
          </div>-->
-         <div class="col">
-          <div style="padding-top: 14px;">
+         <div class="col-12 col-lg-6 module-upload-col">
+          <div style="padding-top: 14px;" class="module-upload-actions">
             <input type="file" class="file-input" accept='image/*,.pdf' (change)="onFileSelected($event)" #fileUpload>
-            <button type="button" (click)="fileUpload.click()" mat-flat-button color="primary"><i class="fa-solid fa-cloud-arrow-down"></i> charger le plan</button>
-            <p>{{fileName}}</p>
+            <button type="button" (click)="fileUpload.click()" mat-flat-button color="primary" class="module-upload-btn"><i class="fa-solid fa-cloud-arrow-down"></i> charger le plan</button>
+            <p class="module-file-name">{{fileName}}</p>
           </div>
          </div>
       </div>
-      <div class="row">
-         <div class="col">
+      <div class="row module-submit-row">
+         <div class="col-12">
           <button mat-button  class="btn-entreprise" (click)="addModule()"  [disabled]="moduleForm.invalid">VALIDER</button>
          </div>
       </div>
@@ -42,9 +42,10 @@
    <mat-divider></mat-divider>
  </div>
  <div>
-  <mat-card>
+  <mat-card class="module-project-card">
     <mat-card-content>
-      <table class="table table-bordered">
+      <div class="module-project-table-wrap">
+      <table class="table table-bordered module-project-table">
         <thead>
           <tr>
             <th style="font-weight: normal;">Projet</th>
@@ -72,6 +73,7 @@
 
         </tbody>
       </table>
+      </div>
     </mat-card-content>
   </mat-card>
 

@@ -4,7 +4,7 @@
           <h1>Produit</h1>
         </div>
         <div class="topbar-right">
-          <button class="topbar-btn btn-primary"  (click)="generatePDF()">La fiche technique</button>
+          <button class="topbar-btn btn-primary product-tech-btn"  (click)="generatePDF()">La fiche technique</button>
         </div>
   </div>
   <div class="content">
@@ -13,8 +13,8 @@
        </div>
 
        <div *ngIf="produit">
-          <div class="row" style="margin-bottom: 25px;">
-            <div class="col">
+          <div class="row product-detail-row" style="margin-bottom: 25px;">
+            <div class="col-12 col-lg-6">
                 <div class="product-gallery" *ngIf="images?.length">
                   <div class="main-image-wrap">
                     <button type="button" class="gallery-nav prev" (click)="previousImage()" *ngIf="images.length > 1">
@@ -40,7 +40,7 @@
                   Aucune image disponible
                 </div>
             </div>
-            <div class="col">
+            <div class="col-12 col-lg-6 product-info-col">
                 <h1 class="name_details">{{produit?.name}}</h1>
                 <div>
                     <h5 class="priceht" *ngIf="produit?.priceunit">€ {{produit?.priceunit | number:'1.0-0'}} HT</h5>
@@ -54,7 +54,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col">
+            <div class="col-12">
                 <mat-tab-group color="primary" backgroundColor="primary">
                     <mat-tab label="Description">
 

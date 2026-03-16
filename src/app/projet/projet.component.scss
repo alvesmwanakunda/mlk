@@ -5,3 +5,45 @@
 ::ng-deep .projet-badge.mat-badge-medium.mat-badge-above .mat-badge-content {
   top: -4px;
 }
+
+.project-toolbar-row {
+  margin-bottom: 12px;
+}
+
+.project-toolbar-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.projet-layout-row {
+  row-gap: 12px;
+}
+
+.project-tabs-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.project-tabs-wrap .nav-tabs {
+  flex-wrap: nowrap;
+  min-width: max-content;
+}
+
+.project-tabs-wrap .nav-link.tabprojet {
+  white-space: nowrap;
+}
+
+@media (max-width: 992px) {
+  .project-toolbar-actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .project-tabs-wrap .nav-link.tabprojet {
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    padding: 0.55rem 0.75rem !important;
+    height: auto !important;
+  }
+}
