@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, Input, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { buildPvForm, reserveRow, reservesArray, reserveUpdateRow, reserveExistingRow, personnesArray, personnesRow } from '../pv-form.factory';
 import { PvService } from '../../shared/services/pv.service';
@@ -10,23 +10,40 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ViewerStandarComponent } from '../../viewer-standar/viewer-standar.component';
 import { PvReceptionComponent } from '../pv-reception.component';
+import { catchError, debounceTime, distinctUntilChanged, map, Observable, of, startWith, switchMap } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { CountriesService } from 'src/app/shared/services/countries.service';
 
 @Component({
   selector: 'app-levee-reserve',
   templateUrl: './levee-reserve.component.html',
   styleUrls: ['./levee-reserve.component.scss']
 })
-export class LeveeReserveComponent implements OnInit {
+export class LeveeReserveComponent implements OnInit, AfterViewInit {
 
     form!: FormGroup;
     signaturePad: any;
     signaturePadClient: any;
+    @ViewChild("canvas",{static:true}) canvas: ElementRef;
+    @ViewChild("canvas1",{static:true}) canvas1: ElementRef;
+
     user:any;
     contact:any;
     reservePhotoFiles: (File | null)[] = [];
     reserveLeveePhotoFiles: (File | null)[] = [];
     idPv:any;
     idProjet:any;
+
+    reserveLeveePreviewUrls: (string | null)[] = [];
+    countries: any[] = [];
+    suggestions$!: Observable<Suggestion[]>;
+    pdfPreviewUrl: string | null = null;
+
+    fileName:any;
+    file:File;
+    selectedImage: string;
+    projet:any;
 
 
     message:any;
@@ -63,6 +80,9 @@ export class LeveeReserveComponent implements OnInit {
         private dialog: MatDialog,
         public dialogRef:MatDialogRef<PvReceptionComponent>,
         @Inject(MAT_DIALOG_DATA) public data:any,
+        private http: HttpClient,
+        private countryService: CountriesService,
+
       ) {
         this.user = JSON.parse(localStorage.getItem('user'));
         this.idPv = this.data.id;
@@ -72,13 +92,20 @@ export class LeveeReserveComponent implements OnInit {
     ngOnInit(): void {
         this.form = buildPvForm(this.fb);
         this.getProjet();
+        this.setupChantierAddressAutocomplete();
         this.getPV();
+    }
+
+    ngAfterViewInit(){
+        this.signaturePad = new SignaturePad(this.canvas.nativeElement);
+        this.signaturePadClient = new SignaturePad(this.canvas1.nativeElement);
     }
 
     getPV(){
       this.api.getPV(this.idPv).subscribe((res:any)=>{
         console.log("PV", res);
         this.reception = res?.message;
+        this.pdfPreviewUrl = res?.message?.travaux?.planUrl;
         this.form.patchValue(res?.message);
         const person = personnesArray(this.form);
         person.clear();
@@ -99,10 +126,96 @@ export class LeveeReserveComponent implements OnInit {
           if( res.message){
             this.getResponsable( res.message?.contact)
           }
+          this.projet = res?.message;
       },(error) => {
         console.log("Erreur lors de la récupération des données", error);
       })
     }
+
+    private setupChantierAddressAutocomplete(): void {
+        const chantierAdresseCtrl = this.form.get('chantier.adresse');
+        if (!chantierAdresseCtrl) return;
+
+        this.suggestions$ = chantierAdresseCtrl.valueChanges.pipe(
+          startWith(chantierAdresseCtrl.value ?? ''),
+          map(v => (typeof v === 'string' ? v : v?.description ?? '').trim()),
+          debounceTime(300),
+          distinctUntilChanged(),
+          switchMap(q => {
+            const countryCode = this.getCountryCode(this.projet?.pays);
+            if (!countryCode || q.length < 3) return of([]);
+
+            return this.http.get<Suggestion[]>(`${environment.BASE_API_URL}/geo/address/suggest`, {
+              params: { country: countryCode, q }
+            }).pipe(
+              catchError(err => {
+                console.error('API suggest error', err);
+                return of([]);
+              })
+            );
+          })
+        );
+      }
+
+    displayAddress = (s: Suggestion | string | null): string => {
+      if (!s) return '';
+      return typeof s === 'string' ? s : s.description;
+    };
+
+    onChantierAddressSelected(s: Suggestion): void {
+      if (!s?.place_id) return;
+
+      this.http.get(`${environment.BASE_API_URL}/geo/address/detail`, {
+        params: { place_id: s.place_id }
+      }).subscribe((detail: any) => {
+        const latDms = this.decimalToDms(detail.lat, 'lat');
+        const lonDms = this.decimalToDms(detail.lon, 'lon');
+
+        this.form.get('chantier')?.patchValue({
+          adresse: s.description ?? '',
+          longitude: detail.lon,
+          latitude: detail.lat
+        }, { emitEvent: false });
+      });
+    }
+
+    private getCountryCode(pays: any): string | null {
+      if (!pays) return null;
+      if (typeof pays === 'object') return pays.code ?? null;
+
+      const v = String(pays).trim().toLowerCase();
+      const found = this.countries.find((c: any) =>
+        c.name?.toLowerCase() === v || c.code?.toLowerCase() === v
+      );
+      return found?.code ?? null;
+    }
+
+    private decimalToDms(value: number, type: 'lat' | 'lon'): string {
+      const abs = Math.abs(value);
+      const deg = Math.floor(abs);
+      const minFloat = (abs - deg) * 60;
+      const min = Math.floor(minFloat);
+      const sec = ((minFloat - min) * 60);
+
+      const hemisphere =
+        type === 'lat'
+          ? (value >= 0 ? 'N' : 'S')
+          : (value >= 0 ? 'E' : 'W');
+
+      return `${deg}°${min}'${sec.toFixed(2)}"${hemisphere}`;
+    }
+
+    getContry(){
+      this.countryService.getCountries().subscribe(
+        (data)=>{
+          this.countries = data;
+        },
+        (error)=>{
+          console.log(error);
+        }
+      )
+    }
+
 
     getResponsable(id){
         this.contactService.getContact(id).subscribe((res:any)=>{
@@ -123,13 +236,10 @@ export class LeveeReserveComponent implements OnInit {
           this.isValide=true;
           this.openSnackBar("Signature validé avec avec succès")
           this.form.get('signatures.companyRep')?.patchValue({
-            signerName: this.user?.user?.nom+" "+this.user?.user?.prenom,
-            signerRole: 'Maître d\'Ouvrage',
+            signerRole: 'Entreprise',
             signatureUrl: this.signaturePad.toDataURL(),
             signedAt: new Date().toISOString()
           });
-          // this.form.controls['signatures?.companyRep?.signerName'].setValue(this.user?.user?.nom+" "+this.user?.user?.prenom);
-          // this.form.controls['signatures?.companyRep?.signedUrl'].setValue(this.signaturePadClient.toDataURL());
         }
     }
 
@@ -143,8 +253,7 @@ export class LeveeReserveComponent implements OnInit {
           this.openSnackBar("Signature validé avec avec succès")
           this.isValideClient=true;
           this.form.get('signatures.client')?.patchValue({
-            signerName: this.contact?.nom+" "+this.contact?.prenom,
-            signerRole: 'Client',
+            signerRole: 'Maître d\'Ouvrage',
             signatureUrl: this.signaturePadClient.toDataURL(),
             signedAt: new Date().toISOString()
           });
@@ -157,7 +266,13 @@ export class LeveeReserveComponent implements OnInit {
       this.reserves.push(reserveUpdateRow(this.fb));
       console.log("reserves liste", this.reserves);
     }
-    removeReserve(i: number) { this.reserves.removeAt(i); }
+    removeReserve(i: number) {
+      this.reserves.removeAt(i);
+      if (this.reserveLeveePreviewUrls[i]) {
+        URL.revokeObjectURL(this.reserveLeveePreviewUrls[i]!);
+      }
+      this.reserveLeveePreviewUrls.splice(i, 1);
+    }
 
     get personnesPresent(){ return personnesArray(this.form)}
 
@@ -165,6 +280,11 @@ export class LeveeReserveComponent implements OnInit {
     removePersonne(i: number) { this.personnesPresent.removeAt(i); }
 
 
+  previewReserveLeveeImage(index: number): void {
+    const url = this.reserveLeveePreviewUrls[index];
+    if (!url) return;
+    window.open(url, '_blank');
+  }
 
   onReservePhotoSelected(event: Event, index: number): void {
     console.log("Index", index);
@@ -188,8 +308,13 @@ export class LeveeReserveComponent implements OnInit {
   // Mettez à jour le fichier à l'index spécifique
   this.reserveLeveePhotoFiles[index] = file;
 
-  console.log("Tableau mis à jour:", this.reserveLeveePhotoFiles);
-  console.log("Fichier à l'index", index, ":", this.reserveLeveePhotoFiles[index]);
+   if (this.reserveLeveePreviewUrls[index]) {
+      URL.revokeObjectURL(this.reserveLeveePreviewUrls[index]!);
+    }
+    this.reserveLeveePreviewUrls[index] = URL.createObjectURL(file);
+
+  // console.log("Tableau mis à jour:", this.reserveLeveePhotoFiles);
+  // console.log("Fichier à l'index", index, ":", this.reserveLeveePhotoFiles[index]);
 
     // reset pour permettre de rechoisir le même fichier
     input.value = '';
@@ -250,6 +375,8 @@ export class LeveeReserveComponent implements OnInit {
 
   const payload = this.form.getRawValue();
 
+  console.log("payload", payload);
+
   // IMPORTANT: Préparer les réserves avec index correct
   const reservesDto = [];
   const photoIndexes = [];
@@ -297,6 +424,9 @@ export class LeveeReserveComponent implements OnInit {
   const personnesDto = (payload.personnesPresent || []).map((r: any) => ({
     nom: r.nom,
     prenom: r.prenom,
+    email: r.email,
+    telephone: r.telephone,
+    profession: r.profession
   }));
 
   const formData = new FormData();
@@ -305,9 +435,13 @@ export class LeveeReserveComponent implements OnInit {
   formData.append('declaration', payload.declaration);
   formData.append('effectiveDate', payload.effectiveDate);
   formData.append('place', payload.place);
-
+  formData.append('entreprise', JSON.stringify(payload.entreprise || {}));
+  formData.append('societeCliente', JSON.stringify(payload.societeCliente || {}));
+  formData.append('chantier', JSON.stringify(payload.chantier || {}));
+  formData.append('travaux', JSON.stringify(payload.travaux || {}));
+  if (this.file) formData.append('planTravaux', this.file);
   if (payload.refusalReason) formData.append('refusalReason', payload.refusalReason);
-  if (payload.observation) formData.append('observation', payload.observation);
+  //if (payload.observation) formData.append('observation', payload.observation);
   if (payload.nextReceptionDate) formData.append('nextReceptionDate', payload.nextReceptionDate);
   if (payload.reservesExecutionDelayDays != null) formData.append('reservesExecutionDelayDays', String(payload.reservesExecutionDelayDays));
   if (payload.reservesFromDate) formData.append('reservesFromDate', payload.reservesFromDate);
@@ -356,6 +490,10 @@ export class LeveeReserveComponent implements OnInit {
     this.openSnackBar(this.message);
     this.isLoad = false;
     this.dialogRef.close(res)
+    this.reserveLeveePreviewUrls.forEach((url) => {
+      if (url) URL.revokeObjectURL(url);
+    });
+    this.reserveLeveePreviewUrls = [];
   }, (error) => {
     console.log("Erreur lors de la mise à jour:", error);
     this.message = "Une erreur s'est produite veuillez réessayer.";
@@ -417,6 +555,34 @@ export class LeveeReserveComponent implements OnInit {
     // (pour les data URLs ou autres formats)
     return fullUrl;
   }
+
+  // Plan
+
+onFileSelected(event){
+  this.file = event.target.files[0];
+  this.pdfPreviewUrl="";
+  if(this.file){
+    const maxSizeInBytes = 25 * 1024 * 1024; // 200 KB
+    const isValid = this.projetService.validateImageSize(this.file, maxSizeInBytes);
+    if(isValid){
+
+      this.fileName = this.file.name;
+        if (this.file.type === 'application/pdf') {
+        if (this.pdfPreviewUrl) URL.revokeObjectURL(this.pdfPreviewUrl);
+          this.pdfPreviewUrl = URL.createObjectURL(this.file);
+        }
+      const reader = new FileReader();
+      reader.onload=()=>{
+        this.selectedImage = reader.result as string;
+      };
+      reader.readAsDataURL(this.file);
+    }else{
+        this.message='La taille de l\'image ne doit pas dépasser 200 KB.';
+        this.openSnackBarError(this.message);
+    }
+  }
+}
+
 
   // Annotation Image
   onImageSelected(event: Event, index: number) {
@@ -494,5 +660,24 @@ export class LeveeReserveComponent implements OnInit {
   close(){
     this.dialogRef.close()
   }
+  openSelectedPdf() {
+   if (!this.pdfPreviewUrl) return;
+   window.open(this.pdfPreviewUrl, '_blank');
+  }
 
 }
+
+type Suggestion = {
+  place_id: string;
+  description: string;
+  label?: string;
+  lat?: string;
+  lon?: string;
+  components?: {
+    numero?: string;
+    rue?: string;
+    codePostal?: string;
+    ville?: string;
+  };
+};
+

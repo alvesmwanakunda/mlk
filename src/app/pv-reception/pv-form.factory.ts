@@ -12,11 +12,49 @@ export function buildPvForm(fb: FormBuilder) {
 
     refusalReason: [''],
     observation: [''],
+    titre:['', Validators.required],
+    entrepriseCode:['', Validators.required],
 
     nextReceptionDate: [''],
     reservesExecutionDelayDays: [null],
     reservesFromDate: [''],
     allReservesLifted: [false],
+    entreprise: fb.group({
+       nom:[''],
+       adresse:[''],
+       representant:fb.group({
+        nom:[''],
+        prenom:[''],
+        email:[''],
+        telephone:[''],
+        profession:['']
+       })
+    }),
+
+    societeCliente: fb.group({
+       nom:[''],
+       adresse:[''],
+       maitreOuvrage:fb.group({
+        nom:[''],
+        prenom:[''],
+        email:[''],
+        telephone:[''],
+        profession:['']
+       })
+    }),
+
+    chantier:fb.group({
+      adresse:[''],
+      longitude:[''],
+      latitude:['']
+    }),
+
+    travaux:fb.group({
+      dateExecution:[''],
+      projet:[''],
+      objet:[''],
+      planUrl:['']
+    }),
 
     reserves: fb.array([]),
     personnesPresent: fb.array([]),
@@ -77,7 +115,7 @@ export function reserveRow(fb: FormBuilder) {
     nature: ['', Validators.required],
     travauxAExecuter: ['', Validators.required],
     photoUrl: [''],
-    etat: ['Non levée'],
+    etat: ['A Faire'],
     leveeDate: [null],
     photoLevee: [null],
   });
@@ -87,7 +125,7 @@ export function reserveUpdateRow(fb: FormBuilder) {
   return fb.group({
     nature: ['', Validators.required],
     travauxAExecuter: ['', Validators.required],
-    etat: ['Non levée'],
+    etat: ['A Faire'],
     leveeDate: [null],
   });
 }
@@ -96,9 +134,9 @@ export function reserveExistingRow(fb: FormBuilder) {
   return fb.group({
     nature: ['', Validators.required],
     travauxAExecuter: ['', Validators.required],
-    etat: [{ value: 'Non levée', disabled: true }], // ✅ disabled uniquement existant
+    etat: [{ value: 'A Faire', disabled: true }], // ✅ disabled uniquement existant
     photoUrl: [null],
-    leveeDate: [null],
+    leveeDate: [{value:null, disabled: true}],
     photoLevee: [null],
   });
 }
@@ -107,6 +145,9 @@ export function personnesRow(fb: FormBuilder) {
   return fb.group({
     nom: [''],
     prenom: [''],
+    email: [''],
+    telephone: [''],
+    profession: [''],
   });
 }
 

@@ -1,0 +1,52 @@
+<div class="sendmail-pv-dialog" [formGroup]="form">
+  <h3 mat-dialog-title>Envoyer le PV par mail</h3>
+  <mat-divider style="margin-bottom: 10px;"></mat-divider>
+
+  <div mat-dialog-content>
+    <p style="font-size: 12px; margin-bottom: 14px;color: #1B4F8A;">Ajoutez les destinataires puis envoyez le PV.</p>
+
+    <div formArrayName="destinataires">
+      <div
+        class="destinataire-row"
+        *ngFor="let destinataire of destinataires.controls; let i = index"
+        [formGroupName]="i"
+      >
+        <div>
+          <label class="form-label" style="font-size: 12px;color: #000;">Nom</label>
+          <input class="form-control" formControlName="nom" type="text" style="font-size: 14px;" />
+        </div>
+
+        <div>
+          <label class="form-label" style="font-size: 12px;color: #000;">Prénom</label>
+          <input class="form-control" formControlName="prenom" type="text" style="font-size: 14px;"/>
+        </div>
+
+        <div>
+          <label class="form-label" style="font-size: 12px;color: #000;">Email</label>
+          <input class="form-control" formControlName="email" type="email" style="font-size: 14px;"/>
+        </div>
+
+        <button type="button" class="btn btn-outline-danger btn-sm" (click)="removeDestinataire(i)" [disabled]="isLoading">
+          Supprimer
+        </button>
+      </div>
+    </div>
+
+    <button type="button" mat-stroked-button color="primary" (click)="addDestinataire()" [disabled]="isLoading">
+      Ajouter un destinataire
+    </button>
+
+    <div class="file-wrapper">
+      <label style="font-size: 12px;display:block; margin-bottom: 6px;color: #1B4F8A;">PV en pièce jointe (optionnel)</label>
+      <input type="file" accept="application/pdf" (change)="onFileSelected($event)" [disabled]="isLoading" />
+      <small *ngIf="pvReceptionFile">{{ pvReceptionFile?.name }}</small>
+    </div>
+  </div>
+
+  <div mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="close()" [disabled]="isLoading">Fermer</button>
+    <button mat-raised-button color="primary" type="button" (click)="send()" [disabled]="isLoading">
+      {{ isLoading ? 'Envoi...' : 'Envoyer' }}
+    </button>
+  </div>
+</div>

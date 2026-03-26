@@ -6,6 +6,7 @@ import { DetailPvComponent } from './detail-pv.component';
 import { ViewerStandarModule } from 'src/app/viewer-standar/viewer-standar.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ImageAnnotationModule } from 'src/app/note-module/image-annotation/image-annotation.module';
+import { SendmailPvModule } from '../sendmail-pv/sendmail-pv.module';
 
 
 
@@ -19,7 +20,8 @@ import { ImageAnnotationModule } from 'src/app/note-module/image-annotation/imag
     FormsModule,
     ViewerStandarModule,
     MatDialogModule,
-    ImageAnnotationModule
+    ImageAnnotationModule,
+    SendmailPvModule
   ],
   exports:[DetailPvComponent]
 })

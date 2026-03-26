@@ -1,3 +1,19 @@
+.top-actions-fixed {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #fff;
+  padding-top: 15px;
+}
+
+.top-actions-row {
+  margin-bottom: 10px;
+}
+
+.top-actions-divider {
+  margin-bottom: 30px;
+}
+
 .example-radio-group {
   display: flex;
   flex-direction: column;
@@ -237,4 +253,3 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-

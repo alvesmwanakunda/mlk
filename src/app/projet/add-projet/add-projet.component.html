@@ -104,7 +104,80 @@
               <form [formGroup]="secondFormGroup">
                 <ng-template matStepLabel>Coordonnées du projet</ng-template>
                 <ng-template matStepContent>
+                  <div class="row" style="padding-top: 15px;">
+                    <div class="col">
+                      <div style="margin-bottom: 15px;">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Pays</mat-label>
+                          <input  matInput  formControlName="pays"  [matAutocomplete]="auto">
+                          <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option *ngFor="let pays of paysFiltres | async" [value]="pays.name">
+                              {{pays?.emoji}} {{pays?.name}}
+                            </mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field>
+                      </div><!--div-->
+                    </div>
+                    <div class="col">
+                      <mat-form-field  class="example-full-width">
+                        <mat-label>Adresse (autocomplete)</mat-label>
+                        <input matInput formControlName="addressSearch" [matAutocomplete]="autoAddress" placeholder="Ex: 12 Avenue Blaise Diagne" autocomplete="off"/>
+                        <mat-autocomplete #autoAddress="matAutocomplete" [displayWith]="displayAddress" (optionSelected)="onAddressSelected($event.option.value)">
+                          <mat-option *ngFor="let s of (suggestions$ | async)" [value]="s">
+                            {{ s.description }}
+                          </mat-option>
+                        </mat-autocomplete>
+
+                        <mat-hint *ngIf="secondFormGroup.get('addressSearch')?.disabled">
+                          Choisissez d’abord un pays
+                        </mat-hint>
+                      </mat-form-field>
+                    </div>
+                    <div class="col">
+                      <div style="margin-bottom: 15px;">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Coordonnées</mat-label>
+                          <input  matInput  formControlName="coordonnees">
+                        </mat-form-field>
+                      </div><!--div-->
+                    </div>
+                  </div>
                   <div class="row">
+                    <div class="col">
+                      <div style="margin-bottom: 15px;">
+                       <mat-form-field class="example-full-width">
+                          <mat-label>Numéro</mat-label>
+                          <input  matInput  formControlName="adresse">
+                        </mat-form-field>
+                      </div><!--div-->
+                    </div>
+                    <div class="col">
+                       <div style="margin-bottom: 15px;">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Rue</mat-label>
+                          <input  matInput  formControlName="rue">
+                        </mat-form-field>
+                      </div><!--div-->
+                    </div>
+                    <div class="col">
+                      <div style="margin-bottom: 15px;">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Code Postal</mat-label>
+                          <input  matInput  formControlName="postal">
+                        </mat-form-field>
+                      </div><!--div-->
+                    </div><!--col-->
+                    <div class="col">
+                      <div style="margin-bottom: 15px;">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Ville</mat-label>
+                          <input  matInput  formControlName="ville">
+                        </mat-form-field>
+                      </div><!--div-->
+                    </div>
+
+                  </div>
+                  <!-- <div class="row">
                     <div class="col">
 
                       <div style="margin-bottom: 15px;">
@@ -117,27 +190,26 @@
                             </mat-option>
                           </mat-autocomplete>
                         </mat-form-field>
-                      </div><!--div-->
+                      </div>
                       <div style="margin-bottom: 15px;">
                         <mat-form-field class="example-full-width">
                           <mat-label>Ville</mat-label>
                           <input  matInput  formControlName="ville">
                         </mat-form-field>
-                      </div><!--div-->
+                      </div>
                       <div style="margin-bottom: 15px;">
                         <mat-form-field class="example-full-width">
                           <mat-label>Code Postal</mat-label>
                           <input  matInput  formControlName="postal">
                         </mat-form-field>
-                      </div><!--div-->
+                      </div>
                       <div style="margin-bottom: 15px;">
                         <mat-form-field class="example-full-width">
                           <mat-label>Coordonnées gps</mat-label>
                           <input  matInput  formControlName="coordonnees">
                         </mat-form-field>
-                      </div><!--div-->
-
-                    </div><!--col-->
+                      </div>
+                    </div>
                     <div class="col">
 
                       <div style="margin-bottom: 15px;">
@@ -145,15 +217,15 @@
                           <mat-label>Numéro</mat-label>
                           <input  matInput  formControlName="adresse">
                         </mat-form-field>
-                      </div><!--div-->
+                      </div>
                       <div style="margin-bottom: 15px;">
                         <mat-form-field class="example-full-width">
                           <mat-label>Rue</mat-label>
                           <input  matInput formControlName="rue">
                         </mat-form-field>
-                      </div><!--div-->
+                      </div>
                    </div>
-                  </div>
+                  </div> -->
                   <div align="right">
                     <button mat-button matStepperPrevious class="btn-entreprise-back" style="margin-right: 10px;"><i class="fa-solid fa-chevron-left"></i> PRECEDENT</button>
                     <button mat-button matStepperNext class="btn-entreprise">SUIVANT <i class="fa-solid fa-chevron-right"></i></button>

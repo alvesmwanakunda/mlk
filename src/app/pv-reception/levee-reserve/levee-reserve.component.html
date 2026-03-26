@@ -2,31 +2,243 @@
 
     <div class="row justify-content-md-center">
       <div class="col-lg-11 col-md-11 col-md-auto">
-        <div>
-          <div class="row" style="margin-bottom: 10px;padding-top: 15px;">
+        <div class="top-actions-fixed">
+          <div class="row top-actions-row">
             <div class="col">
-              <button mat-raised-button color="primary" class="me-2" (click)="save()"><mat-icon>edit</mat-icon> Valider</button>
+              <button type="button" mat-raised-button color="primary" (click)="save()"><mat-icon>edit</mat-icon> Valider</button>
             </div>
             <div class="col" align="right">
-               <button mat-icon-button color="primary" (click)="close()">
+                <button mat-icon-button color="primary" (click)="close()">
                 <mat-icon>close</mat-icon>
-               </button>
+                </button>
             </div>
           </div>
-          <mat-divider></mat-divider>
+
+          <mat-divider class="top-actions-divider"></mat-divider>
         </div>
 
         <div>
           <form [formGroup]="form" class="pv-form">
 
-                  <label id="example-radio-group-label" style="margin-bottom: 20px;font-size: 15px;font-weight: 600;">Personne présente:</label>
-                  <div style="margin-bottom:40px;">
-                    <table class="table">
+                  <div class="card" style="margin-bottom:40px;">
+                    <div class="card-body">
+                      <h3 class="card-title">Informations <small style="color: red;">*</small></h3>
+                      <div class="row">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th scope="col">Titre du PV <small style="color: red;">*</small></th>
+                              <th scope="col">Groupement <small style="color: red;">*</small></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>
+                                <mat-form-field class="example-full-width">
+                                <input matInput formControlName="titre" required>
+                                </mat-form-field>
+                                <div *ngIf="form.get('titre').hasError(champ_validation.input[0].type) &&(form.get('titre').dirty || form.get('titre').touched)">
+                                    <p class="error_field">{{champ_validation.input[0].message}}</p>
+                                </div>
+                              </td>
+                              <td>
+                                  <mat-form-field class="example-full-width">
+                                      <mat-select matInput formControlName="entrepriseCode" required>
+                                        <mat-option value="MLKA">MLKA</mat-option>
+                                        <mat-option value="INNOV">INNOV</mat-option>
+                                      </mat-select>
+                                  </mat-form-field>
+                                <div *ngIf="form.get('entrepriseCode').hasError(champ_validation.input[0].type) &&(form.get('entrepriseCode').dirty || form.get('entrepriseCode').touched)">
+                                    <p class="error_field">{{champ_validation.input[0].message}}</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="card" style="margin-bottom:40px;" formGroupName="entreprise">
+                    <div class="card-body">
+                      <h3 class="card-title">Entreprise</h3>
+                      <div class="row">
+                        <div class="col">
+                            <mat-form-field class="example-full-width">
+                              <mat-label class="tache_label">Nom de l'entreprise</mat-label>
+                              <input matInput  formControlName="nom">
+                            </mat-form-field>
+                            <!-- <div *ngIf="form.get('entreprise.nom').hasError(champ_validation.input[0].type) &&(form.get('entreprise.nom').dirty || form.get('entreprise.nom').touched)">
+                              <p class="error_field">{{champ_validation.input[0].message}}</p>
+                            </div> -->
+                        </div>
+                        <div class="col">
+                          <mat-form-field class="example-full-width">
+                              <mat-label class="tache_label">Adresse siege entreprise</mat-label>
+                              <input matInput  formControlName="adresse">
+                            </mat-form-field>
+                            <!-- <div *ngIf="form.get('entreprise.adresse').hasError(champ_validation.input[0].type) &&(form.get('entreprise.adresse').dirty || form.get('entreprise.adresse').touched)">
+                              <p class="error_field">{{champ_validation.input[0].message}}</p>
+                            </div> -->
+                        </div>
+                      </div>
+                      <div class="row" formGroupName="representant">
+                        <p style="font-size: 14px;font-weight: 600;">Contact du représentant <small style="color: red;">*</small></p>
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th scope="col">Nom <!--<small style="color: red;">*</small>--></th>
+                              <th scope="col">Prénom <!--<small style="color: red;">*</small>--></th>
+                              <th scope="col">Téléphone <!--<small style="color: red;">*</small>--></th>
+                              <th scope="col">email <!--<small style="color: red;">*</small>--></th>
+                              <th scope="col">Profession <!--<small style="color: red;">*</small>--></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>
+                                <mat-form-field class="example-full-width">
+                                    <input matInput formControlName="nom">
+                                </mat-form-field>
+                                <div *ngIf="form.get('entreprise.representant.nom').hasError(champ_validation.input[0].type) &&(form.get('entreprise.representant.nom').dirty || form.get('entreprise.representant.nom').touched)">
+                                <p class="error_field">{{champ_validation.input[0].message}}</p>
+                                </div>
+                              </td>
+                              <td>
+                                <mat-form-field class="example-full-width">
+                                    <input matInput formControlName="prenom">
+                                    <div *ngIf="form.get('entreprise.representant.prenom').hasError(champ_validation.input[0].type) &&(form.get('entreprise.representant.prenom').dirty || form.get('entreprise.representant.prenom').touched)">
+                                    <p class="error_field">{{champ_validation.input[0].message}}</p>
+                                    </div>
+                                </mat-form-field>
+                              </td>
+                              <td>
+                                <mat-form-field class="example-full-width">
+                                    <input matInput formControlName="telephone">
+                                    <div *ngIf="form.get('entreprise.representant.telephone').hasError(champ_validation.input[0].type) &&(form.get('entreprise.representant.telephone').dirty || form.get('entreprise.representant.telephone').touched)">
+                                    <p class="error_field">{{champ_validation.input[0].message}}</p>
+                                    </div>
+                                </mat-form-field>
+                              </td>
+                              <td>
+                                <mat-form-field class="example-full-width">
+                                    <input matInput formControlName="email">
+                                    <div *ngIf="form.get('entreprise.representant.email').hasError(champ_validation.input[0].type) &&(form.get('entreprise.representant.email').dirty || form.get('entreprise.representant.email').touched)">
+                                    <p class="error_field">{{champ_validation.input[0].message}}</p>
+                                    </div>
+                                </mat-form-field>
+                              </td>
+                              <td>
+                                <mat-form-field class="example-full-width">
+                                    <input matInput formControlName="profession">
+                                    <div *ngIf="form.get('entreprise.representant.profession').hasError(champ_validation.input[0].type) &&(form.get('entreprise.representant.profession').dirty || form.get('entreprise.representant.profession').touched)">
+                                    <p class="error_field">{{champ_validation.input[0].message}}</p>
+                                    </div>
+                                </mat-form-field>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="card" style="margin-bottom:40px;" formGroupName="societeCliente">
+                    <div class="card-body">
+                      <h3 class="card-title">Maitre d'ouvrage (ou client)</h3>
+                      <div class="row">
+                        <div class="col">
+                            <mat-form-field class="example-full-width">
+                              <mat-label class="tache_label">Nom société client</mat-label>
+                              <input matInput  formControlName="nom">
+                            </mat-form-field>
+                            <!-- <div *ngIf="form.get('societeCliente.nom').hasError(champ_validation.input[0].type) &&(form.get('societeCliente.nom').dirty || form.get('societeCliente.nom').touched)">
+                              <p class="error_field">{{champ_validation.input[0].message}}</p>
+                            </div> -->
+                        </div>
+                        <div class="col">
+                          <mat-form-field class="example-full-width">
+                              <mat-label class="tache_label">Adresse siege client</mat-label>
+                              <input matInput  formControlName="adresse">
+                            </mat-form-field>
+                            <!-- <div *ngIf="form.get('societeCliente.adresse').hasError(champ_validation.input[0].type) &&(form.get('societeCliente.adresse').dirty || form.get('societeCliente.adresse').touched)">
+                              <p class="error_field">{{champ_validation.input[0].message}}</p>
+                            </div> -->
+                        </div>
+                      </div>
+                      <div class="row" formGroupName="maitreOuvrage">
+                        <p style="font-size: 14px;font-weight: 600;">Contact du maitre d'ouvrage <small style="color: red;">*</small></p>
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th scope="col">Nom <!--<small style="color: red;">*</small>--></th>
+                              <th scope="col">Prénom <!--<small style="color: red;">*</small>--></th>
+                              <th scope="col">Téléphone <!--<small style="color: red;">*</small>--></th>
+                              <th scope="col">Email <!--<small style="color: red;">*</small>--></th>
+                              <th scope="col">Profession <!--<small style="color: red;">*</small>--></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>
+                                <mat-form-field class="example-full-width">
+                                    <input matInput formControlName="nom">
+                                </mat-form-field>
+                                <!-- <div *ngIf="form.get('societeCliente.representant.nom').hasError(champ_validation.input[0].type) &&(form.get('societeCliente.representant.nom').dirty || form.get('societeCliente.representant.nom').touched)">
+                                <p class="error_field">{{champ_validation.input[0].message}}</p>
+                                </div> -->
+                              </td>
+                              <td>
+                                <mat-form-field class="example-full-width">
+                                    <input matInput formControlName="prenom">
+                                    <!-- <div *ngIf="form.get('societeCliente.representant.prenom').hasError(champ_validation.input[0].type) &&(form.get('societeCliente.representant.prenom').dirty || form.get('societeCliente.representant.prenom').touched)">
+                                    <p class="error_field">{{champ_validation.input[0].message}}</p>
+                                    </div> -->
+                                </mat-form-field>
+                              </td>
+                              <td>
+                                <mat-form-field class="example-full-width">
+                                    <input matInput formControlName="telephone">
+                                    <!-- <div *ngIf="form.get('societeCliente.representant.telephone').hasError(champ_validation.input[0].type) &&(form.get('societeCliente.representant.telephone').dirty || form.get('societeCliente.representant.telephone').touched)">
+                                    <p class="error_field">{{champ_validation.input[0].message}}</p>
+                                    </div> -->
+                                </mat-form-field>
+                              </td>
+                              <td>
+                                <mat-form-field class="example-full-width">
+                                    <input matInput formControlName="email">
+                                    <!-- <div *ngIf="form.get('societeCliente.representant.telephone').hasError(champ_validation.input[0].type) &&(form.get('societeCliente.representant.telephone').dirty || form.get('societeCliente.representant.telephone').touched)">
+                                    <p class="error_field">{{champ_validation.input[0].message}}</p>
+                                    </div> -->
+                                </mat-form-field>
+                              </td>
+                              <td>
+                                <mat-form-field class="example-full-width">
+                                    <input matInput formControlName="profession">
+                                    <!-- <div *ngIf="form.get('societeCliente.representant.profession').hasError(champ_validation.input[0].type) &&(form.get('societeCliente.representant.profession').dirty || form.get('societeCliente.representant.profession').touched)">
+                                    <p class="error_field">{{champ_validation.input[0].message}}</p>
+                                    </div> -->
+                                </mat-form-field>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="card" style="margin-bottom:40px;">
+                    <div class="card-body">
+                      <h3 class="card-title">Personne présente</h3>
+                      <table class="table">
                       <thead>
                         <tr>
                           <th scope="col">#</th>
                           <th scope="col">Nom</th>
                           <th scope="col">Prénom</th>
+                          <th scope="col">Email</th>
+                          <th scope="col">Téléphone</th>
+                          <th scope="col">Profession</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
@@ -43,6 +255,21 @@
                                 <input matInput formControlName="prenom">
                             </mat-form-field>
                           </td>
+                           <td>
+                            <mat-form-field class="example-full-width">
+                                <input matInput formControlName="email">
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field class="example-full-width">
+                                <input matInput formControlName="telephone">
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field class="example-full-width">
+                                <input matInput formControlName="profession">
+                            </mat-form-field>
+                          </td>
                           <td>
                             <button mat-icon-button color="warn" type="button" (click)="removePersonne(i)">
                                 <mat-icon>delete</mat-icon>
@@ -54,6 +281,103 @@
                       <button type="button" mat-button color="primary" (click)="addPersonne()">
                           Ajouter une personne
                       </button>
+                    </div>
+                  </div>
+
+                  <div class="card" style="margin-bottom:40px;">
+                    <div class="card-body">
+                      <h3 class="card-title">Adresse chantier</h3>
+                      <div class="row" formGroupName="chantier">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th scope="col">Adresse</th>
+                              <th scope="col">Longitude</th>
+                              <th scope="col">Latitude</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>
+                                <mat-form-field class="example-full-width">
+                                    <input
+                                      matInput
+                                      formControlName="adresse"
+                                      [matAutocomplete]="autoChantierAddress"
+                                      placeholder="Ex: 12 Avenue Blaise Diagne"
+                                      autocomplete="off">
+                                    <mat-autocomplete
+                                      #autoChantierAddress="matAutocomplete"
+                                      [displayWith]="displayAddress"
+                                      (optionSelected)="onChantierAddressSelected($event.option.value)">
+                                      <mat-option *ngFor="let s of (suggestions$ | async)" [value]="s">
+                                        {{ s.description }}
+                                      </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                              </td>
+                              <td>
+                                <mat-form-field class="example-full-width">
+                                    <input matInput formControlName="longitude">
+                                </mat-form-field>
+                              </td>
+                              <td>
+                                <mat-form-field class="example-full-width">
+                                    <input matInput formControlName="latitude">
+                                </mat-form-field>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="card" style="margin-bottom:40px;">
+                    <div class="card-body">
+                      <h3 class="card-title">Travaux <small style="color: red;">*</small></h3>
+                      <div class="row" formGroupName="travaux">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th scope="col">Date d'exécution des travaux <!--<small style="color: red;">*</small>--></th>
+                              <th scope="col">Objet des travaux <!--<small style="color: red;">*</small>--></th>
+                              <th scope="col">Plan (Pièce jointe)</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>
+                                <mat-form-field class="example-full-width">
+                                  <mat-label class="tache_label">À compter du</mat-label>
+                                    <input matInput [matDatepicker]="picker5"  formControlName="dateExecution">
+                                    <mat-datepicker-toggle matIconSuffix [for]="picker5"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker5></mat-datepicker>
+                                  </mat-form-field>
+                                  <!-- <div *ngIf="form.get('travaux.dateExecution').hasError(champ_validation.input[0].type) &&(form.get('travaux.dateExecution').dirty || form.get('travaux.dateExecution').touched)">
+                                    <p class="error_field">{{champ_validation.input[0].message}}</p>
+                                  </div> -->
+                              </td>
+                              <td>
+                                <mat-form-field class="example-full-width">
+                                    <input matInput formControlName="objet">
+                                </mat-form-field>
+                                <!-- <div *ngIf="form.get('travaux.objet').hasError(champ_validation.input[0].type) &&(form.get('travaux.objet').dirty || form.get('travaux.objet').touched)">
+                                    <p class="error_field">{{champ_validation.input[0].message}}</p>
+                                </div> -->
+                              </td>
+                              <td>
+                                <input type="file" class="file-input" accept='.pdf' (change)="onFileSelected($event)" #fileUpload>
+                                <button type="button" (click)="fileUpload.click()" class="btn btn-projet" style="margin-right: 15px;"><i class="fa-solid fa-cloud-arrow-down"></i> charger</button>
+                                <button type="button" class="btn btn-projet" (click)="openSelectedPdf()" [disabled]="!pdfPreviewUrl">
+                                  <i class="fa-solid fa-eye"></i> voir
+                                </button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
                   </div>
 
                   <label id="example-radio-group-label" style="font-size: 15px;font-weight: 600;">Le maître d'ouvrage (ou client) déclare que:</label>
@@ -109,7 +433,7 @@
                               <th style="min-width: 130px;">État réserve</th>
                               <th style="width: 120px;">Photo levée</th>
                               <th style="min-width: 130px;">Date levée</th>
-                              <th style="width: 50px;"></th>
+                              <!-- <th style="width: 50px;"></th> -->
                             </tr>
                           </thead>
 
@@ -133,9 +457,9 @@
                                           <img [src]="row.get('photoUrl')?.value" class="preview-image" alt="Image de la tâche" *ngIf="!annotatedImagePreviews[i]"/>
                                           <img [src]="annotatedImagePreviews[i]" class="preview-image" alt="Aperçu image modifiée"  *ngIf="annotatedImagePreviews[i]"/>
                                           <input #fileInput type="file" accept="image/*" (change)="onImageSelected($event,i)" #fileUpload hidden/>
-                                          <button class="remove-image-btn" (click)="fileUpload.click()" matTooltip="Editer l'image">
+                                          <!-- <button class="remove-image-btn" (click)="fileUpload.click()" matTooltip="Editer l'image">
                                             <i class="fa-solid fa-edit"></i>
-                                          </button>
+                                          </button> -->
                                           <button class="open-image-btn" matTooltip="Voir l'image" (click)="openDialogFile(row.get('photoUrl')?.value,'png')">
                                             <i class="fa-solid fa-eye"></i>
                                           </button>
@@ -155,8 +479,8 @@
                               <td>
                                 <mat-form-field class="example-full-width">
                                   <mat-select  formControlName="etat">
-                                    <mat-option value="Non levée">Non levée</mat-option>
-                                    <mat-option value="Levée">Levée</mat-option>
+                                    <mat-option value="A Faire">A Faire</mat-option>
+                                    <mat-option value="Fait">Fait</mat-option>
                                     <mat-option value="Observation">Observation</mat-option>
                                   </mat-select>
                                 </mat-form-field>
@@ -186,6 +510,9 @@
                                   <button mat-icon-button type="button" (click)="fileUpload.click()"><!--onReservePhotoSelected-->
                                     <mat-icon>attach_file</mat-icon>
                                   </button>
+                                  <button mat-icon-button type="button" (click)="previewReserveLeveeImage(i)" [disabled]="!reserveLeveePreviewUrls[i]" style="margin: 0;" matTooltip="Voir l'image">
+                                    <mat-icon>visibility</mat-icon>
+                                  </button>
                                   <div class="file-meta">
                                     <span class="file-name" *ngIf="getReserveFile(i)" matTooltip="{{getReserveFile(i)?.name}}">{{ getReserveFile(i)?.name }}</span>
                                     <span class="file-empty" *ngIf="!getReserveFile(i)">Aucun fichier choisi</span>
@@ -199,13 +526,85 @@
                                   <mat-datepicker #picker4></mat-datepicker>
                                 </mat-form-field>
                               </td>
-                              <td><button mat-icon-button color="warn" type="button" (click)="removeReserve(i)"><mat-icon>delete</mat-icon></button></td>
+                              <!-- <td><button mat-icon-button color="warn" type="button" (click)="removeReserve(i)"><mat-icon>delete</mat-icon></button></td> -->
                             </tr>
                           </tbody>
                         </table>
                     </div>
-                    <button type="button" mat-button color="primary" (click)="addReserve()">Ajouter une réserve</button>
+                    <!-- <button type="button" mat-button color="primary" (click)="addReserve()">Ajouter une réserve</button> -->
 
+                  </div>
+
+                  <div *ngIf="form.value.declaration === 'WITHOUT_RESERVE_WITH_OBSERVATION'" style="margin-bottom: 25px;">
+                    <div style="background-color: #28628B;padding: 7px 3px 1px 14px;">
+                      <h2 style="color: #fff;">Observations</h2>
+                    </div>
+
+                    <div class="table-responsive" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                      <table class="table" style="min-width: 100%; table-layout: fixed;">
+                        <thead>
+                          <tr>
+                            <th style="width: 40px;">#</th>
+                            <th style="min-width: 150px;">Nature</th>
+                            <th style="width: 120px;">Photo</th>
+                            <th style="width: 50px;"></th>
+                          </tr>
+                        </thead>
+
+                        <tbody formArrayName="reserves">
+                          <tr *ngFor="let row of reserves.controls; let i=index" [formGroupName]="i">
+                            <td>{{ i+1 }}</td>
+                            <td>
+                              <mat-form-field style="width: 100%; min-width: 140px;">
+                                <input matInput formControlName="nature">
+                              </mat-form-field>
+                            </td>
+                            <td>
+                              <div class="annotated-image-top-preview" style="display: flex; justify-content: center;">
+                                <div class="image-preview-container" style="position: relative; width: 68px;">
+                                  <div>
+                                    <img [src]="annotatedImagePreviews[i]"
+                                        class="preview-image"
+                                        alt="Aperçu image modifiée"
+                                        *ngIf="annotatedImagePreviews[i]"
+                                      />
+                                    <img src="assets/images/task1.png"
+                                        class="preview-image"
+                                        alt="Image par défaut"
+                                        *ngIf="!annotatedImagePreviews[i]"
+                                        />
+                                    <input
+                                      #fileInput
+                                      type="file"
+                                      accept="image/*"
+                                      (change)="onImageSelected($event,i)"
+                                      #fileUpload
+                                      hidden
+                                    />
+                                    <button
+                                      class="remove-image-btn"
+                                      (click)="fileUpload.click()"
+                                      type="button"
+                                      matTooltip="Ajouter l'image"
+                                      style="position: absolute; bottom: 0; right: 0;">
+                                      <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                            <td>
+                              <button mat-icon-button color="warn" type="button" (click)="removeReserve(i)">
+                                <mat-icon>delete</mat-icon>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <button type="button" mat-button color="primary" (click)="addReserve()">
+                      Ajouter une observation
+                    </button>
                   </div>
 
                   <div *ngIf="form.value.declaration === 'WITH_RESERVES'">
@@ -242,7 +641,7 @@
                   </div>
 
                     <!-- Section observation -->
-                  <div *ngIf="form.value.declaration === 'WITHOUT_RESERVE_WITH_OBSERVATION'" class="row">
+                  <!-- <div *ngIf="form.value.declaration === 'WITHOUT_RESERVE_WITH_OBSERVATION'" class="row">
                       <mat-form-field class="example-full-width">
                         <mat-label class="tache_label">Observation</mat-label>
                         <textarea matInput formControlName="observation" required></textarea>
@@ -250,7 +649,7 @@
                       <div *ngIf="form.get('observation').hasError(champ_validation.input[0].type) &&(form.get('observation').dirty || form.get('observation').touched)">
                         <p class="error_field">{{champ_validation.input[0].message}}</p>
                       </div>
-                  </div>
+                  </div> -->
 
                   <!-- Section REFUSED -->
                   <div *ngIf="form.value.declaration === 'REFUSED'">
@@ -268,34 +667,50 @@
                   <div class="row" style="margin-bottom: 25px;">
                     <div class="col">
                       <label>Signature du représentant de l'entreprise *</label>
-                      <div *ngIf="reception?.signatures?.companyRep">
+                      <br/>
+                      <small style="color: rgb(171, 6, 6);">(Après avoir signé, veuillez cliquer sur approuver. )</small>
+                      <!-- <div *ngIf="reception?.signatures?.companyRep">
                         <img [src]="reception?.signatures?.companyRep?.signatureUrl">
+                      </div> -->
+                      <div formGroupName="signatures">
+                        <mat-form-field class="example-full-width" formGroupName="companyRep">
+                          <mat-label class="tache_label">Nom et Prénom (Signataire)</mat-label>
+                          <input matInput formControlName="signerName">
+                        </mat-form-field>
                       </div>
-                      <!--<div>
+                      <div>
                         <div style="margin-bottom: 10px;">
                           <canvas #canvas style="background: rgb(172, 169, 169);"></canvas>
                         </div>
                         <div>
                           <button mat-stroked-button (click)="clear()" style="margin-right: 10px;">Effacer</button>
-                          <button mat-stroked-button  color="primary" (click)="saveSignature()" cdkFocusInitial *ngIf="!isValide">Valider</button>
+                          <button mat-stroked-button  color="primary" (click)="saveSignature()" cdkFocusInitial *ngIf="!isValide">Approuver</button>
                         </div>
-                      </div>-->
+                      </div>
                     </div>
 
                     <div class="col">
                       <label>Signature du Maître d'Ouvrage (ou client) *</label>
-                      <div *ngIf="reception?.signatures?.client">
+                      <br/>
+                      <small style="color: rgb(171, 6, 6);">(Après avoir signé, veuillez cliquer sur approuver. )</small>
+                      <!-- <div *ngIf="reception?.signatures?.client">
                         <img [src]="reception?.signatures?.client?.signatureUrl">
+                      </div> -->
+                      <div formGroupName="signatures">
+                        <mat-form-field class="example-full-width" formGroupName="client">
+                          <mat-label class="tache_label">Nom et Prénom (Signataire)</mat-label>
+                          <input matInput formControlName="signerName">
+                        </mat-form-field>
                       </div>
-                      <!--<div>
+                      <div>
                         <div style="margin-bottom: 10px;">
                           <canvas #canvas1 style="background: rgb(172, 169, 169);"></canvas>
                         </div>
                         <div>
                           <button  mat-stroked-button (click)="clearClient()" style="margin-right: 10px;">Effacer</button>
-                          <button  mat-stroked-button  color="primary" (click)="saveSignatureClient()" cdkFocusInitial *ngIf="!isValideClient">Valider</button>
+                          <button  mat-stroked-button  color="primary" (click)="saveSignatureClient()" cdkFocusInitial *ngIf="!isValideClient">Approuver</button>
                         </div>
-                      </div>-->
+                      </div>
 
                     </div>
                   </div>

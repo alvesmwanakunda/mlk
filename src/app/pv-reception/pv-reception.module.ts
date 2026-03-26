@@ -9,12 +9,14 @@ import { ViewerStandarModule } from 'src/app/viewer-standar/viewer-standar.modul
 import { DeletePvModule } from './delete-pv/delete-pv.module';
 import { ImageAnnotationModule } from '../note-module/image-annotation/image-annotation.module';
 import { LeveeReserveModule } from './levee-reserve/levee-reserve.module';
+import { AddReceptionModule } from './add-reception/add-reception.module';
+import { DownloadPvComponent } from './download-pv/download-pv.component';
 
 
 
 
 @NgModule({
-  declarations: [PvReceptionComponent],
+  declarations: [PvReceptionComponent, DownloadPvComponent],
   imports: [
     CommonModule,
     PvReceptionRoutingModule,
@@ -25,7 +27,8 @@ import { LeveeReserveModule } from './levee-reserve/levee-reserve.module';
     ViewerStandarModule,
     DeletePvModule,
     ImageAnnotationModule,
-    LeveeReserveModule
+    LeveeReserveModule,
+    AddReceptionModule
   ],
   exports:[PvReceptionComponent]
 })

@@ -3,10 +3,12 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CountriesService } from 'src/app/shared/services/countries.service';
 import { Router } from '@angular/router';
-import { startWith, map, Observable } from 'rxjs';
+import { startWith, map, Observable, catchError, debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
 import { ProjetsService } from 'src/app/shared/services/projets.service';
 import { EntreprisesService } from 'src/app/shared/services/entreprises.service';
 import { ContactsService } from 'src/app/shared/services/contacts.service';
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-add-projet',
@@ -39,6 +41,8 @@ export class AddProjetComponent implements OnInit {
   entreprise:any;
   pays="France";
   code="+33"
+  suggestions$!: Observable<Suggestion[]>;
+
 
 
 
@@ -49,7 +53,9 @@ export class AddProjetComponent implements OnInit {
     private countryService:CountriesService,
     private projetService:ProjetsService,
     private entrepriseService:EntreprisesService,
-    private contactService:ContactsService
+    private contactService:ContactsService,
+    private http: HttpClient
+
   ) {
     this.projetFormError={
       nom:{},
@@ -102,6 +108,7 @@ export class AddProjetComponent implements OnInit {
       postal:[''],
       numero:[''],
       coordonnees:[''],
+       addressSearch: [{ value: '', disabled: true }, Validators.required],
     });
     this.threeFormGroup=this._formBuilder.group({
       budget:[''],
@@ -110,6 +117,22 @@ export class AddProjetComponent implements OnInit {
       date_limite:[''],
       date_fin_contrat:[''],
       numero_offre:[''],
+    });
+
+    this.secondFormGroup.get('pays')?.valueChanges.subscribe((pays) => {
+      // reset champs adresse
+      this.secondFormGroup.patchValue({
+        adresse: '',
+        ville: '',
+        rue: '',
+        postal: '',
+        coordonnees: '',
+        addressSearch: '',
+      }, { emitEvent: false });
+
+      const ctrl = this.secondFormGroup.get('addressSearch');
+      if (pays) ctrl?.enable({ emitEvent: false });
+      else ctrl?.disable({ emitEvent: false });
     });
 
     this.paysFiltres = this.secondFormGroup.get('pays').valueChanges.pipe(
@@ -127,14 +150,36 @@ export class AddProjetComponent implements OnInit {
       map((val)=> this.filterEntreprise(val))
     );
 
+    this.suggestions$ = this.secondFormGroup.get('addressSearch')!.valueChanges.pipe(
+          startWith(''),
+          map(v => (typeof v === 'string' ? v : v?.label ?? '').trim()),
+          debounceTime(300),
+          distinctUntilChanged(),
+          switchMap(q => {
+            const pays = this.secondFormGroup.get('pays')?.value;
+            const countryCode = this.getCountryCode(pays);
+            if (!countryCode || q.length < 3) return of([]);
+
+            return this.http.get<Suggestion[]>(`${environment.BASE_API_URL}/geo/address/suggest`, {
+              params: { country: countryCode, q }
+            }).pipe(
+              catchError(err => {
+                console.error('API suggest error', err);
+                return of([]);
+              })
+            );
+          })
+    );
+
+
     this.getContry();
     this.getDevis();
   }
 
-  filterPays(value:string){
-    const filtre = value.toLowerCase();
-    return this.countries.filter(option=> option.name.toLocaleLowerCase().includes(filtre));
-  }
+  // filterPays(value:string){
+  //   const filtre = value.toLowerCase();
+  //   return this.countries.filter(option=> option.name.toLocaleLowerCase().includes(filtre));
+  // }
 
   filterDevis(value:string){
     const filtre = value.toLowerCase();
@@ -173,6 +218,78 @@ export class AddProjetComponent implements OnInit {
       panelClass:['error-snackbar']
     })
   }
+
+
+  private getCountryCode(pays: any): string | null {
+      if (!pays) return null;
+
+      // Si c’est déjà l’objet {name, code...}
+      if (typeof pays === 'object') return pays.code ?? null;
+
+      // Si c’est une string ("France" ou "FR")
+      const v = String(pays).trim().toLowerCase();
+      const found = this.countries.find((c: any) =>
+        c.name?.toLowerCase() === v || c.code?.toLowerCase() === v
+      );
+      console.log("Found===============>", found);
+
+      return found?.code ?? null;
+  }
+
+  private decimalToDms(value: number, type: 'lat' | 'lon'): string {
+
+      const abs = Math.abs(value);
+      const deg = Math.floor(abs);
+      const minFloat = (abs - deg) * 60;
+      const min = Math.floor(minFloat);
+      const sec = ((minFloat - min) * 60);
+
+      const hemisphere =
+        type === 'lat'
+          ? (value >= 0 ? 'N' : 'S')
+          : (value >= 0 ? 'E' : 'W');
+
+      return `${deg}°${min}'${sec.toFixed(2)}"${hemisphere}`;
+  }
+
+  filterPays(value: any) {
+      const filtre =
+        typeof value === 'string'
+          ? value.toLowerCase()
+          : value?.name?.toLowerCase() ?? '';
+
+      return this.countries.filter(option =>
+        option.name.toLowerCase().includes(filtre)
+      );
+    }
+
+    displayAddress = (s: Suggestion | string | null): string => {
+      if (!s) return '';
+      return typeof s === 'string' ? s : s.description;
+    };
+
+    onAddressSelected(s: any): void {
+
+
+    //adresse = numéro (si tu veux garder "adresse" comme numéro)
+      this.http.get(`${environment.BASE_API_URL}/geo/address/detail`,{
+        params:{place_id:s.place_id}
+      }).subscribe((detail:any) => {
+        console.log("Détail", detail);
+          const latDms = this.decimalToDms(detail.lat, 'lat');
+          const lonDms = this.decimalToDms(detail.lon, 'lon');
+          this.secondFormGroup.patchValue({
+            addressSearch: s.description,
+            adresse: detail?.numero ?? '',
+            rue: detail?.rue ?? '',
+            postal: detail?.postal ?? '',
+            ville: detail?.ville ?? '',
+            coordonnees: `${latDms},${lonDms}`
+          }, { emitEvent: false });
+
+      })
+
+    }
 
   getContry(){
     this.countryService.getCountries().subscribe(
@@ -286,3 +403,15 @@ onOptionClientSelected(event) {
 }
 
 }
+type Suggestion = {
+  description: string;
+  label: string;
+  lat?: string;
+  lon?: string;
+  components: {
+    numero: string;
+    rue: string;
+    codePostal: string;
+    ville: string;
+  };
+};

@@ -85,7 +85,7 @@ export class LoginComponent implements OnInit {
     // @ts-ignore
     google.accounts.id.prompt((notification: PromptMomentNotification) => {});
   }
-  
+
   handleCredentialResponse(response: any) {
     this.onLoadForm=true;
     this.authService.googleLogin(response.credential).subscribe((res:any)=>{
@@ -97,7 +97,7 @@ export class LoginComponent implements OnInit {
       this.onLoadForm=false;
     },(err)=>{
       this.onLoadForm=false;
-      if(err.status==404){  
+      if(err.status==404){
         this.openSnackBar("Vous n'avez pas de compte chez MLKA avec cette adresse e-mail.");
       }else{
         this.openSnackBarError("Une erreur est survenue lors de la connexion. Veuillez réessayer.");
@@ -132,7 +132,7 @@ export class LoginComponent implements OnInit {
       this.onLoadForm=false;
     },(err)=>{
       this.onLoadForm=false;
-      if(err.status==404){  
+      if(err.status==404){
         this.openSnackBar("Vous n'avez pas de compte chez MLKA avec cette adresse e-mail.");
       }else{
         this.openSnackBarError("Une erreur est survenue lors de la connexion. Veuillez réessayer.");
@@ -141,7 +141,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  
+
   //redirect
   handleRedirectAndUserSet(userInfos: any){
     if (userInfos.user.twoFactorEnabled){
@@ -183,6 +183,7 @@ export class LoginComponent implements OnInit {
     this.testValidation=false;
     this.loginFormErrors["email"].notfound=false;
     this.authService.signin(this.loginForm.value).then((res:any)=>{
+      //console.log("res", res);
       if(!res.success){
           this.loginFormErrors["email"].notfound=true;
       }else{
@@ -208,6 +209,6 @@ export class LoginComponent implements OnInit {
     })
   }
 
-  
+
 }
 

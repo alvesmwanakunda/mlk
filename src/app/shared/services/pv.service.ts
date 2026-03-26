@@ -33,6 +33,19 @@ export class PvService {
     return this.httpClient.post(`${environment.BASE_API_URL}/pv-receptions/${pvId}/revision`, formData);
   }
 
+  public sendPvByMail(
+    idPv: string,
+    destinataires: Array<{ nom: string; prenom: string; email: string }>,
+    pvReception?: File
+  ) {
+    const formData = new FormData();
+    if (pvReception) {
+      formData.append('pvReception', pvReception);
+    }
+    formData.append('destinataires', JSON.stringify(destinataires || []));
+    return this.httpClient.post(`${environment.BASE_API_URL}/pv/send-mail/${idPv}`, formData);
+  }
+
 
 
 }
