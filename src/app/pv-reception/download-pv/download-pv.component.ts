@@ -106,8 +106,11 @@ export class DownloadPvComponent implements OnInit {
     const mapImageOnly = await this.buildMapImageOnly(this.pv?.chantier);
 
     const peopleRows = this.buildPeopleRows(this.pv?.personnesPresent);
-    const reservesRows = await this.buildReservesRows(this.pv?.reserves);
-    const obeservationsRows = await this.buildObservationsRows(this.pv?.reserves);
+    const allReserves = Array.isArray(this.pv?.reserves) ? this.pv.reserves : [];
+    const observationReserves = allReserves.filter((r: any) => this.normalizeEtat(r?.etat) === 'observation');
+    const classicReserves = allReserves.filter((r: any) => this.normalizeEtat(r?.etat) !== 'observation');
+    const reservesRows = await this.buildReservesRows(classicReserves);
+    const observationsRows = await this.buildObservationsRows(observationReserves);
 
 
     const docDefinition: any = {
@@ -160,18 +163,18 @@ export class DownloadPvComponent implements OnInit {
               },
               {
                 text: `Page ${currentPage} sur ${pageCount}`,
-                alignment: 'center',
-                fontSize: 7.5,
-                color: GRAY,
-                margin: [0, 4, 0, 0]
-              },
-              {
-                text: this.pv?.entreprise?.adresse || '',
                 alignment: 'right',
                 fontSize: 7.5,
                 color: GRAY,
                 margin: [0, 4, 0, 0]
-              }
+              },
+              // {
+              //   text: this.pv?.entreprise?.adresse || '',
+              //   alignment: 'right',
+              //   fontSize: 7.5,
+              //   color: GRAY,
+              //   margin: [0, 4, 0, 0]
+              // }
             ]
           }
         ]
@@ -366,7 +369,7 @@ export class DownloadPvComponent implements OnInit {
 
         // Réserves
         ...(
-          ['WITH_RESERVES'].includes(this.pv?.declaration)
+          ['WITH_RESERVES'].includes(this.pv?.declaration) && reservesRows.length
             ? [
                 {
                   text: 'Liste des réserves',
@@ -398,8 +401,12 @@ export class DownloadPvComponent implements OnInit {
             : []
         ),
 
-         ...(
-          ['WITHOUT_RESERVE_WITH_OBSERVATION'].includes(this.pv?.declaration)
+        ...(
+          (
+            ['WITHOUT_RESERVE_WITH_OBSERVATION'].includes(this.pv?.declaration) ||
+            (['WITH_RESERVES'].includes(this.pv?.declaration) && observationsRows.length > 0)
+          )
+          && observationsRows.length
             ? [
                 {
                   text: 'Liste des observations',
@@ -418,7 +425,7 @@ export class DownloadPvComponent implements OnInit {
                         { text: 'Nature', style: 'tableHeader' },
                         { text: 'Photo', style: 'tableHeader' },
                       ],
-                      ...obeservationsRows
+                      ...observationsRows
                     ]
                   },
                   layout: this.tableLayout(),
@@ -545,8 +552,8 @@ export class DownloadPvComponent implements OnInit {
                   ]
                 },
                 {
-                  text: this.pv?.signatures?.client?.signerName
-                    || `${maitreOuvrage?.prenom || ''} ${maitreOuvrage?.nom || ''}`.trim(),
+                  text: this.pv?.signatures?.client?.signerName,
+                    //|| `${maitreOuvrage?.prenom || ''} ${maitreOuvrage?.nom || ''}`.trim(),
                   alignment: 'center',
                   bold: true,
                   fontSize: 10,
@@ -764,7 +771,7 @@ export class DownloadPvComponent implements OnInit {
 
   private async buildReservesRows(reserves: any[]): Promise<any[][]> {
     const rows = Array.isArray(reserves) ? reserves : [];
-    if (!rows.length) return [['', '', '', '', '', '']];
+    if (!rows.length) return [];
 
     return Promise.all(
       rows.slice(0, 20).map(async (r: any, i: number) => {
@@ -785,14 +792,14 @@ export class DownloadPvComponent implements OnInit {
 
     private async buildObservationsRows(reserves: any[]): Promise<any[][]> {
     const rows = Array.isArray(reserves) ? reserves : [];
-    if (!rows.length) return [['', '', '']];
+    if (!rows.length) return [];
 
     return Promise.all(
       rows.slice(0, 20).map(async (r: any, i: number) => {
-        const photoCell = await this.imageCell(r?.photoUrl);
+        const photoCell = await this.observationPhotoCell(r?.photoUrl);
 
         return [
-          { text: `OB${String(i + 1).padStart(2, '0')}`, fontSize: 10, alignment: 'center' },
+          { text: `OB${i + 1}`, fontSize: 10, alignment: 'center' },
           { text: r?.nature, fontSize: 10 },
           photoCell,
         ];
@@ -833,8 +840,16 @@ export class DownloadPvComponent implements OnInit {
       const dataUrl = await this.toDataUrl(url);
       return { image: dataUrl, width: 50, height: 42, alignment: 'center',link: url };
     } catch {
-      return { text: 'N/A', fontSize: 8.5, alignment: 'center', color: LIGHT_GRAY };
+      return { text: '', fontSize: 8.5, alignment: 'center', color: LIGHT_GRAY };
     }
+  }
+
+  private async observationPhotoCell(url?: string):  Promise<any> {
+    return this.imageCell(url);
+  }
+
+  private normalizeEtat(value: any): string {
+    return (value || '').toString().trim().toLowerCase();
   }
 
   // ═══════════════════════════════════════════════════════════════════════════

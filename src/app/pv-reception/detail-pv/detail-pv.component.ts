@@ -436,6 +436,17 @@ private buildDefaultDestinataires(): Array<{ nom: string; prenom: string; email:
     });
   }
 
+  const personnesPresent = Array.isArray(existing?.personnesPresent) ? existing.personnesPresent : [];
+  personnesPresent.forEach((person: any) => {
+    if (person?.email) {
+      recipients.push({
+        nom: person?.nom || '',
+        prenom: person?.prenom || '',
+        email: person?.email || ''
+      });
+    }
+  });
+
   const unique = new Map<string, { nom: string; prenom: string; email: string }>();
   recipients.forEach((r) => {
     const key = (r.email || '').trim().toLowerCase();

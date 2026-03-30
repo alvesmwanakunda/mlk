@@ -11,7 +11,7 @@ export function buildPvForm(fb: FormBuilder) {
     place: ['', Validators.required],
 
     refusalReason: [''],
-    observation: [''],
+    //observation: [''],
     titre:['', Validators.required],
     entrepriseCode:['', Validators.required],
 
@@ -63,13 +63,15 @@ export function buildPvForm(fb: FormBuilder) {
         signerName: [''],
         signerRole: ['Entreprise'],
         signatureUrl: [''],
-        signedAt: [new Date()],
+        signedAt: [''],
+        //signedAt: [new Date()],
       }),
       client: fb.group({
         signerName: [''],
         signerRole: ["Maître d'Ouvrage"],
         signatureUrl: [''],
-        signedAt: [new Date()],
+        signedAt: [''],
+        //signedAt: [new Date()],
       }),
     }),
   });
@@ -78,7 +80,7 @@ export function buildPvForm(fb: FormBuilder) {
     form.get('declaration')!.valueChanges.subscribe((dec) => {
     // reset validators
     form.get('refusalReason')!.clearValidators();
-    form.get('observation')!.clearValidators();
+    //form.get('observation')!.clearValidators();
 
     form.get('nextReceptionDate')!.clearValidators();
     form.get('reservesExecutionDelayDays')!.clearValidators();
@@ -88,9 +90,9 @@ export function buildPvForm(fb: FormBuilder) {
       form.get('refusalReason')!.setValidators([Validators.required, Validators.minLength(5)]);
     }
 
-    if (dec === 'WITHOUT_RESERVE_WITH_OBSERVATION') {
-      form.get('observation')!.setValidators([Validators.required, Validators.minLength(5)]);
-    }
+    // if (dec === 'WITHOUT_RESERVE_WITH_OBSERVATION') {
+    //   form.get('observation')!.setValidators([Validators.required, Validators.minLength(5)]);
+    // }
 
     if (dec === 'WITH_RESERVES') {
       form.get('nextReceptionDate')!.setValidators([Validators.required]);
@@ -101,7 +103,7 @@ export function buildPvForm(fb: FormBuilder) {
 
     // update validity
     form.get('refusalReason')!.updateValueAndValidity();
-    form.get('observation')!.updateValueAndValidity();
+    //form.get('observation')!.updateValueAndValidity();
     form.get('nextReceptionDate')!.updateValueAndValidity();
     form.get('reservesExecutionDelayDays')!.updateValueAndValidity();
     form.get('reservesFromDate')!.updateValueAndValidity();
@@ -113,7 +115,7 @@ export function buildPvForm(fb: FormBuilder) {
 export function reserveRow(fb: FormBuilder) {
   return fb.group({
     nature: ['', Validators.required],
-    travauxAExecuter: ['', Validators.required],
+    travauxAExecuter: [''],
     photoUrl: [''],
     etat: ['A Faire'],
     leveeDate: [null],
@@ -124,7 +126,7 @@ export function reserveRow(fb: FormBuilder) {
 export function reserveUpdateRow(fb: FormBuilder) {
   return fb.group({
     nature: ['', Validators.required],
-    travauxAExecuter: ['', Validators.required],
+    travauxAExecuter: [''],
     etat: ['A Faire'],
     leveeDate: [null],
   });
@@ -133,7 +135,7 @@ export function reserveUpdateRow(fb: FormBuilder) {
 export function reserveExistingRow(fb: FormBuilder) {
   return fb.group({
     nature: ['', Validators.required],
-    travauxAExecuter: ['', Validators.required],
+    travauxAExecuter: [''],
     etat: [{ value: 'A Faire', disabled: true }], // ✅ disabled uniquement existant
     photoUrl: [null],
     leveeDate: [{value:null, disabled: true}],

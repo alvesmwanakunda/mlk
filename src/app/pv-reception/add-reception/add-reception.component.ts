@@ -1,6 +1,6 @@
 
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { buildPvForm, reserveRow, reservesArray,onReservePhotoSelected, personnesArray, personnesRow } from '../pv-form.factory';
 import { PvService } from '../../shared/services/pv.service';
 import { ActivatedRoute } from '@angular/router';
@@ -233,8 +233,15 @@ export class AddReceptionComponent implements OnInit, AfterViewInit {
           signatureUrl: this.signaturePad.toDataURL(),
           signedAt: new Date().toISOString()
         });
+
         // this.form.controls['signatures?.companyRep?.signerName'].setValue(this.user?.user?.nom+" "+this.user?.user?.prenom);
         // this.form.controls['signatures?.companyRep?.signedUrl'].setValue(this.signaturePadClient.toDataURL());
+      }else{
+          this.form.get('signatures.companyRep')?.patchValue({
+          signerRole: 'Entreprise',
+          signatureUrl: "",
+          signedAt: ""
+        });
       }
   }
 
@@ -252,6 +259,12 @@ export class AddReceptionComponent implements OnInit, AfterViewInit {
           signatureUrl: this.signaturePadClient.toDataURL(),
           signedAt: new Date().toISOString()
         });
+      }else{
+        this.form.get('signatures.client')?.patchValue({
+          signerRole: 'Maître d\'Ouvrage',
+          signatureUrl: "",
+          signedAt: ""
+        });
       }
   }
 
@@ -259,7 +272,17 @@ export class AddReceptionComponent implements OnInit, AfterViewInit {
 
   get personnesPresent(){ return personnesArray(this.form)}
 
-  addReserve() { this.reserves.push(reserveRow(this.fb)); }
+  private getDefaultReserveEtat(): string {
+    return this.form?.get('declaration')?.value === 'WITHOUT_RESERVE_WITH_OBSERVATION'
+      ? 'Observation'
+      : 'A Faire';
+  }
+
+  addReserve() {
+    const reserve = reserveRow(this.fb);
+    reserve.patchValue({ etat: this.getDefaultReserveEtat() });
+    this.reserves.push(reserve);
+  }
   removeReserve(i: number) {
     this.reserves.removeAt(i);
     this.reservePhotoFiles.splice(i, 1);
@@ -305,10 +328,42 @@ export class AddReceptionComponent implements OnInit, AfterViewInit {
     return errors;
   }
 
+  private collectRequiredInvalidFields(control: AbstractControl, path = ''): string[] {
+    const fields: string[] = [];
+
+    if (control instanceof FormGroup) {
+      Object.keys(control.controls).forEach((key) => {
+        const child = control.controls[key];
+        const childPath = path ? `${path}.${key}` : key;
+        fields.push(...this.collectRequiredInvalidFields(child, childPath));
+      });
+      return fields;
+    }
+
+    if (control instanceof FormArray) {
+      control.controls.forEach((child, index) => {
+        const childPath = `${path}[${index}]`;
+        fields.push(...this.collectRequiredInvalidFields(child, childPath));
+      });
+      return fields;
+    }
+
+    if (control.errors?.['required']) {
+      fields.push(path);
+    }
+
+    return fields;
+  }
+
   save() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      this.openSnackBarError("Veuillez remplir les champs obligatoires.");
+      const requiredFields = this.collectRequiredInvalidFields(this.form);
+      if (requiredFields.length > 0) {
+        this.openSnackBarError(`Champs obligatoires manquants: ${requiredFields.join(', ')}`);
+      } else {
+        this.openSnackBarError("Veuillez corriger les champs invalides.");
+      }
       return;
     }
 
@@ -333,7 +388,7 @@ export class AddReceptionComponent implements OnInit, AfterViewInit {
       const reserveData = {
         nature: reserveControl.get('nature')?.value,
         travauxAExecuter: reserveControl.get('travauxAExecuter')?.value,
-        etat: reserveControl.get('etat')?.value || 'A Faire',
+        etat: reserveControl.get('etat')?.value || this.getDefaultReserveEtat(),
         leveeDate: reserveControl.get('leveeDate')?.value,
       };
 

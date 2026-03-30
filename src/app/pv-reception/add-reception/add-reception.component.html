@@ -547,6 +547,7 @@
                   <th style="width: 40px;">#</th>
                   <th style="min-width: 150px;">Nature</th>
                   <th style="width: 120px;">Photo</th>
+                  <th style="min-width: 130px;">État</th>
                   <th style="width: 50px;"></th>
                 </tr>
               </thead>
@@ -592,6 +593,11 @@
                         </div>
                       </div>
                     </div>
+                  </td>
+                  <td>
+                      <mat-form-field class="example-full-width">
+                         <input matInput readonly formControlName="etat">
+                      </mat-form-field>
                   </td>
                   <td>
                     <button mat-icon-button color="warn" type="button" (click)="removeReserve(i)">
