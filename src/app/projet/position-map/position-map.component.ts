@@ -26,7 +26,7 @@ export type MapPosition = {
 export class PositionMapComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   @Input() position: MapPosition | null = null;
-  @Input() zoom = 16;
+  @Input() zoom = 20;
   @Output() positionChange = new EventEmitter<MapPosition>();
 
   @ViewChild('mapContainer') mapContainer: ElementRef<HTMLDivElement>;
@@ -84,6 +84,8 @@ export class PositionMapComponent implements AfterViewInit, OnChanges, OnDestroy
         this.googleMap = new maps.Map(this.mapContainer.nativeElement, {
           center: position,
           zoom: this.zoom,
+          maxZoom: 21,
+          mapTypeId: maps.MapTypeId.SATELLITE,
           mapTypeControl: false,
           streetViewControl: false,
           fullscreenControl: true
