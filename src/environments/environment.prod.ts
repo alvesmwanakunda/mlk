@@ -5,7 +5,7 @@ export const environment = {
   BASE_SOCKET:"wss://mlka.app/api",
 
 
-  GOOGLE_CLIENT_ID:"",
+  GOOGLE_CLIENT_ID:"83158305506-dktf4edtq88gmcb7jlfh7edkaq5lpehs.apps.googleusercontent.com",
   LINKEDIN_CLIENT_ID: '78vu4zun0olr3q',
 
 };

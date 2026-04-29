@@ -4,6 +4,6 @@ export const environment = {
   BASE_API_URL:"http://localhost:5000",
   BASE_URL:"http://localhost:4200",
 
-  GOOGLE_CLIENT_ID:"",
+  GOOGLE_CLIENT_ID:"83158305506-dktf4edtq88gmcb7jlfh7edkaq5lpehs.apps.googleusercontent.com",
   LINKEDIN_CLIENT_ID: '78vu4zun0olr3q',
 };
