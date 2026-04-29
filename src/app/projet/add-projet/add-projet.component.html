@@ -177,6 +177,14 @@
                     </div>
 
                   </div>
+                  <div class="row" *ngIf="mapPosition">
+                    <div class="col">
+                      <app-position-map
+                        [position]="mapPosition"
+                        (positionChange)="onMapPositionChanged($event)">
+                      </app-position-map>
+                    </div>
+                  </div>
                   <!-- <div class="row">
                     <div class="col">
 
@@ -267,4 +275,3 @@
 
   </div>
 </app-navbar>
-

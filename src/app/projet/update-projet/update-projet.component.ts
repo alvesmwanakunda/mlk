@@ -10,6 +10,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ContactsService } from 'src/app/shared/services/contacts.service';
 import { HttpClient } from '@angular/common/http';
 import { environment} from 'src/environments/environment';
+import type { MapPosition } from '../position-map/position-map.component';
 
 
 
@@ -45,6 +46,7 @@ export class UpdateProjetComponent implements OnInit {
   devisFiltres:Observable<any[]>;
   contacts:any;
   suggestions$!: Observable<Suggestion[]>;
+  mapPosition: MapPosition | null = null;
 
 
   constructor(
@@ -108,6 +110,7 @@ export class UpdateProjetComponent implements OnInit {
         coordonnees: '',
         addressSearch: '',
       }, { emitEvent: false });
+      this.clearMapPosition();
 
       const ctrl = this.secondFormGroup.get('addressSearch');
       if (pays) ctrl?.enable({ emitEvent: false });
@@ -201,6 +204,7 @@ export class UpdateProjetComponent implements OnInit {
         coordonnees: this.projet?.coordonnees ?? '',
         addressSearch: this.projet?.addressSearch ?? '', // ✅ valeur par défaut
       }, { emitEvent: false });
+      this.mapPosition = this.parseCoordinates(this.projet?.coordonnees);
 
       this.threeFormGroup.patchValue({
         budget: this.projet?.budget ?? '',
@@ -278,7 +282,8 @@ export class UpdateProjetComponent implements OnInit {
     return typeof s === 'string' ? s : s.description;
   };
 
-  onAddressSelected(s: any): void {
+  onAddressSelected(s: Suggestion): void {
+    if (!s?.place_id) return;
 
 
   //adresse = numéro (si tu veux garder "adresse" comme numéro)
@@ -286,16 +291,24 @@ export class UpdateProjetComponent implements OnInit {
       params:{place_id:s.place_id}
     }).subscribe((detail:any) => {
       console.log("Détail", detail);
-        const latDms = this.decimalToDms(detail.lat, 'lat');
-        const lonDms = this.decimalToDms(detail.lon, 'lon');
+        const lat = Number(detail?.lat);
+        const lon = Number(detail?.lon);
+        const hasCoordinates = Number.isFinite(lat) && Number.isFinite(lon);
+
         this.secondFormGroup.patchValue({
           addressSearch: s.description,
           adresse: detail?.numero ?? '',
           rue: detail?.rue ?? '',
           postal: detail?.postal ?? '',
           ville: detail?.ville ?? '',
-          coordonnees: `${latDms},${lonDms}`
+          coordonnees: ''
         }, { emitEvent: false });
+
+        if (hasCoordinates) {
+          this.updateMapPosition(lat, lon);
+        } else {
+          this.clearMapPosition();
+        }
 
 
       // this.secondFormGroup.patchValue({
@@ -305,8 +318,78 @@ export class UpdateProjetComponent implements OnInit {
       //   ville: detail.ville ?? '',
       //   coordonnees: `${detail.lat ?? ''},${detail.lon ?? ''}`.replace(/^,|,$/g, ''),
       // }, { emitEvent: false });
+    }, (error) => {
+      console.error('API detail error', error);
+      this.clearMapPosition();
+      this.openSnackBarError("Impossible de récupérer les coordonnées de l'adresse.");
     })
 
+  }
+
+  private updateMapPosition(lat: number, lon: number): void {
+    this.mapPosition = { lat, lon };
+    this.updateCoordinatesControl(lat, lon);
+  }
+
+  private clearMapPosition(): void {
+    this.mapPosition = null;
+  }
+
+  onMapPositionChanged(position: MapPosition): void {
+    this.mapPosition = position;
+    this.updateCoordinatesControl(position.lat, position.lon);
+  }
+
+  private updateCoordinatesControl(lat: number, lon: number): void {
+    const latDms = this.decimalToDms(lat, 'lat');
+    const lonDms = this.decimalToDms(lon, 'lon');
+
+    this.secondFormGroup.patchValue({
+      coordonnees: `${latDms},${lonDms}`
+    }, { emitEvent: false });
+  }
+
+  private parseCoordinates(value: any): MapPosition | null {
+    if (!value) return null;
+
+    const text = String(value).trim();
+    if (!text) return null;
+
+    const decimalMatch = text.match(/^\s*(-?\d+(?:\.\d+)?)\s*[,;]\s*(-?\d+(?:\.\d+)?)\s*$/);
+    if (decimalMatch) {
+      const lat = Number(decimalMatch[1]);
+      const lon = Number(decimalMatch[2]);
+      return Number.isFinite(lat) && Number.isFinite(lon) ? { lat, lon } : null;
+    }
+
+    const parts = text.split(/\s*[,;]\s*/);
+    if (parts.length < 2) return null;
+
+    const lat = this.dmsToDecimal(parts[0], 'lat');
+    const lon = this.dmsToDecimal(parts[1], 'lon');
+
+    return lat === null || lon === null ? null : { lat, lon };
+  }
+
+  private dmsToDecimal(value: string, type: 'lat' | 'lon'): number | null {
+    const normalized = String(value).trim().replace(',', '.');
+    const hemisphereMatch = normalized.match(/[NSEW]$/i);
+    const hemisphere = hemisphereMatch?.[0].toUpperCase();
+    const numbers = normalized.match(/\d+(?:\.\d+)?/g)?.map(Number) ?? [];
+
+    if (!numbers.length) return null;
+
+    const [degrees, minutes = 0, seconds = 0] = numbers;
+    let decimal = degrees + (minutes / 60) + (seconds / 3600);
+
+    if (hemisphere === 'S' || hemisphere === 'W' || normalized.startsWith('-')) {
+      decimal *= -1;
+    }
+
+    const isValidLatitude = type === 'lat' && decimal >= -90 && decimal <= 90;
+    const isValidLongitude = type === 'lon' && decimal >= -180 && decimal <= 180;
+
+    return isValidLatitude || isValidLongitude ? decimal : null;
   }
 
   // filterPays(value:string){
@@ -535,6 +618,7 @@ getContact(idEntreprise){
 }
 
 type Suggestion = {
+  place_id: string;
   description: string;
   label: string;
   lat?: string;

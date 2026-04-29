@@ -66,24 +66,24 @@ export class LoginComponent implements OnInit {
       this.handleLinkedInLogin(code);
     }
 
-    // @ts-ignore
-    google.accounts.id.initialize({
-      client_id: environment.GOOGLE_CLIENT_ID,
-      callback: this.handleCredentialResponse.bind(this),
-      auto_select: false,
-      cancel_on_tap_outside: true,
-      // use_fedcm_for_button: true,
-      ux_mode: "popup",
-    });
-    // @ts-ignore
-    google.accounts.id.renderButton(
-      document.getElementById("google-button"),
-      { theme: "outline", size: "large", width: "100%", type:"icon", shape: "circle",         // ou "rectangular", "circle"
-        logo_alignment: "center",
-        locale: "fr"        }
-    );
-    // @ts-ignore
-    google.accounts.id.prompt((notification: PromptMomentNotification) => {});
+    const googleIdentity = (window as any).google?.accounts?.id;
+    if (environment.GOOGLE_CLIENT_ID && googleIdentity) {
+      googleIdentity.initialize({
+        client_id: environment.GOOGLE_CLIENT_ID,
+        callback: this.handleCredentialResponse.bind(this),
+        auto_select: false,
+        cancel_on_tap_outside: true,
+        // use_fedcm_for_button: true,
+        ux_mode: "popup",
+      });
+      googleIdentity.renderButton(
+        document.getElementById("google-button"),
+        { theme: "outline", size: "large", width: "100%", type:"icon", shape: "circle",         // ou "rectangular", "circle"
+          logo_alignment: "center",
+          locale: "fr"        }
+      );
+      googleIdentity.prompt((notification: any) => {});
+    }
   }
 
   handleCredentialResponse(response: any) {
@@ -211,4 +211,3 @@ export class LoginComponent implements OnInit {
 
 
 }
-

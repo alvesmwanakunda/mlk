@@ -156,6 +156,14 @@
                     </div>
 
                   </div>
+                  <div class="row" *ngIf="mapPosition">
+                    <div class="col">
+                      <app-position-map
+                        [position]="mapPosition"
+                        (positionChange)="onMapPositionChanged($event)">
+                      </app-position-map>
+                    </div>
+                  </div>
                   <div align="right">
                     <button mat-button matStepperPrevious class="btn-entreprise-back" style="margin-right: 10px;"><i class="fa-solid fa-chevron-left"></i> PRECEDENT</button>
                     <button mat-button matStepperNext class="btn-entreprise">SUIVANT <i class="fa-solid fa-chevron-right"></i></button>
@@ -257,4 +265,3 @@
       </div><!--row-->
   </div>
 </app-navbar>
-

@@ -9,6 +9,7 @@ import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import { CountriesService } from 'src/app/shared/services/countries.service';
 import { ProjetsService } from 'src/app/shared/services/projets.service';
 import { EntreprisesService } from 'src/app/shared/services/entreprises.service';
+import { PositionMapModule } from '../position-map/position-map.module';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { EntreprisesService } from 'src/app/shared/services/entreprises.service'
     NavbarModule,
     FormsModule,
     ReactiveFormsModule,
+    PositionMapModule,
   ],
   providers:[
     ProjetsService,

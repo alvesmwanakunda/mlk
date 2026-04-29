@@ -1,0 +1,16 @@
+<div class="project-map">
+  <div class="project-map-header">
+    <span>Position sélectionnée</span>
+    <small *ngIf="position">
+      Lat {{ position.lat | number:'1.6-6' }} · Lng {{ position.lon | number:'1.6-6' }}
+    </small>
+  </div>
+
+  <div #mapContainer class="project-map-frame"></div>
+
+  <div class="project-map-help">
+    Déplacez le marqueur ou cliquez sur la carte pour corriger la position.
+  </div>
+
+  <p class="error_field project-map-error" *ngIf="mapLoadError">{{ mapLoadError }}</p>
+</div>

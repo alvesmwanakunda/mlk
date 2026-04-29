@@ -9,6 +9,7 @@ import { EntreprisesService } from 'src/app/shared/services/entreprises.service'
 import { ContactsService } from 'src/app/shared/services/contacts.service';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
+import type { MapPosition } from '../position-map/position-map.component';
 
 @Component({
   selector: 'app-add-projet',
@@ -42,6 +43,7 @@ export class AddProjetComponent implements OnInit {
   pays="France";
   code="+33"
   suggestions$!: Observable<Suggestion[]>;
+  mapPosition: MapPosition | null = null;
 
 
 
@@ -129,6 +131,7 @@ export class AddProjetComponent implements OnInit {
         coordonnees: '',
         addressSearch: '',
       }, { emitEvent: false });
+      this.clearMapPosition();
 
       const ctrl = this.secondFormGroup.get('addressSearch');
       if (pays) ctrl?.enable({ emitEvent: false });
@@ -268,7 +271,8 @@ export class AddProjetComponent implements OnInit {
       return typeof s === 'string' ? s : s.description;
     };
 
-    onAddressSelected(s: any): void {
+    onAddressSelected(s: Suggestion): void {
+      if (!s?.place_id) return;
 
 
     //adresse = numéro (si tu veux garder "adresse" comme numéro)
@@ -276,19 +280,53 @@ export class AddProjetComponent implements OnInit {
         params:{place_id:s.place_id}
       }).subscribe((detail:any) => {
         console.log("Détail", detail);
-          const latDms = this.decimalToDms(detail.lat, 'lat');
-          const lonDms = this.decimalToDms(detail.lon, 'lon');
+          const lat = Number(detail?.lat);
+          const lon = Number(detail?.lon);
+          const hasCoordinates = Number.isFinite(lat) && Number.isFinite(lon);
           this.secondFormGroup.patchValue({
             addressSearch: s.description,
             adresse: detail?.numero ?? '',
             rue: detail?.rue ?? '',
             postal: detail?.postal ?? '',
             ville: detail?.ville ?? '',
-            coordonnees: `${latDms},${lonDms}`
+            coordonnees: ''
           }, { emitEvent: false });
 
+          if (hasCoordinates) {
+            this.updateMapPosition(lat, lon);
+          } else {
+            this.clearMapPosition();
+          }
+
+      }, (error) => {
+        console.error('API detail error', error);
+        this.clearMapPosition();
+        this.openSnackBarError("Impossible de récupérer les coordonnées de l'adresse.");
       })
 
+    }
+
+    private updateMapPosition(lat: number, lon: number): void {
+      this.mapPosition = { lat, lon };
+      this.updateCoordinatesControl(lat, lon);
+    }
+
+    private clearMapPosition(): void {
+      this.mapPosition = null;
+    }
+
+    onMapPositionChanged(position: MapPosition): void {
+      this.mapPosition = position;
+      this.updateCoordinatesControl(position.lat, position.lon);
+    }
+
+    private updateCoordinatesControl(lat: number, lon: number): void {
+      const latDms = this.decimalToDms(lat, 'lat');
+      const lonDms = this.decimalToDms(lon, 'lon');
+
+      this.secondFormGroup.patchValue({
+        coordonnees: `${latDms},${lonDms}`
+      }, { emitEvent: false });
     }
 
   getContry(){
@@ -404,6 +442,7 @@ onOptionClientSelected(event) {
 
 }
 type Suggestion = {
+  place_id: string;
   description: string;
   label: string;
   lat?: string;
