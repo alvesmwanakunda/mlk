@@ -1,8 +1,42 @@
 .headerMenu{
   box-shadow: var(--shadow4, 0 0 2px var(--shadowAmbient, rgba(0, 0, 0, 0.12)), 0 2px 4px var(--shadowKey, rgba(0, 0, 0, 0.14))) !important;
-  height: fit-content !important;
+  min-height: 64px !important;
   background-color: #28628B !important;
-  z-index: 1 !important;
+  z-index: 1030 !important;
+  padding: 0 !important;
+}
+
+.navbar-shell {
+  min-height: 64px;
+  align-items: center;
+}
+
+.brand-logo {
+  width: 80px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  padding: 0 !important;
+
+  img {
+    width: 68px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+.navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.7) !important;
+  padding: 6px 9px !important;
+}
+
+.navbar-toggler:focus {
+  box-shadow: 0 0 0 2px rgba(75, 166, 223, 0.4) !important;
+}
+
+.navbar-toggler-icon {
+  filter: invert(1) grayscale(1) brightness(3);
 }
 
 .mlka-user{
@@ -23,9 +57,25 @@
   border-radius: 50% !important;
 }
 
+.dot {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  background-color: white;
+  border-radius: 50%;
+}
+
+.dot-span {
+  color: #28628B;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+}
+
 .lien{
   text-align: center !important;
-  padding-right: 8px !important;
+  padding: 18px 8px !important;
   margin-right: 30px !important;
   color: white !important;
   border-bottom: #28628B solid 1px !important;
@@ -42,10 +92,13 @@
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
+  gap: 6px;
   border: #4BA6DF solid 1px !important;
   padding: 8px 20px !important;
   background-color: #4BA6DF !important;
   color: white !important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
 }
 
 .btn-nav:hover{
@@ -55,3 +108,97 @@
   border: #4192c4 solid 1px !important;
 }
 
+.navbar-actions {
+  display: flex;
+  align-items: center;
+}
+
+@media (min-width: 992px) {
+  .headerMenu .navbar-collapse {
+    display: flex !important;
+    align-items: center;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .headerMenu .navbar-shell {
+    min-height: 64px;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  .headerMenu .brand-logo {
+    height: 60px;
+  }
+
+  .headerMenu .navbar-collapse {
+    width: calc(100% + 28px);
+    margin: 0 -14px;
+    padding: 10px 14px 14px;
+    background-color: #28628B;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+  }
+
+  .headerMenu .navbar-nav {
+    width: 100%;
+    gap: 4px;
+  }
+
+  .lien {
+    width: 100%;
+    min-height: 44px;
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-start;
+    margin-right: 0 !important;
+    margin-bottom: 0 !important;
+    padding: 11px 4px !important;
+    text-align: left !important;
+    border-bottom-color: rgba(255, 255, 255, 0.18) !important;
+  }
+
+  .headerMenu .navbar-actions {
+    width: 100%;
+    justify-content: stretch;
+    padding-top: 10px;
+  }
+
+  .headerMenu .navbar-actions .btn-nav {
+    width: 100%;
+    min-height: 42px;
+  }
+
+  .headerMenu .navbar-actions .link-c:not(.btn-nav) {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 0;
+  }
+
+  .headerMenu .mlka-user {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+@media (max-width: 420px) {
+  .headerMenu .navbar-shell {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .headerMenu .brand-logo {
+    width: 72px;
+  }
+
+  .headerMenu .brand-logo img {
+    width: 62px;
+  }
+
+  .headerMenu .navbar-collapse {
+    width: calc(100% + 20px);
+    margin: 0 -10px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}

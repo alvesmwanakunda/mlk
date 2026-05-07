@@ -1,39 +1,46 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light-customer fixed-top headerMenu">
-  <div class="container-fluid container-xl" style="height: 55px;" >
-    <a class="navbar-brand" href="#" style="width: 80px; height: 70px;">
-      <img src="assets/images/mlka_logo.png" style="width: 85%;">
+  <div class="container-fluid container-xl navbar-shell">
+    <a class="navbar-brand brand-logo" [routerLink]="'/'" (click)="closeMenu()">
+      <img src="assets/images/mlka_logo.png" alt="MLKA">
     </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <button
+      class="navbar-toggler"
+      type="button"
+      aria-controls="navbarNavAltMarkup"
+      [attr.aria-expanded]="!isMenuCollapsed"
+      aria-label="Ouvrir le menu"
+      (click)="toggleMenu()"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-collapse" id="navbarNavAltMarkup" [ngbCollapse]="isMenuCollapsed">
       <div class="navbar-nav ms-auto mb-lg-0" *ngIf="!isMlka()">
-        <a class="nav-link link-c lien" target="_blank" href="https://mlka-hld.fr">MLKA GROUPE</a>
+        <a class="nav-link link-c lien" target="_blank" href="https://mlka-hld.fr" (click)="closeMenu()">MLKA GROUPE</a>
         <!--<a class="nav-link link-c lien" target="_blank" href="https://mlka-innov.fr">INNOVATION</a>-->
-        <a class="nav-link link-c lien" target="_blank" href="https://mlka-market.com/location/10-location">LOCATION</a>
-        <a class="nav-link link-c lien" target="_blank" href="https://mlka-market.fr">MARKETPLACE</a>
+        <a class="nav-link link-c lien" target="_blank" href="https://mlka-market.com/location/10-location" (click)="closeMenu()">LOCATION</a>
+        <a class="nav-link link-c lien" target="_blank" href="https://mlka-market.fr" (click)="closeMenu()">MARKETPLACE</a>
       </div>
       <div class="navbar-nav me-auto mb-2 mb-lg-0" *ngIf="isMlka()">
-        <a class="nav-link link-c lien" [routerLink]="['/entreprise/dashboard']">Accueil</a>
-        <a class="nav-link link-c lien" [routerLink]="['/devis']">Devis</a>
-        <a class="nav-link link-c lien" [routerLink]="['/modulaires']">Module</a>
-        <a class="nav-link link-c lien" [routerLink]="['/agenda']">Agenda</a>
-        <a class="nav-link link-c lien" [routerLink]="['/detail/entreprise',user?.user?.entreprise]">Entreprise</a>
+        <a class="nav-link link-c lien" [routerLink]="['/entreprise/dashboard']" (click)="closeMenu()">Accueil</a>
+        <a class="nav-link link-c lien" [routerLink]="['/devis']" (click)="closeMenu()">Devis</a>
+        <a class="nav-link link-c lien" [routerLink]="['/modulaires']" (click)="closeMenu()">Module</a>
+        <a class="nav-link link-c lien" [routerLink]="['/agenda']" (click)="closeMenu()">Agenda</a>
+        <a class="nav-link link-c lien" [routerLink]="['/detail/entreprise',user?.user?.entreprise]" (click)="closeMenu()">Entreprise</a>
       </div>
-      <span >
-        <a class="nav-link btn btn-nav" [routerLink]="'/'" *ngIf="isSignUpRoute()">
-          <i class="fa-solid fa-right-to-bracket" style="margin-right: 6px;"></i>
-          <span style="font-weight:500 !important; font-size: 15px !important;">Se connecter</span>
+      <span class="navbar-actions">
+        <a class="nav-link btn btn-nav" [routerLink]="'/'" *ngIf="isSignUpRoute()" (click)="closeMenu()">
+          <i class="fa-solid fa-right-to-bracket"></i>
+          <span>Se connecter</span>
         </a>
-        <a class="nav-link btn btn-nav" [routerLink]="'/signup'" *ngIf="isLoginOrHomeRoute()">
-          <i class="fa-solid fa-user-plus" style="margin-right: 6px;"></i> 
-          <span style="font-weight:500 !important; font-size: 15px !important;">S'inscrire</span>
+        <a class="nav-link btn btn-nav" [routerLink]="'/signup'" *ngIf="isLoginOrHomeRoute()" (click)="closeMenu()">
+          <i class="fa-solid fa-user-plus"></i>
+          <span>S'inscrire</span>
         </a>
         
         <a class="nav-link link-c" *ngIf="isMlka()">
           <button class="mlka-user" [matMenuTriggerFor]="menu">
-            <div class="dot" style="background-color: white; border-radius: 50%;" >
-              <div class="dot-span" style=" color: #28628B;">{{user?.user?.nom.substring(0, 1)}}{{user?.user?.prenom.substring(0, 1)}}</div>
+            <div class="dot">
+              <div class="dot-span">{{user?.user?.nom.substring(0, 1)}}{{user?.user?.prenom.substring(0, 1)}}</div>
             </div>
           </button>
           <mat-menu #menu="matMenu">

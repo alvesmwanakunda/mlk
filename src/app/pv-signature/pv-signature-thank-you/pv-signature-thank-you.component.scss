@@ -1,0 +1,165 @@
+:host {
+  display: block;
+}
+
+.pv-signature-page {
+  min-height: 100vh;
+  padding: 84px 16px 34px;
+  background: linear-gradient(180deg, #f4f5f7 0%, #eef2f6 100%);
+  display: flex;
+  align-items: center;
+}
+
+.pv-signature-card {
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid #d8d8d8;
+  border-radius: 10px;
+  padding: 34px;
+  box-shadow: 0 8px 24px rgba(13, 36, 71, 0.06);
+}
+
+.thank-you-panel {
+  display: grid;
+  justify-items: center;
+  gap: 24px;
+  text-align: center;
+}
+
+.success-mark {
+  width: 78px;
+  height: 78px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #ecf7f2;
+  border: 1px solid #bfe4d3;
+  box-shadow: 0 12px 24px rgba(1, 117, 79, 0.12);
+
+  span {
+    width: 30px;
+    height: 17px;
+    display: block;
+    border-left: 4px solid #01754f;
+    border-bottom: 4px solid #01754f;
+    transform: rotate(-45deg) translate(2px, -3px);
+  }
+}
+
+.thank-you-copy {
+  max-width: 650px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: #1b4f8a;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+h1 {
+  margin: 0;
+  color: #0d2447;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.lead {
+  margin: 12px 0 0;
+  color: #5f6b7a;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.next-steps {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  text-align: left;
+}
+
+.step-item {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #d9e2ec;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.step-number {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #1b4f8a;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+h2 {
+  margin: 0 0 6px;
+  color: #0d2447;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.step-item p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.support-note {
+  width: 100%;
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  border-left: 4px solid #1b4f8a;
+  background: #f6f8fb;
+  text-align: left;
+  color: #4b5563;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.support-note strong {
+  color: #0d2447;
+}
+
+@media (max-width: 768px) {
+  .pv-signature-page {
+    align-items: flex-start;
+  }
+
+  .pv-signature-card {
+    padding: 22px 16px;
+  }
+
+  .success-mark {
+    width: 66px;
+    height: 66px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  .next-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .step-item {
+    padding: 14px;
+  }
+}

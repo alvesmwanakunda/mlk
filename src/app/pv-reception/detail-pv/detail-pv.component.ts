@@ -15,6 +15,7 @@ import { HttpClient } from '@angular/common/http';
 import { CountriesService } from 'src/app/shared/services/countries.service';
 import { SendmailPvComponent } from '../sendmail-pv/sendmail-pv.component';
 import { DownloadPvComponent } from '../download-pv/download-pv.component';
+import { SendSignatureMailComponent } from '../send-signature-mail/send-signature-mail.component';
 
 
 @Component({
@@ -395,6 +396,30 @@ openSendMailDialog(): void {
     data: {
       idPv: this.idPv,
       defaultDestinataires: this.buildDefaultDestinataires()
+    }
+  });
+
+  dialogRef.afterClosed().subscribe();
+}
+
+openSendSignatureMailDialog(): void {
+  const maitreOuvrage = this.reception?.societeCliente?.maitreOuvrage;
+
+  let defaultDestinataire = null;
+  if (maitreOuvrage?.email) {
+    defaultDestinataire = {
+      nom: maitreOuvrage?.nom || '',
+      prenom: maitreOuvrage?.prenom || '',
+      email: maitreOuvrage?.email || ''
+    };
+  }
+
+  const dialogRef = this.dialog.open(SendSignatureMailComponent, {
+    width: '760px',
+    maxWidth: '95vw',
+    data: {
+      idPv: this.idPv,
+      defaultDestinataire: defaultDestinataire
     }
   });
 

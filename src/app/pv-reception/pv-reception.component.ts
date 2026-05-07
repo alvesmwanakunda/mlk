@@ -25,6 +25,7 @@ import { DetailPvComponent } from './detail-pv/detail-pv.component';
   styleUrls: ['./pv-reception.component.scss']
 })
 export class PvReceptionComponent implements OnInit, AfterViewInit {
+  readonly commentMaxLength = 30;
 
   idPv:any;
   form!: FormGroup;
@@ -57,7 +58,7 @@ export class PvReceptionComponent implements OnInit, AfterViewInit {
 
   // Tableau
 
-  displayedColumns:string[]=['pv','version','date','action'];
+  displayedColumns:string[]=['pv','version','date','commentaire','action'];
   dataSource =new MatTableDataSource<[]>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -310,6 +311,8 @@ export class PvReceptionComponent implements OnInit, AfterViewInit {
           version:data?.version,
           status:data?.status,
           type:data?.declaration,
+          commentaire:data?.commentaire,
+          refusalReason:data?.refusalReason,
         })) as []
     },(error) => {
       console.log("Erreur lors de la récupération des données", error);

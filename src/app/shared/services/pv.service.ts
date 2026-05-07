@@ -46,6 +46,33 @@ export class PvService {
     return this.httpClient.post(`${environment.BASE_API_URL}/pv/send-mail/${idPv}`, formData);
   }
 
+  // For signature 
+
+  public sendSignatureMail(
+    idPv: string,
+    destinataire: { nom: string; prenom: string; email: string },
+  ) {
+    return this.httpClient.post(`${environment.BASE_API_URL}/pv/send-signature-request/${idPv}`, {destinataire: JSON.stringify(destinataire)});
+  }
+
+  public getPVForSignature(idPV: string, code: string){
+    return this.httpClient.get(`${environment.BASE_API_URL}/pv/signature/${idPV}?code=${code}`)
+  }
+
+   public validateClientSignature(
+    idPv: string,
+    data: {
+      code: string,
+      signerName: string,
+      signatureUrl: string,
+      refuseReception: boolean,
+      refusalReason: string,
+      comment: string,
+    }
+  ) {
+    return this.httpClient.post(`${environment.BASE_API_URL}/pv/validate-signature/${idPv}`, data);
+  }
+
 
 
 }

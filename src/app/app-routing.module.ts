@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, Router, PreloadAllModules, CanActivate } from '@angular/router';
 import { HomeParticulierGuard } from './shared/guards/home-particulier.guard';
+import { PvSignatureComponent } from './pv-signature/pv-signature.component';
+import { PvSignatureThankYouComponent } from './pv-signature/pv-signature-thank-you/pv-signature-thank-you.component';
 
 const routes: Routes = [
   {
@@ -24,6 +26,14 @@ const routes: Routes = [
   {
    path:"signup",
    loadChildren:()=>import('./signup/signup.module').then(m=>m.SignupModule),
+  },
+  {
+    path: 'pv-signature/:id',
+    component: PvSignatureComponent,
+  },
+  {
+    path: 'pv-signature/:id/merci',
+    component: PvSignatureThankYouComponent,
   },
   {
     path:"mlka",

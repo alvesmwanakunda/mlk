@@ -1,0 +1,145 @@
+<app-navbar-user></app-navbar-user>
+
+<div class="pv-signature-page">
+  <div class="pv-signature-card" *ngIf="isSuccess"> 
+    <div class="pv-signature-header">
+      
+      <div class="header-copy">
+      <h1>Validation du PV</h1>
+      <p>
+        Merci de consulter le document ci-dessous puis de confirmer votre décision.
+      </p>
+      </div>
+    </div>
+
+    <div class="viewer-container" *ngIf="!isLoading; else loadingTpl">
+      <div class="section-title">Aperçu du procès-verbal</div>
+      <div class="viewer-shell" *ngIf="pdfPreviewUrl && !isGeneratingPdf; else generatingTpl">
+        <iframe
+          [src]="pdfPreviewUrl"
+          title="Aperçu du PV"
+          loading="lazy"
+          referrerpolicy="no-referrer"
+        ></iframe>
+      </div>
+    </div>
+
+    <form [formGroup]="reviewForm" class="review-form" (ngSubmit)="submit()">
+      <div class="decision-panel">
+        <mat-checkbox formControlName="refuseReception" color="primary">
+          Refuser la réception
+        </mat-checkbox>
+        <p class="decision-help">
+          Cochez cette case uniquement si vous refusez la réception.
+        </p>
+      </div>
+
+      <div class="field-block" *ngIf="isRefused; else commentTpl">
+        <label for="refusalReason">Motifs de refus</label>
+        <textarea
+          id="refusalReason"
+          rows="4"
+          class="form-control input-lot"
+          formControlName="refusalReason"
+          placeholder="Précisez les raisons du refus..."
+        ></textarea>
+        <small class="error_field" *ngIf="reviewForm.get('refusalReason')?.touched && reviewForm.get('refusalReason')?.invalid">
+          Les motifs de refus sont obligatoires.
+        </small>
+      </div>
+
+      <ng-template #commentTpl>
+        <div class="field-block">
+          <label for="comment">Commentaire (optionnel)</label>
+          <textarea
+            id="comment"
+            rows="4"
+            class="form-control input-lot"
+            formControlName="comment"
+            placeholder="Ajoutez un commentaire si nécessaire..."
+          ></textarea>
+        </div>
+      </ng-template>
+
+      <div class="signature-row">
+        <div class="signature-block">
+          <div class="section-title">Signature</div>
+          <div class="signature-pad-wrapper">
+            <canvas #signatureCanvas width="400" height="220"></canvas>
+          </div>
+          <div class="signature-actions">
+            <button type="button" class="btn btn-piece action-btn" (click)="clearSignature()">
+              Effacer
+            </button>
+            <button
+              *ngIf="!signatureValidated"
+              type="button"
+              class="btn btn-projet action-btn"
+              (click)="validateSignature()"
+            >
+              Valider la signature
+            </button>
+          </div>
+        </div>
+
+        <div class="field-block signer-field">
+          <label for="signerName">Signataire</label>
+          <input
+            id="signerName"
+            type="text"
+            class="form-control input-lot"
+            formControlName="signerName"
+            placeholder="Nom et prénom"
+          />
+          <small class="error_field" *ngIf="reviewForm.get('signerName')?.touched && reviewForm.get('signerName')?.invalid">
+            Le nom du signataire est obligatoire.
+          </small>
+        </div>
+      </div>
+
+      <div class="submit-row">
+        <button type="submit" class="btn btn-projet action-btn submit-btn">
+          Confirmer et signer
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="pv-signature-card expired-card" *ngIf="!isSuccess">
+    <div class="expired-state">
+      <div class="expired-icon" aria-hidden="true">
+        <i class="fa-solid fa-link-slash"></i>
+      </div>
+
+      <div class="expired-copy">
+        <p class="expired-label">Lien indisponible</p>
+        <h1>Le lien de signature a expiré</h1>
+        <p>
+          Ce lien n'est plus valide. Veuillez contacter l'équipe MLKA afin
+          d'obtenir un nouveau lien de signature pour ce procès-verbal.
+        </p>
+      </div>
+
+      <div class="expired-help">
+        <strong>Besoin d'aide ?</strong>
+        <span>
+          Transmettez la référence du PV à votre interlocuteur MLKA pour accélérer le traitement.
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="state-box">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Chargement du PV...</p>
+  </div>
+</ng-template>
+
+<ng-template #generatingTpl>
+  <div class="state-box">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Génération de l'aperçu PDF...</p>
+  </div>
+</ng-template>

@@ -14,18 +14,20 @@ import { filter } from 'rxjs';
 })
 export class NavbarUserComponent implements OnInit {
 
-  toggleNavbar = true;
+  isMenuCollapsed = true;
   user:any;
   company:any;
-  currentRoute:string;
+  currentRoute = '';
 
   constructor(private authService:AuthService,private router:Router, private entrepriseService:EntreprisesService){
     this.router.events.pipe(
       filter(event=>event instanceof NavigationEnd)
     ).subscribe((event:NavigationEnd)=>{
       this.currentRoute = event.url;
+      this.closeMenu();
     });
     this.user = JSON.parse(localStorage.getItem('user'));
+    this.currentRoute = this.router.url;
   }
 
   ngOnInit(){
@@ -33,7 +35,7 @@ export class NavbarUserComponent implements OnInit {
   }
 
   isSignUpRoute():boolean{
-    return this.currentRoute==='/signup' || this.currentRoute.includes('/signup');
+    return this.currentRoute === '/signup' || this.currentRoute.includes('/signup');
   }
 
 
@@ -42,10 +44,19 @@ export class NavbarUserComponent implements OnInit {
   }
 
   isMlka():boolean{
-    return this.currentRoute==='/mlka';
+    return this.currentRoute === '/mlka';
+  }
+
+  toggleMenu(): void {
+    this.isMenuCollapsed = !this.isMenuCollapsed;
+  }
+
+  closeMenu(): void {
+    this.isMenuCollapsed = true;
   }
 
   logout(){
+    this.closeMenu();
     this.authService.logout();
   }
 }

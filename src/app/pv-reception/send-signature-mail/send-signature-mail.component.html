@@ -1,0 +1,37 @@
+<div class="sendmail-pv-dialog" [formGroup]="form">
+  <h3 mat-dialog-title>Envoyer la demande de signature</h3>
+  <mat-divider style="margin-bottom: 10px;"></mat-divider>
+
+  <div mat-dialog-content>
+    <p style="font-size: 12px; margin-bottom: 14px;color: #1B4F8A;">Renseignez les informations du signataire puis soumettez la demande.</p>
+
+    <div formGroupName="destinataire">
+      <div
+        class="destinataire-row"
+      >
+        <div>
+          <label class="form-label" style="font-size: 12px;color: #000;">Nom</label>
+          <input class="form-control" formControlName="nom" type="text" style="font-size: 14px;" />
+        </div>
+
+        <div>
+          <label class="form-label" style="font-size: 12px;color: #000;">Prénom</label>
+          <input class="form-control" formControlName="prenom" type="text" style="font-size: 14px;"/>
+        </div>
+
+        <div>
+          <label class="form-label" style="font-size: 12px;color: #000;">Email</label>
+          <input class="form-control" formControlName="email" type="email" style="font-size: 14px;"/>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+  <div mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="close()" [disabled]="isLoading">Fermer</button>
+    <button mat-raised-button color="primary" type="button" (click)="send()" [disabled]="isLoading">
+      {{ isLoading ? 'Envoi...' : 'Envoyer' }}
+    </button>
+  </div>
+</div>

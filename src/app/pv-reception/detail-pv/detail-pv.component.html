@@ -6,6 +6,9 @@
             <button type="button" mat-raised-button  style="margin-right: 10px;background-color: #155724;color:#fff" (click)="openSendMailDialog()" *ngIf="reception">
               Envoyer par mail
             </button>
+            <button type="button" mat-raised-button  style="margin-right: 10px;background-color: #ffe310;color:#000000" (click)="openSendSignatureMailDialog()" *ngIf="reception && reception?.status=='DRAFT'">
+              Faire signer
+            </button>
             <button type="button" mat-raised-button style="margin-right: 10px;" (click)="openDownloadDialog()" *ngIf="reception">
               Télécharger
             </button>
