@@ -6,6 +6,7 @@ import { TachesService } from '../shared/services/taches.service';
 import { TachesComponent } from './taches.component';
 import { AddTachesModule } from './add-taches/add-taches.module';
 import { UpdateTachesModule } from './update-taches/update-taches.module';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 
 
@@ -16,7 +17,8 @@ import { UpdateTachesModule } from './update-taches/update-taches.module';
     TachesRoutingModule,
     SharedModule,
     AddTachesModule,
-    UpdateTachesModule
+    UpdateTachesModule,
+    PdfViewerModule
   ],
   providers: [TachesService],
   exports: [TachesComponent]

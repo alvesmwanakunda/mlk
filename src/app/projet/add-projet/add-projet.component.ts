@@ -25,6 +25,8 @@ export class AddProjetComponent implements OnInit {
   filteredOptions:string[]=[];
   fileName:any;
   file:File;
+  plan:File;
+  planName:any;
   projetFormError:any;
   onLoadForm:boolean=false;
   form1:any;
@@ -192,7 +194,7 @@ export class AddProjetComponent implements OnInit {
   onFileSelected(event){
     this.file = event.target.files[0];
     if(this.file){
-      const maxSizeInBytes = 25 * 1024 * 1024; // 200 KB
+      const maxSizeInBytes = 25 * 1024 * 1024;
       const isValid = this.projetService.validateImageSize(this.file, maxSizeInBytes);
       if(isValid){
 
@@ -203,8 +205,36 @@ export class AddProjetComponent implements OnInit {
         };
         reader.readAsDataURL(this.file);
       }else{
-          this.message='La taille de l\'image ne doit pas dépasser 200 KB.';
+          this.message='La taille de l\'image ne doit pas dépasser 25 Mo.';
           this.openSnackBarError(this.message);
+      }
+    }
+  }
+
+  onPlanSelected(event){
+    this.plan = event.target.files[0];
+    if(this.plan){
+      const maxSizeInBytes = 25 * 1024 * 1024;
+      const isPdf = this.plan.type === 'application/pdf' || this.plan.name.toLowerCase().endsWith('.pdf');
+
+      if(!isPdf){
+        this.planName = null;
+        this.plan = null;
+        event.target.value = '';
+        this.message='Le plan doit être un fichier PDF.';
+        this.openSnackBarError(this.message);
+        return;
+      }
+
+      const isValid = this.projetService.validateImageSize(this.plan, maxSizeInBytes);
+      if(isValid){
+        this.planName = this.plan.name;
+      }else{
+        this.planName = null;
+        this.plan = null;
+        event.target.value = '';
+        this.message='La taille du plan PDF ne doit pas dépasser 25 Mo.';
+        this.openSnackBarError(this.message);
       }
     }
   }
@@ -370,7 +400,12 @@ export class AddProjetComponent implements OnInit {
      Object.assign(this.form2, this.secondFormGroup.value);
      Object.assign(this.form3, this.threeFormGroup.value)
 
-     formData.append("uploadfile", this.file);
+     if(this.file){
+      formData.append("uploadfile", this.file);
+     }
+     if(this.plan){
+      formData.append("uploadplan", this.plan);
+     }
      formData.append("projet", this.form1.projet);
      formData.append("contact", this.form1.contact);
      formData.append("genre", this.form1.genre);
@@ -378,6 +413,7 @@ export class AddProjetComponent implements OnInit {
      formData.append("prenom", this.form1.prenom);
      formData.append("entreprise", this.entreprise?._id);
      formData.append("etat", this.form1.etat);
+     formData.append("plan", this.form1.plan);
      formData.append("responsable", this.form1.responsable);
      formData.append("pays", this.form2.pays);
      formData.append("adresse", this.form2.adresse);
@@ -393,19 +429,18 @@ export class AddProjetComponent implements OnInit {
      formData.append("date_fin_contrat", this.form3.date_fin_contrat);
 
 
-     this.projetService.addProjet(formData).subscribe((res:any)=>{
-
-       try {
-            this.onLoadForm=false;
-            this.message='Projet a été ajouté avec succès';
-            this.openSnackBar(this.message);
-            this.router.navigate(["projet",res.message._id]);
-       } catch (error) {
-           this.onLoadForm=false;
-           this.message="Une erreur s'est produite veuillez réessayer.";
-           this.openSnackBar(this.message);
+     this.projetService.addProjet(formData).subscribe({
+       next: (res:any)=>{
+        this.onLoadForm=false;
+        this.message='Projet a été ajouté avec succès';
+        this.openSnackBar(this.message);
+        this.router.navigate(["projet",res.message._id]);
+       },
+       error: (error)=>{
+        this.onLoadForm=false;
+        this.message=error?.error?.message || "Une erreur s'est produite veuillez réessayer.";
+        this.openSnackBarError(this.message);
        }
-
      })
  }
 

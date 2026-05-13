@@ -1,36 +1,586 @@
 <div class="container">
-  <div class="content-top-child">
-    <div class="row mb-3">
-       <div class="col">
-        <h1 class="text-3xl font-bold text-gray-900">Tâches <span class="text-gray-600 mt-1">{{task.length}}</span></h1>
-       </div>
-       <div class="col" align="right">
-        <button type="button" class="btn btn-piece"  style="margin-right: 10px;" (click)="openDialog()"><i class="fa-solid fa-plus"></i> Nouvelle tâche</button>
-       </div>
+  <div class="content-top-child-tache">
+    <div class="task-toolbar mb-3">
+      <div class="task-filter-bar">
+        <mat-button-toggle-group
+          class="task-status-filter"
+          [value]="selectedStatut"
+          (change)="onStatutChange($event.value)"
+          aria-label="Filtre statut">
+          <mat-button-toggle value="ALL" style="font-size: 12px !important;">Tous</mat-button-toggle>
+          <mat-button-toggle value="A Faire" style="font-size: 12px !important;">A Faire</mat-button-toggle>
+          <mat-button-toggle value="En Cours" style="font-size: 12px !important;">En Cours</mat-button-toggle>
+          <mat-button-toggle value="Terminer" style="font-size: 12px !important;">Terminer</mat-button-toggle>
+          <mat-button-toggle value="Clôturer" style="font-size: 12px !important;">Clôturer</mat-button-toggle>
+        </mat-button-toggle-group>
+        <input (keyup)="applyFilter($event)" type="text" class="form-control input-search task-search-input" id="exampleFormControlInput1" placeholder="Rechercher par titre...">
+      </div>
+      <div class="task-create-actions">
+        <button  mat-raised-button type="button" color="primary" [class.is-active]="isCreatingPlanTaskMarker" [disabled]="!plan" (click)="startPlanTaskMarkerCreation()">
+          <i class="fa-solid fa-location-dot"></i> Tâche sur plan
+        </button>
+        <button  mat-raised-button type="button" color="primary" (click)="openDialog()">
+          <i class="fa-solid fa-plus"></i> Tâche simple
+        </button>
+      </div>
     </div>
     <mat-divider class="mb-3"></mat-divider>
-    <div class="row" style="margin-bottom: 40px;">
-        <div class="col-6">
-          <mat-button-toggle-group
-            [value]="selectedStatut"
-            (change)="onStatutChange($event.value)"
-            aria-label="Filtre statut">
+	    <div class="task-board" #taskBoardShell [style.height.px]="planViewerHeight">
+	      <div class="row task-board-row">
+          <div class="col-3 task-list-panel">
+            <div class="task-col" *ngFor="let tache of filteredTasks">
+              <mat-card class="task-card" [ngClass]="{'task-card--afaire': tache?.statut === 'A Faire','task-card--encours': tache?.statut === 'En Cours','task-card--terminer': tache?.statut === 'Terminer'}" (click)="openDialogUpdate(tache?._id)" style="cursor: pointer;">
+                <mat-card-content>
+                  <div class="row">
+                    <div class="col">
+                      <p class="tache_label ellipsis" matTooltip="{{tache?.titre}}"><span *ngIf="tache?.marker" class="marker-number">{{tache?.marker?.markerNumber}}</span> {{tache?.titre}}</p>
+                      <div style="margin-bottom: 15px;">
+                        <div><span class="time_title" *ngIf="tache?.date_debut || tache?.date_fin" style="margin-right: 10px;font-size: 12px;"> <i class="fa-regular fa-calendar"></i>  {{ tache?.date_debut | date: 'dd/MM/yyyy' }} - {{ tache?.date_fin | date: 'dd/MM/yyyy' }}</span> <span class="time_title" *ngIf="tache?.temps"> <i class="fa-regular fa-clock"></i> {{tache?.temps}}</span></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <mat-divider style="margin-bottom: 20px;"></mat-divider>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="status-row">
+                        <span class="badge" [ngClass]="getStatusBadgeClass(tache?.statut)">
+                          {{ getStatusLabel(tache?.statut) }}
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col" *ngIf="tache?.marker">
+                      <p matTooltip="Cette tâche est sur le plan."><i class="fa-solid fa-location-dot" style="font-size: 21px !important;"></i></p>
+                    </div>
+                    <div class="col">
+                      <div style="float: right;position: relative;display: flex;" *ngIf="tache?.assignes" #wrap>
+                        <div *ngFor="let assigne of tache?.assignes">
 
-            <mat-button-toggle value="ALL">Tous</mat-button-toggle>
-            <mat-button-toggle value="A Faire">A Faire</mat-button-toggle>
-            <mat-button-toggle value="En Cours">En Cours</mat-button-toggle>
-            <mat-button-toggle value="Terminer">Terminer</mat-button-toggle>
-            <mat-button-toggle value="Clôturer">Clôturer</mat-button-toggle>
+                          <button mat-icon-button
+                          [matMenuTriggerFor]="menu"
+                          (click)="$event.stopPropagation()"
+                          class="time_user" [ngStyle]="{ 'background-color': getColor(tache.statut) }" *ngIf="tache?.assignes">
+                              <span class="time_user_label">{{assigne?.nom?.charAt(0) || ''}}</span>
+                          </button>
 
-          </mat-button-toggle-group>
-        </div><!--col-->
-        <div class="col-6">
-            <input (keyup)="applyFilter($event)" type="text" class="form-control input-search" id="exampleFormControlInput1" style="height: 48px !important;" placeholder="Rechercher par titre...">
-        </div><!--col-->
-     </div><!--row-->
+                          <mat-menu #menu="matMenu">
+                            <div style="padding: 6px 9px; min-width: 250px;height: 87px;overflow: hidden">
+                                <div class="row">
+                                  <div class="col">
+                                    <span style="font-weight: 500 !important;font-size: 12px;">{{assigne?.nom}}</span>
+                                    <br/>
+                                    <span style="font-size: 11px;"><i class="fa-solid fa-envelope"></i> {{assigne?.email}}</span>
+                                  </div>
+                                </div>
+                            </div>
+                          </mat-menu>
+                        </div>
 
-     <div>
-      <div class="row">
+                      </div>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div><!--col-->
+          <div class="col-9 task-plan-panel">
+              <div *ngIf="plan" class="plan-workspace" #planViewerShell>
+              <div class="plan-top-toolbar" (click)="$event.stopPropagation()">
+                <button type="button" class="plan-icon-button" matTooltip="Zoom avant" (click)="zoomInPlan()">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+                <button type="button" class="plan-icon-button" matTooltip="Zoom arrière" (click)="zoomOutPlan()">
+                  <i class="fa-solid fa-minus"></i>
+                </button>
+                <span class="plan-toolbar-separator"></span>
+                <button type="button" class="plan-icon-button" matTooltip="Adapter à la page" (click)="fitPlan()">
+                  <i class="fa-regular fa-eye"></i>
+                </button>
+                <button type="button" class="plan-icon-button" matTooltip="Mode plein écran" (click)="togglePlanFullscreen(planViewerShell)">
+                  <i class="fa-solid fa-expand"></i>
+                </button>
+                <button type="button" class="plan-icon-button" matTooltip="Adapter au contenu du plan" [class.is-active]="planFitMode === 'content'" (click)="fitPlanToContent()">
+                  <i class="fa-solid fa-compress"></i>
+                </button>
+                <button type="button" class="plan-icon-button" matTooltip="Informations" [class.is-active]="showPlanInfo" (click)="showPlanInfo = !showPlanInfo">
+                  <i class="fa-solid fa-circle-info"></i>
+                </button>
+              </div>
+
+              <div class="plan-page-arrow plan-page-arrow--left" (click)="$event.stopPropagation()">
+                <button type="button" class="plan-nav-button" matTooltip="Page précédente" [disabled]="planPage <= 1" (click)="previousPlanPage()">
+                  <i class="fa-solid fa-chevron-left"></i>
+                </button>
+              </div>
+
+              <div class="plan-stage">
+                  <div
+                    class="plan-pdf-layer"
+                    #planPdfLayer
+                    [class.is-drawing-mode]="planTool !== 'select'"
+                    [class.is-marker-mode]="isCreatingPlanTaskMarker"
+                    [class.is-panning-mode]="planTool === 'select' && !isCreatingPlanTaskMarker"
+                    [class.is-panning]="isPanningPlan"
+                    (mousedown)="startPlanAnnotation($event)"
+                    (mousemove)="updatePlanAnnotation($event)"
+                    (mouseup)="finishPlanAnnotation()"
+                    (mouseleave)="finishPlanAnnotationOnMouseLeave()"
+                    (wheel)="zoomPlanWithWheel($event)">
+                    <div class="plan-pan-content" [style.transform]="getPlanPanTransform()" [style.--plan-marker-scale]="getPlanMarkerScale()">
+                    <!-- <pdf-viewer
+                      [src]="plan?.chemin"
+                      [original-size]="false"
+                    [fit-to-page]="true"
+                    [show-all]="false"
+                    [page]="planPage"
+                    [zoom]="1"
+                    [zoom-scale]="'page-fit'"
+                    [render-text]="true"
+                    (after-load-complete)="afterPlanLoad($event)"
+                    (page-rendered)="afterPlanPageRendered()"
+                    class="plan-pdf-viewer">
+                  </pdf-viewer> -->
+
+                  <div class="plan-pdf-render-shell" [style.transform]="getPlanPdfRenderTransform()">
+                    <pdf-viewer
+                      [src]="plan?.chemin"
+                      [original-size]="false"
+                      [fit-to-page]="false"
+                      [show-all]="false"
+                      [page]="planPage"
+                      [zoom]="getPlanPdfRenderScale()"
+                      [zoom-scale]="'page-width'"
+                      [render-text]="true"
+                      (after-load-complete)="afterPlanLoad($event)"
+                      (page-rendered)="afterPlanPageRendered()"
+                      class="plan-pdf-viewer">
+                    </pdf-viewer>
+                  </div>
+
+                  <!-- <svg class="plan-annotation-layer" viewBox="0 0 1000 1000" preserveAspectRatio="none"> -->
+                    <svg #planAnnotationLayer class="plan-annotation-layer" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+                    <defs>
+                      <marker id="planArrowHead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,6 L9,3 z" fill="context-stroke"></path>
+                      </marker>
+                    </defs>
+
+                    <ng-container *ngFor="let annotation of getCurrentPlanAnnotations(); trackBy: trackPlanAnnotation">
+                      <g
+                        *ngIf="annotation.type !== 'pin'"
+                        [ngSwitch]="annotation.type"
+                        [class.is-selected]="annotation.id === selectedAnnotationId"
+                        (mousedown)="startPlanAnnotationMove(annotation, $event)">
+                        <polyline
+                          *ngSwitchCase="'pen'"
+                          [attr.points]="getPathPoints(annotation)"
+                          [attr.stroke]="annotation.color"
+                          [attr.stroke-width]="annotation.strokeWidth"
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round">
+                        </polyline>
+
+                        <polyline
+                          *ngSwitchCase="'highlighter'"
+                          [attr.points]="getPathPoints(annotation)"
+                          [attr.stroke]="annotation.color"
+                          [attr.stroke-width]="annotation.strokeWidth"
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          opacity="0.35">
+                        </polyline>
+
+                        <rect
+                          *ngSwitchCase="'rectangle'"
+                          [attr.x]="getShapeX(annotation)"
+                          [attr.y]="getShapeY(annotation)"
+                          [attr.width]="getShapeWidth(annotation)"
+                          [attr.height]="getShapeHeight(annotation)"
+                          [attr.stroke]="annotation.color"
+                          [attr.stroke-width]="annotation.strokeWidth"
+                          [attr.fill]="annotation.fill">
+                        </rect>
+
+                        <rect
+                          *ngSwitchCase="'cloud'"
+                          [attr.x]="getShapeX(annotation)"
+                          [attr.y]="getShapeY(annotation)"
+                          [attr.width]="getShapeWidth(annotation)"
+                          [attr.height]="getShapeHeight(annotation)"
+                          [attr.stroke]="annotation.color"
+                          [attr.stroke-width]="annotation.strokeWidth"
+                          [attr.fill]="annotation.fill"
+                          rx="24"
+                          stroke-dasharray="10 8">
+                        </rect>
+
+                        <ellipse
+                          *ngSwitchCase="'circle'"
+                          [attr.cx]="getShapeCenterX(annotation)"
+                          [attr.cy]="getShapeCenterY(annotation)"
+                          [attr.rx]="getShapeWidth(annotation) / 2"
+                          [attr.ry]="getShapeHeight(annotation) / 2"
+                          [attr.stroke]="annotation.color"
+                          [attr.stroke-width]="annotation.strokeWidth"
+                          [attr.fill]="annotation.fill">
+                        </ellipse>
+
+                        <polygon
+                          *ngSwitchCase="'polygon'"
+                          [attr.points]="getPolygonPoints(annotation)"
+                          [attr.stroke]="annotation.color"
+                          [attr.stroke-width]="annotation.strokeWidth"
+                          [attr.fill]="annotation.fill">
+                        </polygon>
+
+                        <line
+                          *ngSwitchCase="'line'"
+                          [attr.x1]="annotation.x"
+                          [attr.y1]="annotation.y"
+                          [attr.x2]="annotation.x2"
+                          [attr.y2]="annotation.y2"
+                          [attr.stroke]="annotation.color"
+                          [attr.stroke-width]="annotation.strokeWidth"
+                          stroke-linecap="round">
+                        </line>
+
+                        <line
+                          *ngSwitchCase="'arrow'"
+                          [attr.x1]="annotation.x"
+                          [attr.y1]="annotation.y"
+                          [attr.x2]="annotation.x2"
+                          [attr.y2]="annotation.y2"
+                          [attr.stroke]="annotation.color"
+                          [attr.stroke-width]="annotation.strokeWidth"
+                          marker-end="url(#planArrowHead)"
+                          stroke-linecap="round">
+                        </line>
+
+                        <ng-container *ngSwitchCase="'measure'">
+                          <line
+                            [attr.x1]="annotation.x"
+                            [attr.y1]="annotation.y"
+                            [attr.x2]="annotation.x2"
+                            [attr.y2]="annotation.y2"
+                            [attr.stroke]="annotation.color"
+                            [attr.stroke-width]="annotation.strokeWidth"
+                            stroke-dasharray="8 6"
+                            stroke-linecap="round">
+                          </line>
+                          <text
+                            [attr.x]="getShapeCenterX(annotation)"
+                            [attr.y]="getShapeCenterY(annotation) - 10"
+                            [attr.fill]="annotation.color"
+                            font-size="18"
+                            text-anchor="middle">
+                            {{ getMeasureLabel(annotation) }}
+                          </text>
+                        </ng-container>
+
+                        <text
+                          *ngSwitchCase="'text'"
+                          [attr.x]="annotation.x"
+                          [attr.y]="annotation.y"
+                          [attr.fill]="annotation.color"
+                          [attr.font-size]="annotation.fontSize"
+                          [attr.visibility]="isTextAnnotationEditing(annotation) ? 'hidden' : 'visible'"
+                          (dblclick)="startTextAnnotationEdit(annotation, $event)"
+                          font-weight="600">
+                          {{ annotation.text }}
+                        </text>
+
+                        <foreignObject
+                          *ngIf="isTextAnnotationEditing(annotation)"
+                          class="plan-text-editor-foreign-object"
+                          [attr.x]="getTextEditorX(annotation)"
+                          [attr.y]="getTextEditorY(annotation)"
+                          [attr.width]="getTextEditorWidth(annotation)"
+                          [attr.height]="getTextEditorHeight(annotation)">
+                          <input
+                            xmlns="http://www.w3.org/1999/xhtml"
+                            class="plan-text-editor"
+                            type="text"
+                            [attr.data-annotation-id]="annotation.id"
+                            [value]="annotation.text || ''"
+                            [placeholder]="'Texte'"
+                            [style.color]="annotation.color"
+                            [style.font-size.px]="annotation.fontSize || selectedAnnotationFontSize"
+                            [style.border-color]="annotation.color"
+                            (input)="updateTextAnnotation(annotation, $event)"
+                            (blur)="finishTextAnnotationEdit(annotation, $event)"
+                            (keydown)="handleTextAnnotationEditorKeydown(annotation, $event)"
+                            (mousedown)="$event.stopPropagation()"
+                            (click)="$event.stopPropagation()"
+                            (dblclick)="$event.stopPropagation()">
+                        </foreignObject>
+
+                        <ng-container *ngIf="annotation.id === selectedAnnotationId && !drawingAnnotationId">
+                          <rect
+                            class="plan-annotation-edit-box"
+                            [attr.x]="getAnnotationEditBoxX(annotation)"
+                            [attr.y]="getAnnotationEditBoxY(annotation)"
+                            [attr.width]="getAnnotationEditBoxWidth(annotation)"
+                            [attr.height]="getAnnotationEditBoxHeight(annotation)">
+                          </rect>
+                          <rect
+                            *ngFor="let handle of annotationResizeHandles"
+                            class="plan-annotation-resize-handle"
+                            [ngClass]="'plan-annotation-resize-handle--' + handle"
+                            [attr.x]="getResizeHandleX(annotation, handle)"
+                            [attr.y]="getResizeHandleY(annotation, handle)"
+                            [attr.width]="getResizeHandleSize()"
+                            [attr.height]="getResizeHandleSize()"
+                            (mousedown)="startPlanAnnotationResize(annotation, handle, $event)">
+                          </rect>
+                        </ng-container>
+                      </g>
+                    </ng-container>
+                  </svg>
+
+                  <!-- <button
+                    *ngFor="let pin of getCurrentPinAnnotations(); trackBy: trackPlanAnnotation"
+                    type="button"
+                    class="plan-pin"
+                    [class.is-selected]="pin.id === selectedAnnotationId"
+                    [style.left.%]="pin.x / 10"
+                    [style.top.%]="pin.y / 10"
+                    [style.--pin-color]="pin.color"
+                    (mousedown)="selectPlanAnnotation(pin, $event)"
+                    matTooltip="Repère">
+                      <span></span>
+                    </button> -->
+                  <div class="plan-task-marker-layer">
+                    <button
+                      *ngFor="let marker of getCurrentPlanTaskMarkers(); trackBy: trackPlanTaskMarker"
+                      type="button"
+                      class="plan-task-marker"
+                      [style.left.%]="marker.xPercent"
+                      [style.top.%]="marker.yPercent"
+                      [style.--marker-color]="'#1d4ed8'"
+                      [matTooltip]="getPlanTaskMarkerTitle(marker)"
+                      (mousedown)="$event.stopPropagation()"
+                      (click)="selectPlanTaskMarker(marker, $event)">
+                    <em *ngIf="getPlanTaskMarkerLabel(marker)">{{ getPlanTaskMarkerLabel(marker) }}</em>
+                    <span></span>
+                  </button>
+
+                  <div
+                    *ngIf="pendingMarker && pendingMarker.page === planPage"
+                      class="plan-pending-task-marker"
+                      [style.left.%]="pendingMarker.xPercent"
+                      [style.top.%]="pendingMarker.yPercent"
+                      (mousedown)="startPendingTaskMarkerDrag($event)">
+                      <button
+                        type="button"
+                        class="plan-task-marker plan-task-marker--pending"
+                        [style.--marker-color]="'#8bd047'"
+                        matTooltip="Déplacer le repère">
+                        <span></span>
+                      </button>
+
+                      <div class="plan-pending-task-actions" (mousedown)="$event.stopPropagation()" (click)="$event.stopPropagation()">
+                        <button type="button" class="plan-pending-task-action plan-pending-task-action--cancel" matTooltip="Annuler" (click)="cancelPendingTaskMarker($event)">
+                          <i class="fa-solid fa-xmark"></i>
+                        </button>
+                        <button type="button" class="plan-pending-task-action plan-pending-task-action--confirm" [disabled]="isSavingTaskMarker" [matTooltip]="isSavingTaskMarker ? 'Sauvegarde...' : 'Valider'" (click)="confirmPendingTaskMarker($event)">
+                          <i class="fa-solid" [ngClass]="isSavingTaskMarker ? 'fa-spinner fa-spin' : 'fa-check'"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                    </div>
+                  </div>
+                </div>
+
+              <div
+                *ngIf="selectedPlanTaskMarker && selectedPlanTaskMarker.page === planPage && !pendingMarker"
+                class="plan-task-popover"
+                [style.left.px]="getPlanTaskPopoverLeft(selectedPlanTaskMarker)"
+                [style.top.px]="getPlanTaskPopoverTop(selectedPlanTaskMarker)"
+                (mousedown)="$event.stopPropagation()"
+                (click)="$event.stopPropagation()">
+                <button type="button" class="plan-task-popover-close" matTooltip="Fermer" (click)="closePlanTaskMarkerDetails($event)">
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+                <p class="plan-task-popover-meta">
+                  Créée le {{ selectedPlanTaskMarker.task?.date_creation | date:'dd.MM.yyyy' }}
+                </p>
+                <h3>{{ getPlanTaskMarkerTitle(selectedPlanTaskMarker) }}</h3>
+                <div class="plan-task-popover-tags">
+                  <span class="plan-task-popover-number" *ngIf="getPlanTaskMarkerLabel(selectedPlanTaskMarker)">
+                    {{ getPlanTaskMarkerLabel(selectedPlanTaskMarker) }}
+                  </span>
+                  <span>{{ getPlanTaskMarkerStatus(selectedPlanTaskMarker) }}</span>
+                  <span *ngIf="getPlanTaskMarkerDate(selectedPlanTaskMarker)">
+                    {{ getPlanTaskMarkerDate(selectedPlanTaskMarker) | date:'dd.MM.yyyy' }}
+                  </span>
+                </div>
+                <p class="plan-task-popover-description" *ngIf="selectedPlanTaskMarker.task?.description">
+                  {{ selectedPlanTaskMarker.task?.description }}
+                </p>
+                <div class="plan-task-popover-actions">
+                  <button type="button" class="plan-task-popover-icon" matTooltip="Repositionnement" (click)="startExistingTaskMarkerReposition(selectedPlanTaskMarker, $event)">
+                    <i class="fa-solid fa-crosshairs"></i>
+                  </button>
+                  <button type="button" class="plan-task-popover-open" (click)="openDialogUpdate(selectedPlanTaskMarker.task?._id); closePlanTaskMarkerDetails($event)">
+                    Ouvrir
+                  </button>
+                </div>
+              </div>
+
+              <div class="plan-page-arrow plan-page-arrow--right" (click)="$event.stopPropagation()">
+                <button type="button" class="plan-nav-button" matTooltip="Page suivante" [disabled]="!planTotalPages || planPage >= planTotalPages" (click)="nextPlanPage()">
+                  <i class="fa-solid fa-chevron-right"></i>
+                </button>
+              </div>
+
+              <div class="plan-bottom-toolbar" (click)="$event.stopPropagation()">
+                <button type="button" class="plan-tool-button" matTooltip="Sélection" [class.is-active]="planTool === 'select'" (click)="setPlanTool('select')">
+                  <i class="fa-solid fa-arrow-pointer"></i>
+                </button>
+                <!-- <button type="button" class="plan-tool-button" matTooltip="Repère" [class.is-active]="planTool === 'pin'" (click)="setPlanTool('pin')">
+                  <i class="fa-solid fa-location-dot"></i>
+                </button> -->
+
+                <div class="plan-tool-menu-wrap">
+                  <button type="button" class="plan-tool-button" matTooltip="Dessin" [class.is-active]="planTool === 'pen' || planTool === 'highlighter'" (click)="togglePlanMenu('draw')">
+                    <i class="fa-solid fa-pen"></i>
+                    <i class="fa-solid fa-caret-down plan-caret"></i>
+                  </button>
+                  <div class="plan-tool-menu plan-tool-menu--draw" *ngIf="activePlanMenu === 'draw'">
+                    <strong>Dessin</strong>
+                    <button type="button" [class.is-active]="planTool === 'pen'" (click)="setPlanTool('pen')">
+                      <i class="fa-solid fa-pen"></i>
+                      Stylo
+                    </button>
+                    <button type="button" [class.is-active]="planTool === 'highlighter'" (click)="setPlanTool('highlighter')">
+                      <i class="fa-solid fa-highlighter"></i>
+                      Surligneur
+                    </button>
+                  </div>
+                </div>
+
+                <div class="plan-tool-menu-wrap">
+                  <button type="button" class="plan-tool-button" matTooltip="Formes" [class.is-active]="['cloud','rectangle','circle','polygon','arrow','line'].includes(planTool)" (click)="togglePlanMenu('shape')">
+                    <i class="fa-regular fa-square"></i>
+                    <i class="fa-solid fa-caret-down plan-caret"></i>
+                  </button>
+                  <div class="plan-tool-menu plan-tool-menu--shape" *ngIf="activePlanMenu === 'shape'">
+                    <strong>Formes</strong>
+                    <!-- <button type="button" [class.is-active]="planTool === 'cloud'" (click)="setPlanTool('cloud')">
+                      <i class="fa-solid fa-cloud"></i>
+                      Révision dans le Cloud
+                    </button> -->
+                    <button type="button" [class.is-active]="planTool === 'rectangle'" (click)="setPlanTool('rectangle')">
+                      <i class="fa-regular fa-square"></i>
+                      Rectangle
+                    </button>
+                    <button type="button" [class.is-active]="planTool === 'circle'" (click)="setPlanTool('circle')">
+                      <i class="fa-regular fa-circle"></i>
+                      Cercle
+                    </button>
+                    <button type="button" [class.is-active]="planTool === 'polygon'" (click)="setPlanTool('polygon')">
+                      <i class="fa-solid fa-draw-polygon"></i>
+                      Polygone
+                    </button>
+                    <button type="button" [class.is-active]="planTool === 'arrow'" (click)="setPlanTool('arrow')">
+                      <i class="fa-solid fa-arrow-right-long plan-arrow-tool-icon"></i>
+                      Flèche
+                    </button>
+                    <button type="button" [class.is-active]="planTool === 'line'" (click)="setPlanTool('line')">
+                      <i class="fa-solid fa-minus"></i>
+                      Ligne
+                    </button>
+                  </div>
+                </div>
+
+                <button type="button" class="plan-tool-button" matTooltip="Texte" [class.is-active]="planTool === 'text'" (click)="setPlanTool('text')">
+                  <i class="fa-solid fa-t"></i>
+                </button>
+                <button type="button" class="plan-tool-button" matTooltip="Mesure" [class.is-active]="planTool === 'measure'" (click)="setPlanTool('measure')">
+                  <i class="fa-solid fa-ruler"></i>
+                </button>
+              </div>
+
+              <div class="plan-annotation-toolbar" *ngIf="selectedPlanAnnotation" (click)="$event.stopPropagation()">
+                <button type="button" class="plan-action-button plan-action-button--danger" matTooltip="Supprimer" (click)="requestDeleteSelectedAnnotation()">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+                <span class="plan-toolbar-separator"></span>
+
+                <div class="plan-tool-menu-wrap">
+                  <button type="button" class="plan-style-button" matTooltip="Couleur" (click)="togglePlanMenu('styleColor')">
+                    <span class="plan-style-color" [style.background-color]="getSelectedAnnotationColor()"></span>
+                  </button>
+                  <div class="plan-tool-menu plan-tool-menu--style" *ngIf="activePlanMenu === 'styleColor'">
+                    <button type="button" *ngFor="let color of annotationColors" (click)="setAnnotationColor(color.value)">
+                      <span class="plan-style-color" [style.background-color]="color.value"></span>
+                      {{ color.label }}
+                    </button>
+                  </div>
+                </div>
+
+                <div class="plan-tool-menu-wrap">
+                  <button type="button" class="plan-style-button" matTooltip="Épaisseur" (click)="togglePlanMenu('lineWidth')">
+                    {{ selectedPlanAnnotation?.strokeWidth }}
+                  </button>
+                  <div class="plan-tool-menu plan-tool-menu--style" *ngIf="activePlanMenu === 'lineWidth'">
+                    <button type="button" *ngFor="let width of annotationStrokeWidths" [class.is-active]="selectedPlanAnnotation?.strokeWidth === width" (click)="setAnnotationStrokeWidth(width)">
+                      {{ width }}
+                    </button>
+                  </div>
+                </div>
+
+                <div class="plan-tool-menu-wrap" *ngIf="selectedPlanAnnotation?.type === 'text'">
+                  <button type="button" class="plan-style-button" matTooltip="Taille du texte" (click)="togglePlanMenu('textSize')">
+                    <i class="fa-solid fa-text-height"></i>
+                  </button>
+                  <div class="plan-tool-menu plan-tool-menu--style" *ngIf="activePlanMenu === 'textSize'">
+                    <button type="button" *ngFor="let size of annotationFontSizes" [class.is-active]="selectedPlanAnnotation?.fontSize === size.value" (click)="setAnnotationFontSize(size.value)">
+                      {{ size.label }}
+                    </button>
+                  </div>
+                </div>
+
+                <!-- <span class="plan-toolbar-separator"></span> -->
+                <!-- <button type="button" class="plan-private-button">Privé</button> -->
+                <span class="plan-toolbar-separator"></span>
+                <button type="button" class="plan-action-button plan-action-button--valid" matTooltip="Valider" (click)="validateSelectedAnnotation()">
+                  <i class="fa-solid fa-check"></i>
+                </button>
+              </div>
+
+              <div class="plan-delete-overlay" *ngIf="showDeleteAnnotationConfirm" (click)="cancelDeleteSelectedAnnotation()">
+                <div class="plan-delete-dialog" (click)="$event.stopPropagation()">
+                  <button type="button" class="plan-delete-close" (click)="cancelDeleteSelectedAnnotation()">
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                  <h2>Supprimer les annotations</h2>
+                  <p>Vous êtes sur le point de supprimer cette annotation.</p>
+                  <div class="plan-delete-actions">
+                    <button type="button" class="plan-delete-confirm" (click)="deleteSelectedAnnotation()">Supprimer</button>
+                    <button type="button" class="plan-delete-cancel" (click)="cancelDeleteSelectedAnnotation()">Annuler</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="plan-page-status">
+                Page {{ planPage }} / {{ planTotalPages || 1 }} - {{ planZoom * 100 | number:'1.0-0' }}%
+              </div>
+
+              <div class="plan-info-panel" *ngIf="showPlanInfo">
+                <strong>{{ plan?.nom }}</strong>
+                <span>{{ plan?.extension | uppercase }}</span>
+                <span>{{ plan?.date | date:'dd/MM/yyyy' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <!-- <div class="row">
          <div class="col-6 task-col" *ngFor="let tache of filteredTasks">
           <mat-card class="task-card" [ngClass]="{'task-card--afaire': tache?.statut === 'A Faire','task-card--encours': tache?.statut === 'En Cours','task-card--terminer': tache?.statut === 'Terminer'}" (click)="openDialogUpdate(tache?._id)" style="cursor: pointer;">
             <mat-card-content>
@@ -41,13 +591,6 @@
                    <div><span class="time_title" *ngIf="tache?.date_debut || tache?.date_fin" style="margin-right: 10px;"> <i class="fa-regular fa-calendar"></i>  {{ tache?.date_debut | date: 'dd/MM/yyyy' }} - {{ tache?.date_fin | date: 'dd/MM/yyyy' }}</span> <span class="time_title" *ngIf="tache?.temps"> <i class="fa-regular fa-clock"></i> {{tache?.temps}}</span></div>
                   </div>
                 </div>
-                <!--<div class="col" *ngIf="tache?.image?.url">
-                  <div  class="annotated-image-top-preview">
-                    <div class="image-preview-container">
-                      <img [src]="tache?.image?.url" alt="Image annotée" class="preview-image">
-                    </div>
-                  </div>
-                </div>-->
               </div>
               <div>
                 <mat-divider style="margin-bottom: 20px;"></mat-divider>
@@ -74,11 +617,6 @@
                       <mat-menu #menu="matMenu">
                         <div style="padding: 6px 9px; min-width: 250px;height: 87px;overflow: hidden">
                             <div class="row">
-                              <!-- <div class="col-5">
-                                  <div class="user_popup">
-                                    <span class="user_span_popup">{{assigne?.nom?.charAt(0) || ''}}</span>
-                                  </div>
-                              </div> -->
                               <div class="col">
                                 <span style="font-weight: 500 !important;font-size: 12px;">{{assigne?.nom}}</span>
                                 <br/>
@@ -95,7 +633,7 @@
             </mat-card-content>
           </mat-card>
          </div>
-      </div>
+      </div> -->
      </div>
   </div>
 </div>

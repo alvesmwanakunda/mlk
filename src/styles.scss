@@ -418,7 +418,8 @@ a{
 }
 
 .navbar-nav .show > .nav-link, .navbar-nav .nav-link.active {
-  color: #1B4F8A !important;
+  color: #fff !important;
+  background-color: #1B4F8A !important;
 }
 
 .ml-auto-nav {
@@ -769,7 +770,7 @@ hr.entreprise{
 }
 
 .nav-link.tabprojet{
-  color: #737477 !important;
+  color: #878484 !important;
   font-style: normal !important;
   font-weight: 400 !important;
   font-size: 13px !important;
@@ -777,18 +778,23 @@ hr.entreprise{
 }
 
 .nav-link.active.tabprojet{
-  color: #1B4F8A !important
+  color: #fff !important;
+  background-color: #0D2447 !important;
+}
+
+.nav-tabs .nav-link{
+  border: none !important;
 }
 
 .nav-tabs .nav-link {
-  background: #f7f7f7 !important;
+  background: #E0E5E9 !important;
   border-top-left-radius:0 !important;
   border-top-right-radius: 0 !important;
   height: 45px !important;
 }
 
 .nav-tabs .nav-link.active{
-  background-color: #ffffff !important
+  background-color: #ffffff
 }
 
 .tab-content > .active {
@@ -2870,3 +2876,774 @@ hr.entreprise{
 @import 'assets/css/calendar.scss';
 @import "../node_modules/angular-calendar/css/angular-calendar.css";
 @import "~@ng-select/ng-select/themes/default.theme.css";
+
+.plan-workspace {
+  position: relative;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #d8e1ec;
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: #f8fbff;
+  background-image: linear-gradient(rgba(33, 83, 137, .12) 1px, transparent 1px), linear-gradient(90deg, rgba(33, 83, 137, .12) 1px, transparent 1px), linear-gradient(rgba(33, 83, 137, .06) 1px, transparent 1px), linear-gradient(90deg, rgba(33, 83, 137, .06) 1px, transparent 1px);
+  background-size: 40px 40px, 40px 40px, 8px 8px, 8px 8px;
+}
+
+.plan-workspace:fullscreen {
+  height: 100vh;
+  min-height: 100vh;
+  border-radius: 0;
+}
+
+.plan-stage {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 56px;
+  overflow: visible;
+}
+
+.plan-pdf-layer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: default;
+  user-select: none;
+  overflow: visible;
+}
+
+.plan-pdf-layer.is-drawing-mode {
+  cursor: crosshair;
+}
+
+.plan-pdf-layer.is-marker-mode {
+  cursor: crosshair;
+}
+
+.plan-pdf-layer.is-panning-mode {
+  cursor: grab;
+}
+
+.plan-pdf-layer.is-panning {
+  cursor: grabbing;
+}
+
+.plan-pan-content {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.plan-pdf-render-shell {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: visible;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.plan-pdf-viewer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible !important;
+}
+
+.plan-annotation-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+}
+
+.plan-annotation-layer g {
+  cursor: pointer;
+}
+
+.plan-annotation-layer g.is-selected > *:not(text):not(.plan-annotation-edit-box):not(.plan-annotation-resize-handle) {
+  filter: drop-shadow(0 0 4px rgba(27, 79, 138, .65));
+  stroke-dasharray: 12 7;
+}
+
+.plan-annotation-layer g.is-selected text {
+  paint-order: stroke;
+  stroke: rgba(255, 255, 255, .85);
+  stroke-width: 4;
+}
+
+.plan-annotation-edit-box {
+  fill: none;
+  stroke: #1B4F8A;
+  stroke-width: 1;
+  stroke-dasharray: 8 6;
+  pointer-events: none;
+  vector-effect: non-scaling-stroke;
+}
+
+.plan-annotation-resize-handle {
+  fill: #ffffff;
+  stroke: #1B4F8A;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.plan-annotation-resize-handle--nw,
+.plan-annotation-resize-handle--se {
+  cursor: nwse-resize;
+}
+
+.plan-annotation-resize-handle--ne,
+.plan-annotation-resize-handle--sw {
+  cursor: nesw-resize;
+}
+
+.plan-text-editor-foreign-object {
+  overflow: visible;
+}
+
+.plan-text-editor {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  outline: none;
+  background: rgba(255, 255, 255, .88);
+  font-weight: 400;
+  line-height: 1.2;
+  padding: 2px 4px;
+}
+
+.plan-text-editor::placeholder {
+  color: rgba(15, 23, 42, .42);
+}
+
+.plan-pdf-viewer .ng2-pdf-viewer-container {
+  overflow: visible !important;
+}
+
+.plan-pdf-viewer .pdfViewer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible !important;
+}
+
+.plan-pdf-render-shell .plan-pdf-viewer .pdfViewer {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.plan-pdf-viewer .page {
+  margin: 0 auto !important;
+  box-shadow: 0 12px 36px rgba(15, 23, 42, .18);
+}
+
+.plan-pdf-render-shell .plan-pdf-viewer .page {
+  margin: 0 !important;
+}
+
+.plan-top-toolbar,
+.plan-bottom-toolbar {
+  position: absolute;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, .96);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, .14);
+}
+
+.plan-top-toolbar {
+  top: 18px;
+  left: 18px;
+}
+
+.plan-bottom-toolbar {
+  bottom: 18px;
+  left: 18px;
+}
+
+.plan-tool-menu-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.plan-caret {
+  margin-left: 6px;
+  font-size: 11px;
+}
+
+.plan-tool-menu {
+  position: absolute;
+  left: 0;
+  bottom: 52px;
+  z-index: 8;
+  min-width: 230px;
+  padding: 10px 0;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, .16);
+}
+
+.plan-tool-menu strong {
+  display: block;
+  padding: 8px 16px 10px;
+  color: #1f2937;
+  font-size: 15px;
+}
+
+.plan-tool-menu button {
+  width: 100%;
+  height: 46px;
+  border: 0;
+  background: transparent;
+  color: #2f2f2f;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 18px;
+  font-size: 15px;
+  text-align: left;
+}
+
+.plan-tool-menu button:hover,
+.plan-tool-menu button.is-active {
+  background: #dbeafe;
+}
+
+.plan-tool-menu i {
+  width: 24px;
+  font-size: 17px;
+  text-align: center;
+}
+
+.plan-arrow-tool-icon {
+  transform: rotate(-45deg);
+}
+
+.plan-tool-menu--shape {
+  min-width: 280px;
+}
+
+.plan-tool-menu--style {
+  bottom: 56px;
+  min-width: 210px;
+}
+
+.plan-icon-button,
+.plan-tool-button,
+.plan-nav-button,
+.plan-action-button,
+.plan-style-button {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: #0f172a;
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color .16s ease, color .16s ease, opacity .16s ease;
+}
+
+.plan-icon-button:hover,
+.plan-tool-button:hover,
+.plan-nav-button:hover,
+.plan-action-button:hover,
+.plan-style-button:hover,
+.plan-icon-button.is-active,
+.plan-tool-button.is-active {
+  background: #dbeafe;
+  color: #1B4F8A;
+}
+
+.plan-icon-button:disabled,
+.plan-tool-button:disabled,
+.plan-nav-button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.plan-toolbar-separator {
+  width: 1px;
+  height: 28px;
+  background: #cbd5e1;
+}
+
+.plan-annotation-toolbar {
+  position: absolute;
+  left: 50%;
+  bottom: 96px;
+  z-index: 7;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, .96);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, .16);
+  transform: translateX(-50%);
+}
+
+.plan-action-button--danger {
+  color: #dc2626;
+}
+
+.plan-action-button--valid {
+  color: #0D2447;
+}
+
+.plan-style-color {
+  width: 22px;
+  height: 22px;
+  border: 1px solid #d1d5db;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.plan-private-button {
+  min-width: 84px;
+  height: 40px;
+  border: 0;
+  background: transparent;
+  color: #9ac5e2;
+  font-size: 15px;
+}
+
+.plan-page-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 4;
+  transform: translateY(-50%);
+}
+
+.plan-page-arrow--left {
+  left: 14px;
+}
+
+.plan-page-arrow--right {
+  right: 14px;
+}
+
+.plan-page-status,
+.plan-info-panel {
+  position: absolute;
+  z-index: 6;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, .96);
+  color: #334155;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, .12);
+}
+
+.plan-page-status {
+  right: 18px;
+  bottom: 18px;
+  padding: 9px 12px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.plan-info-panel {
+  top: 18px;
+  right: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 260px;
+  padding: 12px;
+  font-size: 12px;
+}
+
+.plan-color-list {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 4px;
+}
+
+.plan-color-button {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px #94a3b8;
+}
+
+.plan-color-button.is-active {
+  box-shadow: 0 0 0 2px #1B4F8A;
+}
+
+.plan-pin {
+  --pin-color: #1d4ed8;
+  position: absolute;
+  z-index: 3;
+  width: 28px;
+  height: 28px;
+  border: 4px solid #fff;
+  border-radius: 50% 50% 50% 0;
+  background: var(--pin-color);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, .28);
+  transform: translate(-50%, -100%) rotate(-45deg);
+}
+
+.plan-pin.is-selected {
+  box-shadow: 0 0 0 4px rgba(27, 79, 138, .25), 0 4px 10px rgba(15, 23, 42, .28);
+}
+
+.plan-pin span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #fff;
+  display: block;
+  margin: 5px auto;
+}
+
+.plan-task-marker-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.plan-task-marker {
+  --marker-color: #1d4ed8;
+  position: absolute;
+  z-index: 4;
+  width: 25px;
+  height: 25px;
+  border: 0;
+  border-radius: 50% 50% 50% 0;
+  //background: var(--marker-color);
+  background: #1B4F8A;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, .28);
+  transform: translate(-50%, -100%) rotate(-45deg) scale(var(--plan-marker-scale, 1));
+  transform-origin: 50% 100%;
+  pointer-events: auto;
+}
+
+.plan-task-marker:hover {
+  box-shadow: 0 0 0 5px rgba(29, 78, 216, .2), 0 8px 18px rgba(15, 23, 42, .28);
+}
+
+.plan-task-marker span {
+  width: 10px;
+  height: 10px;
+  border: 4px solid rgba(255, 255, 255, .94);
+  border-radius: 50%;
+  background: #fff;
+  display: block;
+  margin: 6px auto;
+}
+
+.plan-task-marker em {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: #fff;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .35);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.plan-task-popover {
+  position: absolute;
+  z-index: 9;
+  width: 360px;
+  max-width: calc(100% - 32px);
+  padding: 22px 22px 18px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 18px 42px rgba(15, 23, 42, .2);
+  color: #0f172a;
+  pointer-events: auto;
+  transform: translate(-50%, -100%);
+  transform-origin: 50% 100%;
+}
+
+.plan-task-popover::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -14px;
+  width: 28px;
+  height: 28px;
+  border-right: 1px solid #cbd5e1;
+  border-bottom: 1px solid #cbd5e1;
+  background: #fff;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.plan-task-popover-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  background: transparent;
+  color: #000;
+  font-size: 22px;
+}
+
+.plan-task-popover-meta {
+  margin: 0 34px 14px 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.plan-task-popover h3 {
+  margin: 0 0 14px;
+  color: #000;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.plan-task-popover-tags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.plan-task-popover-tags span {
+  min-height: 34px;
+  padding: 6px 13px;
+  border: 1px solid #cbd5e1;
+  border-radius: 18px;
+  background: #f8fafc;
+  color: #000;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.plan-task-popover-tags .plan-task-popover-number {
+  min-width: 34px;
+  justify-content: center;
+  border-color: #3854c9;
+  background: #3854c9;
+  color: #fff;
+}
+
+.plan-task-popover-description {
+  max-height: 92px;
+  margin: 0 0 14px;
+  padding: 12px;
+  border-radius: 6px;
+  background: #eef3f8;
+  color: #1f2937;
+  font-size: 14px;
+  overflow: auto;
+}
+
+.plan-task-popover-actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.plan-task-popover-icon {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: #000;
+  font-size: 22px;
+}
+
+.plan-task-popover-icon:hover {
+  background: #eef3f8;
+}
+
+.plan-task-popover-open {
+  min-width: 88px;
+  height: 42px;
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  background: #fff;
+  color: #000;
+  font-size: 16px;
+}
+
+.plan-pending-task-marker {
+  position: absolute;
+  z-index: 5;
+  transform: translate(-50%, -100%) scale(var(--plan-marker-scale, 1));
+  transform-origin: 50% 100%;
+  pointer-events: auto;
+}
+
+.plan-pending-task-marker .plan-task-marker {
+  position: relative;
+  left: auto;
+  top: auto;
+  transform: rotate(-45deg);
+  cursor: grab;
+}
+
+.plan-pending-task-marker .plan-task-marker:active {
+  cursor: grabbing;
+}
+
+.plan-task-marker--pending {
+  width: 31px;
+  height: 31px;
+  box-shadow: 12px 10px 0 rgba(15, 23, 42, .12), 0 8px 18px rgba(15, 23, 42, .22);
+}
+
+.plan-task-marker--pending span {
+  width: 18px;
+  height: 18px;
+  border-width: 5px;
+  margin: 7px auto;
+}
+
+.plan-pending-task-actions {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  transform: translateX(-50%);
+}
+
+.plan-pending-task-action {
+  width: 46px;
+  height: 46px;
+  border: 7px solid currentColor;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .96);
+  color: #111827;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, .18);
+  pointer-events: auto;
+}
+
+.plan-pending-task-action--cancel {
+  color: #d00000;
+}
+
+.plan-pending-task-action--confirm {
+  color: #0D2447;
+}
+
+.plan-pending-task-action i {
+  color: #111827;
+}
+
+.plan-pending-task-action:disabled {
+  opacity: .58;
+  cursor: wait;
+}
+
+.plan-delete-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  background: rgba(15, 23, 42, .42);
+}
+
+.plan-delete-dialog {
+  position: absolute;
+  top: 14%;
+  left: 50%;
+  width: min(580px, calc(100% - 40px));
+  padding: 54px 32px 22px;
+  border: 2px solid #ef1d16;
+  border-radius: 6px;
+  background: #fff;
+  color: #000;
+  transform: translateX(-50%);
+}
+
+.plan-delete-dialog h2 {
+  margin: 0 0 22px;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.plan-delete-dialog p {
+  margin: 0 0 32px;
+  font-size: 17px;
+}
+
+.plan-delete-close {
+  position: absolute;
+  top: 22px;
+  right: 26px;
+  border: 0;
+  background: transparent;
+  font-size: 24px;
+}
+
+.plan-delete-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.plan-delete-confirm,
+.plan-delete-cancel {
+  min-width: 140px;
+  height: 44px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.plan-delete-confirm {
+  border: 1px solid #ef1d16;
+  background: #ef1d16;
+  color: #fff;
+}
+
+.plan-delete-cancel {
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #111827;
+}
+
+@media (max-width: 1200px) {
+  .plan-stage {
+    padding: 24px 44px;
+  }
+}
+
+@media (max-width: 992px) {
+  .plan-workspace {
+    margin-top: 18px;
+    height: 560px;
+  }
+}

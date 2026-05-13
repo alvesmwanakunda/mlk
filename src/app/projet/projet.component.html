@@ -2,23 +2,120 @@
   <div class="topbar">
         <div class="topbar-left">
           <h1>Projet : {{projet?.projet}}</h1>
+          <!-- <button class="topbar-btn btn-primary" [routerLink]="['/dashboard']"><i class="fa-solid fa-arrow-left" style="color:#28628B;"></i> Retour</button> -->
         </div>
         <div class="topbar-right">
-          <button class="topbar-btn btn-primary" [routerLink]="['/dashboard']"><i class="fa-solid fa-arrow-left" style="color:#28628B;"></i> Retour</button>
+          <button mat-raised-button type="button" color="primary" style="margin-right: 5px;" matTooltip="Modifier" (click)="updateProjet(projet._id)"><i class="fa-regular fa-pen-to-square"></i> Modifier</button>
         </div>
   </div>
   <div class="content">
-    <div>
+    <!-- <div>
       <div class="row content-toolbar-row project-toolbar-row">
          <div class="col-12 project-toolbar-actions">
           <button mat-raised-button type="button" color="primary" style="margin-right: 5px;" matTooltip="Modifier" (click)="updateProjet(projet._id)"><i class="fa-regular fa-pen-to-square"></i> Modifier</button>
-         </div><!--col-->
-      </div><!--row-->
-    </div><!--content-->
+         </div>
+      </div>
+    </div> -->
 
     <div class="list-projet">
+
       <div class="row projet-layout-row">
-        <div class="col-12 col-lg-4 col-xl-3 projet-summary-col">
+
+         <nav class="project-tabs-wrap">
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+              <button class="nav-link tabprojet active" id="nav-file-tab" data-bs-toggle="tab" data-bs-target="#nav-file" type="button" role="tab" aria-controls="nav-file" aria-selected="true">Fiche projet</button>
+              <button class="nav-link tabprojet" id="nav-piece-tab" data-bs-toggle="tab" data-bs-target="#nav-piece" type="button" role="tab" aria-controls="nav-piece" aria-selected="false">Documents</button>
+              <button class="nav-link tabprojet" id="nav-stock-tab" data-bs-toggle="tab" data-bs-target="#nav-stock" type="button" role="tab" aria-controls="nav-stock" aria-selected="false">Stocks</button>
+              <button class="nav-link tabprojet" id="nav-task-tab" data-bs-toggle="tab" data-bs-target="#nav-task" type="button" role="tab" aria-controls="nav-task" aria-selected="false">Tâches</button>
+              <button class="nav-link tabprojet" id="nav-pv-tab" data-bs-toggle="tab" data-bs-target="#nav-pv" type="button" role="tab" aria-controls="nav-pv" aria-selected="false">PV Réception</button>
+              <button class="nav-link tabprojet" id="nav-plan-tab" data-bs-toggle="tab" data-bs-target="#nav-plan" type="button" role="tab" aria-controls="nav-plan" aria-selected="false">Plan</button>
+            </div>
+          </nav>
+          <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-file" role="tabpanel" aria-labelledby="nav-file-tab" tabindex="0">
+              <app-fiche></app-fiche>
+            </div>
+            <div class="tab-pane fade" id="nav-piece" role="tabpanel" aria-labelledby="nav-piece-tab" tabindex="0">
+              <app-box-projet></app-box-projet>
+            </div>
+            <div class="tab-pane fade" id="nav-stock" role="tabpanel" aria-labelledby="nav-stock-tab" tabindex="0">
+              <app-module-projet></app-module-projet>
+            </div>
+            <!-- <div class="tab-pane fade" id="nav-planning" role="tabpanel" aria-labelledby="nav-planning-tab" tabindex="0">
+              <app-planning-projet></app-planning-projet>
+            </div> -->
+            <div class="tab-pane fade" id="nav-task" role="tabpanel" aria-labelledby="nav-task-tab" tabindex="0">
+              <app-taches></app-taches>
+            </div>
+            <div class="tab-pane fade" id="nav-pv" role="tabpanel" aria-labelledby="nav-pv-tb" tabindex="0">
+              <app-pv-reception></app-pv-reception>
+            </div>
+            <div class="tab-pane fade" id="nav-plan" role="tabpanel" aria-labelledby="nav-plan-tb" tabindex="0">
+              <div class="project-pdf-page">
+                    <pdf-viewer
+                    [src]="chemin"
+                    [original-size]="false"
+                    [fit-to-page]="false"
+                    [render-text]="true"
+                    [rotation]="0"
+                    [show-all]="false"
+                    [page]="page"
+                    [zoom]="zoom_to"
+                    [zoom-scale]="'page-width'"
+                    (after-load-complete)="afterLoadComplete($event)"
+                    class="pdf-viewer"
+                    ></pdf-viewer>
+              </div>
+              <!-- <div class="project-pdf-page">
+                  <pdf-viewer
+                    [src]="chemin"
+                    [original-size]="false"
+                    [fit-to-page]="true"
+                    [render-text]="true"
+                    [rotation]="0"
+                    [show-all]="false"
+                    [page]="page"
+                    [zoom]="zoom_to"
+                    [zoom-scale]="'page-fit'"
+                    (after-load-complete)="afterLoadComplete($event)"
+                    class="pdf-viewer"
+                  ></pdf-viewer>
+              </div> -->
+              <div class="border-pdf">
+                <mat-toolbar class="mlk-toolbar">
+                  <button mat-icon-button class="example-icon" (click)="prevPage()" [disabled]="page === 1">
+                  <mat-icon class="toolbar-icon">keyboard_arrow_left</mat-icon>
+                </button>
+                <button mat-icon-button class="example-icon" (click)="nextPage()" [disabled]="page === totalPages">
+                  <mat-icon class="toolbar-icon">keyboard_arrow_right</mat-icon>
+                </button>
+                <div class="toolbar-space">
+                  <span class="toolbar-showing">Affichage</span>
+                  <span  class="toolbar-showing"><input type="text" class="toolbar-input" [value]="page"></span>
+                  <span  class="toolbar-showing">sur {{ totalPages }}</span>
+                </div>
+                <div class="toolbar-percent">
+                  {{percent}}%
+                </div>
+                <button mat-icon-button class="example-icon" (click)="zoom_in()">
+                  <mat-icon class="toolbar-icon">zoom_in</mat-icon>
+                </button>
+                <button mat-icon-button class="example-icon" (click)="zoom_out()">
+                <mat-icon class="toolbar-icon">zoom_out</mat-icon>
+              </button>
+                <span class="example-spacer"></span>
+                <button mat-icon-button class="example-icon favorite-icon" (click)="get_fit()">
+                  <mat-icon class="toolbar-icon">zoom_out_map</mat-icon>
+                </button>
+
+                </mat-toolbar>
+              </div>
+            </div>
+          </div>
+
+
+
+        <!-- <div class="col-12 col-lg-4 col-xl-3 projet-summary-col">
 
           <div class="card card-projet">
             <img src="{{projet.photo}}" *ngIf="projet?.photo" class="card-img-top card-img-projet" alt="...">
@@ -39,37 +136,9 @@
               <p class="pr-projet" *ngIf="projet?.etat=='En cours'">50%</p>
               <p class="pr-projet" *ngIf="projet?.etat=='Clôturé'">100%</p>
 
-              <!--<div class="row" style="margin-bottom:15px;">
-                  <div class="col">
-                    <div class="card" style="height: 78px;margin-bottom:10px">
-                      <div class="card-body">
-                        <p align="center"><i class="fa-regular fa-calendar-days" style="font-size: 25px;color:#28628B"></i></p>
-                        <p class="pr-title">{{projet?.date_limite |date :'dd MMMM yyyy'}}</p>
-                      </div>
-                    </div>
-                    <p class="pr-title-etat">Date Fin Travaux</p>
-                  </div>
-                  <div class="col">
-                    <div class="card" style="height: 78px;margin-bottom:10px">
-                      <div class="card-body">
-                        <p align="center"><i class="fa-regular fa-calendar-days"  style="font-size: 25px;color:#28628B"></i></p>
-                        <p class="pr-title">{{projet?.createdDate |date :'dd MMMM yyyy'}}</p>
-                      </div>
-                    </div>
-                    <p class="pr-title-etat">Date de début</p>
-                  </div>
-              </div>-->
 
               <div class="row">
-                <!--<div class="col">
-                  <div class="card" style="height: 78px;margin-bottom:10px">
-                    <div class="card-body">
-                      <p align="center"><i class="fa-solid fa-bars-progress" style="font-size: 25px;color:#28628B"></i></p>
-                      <p class="pr-title" *ngIf="projet?.etat!='undefined'">{{projet?.etat}}</p>
-                    </div>
-                  </div>
-                  <p class="pr-title-etat">Statut</p>
-                </div>-->
+
                 <div class="col">
                   <div class="card" style="margin-bottom:10px">
                     <div class="card-body">
@@ -78,24 +147,23 @@
                     </div>
                   </div>
                   <p class="pr-title-etat">Lieu</p>
-                </div><!--col-->
-            </div><!--row-->
-            </div><!--card-body-->
+                </div>
+            </div>
+            </div>
           </div>
 
-        </div><!--col-->
+        </div>
         <div class="col-12 col-lg-8 col-xl-9 projet-tabs-col">
-
-          <nav class="project-tabs-wrap">
+        <nav class="project-tabs-wrap">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-              <button class="nav-link tabprojet active" id="nav-file-tab" data-bs-toggle="tab" data-bs-target="#nav-file" type="button" role="tab" aria-controls="nav-file" aria-selected="true">Fiche</button>
+              <button class="nav-link tabprojet active" id="nav-file-tab" data-bs-toggle="tab" data-bs-target="#nav-file" type="button" role="tab" aria-controls="nav-file" aria-selected="true">Fiche projet</button>
               <button class="nav-link tabprojet" id="nav-piece-tab" data-bs-toggle="tab" data-bs-target="#nav-piece" type="button" role="tab" aria-controls="nav-piece" aria-selected="false">Documents</button>
               <button class="nav-link tabprojet" id="nav-stock-tab" data-bs-toggle="tab" data-bs-target="#nav-stock" type="button" role="tab" aria-controls="nav-stock" aria-selected="false">Stocks</button>
               <button class="nav-link tabprojet" id="nav-task-tab" data-bs-toggle="tab" data-bs-target="#nav-task" type="button" role="tab" aria-controls="nav-task" aria-selected="false">Tâches</button>
               <button class="nav-link tabprojet" id="nav-pv-tab" data-bs-toggle="tab" data-bs-target="#nav-pv" type="button" role="tab" aria-controls="nav-pv" aria-selected="false">PV Réception</button>
             </div>
-          </nav>
-          <div class="tab-content" id="nav-tabContent">
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-file" role="tabpanel" aria-labelledby="nav-file-tab" tabindex="0">
               <app-fiche></app-fiche>
             </div>
@@ -114,9 +182,8 @@
             <div class="tab-pane fade" id="nav-pv" role="tabpanel" aria-labelledby="nav-pv-tb" tabindex="0">
               <app-pv-reception></app-pv-reception>
             </div>
-          </div>
-
-        </div><!--col-->
+        </div>
+        </div> -->
       </div><!--row-->
     </div>
   </div>

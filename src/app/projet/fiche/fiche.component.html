@@ -1,169 +1,77 @@
 
 <div class="container">
-
   <div class="content-top-child">
+    <div class="row projet-layout-row">
+        <div class="col-12 col-lg-4 col-xl-3 projet-summary-col">
 
-    <div class="row justify-content-md-center">
-      <div class="col-lg-10 col-md-10 col-md-auto">
-        <div class="row">
-          <div class="col">
-            <p class="title-col">Date Création du projet</p>
-            <p class="infos-col">{{projet?.createdDate |date :'dd MMMM yyyy'}}</p>
-          </div>
-          <div class="col">
-            <p class="title-col">Code Projet</p>
-            <p class="infos-col">{{projet?.code_projet}}</p>
-          </div>
-          <div class="col">
-            <p class="title-col">Code Commande Client</p>
-            <p class="infos-col">{{projet?.code_client}}</p>
-          </div>
-        </div><!--row-->
-      </div><!--10-->
-    </div><!--row-->
-    <!--<div><hr class="fiche"></div>
-    <div class="row justify-content-md-center">
-      <div class="col-lg-10 col-md-10 col-md-auto">
-        <div class="row">
-          <div class="col">
-            <p class="title-col">Service</p>
-            <p class="infos-col">MLKA</p>
-          </div>
-          <div class="col">
-            <p class="title-col">Type Service</p>
-            <p class="infos-col">{{projet?.service}}</p>
-          </div>
-          <div class="col">
-            <p class="title-col">Réseau</p>
-            <p class="infos-col">Structure Modulaire</p>
-          </div>
-        </div>
-      </div>
-    </div>-->
-    <div><hr class="fiche"></div>
-    <div class="row justify-content-md-center" style="margin-bottom: 50px;">
-      <div class="col-lg-10 col-md-10 col-md-auto">
-        <div class="row">
-          <div class="col">
-            <p class="title-col">Fin contrat</p>
-            <p class="infos-col">{{projet?.date_fin_contrat |date :'dd MMMM yyyy'}}</p>
-          </div>
-          <div class="col">
-            <p class="title-col">Pays</p>
-            <p class="infos-col">{{projet?.pays}}</p>
-          </div>
-          <div class="col">
-            <p class="title-col">Budget Prévisionnel</p>
-            <p class="infos-col">{{projet?.budget}} {{projet?.devise}}</p>
-          </div>
-        </div><!--row-->
-      </div><!--10-->
-    </div><!--row-->
+          <div class="card card-projet">
+            <img src="{{projet.photo}}" *ngIf="projet?.photo" class="card-img-top card-img-projet" alt="...">
+            <img src="assets/images/ppr.png" *ngIf="!projet?.photo" class="card-img-projet" alt="...">
 
-    <div class="row" style="margin-bottom: 30px;">
-      <!--<div class="col">
-        <div class="card card-etude">
-          <div class="card-body">
-             <div class="row">
-                <div class="col"><p class="box-title">Activités</p></div>
-                <div class="col"> <p class="dot-box-title">Voir Tout >>></p></div>
-             </div>
+            <div class="card-body" style="padding-top: 40px;">
+              <p class="user-title">Nom du responsable projet</p>
+              <p class="user-title">{{contact?.genre}} {{contact?.nom}} {{contact?.prenom}}</p>
+              <div align="center" style="margin-bottom:40px;"><hr class="projet"></div>
 
-             <div>
-              <div class="row">
-                <div class="col-8">
-                  <p>
-                    <img src="assets/images/userp.png" style="margin-right: 10px;"> <span style="font-size: 13px;font-weight:500;">M. DUPONT</span>
-                   </p>
-                   <p class="dot-card1-user">Demande d'intervention</p>
-                </div>
-                <div class="col-4">
-                  <p class="dot-card-time">5 min</p>
-                </div>
-               </div>
+              <p class="title-projet" style="margin-bottom:20px;">{{projet?.projet}}</p>
+              <p class="title-projet" style="margin-bottom:20px;">{{entreprise?.societe}}</p>
 
-               <div class="row" style="position: relative;bottom: 28px;">
-                <div class="col">
-                  <div class="card card-dot-green">
-                    <div class="card-body">
-                      <img src="assets/images/pdf.png" style="margin-bottom: 4px;">
-                      <p class="dot-box-file">Nom du Fichier</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="card card-dot-blue">
-                    <div class="card-body">
-                      <img src="assets/images/doc.png" style="margin-bottom: 4px;">
-                      <p class="dot-box-file">Nom du Fichier</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="card card-dot-red">
-                    <div class="card-body">
-                      <img src="assets/images/pdf.png" style="margin-bottom: 4px;">
-                      <p class="dot-box-file">Nom du Fichier</p>
-                    </div>
-                  </div>
-                </div>
-               </div>
-             </div>
-             <div>
-              <div class="row">
-                <div class="col-8">
-                  <p>
-                    <img src="assets/images/userp.png" style="margin-right: 10px;"> <span style="font-size: 13px;font-weight:500;">Mme PARIS</span>
-                   </p>
-                   <p class="dot-card1-user">Demande d'intervention</p>
-                   <p style="position: absolute;bottom: 10px;left: 64px;">
-                    <button type="button" class="btn btn-etude">Mettre le nom du lôt ici...</button>
-                   </p>
-                </div>
-                <div class="col-4">
-                  <p class="dot-card-time">2 min</p>
-                </div>
-               </div>
-             </div>
-
-
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card card-etude">
-          <div class="card-body">
-            <div class="row">
-              <div class="col"><p class="box-title">Statistiques</p></div>
-              <div class="col" align="right" style="position: absolute;top: 5px;">
-                <button mat-button [matMenuTriggerFor]="menu" class="dot-box-title">Sélectionner</button>
-                <mat-menu #menu="matMenu">
-                  <button mat-menu-item>Électricité</button>
-                  <button mat-menu-item>Plomberie</button>
-                  <button mat-menu-item>Autre</button>
-                </mat-menu>
+              <div class="progress progress-projet" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="margin-bottom:10px;">
+                <div class="progress-bar" [ngStyle]="{'width': (projet?.etat=='En attente') ? '0%' : (projet?.etat=='En cours') ? '50%' : (projet?.etat=='Clôturé') ? '100%' : '0%'}"></div>
               </div>
-           </div>
-
-           <div class="row">
-            <div class="col">
-              <img src="assets/images/stat1.png">
-            </div>
-            <div class="col">
-              <img src="assets/images/stat2.png">
-            </div>
-         </div>
+              <p class="pr-projet" *ngIf="projet?.etat=='En attente'">0%</p>
+              <p class="pr-projet" *ngIf="projet?.etat=='En cours'">50%</p>
+              <p class="pr-projet" *ngIf="projet?.etat=='Clôturé'">100%</p>
 
 
+              <div class="row">
+
+                <div class="col">
+                  <div class="card" style="margin-bottom:10px">
+                    <div class="card-body">
+                      <p align="center"><i class="fa-solid fa-location-dot"  style="font-size: 25px;color:#28628B"></i></p>
+                      <p class="pr-title-projet">{{projet?.rue}},{{projet?.postal}} {{projet?.ville}}</p>
+                    </div>
+                  </div>
+                  <p class="pr-title-etat">Lieu</p>
+                </div><!--col-->
+            </div><!--row-->
+            </div><!--card-body-->
           </div>
+
+        </div><!--col-->
+        <div class="col-12 col-lg-8 col-xl-9 projet-tabs-col">
+          <div class="row">
+            <div class="col">
+              <p class="title-col">Date Création du projet</p>
+              <p class="infos-col">{{projet?.createdDate |date :'dd MMMM yyyy'}}</p>
+            </div>
+            <div class="col">
+              <p class="title-col">Code Projet</p>
+              <p class="infos-col">{{projet?.code_projet}}</p>
+            </div>
+            <div class="col">
+              <p class="title-col">Code Commande Client</p>
+              <p class="infos-col">{{projet?.code_client}}</p>
+            </div>
+          </div><!--row-->
+          <div><hr class="fiche"></div>
+          <div class="row">
+            <div class="col">
+              <p class="title-col">Fin contrat</p>
+              <p class="infos-col">{{projet?.date_fin_contrat |date :'dd MMMM yyyy'}}</p>
+            </div>
+            <div class="col">
+              <p class="title-col">Pays</p>
+              <p class="infos-col">{{projet?.pays}}</p>
+            </div>
+            <div class="col">
+              <p class="title-col">Budget Prévisionnel</p>
+              <p class="infos-col">{{projet?.budget}} {{projet?.devise}}</p>
+            </div>
+          </div><!--row-->
         </div>
-      </div>-->
-    </div>
-
-    <!--<div align="right">
-      <p><img src="assets/images/userp.png" style="margin-right: 10px;"> <span class="infos-resp">{{projet?.genre}} {{projet?.nom}} {{projet?.prenom}}</span></p>
-    </div>-->
-  </div><!--content-top-->
-
-</div><!--container-->
+    </div><!--container-->
+  </div>
+</div>
 

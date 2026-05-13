@@ -1,6 +1,10 @@
 <mat-dialog-content class="mat-typography">
   <div class="text-center" style="padding-top: 25px;"><p class="title-projet-page">Nouvelle tâche</p></div>
   <div class="row"><div class="col"><hr class="entreprise"></div></div><!--row-->
+  <div class="task-plan-marker-summary" *ngIf="planMarker">
+    <i class="fa-solid fa-location-dot"></i>
+    Tâche liée au plan - page {{ planMarker.page }}
+  </div>
   <div>
     <form [formGroup]="taskFormGroup">
 

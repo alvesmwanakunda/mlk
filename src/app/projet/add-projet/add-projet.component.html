@@ -88,10 +88,16 @@
                     </div>
 
                     <div class="col">
-                      <mat-form-field class="example-full-width">
+                      <!-- <mat-form-field class="example-full-width">
                         <mat-label>Url du plan</mat-label>
                         <input  matInput formControlName="plan">
-                      </mat-form-field>
+                      </mat-form-field> -->
+                      <div style="margin-bottom: 15px;">
+                        <label class="label-entreprise">Plan PDF <span *ngIf="planName">({{planName}})</span></label>
+                        <br/>
+                        <input type="file" class="file-input" accept=".pdf,application/pdf" (change)="onPlanSelected($event)" #planUpload>
+                        <button type="button" (click)="planUpload.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> charger le plan</button>
+                      </div>
                     </div>
                   </div>
                   <div align="right">
@@ -264,8 +270,13 @@
               </div><!--row-->
               </form>
               <div align="right">
-                <button mat-button matStepperPrevious class="btn-entreprise-back" style="margin-right: 10px;"><i class="fa-solid fa-chevron-left"></i> PRECEDENT</button>
-                <button mat-button  class="btn-entreprise" (click)="addProjet()" [disabled]="firstFormGroup.invalid">VALIDER</button>
+                <button mat-button matStepperPrevious class="btn-entreprise-back" style="margin-right: 10px;" [disabled]="onLoadForm"><i class="fa-solid fa-chevron-left"></i> PRECEDENT</button>
+                <button mat-button class="btn-entreprise" (click)="addProjet()" [disabled]="firstFormGroup.invalid || onLoadForm">
+                  {{ onLoadForm ? 'AJOUT EN COURS...' : 'VALIDER' }}
+                </button>
+              </div>
+              <div *ngIf="onLoadForm" style="margin-top: 15px;">
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
               </div>
             </mat-step>
           </mat-stepper>

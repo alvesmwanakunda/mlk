@@ -7,6 +7,12 @@ import { TachesComponent } from '../taches.component';
 import { AuthService } from '../../shared/services/auth.service';
 import { ImageAnnotationComponent } from 'src/app/note-module/image-annotation/image-annotation.component';
 
+interface TaskPlanMarker {
+  page: number;
+  xPercent: number;
+  yPercent: number;
+}
+
 
 @Component({
   selector: 'app-add-taches',
@@ -19,6 +25,8 @@ export class AddTachesComponent implements OnInit {
   message:any;
   idProjet:any;
   contacts:any
+  plan:any;
+  planMarker: TaskPlanMarker | null = null;
 
   // imageFile: File | null = null;
   // showImageAnnotation = false;
@@ -64,6 +72,8 @@ export class AddTachesComponent implements OnInit {
      private cdRef: ChangeDetectorRef
   ){
     this.idProjet = this.data.id;
+    this.plan = this.data?.plan;
+    this.planMarker = this.normalizePlanMarker(this.data?.marker);
     console.log("projet", this.idProjet);
     console.log("projet", this.data.id);
   }
@@ -381,6 +391,15 @@ export class AddTachesComponent implements OnInit {
       fd.append('image', this.imageFile, this.imageFile.name);
     }
 
+    if (this.planMarker) {
+      fd.append('plan', this.plan);
+      fd.append('marker', JSON.stringify({
+        page: this.planMarker.page,
+        xPercent: this.planMarker.xPercent,
+        yPercent: this.planMarker.yPercent
+      }));
+    }
+
 
     //  fd.append('image', this.imageFile, this.imageFile.name);
     //  fd.append('titre', this.taskFormGroup.get('titre').value);
@@ -412,6 +431,30 @@ export class AddTachesComponent implements OnInit {
       this._snackBar.open(message, 'Fermer',{
         duration:6000,
       })
+  }
+
+  private normalizePlanMarker(marker: any): TaskPlanMarker | null {
+    if (!marker || typeof marker !== 'object') {
+      return null;
+    }
+
+    const page = Number(marker.page);
+    const xPercent = Number(marker.xPercent);
+    const yPercent = Number(marker.yPercent);
+
+    if (!Number.isFinite(page) || !Number.isFinite(xPercent) || !Number.isFinite(yPercent)) {
+      return null;
+    }
+
+    return {
+      page: Math.max(1, Math.round(page)),
+      xPercent: this.clamp(xPercent, 0, 100),
+      yPercent: this.clamp(yPercent, 0, 100)
+    };
+  }
+
+  private clamp(value: number, min: number, max: number) {
+    return Math.max(min, Math.min(max, value));
   }
 
 

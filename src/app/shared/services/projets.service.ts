@@ -502,6 +502,52 @@ export class ProjetsService {
     });
   }
 
+  // Plan projet
+
+  getPlanProjet(idProjet){
+    return this.httpClient.get(`${environment.BASE_API_URL}/projet/planprojet/${idProjet}`)
+  }
+
+  updatePlanProjet(idPlan, body){
+    return this.httpClient.put(`${environment.BASE_API_URL}/projet/planprojet/${idPlan}`, body)
+  }
+
+  udpatePlanProjet(idPlan, body){
+    return this.updatePlanProjet(idPlan, body)
+  }
+
+  // Annotation Plan
+
+  addAnnotationPlan(idPlan, idProjet, body){
+    return this.httpClient.post(`${environment.BASE_API_URL}/annotation/plan/${idPlan}/${idProjet}`, body)
+  }
+
+  getAllAnnotationByPlanProjet(idPlan, idProjet){
+    return this.httpClient.get(`${environment.BASE_API_URL}/annotation/plan/${idPlan}/${idProjet}`)
+  }
+
+  getAnnotationByPlan(idPlan){
+    return this.httpClient.get(`${environment.BASE_API_URL}/annotation/plan/${idPlan}`)
+  }
+
+  updateAnnotationByPlan(idPlan, body){
+    return this.httpClient.put(`${environment.BASE_API_URL}/annotation/plan/${idPlan}`,body)
+  }
+
+  deleteAnnotationByPlan(idPlan){
+    return this.httpClient.delete(`${environment.BASE_API_URL}/annotation/plan/${idPlan}`)
+  }
+
+  // Update Marker Plan
+
+  udpateMakerTask(idTask, body){
+    return this.httpClient.put(`${environment.BASE_API_URL}/marker/tache/${idTask}`, body)
+  }
+
+  updateMarkerTask(idTask, body){
+    return this.udpateMakerTask(idTask, body)
+  }
+
 
 
 }

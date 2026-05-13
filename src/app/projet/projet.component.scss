@@ -47,3 +47,126 @@
     height: auto !important;
   }
 }
+// pdf
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.project-pdf-page {
+  width: 100%;
+  height: calc(100vh - 220px);
+  min-height: 650px;
+  padding: 16px;
+  overflow: auto;
+  background: #f5f7fa;
+  border: 1px solid #dfe3e8;
+  border-radius: 8px;
+}
+
+.pdf-viewer {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+:host ::ng-deep .project-pdf-page .ng2-pdf-viewer-container {
+  width: 100% !important;
+  height: 100% !important;
+  overflow: auto !important;
+}
+
+:host ::ng-deep .project-pdf-page .pdfViewer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+:host ::ng-deep .project-pdf-page .pdfViewer .page {
+  margin: 0 auto 20px !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+  background: #fff !important;
+}
+
+:host ::ng-deep .project-pdf-page .pdfViewer.singlePageView {
+  display: block;
+}
+
+.border-pdf{
+    position: fixed;
+    bottom: 5px;
+    left: 55.5%;
+    transform: translateX(-50%);
+    width: 504px;
+    max-width: 100%;
+    z-index: 2;
+}
+
+.mlk-toolbar{
+  max-height: 48px !important;
+  border-width: 0 !important;
+  border-radius: 2px !important;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.24), 0 0 2px 0 rgba(0,0,0,.12) !important;
+}
+
+:host ::ng-deep .pdfViewer .page .canvasWrapper {
+  border: 1px solid #ccc;
+}
+
+:host ::ng-deep .pdfViewer .page{
+    background-clip: content-box !important;
+    background-color: #fff !important;
+    direction: ltr !important;
+    margin: 0 auto !important;
+    overflow: visible !important;
+    position: relative !important;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.toolbar-showing{
+  font-size: 14px;
+  font-weight: normal;
+  color: rgba(0,0,0,.54);
+}
+
+.toolbar-icon{
+  color: rgba(0,0,0,.54);
+}
+
+.toolbar-input{
+  border: 1px solid rgba(0,0,0,.07);
+  background-color: #fff;
+  color: inherit;
+  font-size: 14px;
+  padding: 5px;
+  height: 24px;
+  line-height: 24px;
+  text-align: right;
+  width: 33px;
+  margin-right: 4px;
+  outline-width: 1px;
+  outline-color: grey;
+}
+
+.toolbar-space{
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 14px;
+}
+
+.toolbar-percent{
+  cursor: default;
+  width: 79px;
+  height: 24px;
+  font-size: 14px;
+  border: 1px solid rgba(0,0,0,.07);
+  text-align: center;
+  line-height: 24px;
+  margin-left: 4px;
+  margin-right: 4px;
+  font-weight: normal;
+  color: rgba(0,0,0,.54);
+}

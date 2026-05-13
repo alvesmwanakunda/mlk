@@ -9,6 +9,8 @@ import { ChatService } from '../shared/services/chat.service';
 import { ContactsService } from '../shared/services/contacts.service';
 import { EntreprisesService } from '../shared/services/entreprises.service';
 import * as bootstrap from 'bootstrap';
+import { DomSanitizer } from '@angular/platform-browser';
+import { BoxService } from '../shared/services/box.service';
 
 @Component({
   selector: 'app-projet',
@@ -25,6 +27,17 @@ export class ProjetComponent implements OnInit, AfterViewInit {
   image:any;
   activeTab: string = 'nav-file'
 
+  //pdf
+  // zoom_to: number = 1.2;
+  // percent = 120;
+  page: number = 1;
+  totalPages: number = 0;
+  isLoaded: boolean = false;
+  zoom_to:number=1;
+  percent=100;
+  fit:boolean=true;
+  chemin:any;
+
   constructor(
     private projetService: ProjetsService,
     private router: Router,
@@ -32,7 +45,10 @@ export class ProjetComponent implements OnInit, AfterViewInit {
     public dialog: MatDialog,
     private chatService: ChatService,
     private contactService: ContactsService,
-    private entrepriseService: EntreprisesService
+    private entrepriseService: EntreprisesService,
+    private sanitizer: DomSanitizer,
+    private boxService:BoxService,
+
   ) {
     this.route.params.subscribe((data:any)=>{
       this.idProjet = data.id
@@ -46,6 +62,7 @@ export class ProjetComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.getProjet();
     this.getAllMessageNumber();
+    this.getPlan(this.idProjet);
   }
 
 
@@ -71,6 +88,7 @@ export class ProjetComponent implements OnInit, AfterViewInit {
   getProjet(){
     this.projetService.getProjet(this.idProjet).subscribe((res:any)=>{
         this.projet = res.message;
+
         if(res.message?.entreprise){
           this.getEntreprise(res.message?.entreprise?._id);
         }
@@ -78,6 +96,15 @@ export class ProjetComponent implements OnInit, AfterViewInit {
         if(this.projet?.contact){
           this.getResponsable(this.projet?.contact)
         }
+    },(error) => {
+      console.log("Erreur lors de la récupération des données", error);
+    })
+  }
+
+  getPlan(idProjet){
+     this.projetService.getPlanProjet(idProjet).subscribe((res:any)=>{
+        console.log("Plan=================>", res);
+        this.chemin=res?.message?.chemin;
     },(error) => {
       console.log("Erreur lors de la récupération des données", error);
     })
@@ -106,6 +133,10 @@ export class ProjetComponent implements OnInit, AfterViewInit {
       console.log("Erreur lors de la récupération des données", error);
     })
   }*/
+
+  getSafeUrl(url){
+    return  this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
 
   updateProjet(idProjet){
     this.router.navigate(['update/projet',idProjet]);
@@ -154,6 +185,60 @@ export class ProjetComponent implements OnInit, AfterViewInit {
        if(result){
        }
     })
+  }
+
+  // pdf
+  afterLoadComplete(pdfData: any) {
+    this.totalPages = pdfData.numPages;
+    this.isLoaded = true;
+  }
+
+  nextPage() {
+    if (this.page < this.totalPages) {
+      this.page++;
+    }
+  }
+
+  prevPage() {
+    if (this.page > 1) {
+      this.page--;
+    }
+  }
+
+  zoom_in() {
+    if (this.zoom_to < 2){
+      this.zoom_to = +(this.zoom_to + 0.1).toFixed(1);
+      this.percent = Math.round(this.zoom_to * 100);
+    }
+  }
+
+  zoom_out() {
+    if (this.zoom_to > 0.5){
+      this.zoom_to = +(this.zoom_to - 0.1).toFixed(1);
+      this.percent = Math.round(this.zoom_to * 100);
+    }
+  }
+
+  get_fit() {
+     this.fit=true;
+     this.zoom_to=1;
+     this.percent=100;
+  }
+
+    download(): void {
+    this.boxService.downloadFile(this.chemin);
+  }
+
+  print(){
+
+    this.boxService.downloadPDF(this.chemin).subscribe(res => {
+      const fileURL = URL.createObjectURL(res);
+      window.open(fileURL, '_blank');
+    });
+    /*let w = window.open(this.file.chemin);
+    console.log("window", w);
+    w.print();
+    w.close();*/
   }
 
 }

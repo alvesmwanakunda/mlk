@@ -13,7 +13,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import localeFr from '@angular/common/locales/fr';
-import { PvSignatureModule } from './pv-signature/pv-signature.module';
 registerLocaleData(localeFr,'fr');
 
 
@@ -31,7 +30,6 @@ registerLocaleData(localeFr,'fr');
     NgSelectModule,
     FormsModule,
     ReactiveFormsModule,
-    PvSignatureModule,
 
   ],
   providers: [{
