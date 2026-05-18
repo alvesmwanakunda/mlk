@@ -1,0 +1,50 @@
+<div class="task-plan-marker-preview" *ngIf="planSource && normalizedMarker">
+  <div class="task-plan-marker-preview-header">
+    <div>
+      <span>Plan</span>
+      <strong>{{ title || 'Tâche sur plan' }}</strong>
+    </div>
+    <em>Page {{ page }} / {{ totalPages }}</em>
+  </div>
+
+  <div class="task-plan-marker-preview-frame" #previewFrame>
+    <div
+      class="task-plan-marker-preview-zoom-layer"
+      [style.width.px]="coordinateLayerWidth || null"
+      [style.height.px]="coordinateLayerHeight || null"
+      [style.transform]="zoomLayerTransform">
+      <div class="task-plan-marker-preview-pdf-render-shell" [style.transform]="pdfRenderTransform">
+        <pdf-viewer
+          [src]="planSource"
+          [original-size]="false"
+          [fit-to-page]="false"
+          [show-all]="false"
+          [page]="page"
+          [zoom]="pdfRenderScale"
+          [zoom-scale]="'page-width'"
+          [render-text]="false"
+          (after-load-complete)="afterPlanLoad($event)"
+          (page-rendered)="afterPageRendered()"
+          class="task-plan-marker-preview-pdf">
+        </pdf-viewer>
+      </div>
+
+      <div
+        *ngIf="normalizedMarker"
+        class="task-plan-marker-preview-marker-layer">
+        <button
+          type="button"
+          class="task-plan-marker-preview-pin"
+          [class.has-label]="markerLabel"
+          [style.left.%]="normalizedMarker.xPercent"
+          [style.top.%]="normalizedMarker.yPercent"
+          [style.--preview-marker-scale]="1 / previewZoom"
+          tabindex="-1"
+          aria-hidden="true">
+          <em *ngIf="markerLabel">{{ markerLabel }}</em>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -7,12 +7,14 @@ import { DeleteTachesModule } from '../delete-taches/delete-taches.module';
 import { ImageAnnotationModule } from 'src/app/note-module/image-annotation/image-annotation.module';
 import { SubTachesModule } from '../sub-taches/sub-taches.module';
 import { ViewerStandarModule } from 'src/app/viewer-standar/viewer-standar.module';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { TaskPlanMarkerPreviewComponent } from '../task-plan-marker-preview/task-plan-marker-preview.component';
 
 
 
 
 @NgModule({
-  declarations: [UpdateTachesComponent],
+  declarations: [UpdateTachesComponent, TaskPlanMarkerPreviewComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -21,7 +23,8 @@ import { ViewerStandarModule } from 'src/app/viewer-standar/viewer-standar.modul
     DeleteTachesModule,
     ImageAnnotationModule,
     SubTachesModule,
-    ViewerStandarModule
+    ViewerStandarModule,
+    PdfViewerModule
   ]
 })
 export class UpdateTachesModule { }

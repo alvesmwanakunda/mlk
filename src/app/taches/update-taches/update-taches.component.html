@@ -14,7 +14,7 @@
             </div>
             <div class="col" align="right">
               <button  mat-raised-button color="primary" class="me-2" (click)="updateTask()"><mat-icon>edit</mat-icon> Enregistre</button>
-              <button *ngIf="user?.user?._id==tache?.user" class="me-2" mat-raised-button color="warn" (click)="openDialog()"><mat-icon>delete</mat-icon> Supprimer</button>
+              <button *ngIf="user?.user?._id==tache?.user?._id" class="me-2" mat-raised-button color="warn" (click)="openDialog()"><mat-icon>delete</mat-icon> Supprimer</button>
                <button mat-raised-button (click)="close()">
                 <mat-icon>close</mat-icon> Fermer
                </button>
@@ -57,6 +57,29 @@
                           <p class="error_field">{{champ_validation.input[0].message}}</p>
                         </div>
                       </div>
+                      <div class="row">
+                          <div class="col-4">
+                              <mat-form-field appearance="outline" class="example-full-width">
+                              <mat-label class="tache_label">Temps alloué</mat-label>
+                              <input type="time" matInput  formControlName="temps">
+                              </mat-form-field>
+                          </div>
+                          <div class="col-2">
+                            <p style="padding-top: 20px;">(0 %)</p>
+                          </div>
+
+                          <div class="col-6">
+                            <mat-form-field appearance="outline"  class="example-full-width">
+                              <mat-label class="tache_label">Statut</mat-label>
+                              <mat-select matInput  formControlName="statut">
+                                <mat-option value="A Faire">A Faire</mat-option>
+                                <mat-option value="En Cours">En Cours</mat-option>
+                                <mat-option value="Terminer">Terminer</mat-option>
+                                <mat-option value="Clôturer" *ngIf="user?.user?._id==tache.user">Clôturer</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                      </div>
                       <div>
                         <mat-form-field appearance="outline" class="example-full-width">
                           <mat-label class="tache_label">Assignés</mat-label>
@@ -91,29 +114,20 @@
                       </div>
                     </div>
                     <div class="col">
-                       <div>
-                        <div class="row">
-                          <div class="col-4">
-                              <mat-form-field appearance="outline" class="example-full-width">
-                              <mat-label class="tache_label">Temps alloué</mat-label>
-                              <input type="time" matInput  formControlName="temps">
-                              </mat-form-field>
-                          </div>
-                          <div class="col-2">
-                            <p style="padding-top: 20px;">(0 %)</p>
-                          </div>
-
-                          <div class="col-6">
-                            <mat-form-field appearance="outline"  class="example-full-width">
-                              <mat-label class="tache_label">Statut</mat-label>
-                              <mat-select matInput  formControlName="statut">
-                                <mat-option value="A Faire">A Faire</mat-option>
-                                <mat-option value="En Cours">En Cours</mat-option>
-                                <mat-option value="Terminer">Terminer</mat-option>
-                                <mat-option value="Clôturer" *ngIf="user?.user?._id==tache.user">Clôturer</mat-option>
-                              </mat-select>
-                            </mat-form-field>
-                          </div>
+                       <div *ngIf="hasTaskPlanMarker(tache)" class="task-plan-preview-slot">
+                        <app-task-plan-marker-preview
+                          *ngIf="taskPlanPreviewPlan"
+                          [plan]="taskPlanPreviewPlan"
+                          [marker]="tache?.marker"
+                          [coordinateAspectRatio]="taskPlanPreviewAspectRatio"
+                          [title]="tache?.titre">
+                        </app-task-plan-marker-preview>
+                        <div *ngIf="isLoadingTaskPlanPreview" class="task-plan-preview-state">
+                          <mat-progress-spinner mode="indeterminate" diameter="24"></mat-progress-spinner>
+                          <span>Chargement du plan...</span>
+                        </div>
+                        <div *ngIf="!isLoadingTaskPlanPreview && !taskPlanPreviewPlan" class="task-plan-preview-state">
+                          <span>Plan indisponible</span>
                         </div>
                       </div>
                       <div>

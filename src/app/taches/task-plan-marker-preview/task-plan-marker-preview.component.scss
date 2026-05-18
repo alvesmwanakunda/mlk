@@ -1,0 +1,158 @@
+:host {
+  display: block;
+}
+
+.task-plan-marker-preview {
+  margin-bottom: 18px;
+  border: 1px solid #d8e1ec;
+  border-radius: 8px;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.task-plan-marker-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5edf6;
+  color: #0f172a;
+}
+
+.task-plan-marker-preview-header div {
+  min-width: 0;
+}
+
+.task-plan-marker-preview-header span {
+  display: block;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.task-plan-marker-preview-header strong {
+  display: block;
+  max-width: 260px;
+  color: #111827;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.task-plan-marker-preview-header em {
+  flex: 0 0 auto;
+  color: #1b4f8a;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.task-plan-marker-preview-frame {
+  position: relative;
+  height: 270px;
+  overflow: hidden;
+  background-color: #f8fbff;
+  background-image:
+    linear-gradient(rgba(33, 83, 137, .12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33, 83, 137, .12) 1px, transparent 1px),
+    linear-gradient(rgba(33, 83, 137, .06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33, 83, 137, .06) 1px, transparent 1px);
+  background-size: 32px 32px, 32px 32px, 8px 8px, 8px 8px;
+}
+
+.task-plan-marker-preview-zoom-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.task-plan-marker-preview-pdf {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.task-plan-marker-preview-pdf-render-shell {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+:host ::ng-deep .task-plan-marker-preview-pdf .ng2-pdf-viewer-container {
+  overflow: visible !important;
+  background: transparent !important;
+}
+
+:host ::ng-deep .task-plan-marker-preview-pdf .pdfViewer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  height: 100%;
+}
+
+:host ::ng-deep .task-plan-marker-preview-pdf .page {
+  margin: 0 !important;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, .18);
+}
+
+.task-plan-marker-preview-marker-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.task-plan-marker-preview-pin {
+  position: absolute;
+  z-index: 1;
+  width: 25px;
+  height: 25px;
+  border: 0;
+  border-radius: 50% 50% 50% 0;
+  background: #1b4f8a;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, .28);
+  transform: translate(-50%, -100%) rotate(-45deg) scale(var(--preview-marker-scale, .52));
+  transform-origin: 50% 100%;
+  pointer-events: none;
+}
+
+.task-plan-marker-preview-pin span {
+  width: 10px;
+  height: 10px;
+  border: 4px solid rgba(255, 255, 255, .94);
+  border-radius: 50%;
+  background: #ffffff;
+  display: block;
+  margin: 6px auto;
+}
+
+.task-plan-marker-preview-pin em {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: #ffffff;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .35);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.task-plan-marker-preview-pin.has-label span {
+  display: none;
+}

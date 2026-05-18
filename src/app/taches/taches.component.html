@@ -29,7 +29,7 @@
 	      <div class="row task-board-row">
           <div class="col-3 task-list-panel">
             <div class="task-col" *ngFor="let tache of filteredTasks">
-              <mat-card class="task-card" [ngClass]="{'task-card--afaire': tache?.statut === 'A Faire','task-card--encours': tache?.statut === 'En Cours','task-card--terminer': tache?.statut === 'Terminer'}" (click)="openDialogUpdate(tache?._id)" style="cursor: pointer;">
+              <mat-card class="task-card" [ngClass]="{'task-card--afaire': tache?.statut === 'A Faire','task-card--encours': tache?.statut === 'En Cours','task-card--terminer': tache?.statut === 'Terminer'}" (click)="handleTaskCardClick(tache)" style="cursor: pointer;">
                 <mat-card-content>
                   <div class="row">
                     <div class="col">
@@ -127,7 +127,12 @@
                     (mouseup)="finishPlanAnnotation()"
                     (mouseleave)="finishPlanAnnotationOnMouseLeave()"
                     (wheel)="zoomPlanWithWheel($event)">
-                    <div class="plan-pan-content" [style.transform]="getPlanPanTransform()" [style.--plan-marker-scale]="getPlanMarkerScale()">
+                    <div
+                      class="plan-pan-content"
+                      [style.width.px]="planPageLayerWidth || null"
+                      [style.height.px]="planPageLayerHeight || null"
+                      [style.transform]="getPlanPanTransform()"
+                      [style.--plan-marker-scale]="getPlanMarkerScale()">
                     <!-- <pdf-viewer
                       [src]="plan?.chemin"
                       [original-size]="false"
@@ -424,6 +429,9 @@
                 <div class="plan-task-popover-actions">
                   <button type="button" class="plan-task-popover-icon" matTooltip="Repositionnement" (click)="startExistingTaskMarkerReposition(selectedPlanTaskMarker, $event)">
                     <i class="fa-solid fa-crosshairs"></i>
+                  </button>
+                  <button type="button" class="plan-task-popover-icon plan-task-popover-icon--danger" [disabled]="isDeletingTaskMarker" [matTooltip]="isDeletingTaskMarker ? 'Suppression...' : 'Supprimer le marker'" (click)="deleteSelectedTaskMarker($event)">
+                    <i class="fa-solid" [ngClass]="isDeletingTaskMarker ? 'fa-spinner fa-spin' : 'fa-trash-can'"></i>
                   </button>
                   <button type="button" class="plan-task-popover-open" (click)="openDialogUpdate(selectedPlanTaskMarker.task?._id); closePlanTaskMarkerDetails($event)">
                     Ouvrir

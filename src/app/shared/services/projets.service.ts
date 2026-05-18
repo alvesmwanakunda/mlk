@@ -548,6 +548,10 @@ export class ProjetsService {
     return this.udpateMakerTask(idTask, body)
   }
 
+  deleteMarkerTask(idTask){
+    return this.httpClient.delete(`${environment.BASE_API_URL}/marker/tache/${idTask}`)
+  }
+
 
 
 }

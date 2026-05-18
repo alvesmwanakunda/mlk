@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment} from 'src/environments/environment';
 import { DeleteTachesComponent } from '../delete-taches/delete-taches.component';
 import { ViewerStandarComponent } from '../../viewer-standar/viewer-standar.component';
+import { ProjetsService } from 'src/app/shared/services/projets.service';
 
 type ImageRow = {
   key: string;                // clé stable
@@ -42,6 +43,9 @@ export class UpdateTachesComponent implements OnInit {
     showImageAnnotation: Record<string, boolean> = {};
     imagesToAnnotate: Record<string, string | null> = {};
     isHoveringImage = false;
+    taskPlanPreviewPlan:any = null;
+    taskPlanPreviewAspectRatio: number | null = null;
+    isLoadingTaskPlanPreview = false;
     user:any;
 
 
@@ -54,11 +58,16 @@ export class UpdateTachesComponent implements OnInit {
        @Inject(MAT_DIALOG_DATA) public data:any,
        private authService:AuthService,
        private readonly http: HttpClient,
+       private projetService: ProjetsService,
        public dialog: MatDialog,
       private cdRef: ChangeDetectorRef
 
     ){
       this.idtache = this.data.id;
+      const injectedAspectRatio = Number(this.data?.planViewportRatio);
+      this.taskPlanPreviewAspectRatio = Number.isFinite(injectedAspectRatio) && injectedAspectRatio > 0
+        ? injectedAspectRatio
+        : null;
       this.user = JSON.parse(localStorage.getItem('user'));
       //console.log("User", this.user);
 
@@ -155,11 +164,84 @@ export class UpdateTachesComponent implements OnInit {
             description: [this.tache?.description || '']
         });
         this.initImageRowsFromTache(this.tache);
+        this.loadTaskPlanPreview(this.tache);
     },(error)=>{
         this.message="Une erreur s'est produite veuillez réessayer.";
         this.openSnackBar(this.message);
         console.log(error);
     })
+  }
+
+  hasTaskPlanMarker(tache: any) {
+    return !!this.normalizeTaskPlanMarker(tache?.marker);
+  }
+
+  private loadTaskPlanPreview(tache: any) {
+    this.taskPlanPreviewPlan = null;
+    this.isLoadingTaskPlanPreview = false;
+
+    if (!this.hasTaskPlanMarker(tache)) {
+      return;
+    }
+
+    const injectedPlan = this.data?.plan;
+
+    if (injectedPlan?.chemin) {
+      this.taskPlanPreviewPlan = injectedPlan;
+      return;
+    }
+
+    if (tache?.plan && typeof tache.plan === 'object' && tache.plan?.chemin) {
+      this.taskPlanPreviewPlan = tache.plan;
+      return;
+    }
+
+    const projectId = typeof tache?.projet === 'object'
+      ? tache.projet?._id
+      : tache?.projet;
+
+    if (!projectId) {
+      return;
+    }
+
+    this.isLoadingTaskPlanPreview = true;
+    this.projetService.getPlanProjet(projectId).subscribe((res:any) => {
+      this.taskPlanPreviewPlan = res?.message || null;
+      this.isLoadingTaskPlanPreview = false;
+    }, (error) => {
+      this.isLoadingTaskPlanPreview = false;
+      console.log("Erreur lors de la récupération du plan", error);
+    });
+  }
+
+  private normalizeTaskPlanMarker(marker: any) {
+    let source = marker;
+
+    if (typeof source === 'string') {
+      try {
+        source = JSON.parse(source);
+      } catch {
+        return null;
+      }
+    }
+
+    if (!source || typeof source !== 'object') {
+      return null;
+    }
+
+    const page = Number(source.page ?? source.pageNumber ?? 1);
+    const xPercent = Number(source.xPercent ?? source.x ?? source.left);
+    const yPercent = Number(source.yPercent ?? source.y ?? source.top);
+
+    if (!Number.isFinite(page) || !Number.isFinite(xPercent) || !Number.isFinite(yPercent)) {
+      return null;
+    }
+
+    return {
+      page,
+      xPercent,
+      yPercent
+    };
   }
 
   private initImageRowsFromTache(tache: any) {

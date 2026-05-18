@@ -8,6 +8,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { ProjetsService } from '../shared/services/projets.service';
 import { firstValueFrom } from 'rxjs';
 import { PDFDocument, PDFPage, PDFFont, rgb, StandardFonts } from 'pdf-lib';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 type PlanTool = 'select' | 'pin' | 'pen' | 'highlighter' | 'cloud' | 'rectangle' | 'circle' | 'polygon' | 'arrow' | 'line' | 'text' | 'measure';
 type PlanMenu = 'draw' | 'shape' | 'styleColor' | 'lineWidth' | 'textSize' | null;
@@ -112,6 +113,9 @@ export class TachesComponent implements OnInit, AfterViewInit {
   planFitMode: PlanFitMode = 'content';
   planPanX = 0;
   planPanY = 0;
+  planPageLayerWidth = 0;
+  planPageLayerHeight = 0;
+  planPageAspectRatio = 0;
   isPanningPlan = false;
   private planPanStartX = 0;
   private planPanStartY = 0;
@@ -127,6 +131,7 @@ export class TachesComponent implements OnInit, AfterViewInit {
   selectedPlanTaskMarker: PlanTaskMarkerView | null = null;
   repositioningTaskMarkerTask: any | null = null;
   isSavingTaskMarker = false;
+  isDeletingTaskMarker = false;
   planTool: PlanTool = 'select';
   activePlanMenu: PlanMenu = null;
   showPlanInfo = false;
@@ -158,6 +163,7 @@ export class TachesComponent implements OnInit, AfterViewInit {
   private planContentBoundsByPage = new Map<number, PlanContentBounds>();
   private pendingPlanContentFit = false;
   private centerPlanContentAfterRender = false;
+  private pendingTaskMarkerFocus: PlanTaskMarker | null = null;
   private readonly planMinZoom = 0.4;
   private readonly planMaxZoom = 5;
   private readonly minAnnotationSize = 8;
@@ -169,7 +175,8 @@ export class TachesComponent implements OnInit, AfterViewInit {
       private tacheService: TachesService,
       public dialog: MatDialog,
       public route:ActivatedRoute,
-      private projetService: ProjetsService
+      private projetService: ProjetsService,
+      private _snackBar: MatSnackBar
 
     ){
       this.route.params.subscribe((data:any)=>{
@@ -190,11 +197,20 @@ export class TachesComponent implements OnInit, AfterViewInit {
     @HostListener('window:resize')
     onWindowResize() {
       this.updatePlanViewerHeight();
+      this.queuePlanLayerSync();
     }
 
     @HostListener('document:shown.bs.tab')
     onBootstrapTabShown() {
-      setTimeout(() => this.updatePlanViewerHeight());
+      setTimeout(() => {
+        this.updatePlanViewerHeight();
+        this.syncPlanLayerToRenderedPage();
+      });
+    }
+
+    @HostListener('document:fullscreenchange')
+    onFullscreenChange() {
+      this.queuePlanLayerSync();
     }
 
     @HostListener('document:mousemove', ['$event'])
@@ -252,6 +268,7 @@ export class TachesComponent implements OnInit, AfterViewInit {
           this.plan=res?.message;
           this.planPage = 1;
           this.planLoaded = false;
+          this.resetPlanLayerSize(true);
           this.planContentBoundsByPage.clear();
           this.resetPlanPan();
           this.loadPlanAnnotations();
@@ -288,7 +305,13 @@ export class TachesComponent implements OnInit, AfterViewInit {
 
     afterPlanPageRendered() {
       window.requestAnimationFrame(() => {
+        this.syncPlanLayerToRenderedPage();
         this.capturePlanContentBounds();
+
+        if (this.pendingTaskMarkerFocus && this.pendingTaskMarkerFocus.page === this.planPage) {
+          this.centerPlanOnTaskMarker(this.pendingTaskMarkerFocus);
+          this.pendingTaskMarkerFocus = null;
+        }
 
         if (this.centerPlanContentAfterRender) {
           this.centerPlanOnContent();
@@ -724,6 +747,17 @@ export class TachesComponent implements OnInit, AfterViewInit {
       this.selectedPlanTaskMarker = null;
     }
 
+    handleTaskCardClick(tache: any) {
+      const marker = this.getTaskPlanMarker(tache);
+
+      if (!marker || !this.plan) {
+        this.openDialogUpdate(tache?._id);
+        return;
+      }
+
+      this.focusTaskMarkerOnPlan(tache, marker);
+    }
+
     startExistingTaskMarkerReposition(marker: PlanTaskMarkerView, event?: Event) {
       event?.preventDefault();
       event?.stopPropagation();
@@ -742,6 +776,49 @@ export class TachesComponent implements OnInit, AfterViewInit {
       this.activePlanMenu = null;
       this.planTool = 'select';
       this.focusPlanForTaskMarkerPlacement();
+    }
+
+    deleteSelectedTaskMarker(event?: Event) {
+      event?.preventDefault();
+      event?.stopPropagation();
+
+      const task = this.selectedPlanTaskMarker?.task;
+
+      if (!task?._id || this.isDeletingTaskMarker) {
+        return;
+      }
+
+      const snackRef = this._snackBar.open('Supprimer ce marker du plan ?', 'Supprimer', {
+        duration: 6000
+      });
+
+      snackRef.onAction().subscribe(() => {
+        this.deleteTaskMarker(task);
+      });
+    }
+
+    private async deleteTaskMarker(task: any) {
+      if (!task?._id || this.isDeletingTaskMarker) {
+        return;
+      }
+
+      this.isDeletingTaskMarker = true;
+
+      try {
+        await firstValueFrom(this.projetService.deleteMarkerTask(task._id));
+        this.applyTaskMarkerRemoval(task._id);
+        this.selectedPlanTaskMarker = null;
+        this._snackBar.open('Marker supprimé du plan.', 'Fermer', {
+          duration: 3000
+        });
+      } catch (error) {
+        console.error("Erreur lors de la suppression du marker", error);
+        this._snackBar.open("Le marker n'a pas pu être supprimé. Veuillez réessayer.", 'Fermer', {
+          duration: 5000
+        });
+      } finally {
+        this.isDeletingTaskMarker = false;
+      }
     }
 
     onPdfClick(event: MouseEvent, pageNumber: number): void {
@@ -996,6 +1073,46 @@ export class TachesComponent implements OnInit, AfterViewInit {
       setTimeout(() => this.centerPlanOnContent());
     }
 
+    private focusTaskMarkerOnPlan(task: any, marker: PlanTaskMarker) {
+      const targetPage = this.planTotalPages
+        ? this.clamp(marker.page, 1, this.planTotalPages)
+        : Math.max(1, marker.page);
+      const targetMarker = { ...marker, page: targetPage };
+
+      this.planPage = targetPage;
+      this.planFitMode = 'custom';
+      this.cancelPendingPlanContentFit();
+      this.pendingMarker = null;
+      this.isCreatingPlanTaskMarker = false;
+      this.isDraggingPendingMarker = false;
+      this.repositioningTaskMarkerTask = null;
+      this.selectedAnnotationId = null;
+      this.drawingAnnotationId = null;
+      this.editingTextAnnotationId = null;
+      this.activePlanMenu = null;
+      this.planTool = 'select';
+      this.planZoom = this.clampPlanZoom(Math.max(this.planZoom, 2));
+      this.selectedPlanTaskMarker = { ...targetMarker, task };
+      this.pendingTaskMarkerFocus = targetMarker;
+      setTimeout(() => this.centerPlanOnTaskMarker(targetMarker), 120);
+    }
+
+    private centerPlanOnTaskMarker(marker: PlanTaskMarker) {
+      const layer = this.planPdfLayer?.nativeElement;
+      const coordinateSize = this.getPlanCoordinateLayerSize();
+
+      if (!layer || !coordinateSize.width || !coordinateSize.height) {
+        return;
+      }
+
+      const layerRect = layer.getBoundingClientRect();
+      const markerX = (marker.xPercent / 100) * coordinateSize.width * this.planZoom;
+      const markerY = (marker.yPercent / 100) * coordinateSize.height * this.planZoom;
+
+      this.planPanX = Math.round(layerRect.width / 2 - markerX);
+      this.planPanY = Math.round(layerRect.height / 2 - markerY);
+    }
+
     private updatePendingTaskMarker(event: MouseEvent) {
       if (!this.pendingMarker) {
         return;
@@ -1015,10 +1132,11 @@ export class TachesComponent implements OnInit, AfterViewInit {
 
       const workspaceRect = workspace.getBoundingClientRect();
       const layerRect = layer.getBoundingClientRect();
+      const coordinateSize = this.getPlanCoordinateLayerSize();
 
       return {
-        x: layerRect.left - workspaceRect.left + this.planPanX + (marker.xPercent / 100) * layerRect.width * this.planZoom,
-        y: layerRect.top - workspaceRect.top + this.planPanY + (marker.yPercent / 100) * layerRect.height * this.planZoom
+        x: layerRect.left - workspaceRect.left + this.planPanX + (marker.xPercent / 100) * coordinateSize.width * this.planZoom,
+        y: layerRect.top - workspaceRect.top + this.planPanY + (marker.yPercent / 100) * coordinateSize.height * this.planZoom
       };
     }
 
@@ -1064,6 +1182,21 @@ export class TachesComponent implements OnInit, AfterViewInit {
             xPercent: marker.xPercent,
             yPercent: marker.yPercent
           }
+        };
+      });
+
+      this.applyFilterStatus();
+    }
+
+    private applyTaskMarkerRemoval(taskId: string) {
+      this.task = (this.task || []).map((task) => {
+        if (task?._id !== taskId) {
+          return task;
+        }
+
+        return {
+          ...task,
+          marker: null
         };
       });
 
@@ -2106,6 +2239,90 @@ export class TachesComponent implements OnInit, AfterViewInit {
       this.isPanningPlan = false;
     }
 
+    private resetPlanLayerSize(resetAspect = false) {
+      this.planPageLayerWidth = 0;
+      this.planPageLayerHeight = 0;
+
+      if (resetAspect) {
+        this.planPageAspectRatio = 0;
+      }
+    }
+
+    private queuePlanLayerSync() {
+      this.resetPlanLayerSize();
+      window.requestAnimationFrame(() => {
+        this.updatePlanViewerHeight();
+        this.fitPlanLayerToViewerWidth();
+        setTimeout(() => this.syncPlanLayerToRenderedPage(), 120);
+        setTimeout(() => this.syncPlanLayerToRenderedPage(), 320);
+      });
+    }
+
+    private syncPlanLayerToRenderedPage() {
+      const pageElement = this.getRenderedPlanPageElement();
+
+      if (!pageElement) {
+        return;
+      }
+
+      const pageRect = pageElement.getBoundingClientRect();
+      const zoom = Math.max(this.planZoom, 0.01);
+      const width = pageRect.width / zoom;
+      const height = pageRect.height / zoom;
+
+      if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
+        return;
+      }
+
+      if (
+        this.planPageLayerWidth &&
+        this.planPageAspectRatio &&
+        Math.abs(width - this.planPageLayerWidth) / this.planPageLayerWidth > 0.08
+      ) {
+        this.fitPlanLayerToViewerWidth();
+        return;
+      }
+
+      this.planPageAspectRatio = width / height;
+      const nextWidth = Math.round(width);
+      const nextHeight = Math.round(height);
+
+      if (Math.abs(nextWidth - this.planPageLayerWidth) > 1) {
+        this.planPageLayerWidth = nextWidth;
+      }
+
+      if (Math.abs(nextHeight - this.planPageLayerHeight) > 1) {
+        this.planPageLayerHeight = nextHeight;
+      }
+    }
+
+    private fitPlanLayerToViewerWidth() {
+      const layer = this.planPdfLayer?.nativeElement;
+
+      if (!layer?.clientWidth || !this.planPageAspectRatio) {
+        return;
+      }
+
+      const nextWidth = Math.round(layer.clientWidth);
+      const nextHeight = Math.round(nextWidth / this.planPageAspectRatio);
+
+      if (!Number.isFinite(nextHeight) || nextHeight <= 0) {
+        return;
+      }
+
+      this.planPageLayerWidth = nextWidth;
+      this.planPageLayerHeight = nextHeight;
+    }
+
+    private getPlanCoordinateLayerSize() {
+      const layer = this.planPdfLayer?.nativeElement;
+
+      return {
+        width: this.planPageLayerWidth || layer?.clientWidth || 0,
+        height: this.planPageLayerHeight || layer?.clientHeight || 0
+      };
+    }
+
     private requestPlanContentFit() {
       this.planFitMode = 'content';
       this.pendingPlanContentFit = true;
@@ -2464,12 +2681,26 @@ export class TachesComponent implements OnInit, AfterViewInit {
           height: '100vh',
           maxWidth: '100vw',
           panelClass: 'full-screen-dialog',
-          data:{id:idTache}});
+          data:{
+            id:idTache,
+            plan: this.plan || null,
+            planViewportRatio: this.getPlanViewportRatio()
+          }});
         dialogRef.afterClosed().subscribe((result:any)=>{
            if(result){
             this.getAllTaches();
            }
         })
+    }
+
+    private getPlanViewportRatio() {
+      const coordinateSize = this.getPlanCoordinateLayerSize();
+
+      if (!coordinateSize.width || !coordinateSize.height) {
+        return null;
+      }
+
+      return +(coordinateSize.width / coordinateSize.height).toFixed(4);
     }
 
   getColor(statut: string): string {

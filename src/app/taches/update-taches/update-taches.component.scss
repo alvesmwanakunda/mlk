@@ -78,6 +78,25 @@
   display: none;
 }
 
+.task-plan-preview-slot {
+  margin-bottom: 18px;
+}
+
+.task-plan-preview-state {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 72px;
+  margin-bottom: 18px;
+  padding: 12px;
+  border: 1px solid #d8e1ec;
+  border-radius: 8px;
+  background: #f8fbff;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 600;
+}
+
 .annotated-image-top-preview {
   margin-bottom: 12px;
 
