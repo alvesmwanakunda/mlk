@@ -18,6 +18,45 @@
   font-weight: 600;
 }
 
+.task-plan-create-panel {
+  margin: 0 0 18px;
+  border: 1px solid #d8e1ec;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.task-plan-create-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #e5edf6;
+}
+
+.task-plan-create-header span {
+  display: block;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.task-plan-create-header strong {
+  display: block;
+  color: #111827;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.task-plan-create-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
 // Style pour l'image annotée en haut
 .annotated-image-top-preview {
   margin-bottom: 12px;

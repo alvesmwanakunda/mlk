@@ -16,11 +16,11 @@
         <input (keyup)="applyFilter($event)" type="text" class="form-control input-search task-search-input" id="exampleFormControlInput1" placeholder="Rechercher par titre...">
       </div>
       <div class="task-create-actions">
-        <button  mat-raised-button type="button" color="primary" [class.is-active]="isCreatingPlanTaskMarker" [disabled]="!plan" (click)="startPlanTaskMarkerCreation()">
+        <!-- <button  mat-raised-button type="button" color="primary" [class.is-active]="taskPlanComponent?.isCreatingPlanTaskMarker" [disabled]="!plan" (click)="taskPlanComponent?.startPlanTaskMarkerCreation()">
           <i class="fa-solid fa-location-dot"></i> Tâche sur plan
-        </button>
+        </button> -->
         <button  mat-raised-button type="button" color="primary" (click)="openDialog()">
-          <i class="fa-solid fa-plus"></i> Tâche simple
+          <i class="fa-solid fa-plus"></i> Nouvelle tâche
         </button>
       </div>
     </div>
@@ -85,7 +85,18 @@
             </div>
           </div><!--col-->
           <div class="col-9 task-plan-panel">
-              <div *ngIf="plan" class="plan-workspace" #planViewerShell>
+              <app-task-plan
+                #taskPlan
+                *ngIf="plan"
+                [plan]="plan"
+                [projectId]="idProjet"
+                [tasks]="task"
+                [height]="planViewerHeight"
+                (createTaskMarker)="openDialog($event)"
+                (openTask)="openDialogUpdate($event?._id)"
+                (taskMarkersChanged)="getAllTaches()">
+              </app-task-plan>
+              <div *ngIf="false && plan" class="plan-workspace" #planViewerShell>
               <div class="plan-top-toolbar" (click)="$event.stopPropagation()">
                 <button type="button" class="plan-icon-button" matTooltip="Zoom avant" (click)="zoomInPlan()">
                   <i class="fa-solid fa-plus"></i>

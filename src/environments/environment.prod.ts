@@ -7,6 +7,7 @@ export const environment = {
 
   GOOGLE_CLIENT_ID:"83158305506-dktf4edtq88gmcb7jlfh7edkaq5lpehs.apps.googleusercontent.com",
   LINKEDIN_CLIENT_ID: '78vu4zun0olr3q',
+  GOOGLE_PLACE_ID:"AIzaSyBlfD5KS4zHBNnEuUvNoj1MeOZW6vZQDqg",
 
 
 };

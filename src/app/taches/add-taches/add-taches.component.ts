@@ -6,13 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TachesComponent } from '../taches.component';
 import { AuthService } from '../../shared/services/auth.service';
 import { ImageAnnotationComponent } from 'src/app/note-module/image-annotation/image-annotation.component';
-
-interface TaskPlanMarker {
-  page: number;
-  xPercent: number;
-  yPercent: number;
-}
-
+import { TaskPlanMarker } from '../task-plan/task-plan.component';
 
 @Component({
   selector: 'app-add-taches',
@@ -26,7 +20,9 @@ export class AddTachesComponent implements OnInit {
   idProjet:any;
   contacts:any
   plan:any;
+  planId:any;
   planMarker: TaskPlanMarker | null = null;
+  autoStartPlanMarker = false;
 
   // imageFile: File | null = null;
   // showImageAnnotation = false;
@@ -73,7 +69,9 @@ export class AddTachesComponent implements OnInit {
   ){
     this.idProjet = this.data.id;
     this.plan = this.data?.plan;
+    this.planId = this.getPlanId(this.plan);
     this.planMarker = this.normalizePlanMarker(this.data?.marker);
+    this.autoStartPlanMarker = !!this.data?.autoStartPlanMarker && !this.planMarker;
     console.log("projet", this.idProjet);
     console.log("projet", this.data.id);
   }
@@ -89,9 +87,10 @@ export class AddTachesComponent implements OnInit {
 
   ngOnInit() {
     this.getAllEmployes();
+    const today = new Date();
      this.taskFormGroup=this._formBuilder.group({
       titre:['',Validators.required],
-      date_debut:['',null],
+      date_debut:[today,null],
       date_fin:['',null],
       description:['',null],
       assignes:[[],null]
@@ -391,8 +390,8 @@ export class AddTachesComponent implements OnInit {
       fd.append('image', this.imageFile, this.imageFile.name);
     }
 
-    if (this.planMarker) {
-      fd.append('plan', this.plan);
+    if (this.planMarker && this.planId) {
+      fd.append('plan', this.planId);
       fd.append('marker', JSON.stringify({
         page: this.planMarker.page,
         xPercent: this.planMarker.xPercent,
@@ -433,6 +432,14 @@ export class AddTachesComponent implements OnInit {
       })
   }
 
+  onPlanMarkerSelected(marker: TaskPlanMarker | null) {
+    this.planMarker = this.normalizePlanMarker(marker);
+  }
+
+  clearPlanMarker() {
+    this.planMarker = null;
+  }
+
   private normalizePlanMarker(marker: any): TaskPlanMarker | null {
     if (!marker || typeof marker !== 'object') {
       return null;
@@ -455,6 +462,18 @@ export class AddTachesComponent implements OnInit {
 
   private clamp(value: number, min: number, max: number) {
     return Math.max(min, Math.min(max, value));
+  }
+
+  private getPlanId(plan: any) {
+    if (!plan) {
+      return null;
+    }
+
+    if (typeof plan === 'string') {
+      return plan;
+    }
+
+    return plan?._id || plan?.id || null;
   }
 
 
