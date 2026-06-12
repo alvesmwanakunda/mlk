@@ -19,8 +19,11 @@
         <!-- <button  mat-raised-button type="button" color="primary" [class.is-active]="taskPlanComponent?.isCreatingPlanTaskMarker" [disabled]="!plan" (click)="taskPlanComponent?.startPlanTaskMarkerCreation()">
           <i class="fa-solid fa-location-dot"></i> Tâche sur plan
         </button> -->
+         <button  mat-raised-button type="button" color="primary" (click)="openDialogVoice()">
+           <i class="fa-solid fa-microphone"></i> Enregistrement vocal
+        </button>
         <button  mat-raised-button type="button" color="primary" (click)="openDialog()">
-          <i class="fa-solid fa-plus"></i> Nouvelle tâche
+          <i class="fa-solid fa-plus"></i> Enregistrement d'une tâche
         </button>
       </div>
     </div>

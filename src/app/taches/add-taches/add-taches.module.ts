@@ -5,6 +5,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { AddTachesComponent } from './add-taches.component';
 import { ImageAnnotationModule } from 'src/app/note-module/image-annotation/image-annotation.module';
 import { TaskPlanModule } from '../task-plan/task-plan.module';
+import { VoiceTaskModule } from '../voice-task/voice-task.module';
 
 
 
@@ -16,7 +17,7 @@ import { TaskPlanModule } from '../task-plan/task-plan.module';
     ReactiveFormsModule,
     SharedModule,
     ImageAnnotationModule,
-    TaskPlanModule
+    TaskPlanModule,
   ]
 })
 export class AddTachesModule { }

@@ -1,0 +1,119 @@
+<div class="container-fluid">
+    <div class="row justify-content-md-center">
+      <div class="col-lg-11 col-md-11 col-md-auto">
+
+        <div class="voice-task-toolbar" [class.recording]="isRecording" [class.loading]="isLoading">
+          <div class="voice-status" *ngIf="isRecording || isLoading">
+            <div class="voice-recording-indicator" *ngIf="isRecording">
+              <span class="voice-wave"></span>
+              <span class="voice-wave"></span>
+              <span class="voice-wave"></span>
+              <i class="fa-solid fa-microphone"></i>
+            </div>
+
+            <div class="voice-loading-indicator" *ngIf="isLoading">
+              <i class="fa-solid fa-spinner"></i>
+            </div>
+
+            <div class="voice-status-text">
+              <strong>{{ isRecording ? 'Enregistrement en cours' : 'Analyse de l’audio' }}</strong>
+              <span>{{ isRecording ? recordingDuration : 'Extraction des informations...' }}</span>
+            </div>
+          </div>
+
+          <div class="voice-status idle" *ngIf="!isRecording && !isLoading">
+            <div class="voice-idle-icon">
+              <i class="fa-solid fa-microphone-lines"></i>
+            </div>
+            <div class="voice-status-text">
+              <strong>Création vocale</strong>
+              <span>Dictez la tâche à créer</span>
+            </div>
+          </div>
+
+          <div class="voice-actions">
+            <button
+              type="button"
+              class="voice-action-btn voice-start-btn"
+              (click)="startRecording()"
+              [disabled]="isRecording || isLoading"
+              matTooltip="Démarrer l’enregistrement">
+              <i class="fa-solid fa-microphone"></i>
+              <span>Démarrer</span>
+            </button>
+
+            <button
+              type="button"
+              class="voice-action-btn voice-stop-btn"
+              (click)="stopRecording()"
+              [disabled]="!isRecording || isLoading"
+              matTooltip="Arrêter l’enregistrement">
+              <i class="fa-solid fa-stop"></i>
+              <span>Arrêter</span>
+            </button>
+          </div>
+        </div>
+
+
+        <div *ngIf="draft">
+
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-label class="tache_label">Titre de la tâche</mat-label>
+                <input matInput [(ngModel)]="draft.titre">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-label class="tache_label">Date début</mat-label>
+                <input type="date" matInput [(ngModel)]="draft.date_debut">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-label class="tache_label">Date fin</mat-label>
+                <input type="date" matInput [(ngModel)]="draft.date_fin">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-label class="tache_label">Description</mat-label>
+                  <textarea matInput [(ngModel)]="draft.description"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div *ngIf="resolvedAssignes?.length" style="margin-bottom: 12px;">
+            Assignés détectés :
+            <span *ngFor="let user of resolvedAssignes">
+              {{ user.prenom }} {{ user.nom }}
+            </span>
+          </div>
+
+          <div *ngIf="unresolvedAssignes?.length" style="margin-bottom: 12px;">
+            Assignés non reconnus :
+            <span *ngFor="let user of unresolvedAssignes">
+              {{ user.input }}
+            </span>
+          </div>
+
+          <div class="row" style="margin-bottom: 20px;">
+            <div class="col">
+                <button mat-button cdkFocusInitial style=" background: #29628b !important;color:#fff;margin-right: 5px"(click)="confirmCreateTask()">Enregistrer</button>
+                <button mat-button mat-dialog-close style=" background: #8a0423 !important;color:#fff">Fermer</button>
+            </div>
+          </div>
+
+          <!-- <button type="button" (click)="confirmCreateTask()">
+            Créer la tâche
+          </button> -->
+        </div>
+      </div>
+    </div>
+</div>
+

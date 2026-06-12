@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment} from 'src/environments/environment';
 import { Observable } from 'rxjs';
+import { VoiceTaskDraft, VoiceTaskResponse } from '../interfaces/voiceTask.model';
 
 @Injectable({
   providedIn: 'root'
@@ -87,13 +88,35 @@ export class TachesService {
     return this.httpClient.get(`${environment.BASE_API_URL}/sous/taches/${id}`)
   }
 
-   public getAllSubTask(idTache){
+  public getAllSubTask(idTache){
     return this.httpClient.get(`${environment.BASE_API_URL}/sous/tache/${idTache}`)
   }
 
-   public getHistoriqueTask(idTache){
+  public getHistoriqueTask(idTache){
     return this.httpClient.get(`${environment.BASE_API_URL}/historiques/tache/${idTache}`)
   }
+
+  extractFromAudio(projectId: string, audioBlob: Blob) {
+    const formData = new FormData();
+    formData.append('audio', audioBlob, 'tache-audio.webm');
+
+    return this.httpClient.post<VoiceTaskResponse>(
+      `${environment.BASE_API_URL}/taches/voice/${projectId}`,
+      formData
+    );
+  }
+
+  createTaskAudio(projectId: string, draft: VoiceTaskDraft) {
+    return this.httpClient.post(`${environment.BASE_API_URL}/taches/${projectId}`, {
+      titre: draft.titre,
+      assignes: draft.assignes,
+      date_debut: draft.date_debut,
+      date_fin: draft.date_fin,
+      description: draft.description
+    });
+  }
+
+
 
 
 }
