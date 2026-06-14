@@ -1,0 +1,36 @@
+.file-input {
+  display: none;
+}
+
+.plan-sharepoint-upload {
+  align-items: center;
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 16px 12px;
+  text-align: center;
+}
+
+.plan-sharepoint-upload-title {
+  color: #333;
+  font-size: 12px;
+  margin: 8px 0 0;
+}
+
+.plan-sharepoint-upload-progress {
+  color: #0829cf;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.plan-sharepoint-upload-file {
+  color: #666;
+  font-size: 11px;
+  margin: 0;
+  word-break: break-word;
+}

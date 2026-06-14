@@ -1,0 +1,22 @@
+<mat-dialog-content class="mat-typography">
+  <div class="text-center" style="padding-top: 25px;"><p class="title-projet-page">Nouveau dossier plan</p></div>
+  <div class="row"><div class="col"><hr class="entreprise"></div></div>
+  <form [formGroup]="boxFormGroup">
+    <div style="margin-bottom: 8px;">
+      <label class="label-entreprise">Dossier</label>
+      <input type="text" formControlName="nom" class="form-control input-entreprise" [disabled]="isLoading">
+    </div>
+  </form>
+
+  <div class="plan-dialog-loading" *ngIf="isLoading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Création du dossier sur SharePoint...</p>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button mat-button mat-dialog-close style="margin-right: 10px;" [disabled]="isLoading">Fermer</button>
+  <button mat-button cdkFocusInitial style="background: #0829cf !important;color:#fff" (click)="addFolder()" [disabled]="isLoading || boxFormGroup.invalid">
+    <span *ngIf="!isLoading">Valider</span>
+    <span *ngIf="isLoading">En cours...</span>
+  </button>
+</mat-dialog-actions>

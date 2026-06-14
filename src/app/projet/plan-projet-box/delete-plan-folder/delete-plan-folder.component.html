@@ -1,0 +1,18 @@
+<mat-dialog-content class="mat-typography">
+  <div class="text-center" style="padding-top: 30px;">
+    <p>Êtes-vous sûr de vouloir supprimer ce dossier ?</p>
+    <p style="font-size: 12px;color: #666;">Le contenu sera déplacé vers la corbeille SharePoint.</p>
+  </div>
+
+  <div class="plan-dialog-loading" *ngIf="isLoading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Suppression en cours...</p>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button mat-button mat-dialog-close [disabled]="isLoading">Fermer</button>
+  <button mat-button (click)="deleteFolder()" cdkFocusInitial style="background: #c71e56 !important;color:#fff" [disabled]="isLoading">
+    <span *ngIf="!isLoading">Supprimer</span>
+    <span *ngIf="isLoading">En cours...</span>
+  </button>
+</mat-dialog-actions>

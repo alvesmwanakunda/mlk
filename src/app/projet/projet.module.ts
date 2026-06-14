@@ -17,7 +17,7 @@ import { ModuleProjetModule } from './module-projet/module-projet.module';
 import { PlanningProjetModule } from './planning-projet/planning-projet.module';
 import { TachesModule } from '../taches/taches.module';
 import { PvReceptionModule } from '../pv-reception/pv-reception.module';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { PlanProjetBoxModule } from './plan-projet-box/plan-projet-box.module';
 
 
 
@@ -40,7 +40,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     PlanningProjetModule,
     TachesModule,
     PvReceptionModule,
-    PdfViewerModule
+    PlanProjetBoxModule
   ],
   providers:[ProjetsService]
 })

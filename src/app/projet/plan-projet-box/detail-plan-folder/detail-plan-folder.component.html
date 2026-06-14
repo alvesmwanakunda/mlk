@@ -1,0 +1,97 @@
+<div class="container">
+  <div class="content-top-child">
+    <div class="row" style="margin-bottom: 30px;">
+      <div class="col-4">
+        <input
+          type="text"
+          (keyup)="applyFilter($event)"
+          class="form-control input-search"
+          placeholder="Rechercher par nom de dossier ou fichier plan">
+      </div>
+
+      <div class="col-8" align="right" *ngIf="user?.user?.role!='user'">
+        <button type="button" class="btn btn-piece" style="margin-right: 10px;" (click)="openDialogDossier()">
+          <i class="fa-solid fa-plus"></i> Nouveau dossier
+        </button>
+        <app-plan-projet-upload [idProjet]="idProjet" [idFolder]="idFolder"></app-plan-projet-upload>
+      </div>
+    </div>
+
+    <div class="breadcrumbs" style="margin-bottom: 30px;">
+      <nav role="navigation" class="breadcrumbs-container">
+        <div class="breadcrumbs-item">
+          <a class="breadcrumbs-item-anchor" (click)="closeBox()">Plans</a>
+          <mat-icon class="mat-icon breadcrumbs-item-chevron material-icons">chevron_right</mat-icon>
+        </div>
+        <div
+          *ngFor="let b of breadcrumbs; let i = index"
+          [ngClass]="b?.current ? 'breadcrumbs-item adf-active' : 'breadcrumbs-item'">
+          <a (click)="removeFoldersAndSetCurrent(i, b?.id)" class="breadcrumbs-item-anchor">{{b?.name}}</a>
+          <mat-icon class="mat-icon breadcrumbs-item-chevron material-icons" *ngIf="b?.current==false">chevron_right</mat-icon>
+        </div>
+      </nav>
+    </div>
+
+    <table mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef class="box-header">Nom</th>
+        <td mat-cell *matCellDef="let element" style="cursor: pointer;font-size: 10px;" (click)="openItem(element)">
+          <p class="box-title" matTooltip="{{element?.nom}}">
+            <img src="assets/images/dossier.png" *ngIf="!element.extension" style="margin-right: 10px;margin-top: -4px;">
+            <img src="assets/images/pdf.png" *ngIf="element.extension=='pdf'" style="margin-right: 10px;margin-top: -4px;">
+            <img src="assets/images/doc.png" *ngIf="element.extension=='docx'" style="margin-right: 10px;margin-top: -4px;">
+            <img src="assets/images/xls.png" *ngIf="element.extension=='xlsx' || element.extension=='xls'" style="margin-right: 10px;margin-top: -4px;">
+            <img src="assets/images/pptx.png" *ngIf="element.extension=='pptx'" style="margin-right: 10px;margin-top: -4px;">
+            <img [src]="element.chemin" *ngIf="element.extension=='png' || element.extension=='jpeg' || element.extension=='jpg' || element.extension=='gif'" style="margin-right: 10px;margin-top: -4px;width: 24px;height: 24px;">
+            <span>{{element?.nom}}</span>
+          </p>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="size">
+        <th mat-header-cell *matHeaderCellDef class="box-header">Taille</th>
+        <td mat-cell *matCellDef="let element" style="font-size: 10px;">
+          <span *ngIf="element.size">{{element?.size|fileSizeConvert}}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="modified">
+        <th mat-header-cell *matHeaderCellDef class="box-header">Modifié</th>
+        <td mat-cell *matCellDef="let element" style="font-size: 10px;">{{element?.dateLastUpdate|dataAsAgo}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="modifiedby">
+        <th mat-header-cell *matHeaderCellDef class="box-header">Modifié par</th>
+        <td mat-cell *matCellDef="let element" style="font-size: 10px;">{{element?.creator?.nom}} {{element?.creator?.prenom}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element" (click)="stopRowClick($event)">
+          <button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="user?.user?.role!='user'">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item *ngIf="!element.extension" (click)="openDialogRenameFolder(element._id, element.nom)">
+              <mat-icon style="font-size: 18px;">drive_file_rename_outline</mat-icon>
+              <span style="font-size: 14px;">Renommer</span>
+            </button>
+            <button mat-menu-item *ngIf="!element.extension" (click)="openDialogDeleteFolder(element._id)">
+              <mat-icon style="font-size: 18px;">delete</mat-icon>
+              <span style="font-size: 14px;">Supprimer</span>
+            </button>
+            <button mat-menu-item *ngIf="element.extension" (click)="openDialogDeleteFile(element._id)">
+              <mat-icon style="font-size: 18px;">delete</mat-icon>
+              <span style="font-size: 14px;">Supprimer</span>
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>

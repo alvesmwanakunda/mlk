@@ -51,65 +51,7 @@
               <app-pv-reception></app-pv-reception>
             </div>
             <div class="tab-pane fade" id="nav-plan" role="tabpanel" aria-labelledby="nav-plan-tb" tabindex="0">
-              <div class="project-pdf-page">
-                    <pdf-viewer
-                    [src]="chemin"
-                    [original-size]="false"
-                    [fit-to-page]="false"
-                    [render-text]="true"
-                    [rotation]="0"
-                    [show-all]="false"
-                    [page]="page"
-                    [zoom]="zoom_to"
-                    [zoom-scale]="'page-width'"
-                    (after-load-complete)="afterLoadComplete($event)"
-                    class="pdf-viewer"
-                    ></pdf-viewer>
-              </div>
-              <!-- <div class="project-pdf-page">
-                  <pdf-viewer
-                    [src]="chemin"
-                    [original-size]="false"
-                    [fit-to-page]="true"
-                    [render-text]="true"
-                    [rotation]="0"
-                    [show-all]="false"
-                    [page]="page"
-                    [zoom]="zoom_to"
-                    [zoom-scale]="'page-fit'"
-                    (after-load-complete)="afterLoadComplete($event)"
-                    class="pdf-viewer"
-                  ></pdf-viewer>
-              </div> -->
-              <div class="border-pdf">
-                <mat-toolbar class="mlk-toolbar">
-                  <button mat-icon-button class="example-icon" (click)="prevPage()" [disabled]="page === 1">
-                  <mat-icon class="toolbar-icon">keyboard_arrow_left</mat-icon>
-                </button>
-                <button mat-icon-button class="example-icon" (click)="nextPage()" [disabled]="page === totalPages">
-                  <mat-icon class="toolbar-icon">keyboard_arrow_right</mat-icon>
-                </button>
-                <div class="toolbar-space">
-                  <span class="toolbar-showing">Affichage</span>
-                  <span  class="toolbar-showing"><input type="text" class="toolbar-input" [value]="page"></span>
-                  <span  class="toolbar-showing">sur {{ totalPages }}</span>
-                </div>
-                <div class="toolbar-percent">
-                  {{percent}}%
-                </div>
-                <button mat-icon-button class="example-icon" (click)="zoom_in()">
-                  <mat-icon class="toolbar-icon">zoom_in</mat-icon>
-                </button>
-                <button mat-icon-button class="example-icon" (click)="zoom_out()">
-                <mat-icon class="toolbar-icon">zoom_out</mat-icon>
-              </button>
-                <span class="example-spacer"></span>
-                <button mat-icon-button class="example-icon favorite-icon" (click)="get_fit()">
-                  <mat-icon class="toolbar-icon">zoom_out_map</mat-icon>
-                </button>
-
-                </mat-toolbar>
-              </div>
+              <app-plan-projet-box></app-plan-projet-box>
             </div>
           </div>
 
