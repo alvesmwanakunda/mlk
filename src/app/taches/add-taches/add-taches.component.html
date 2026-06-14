@@ -1,90 +1,135 @@
-<mat-dialog-content class="mat-typography">
-  <div class="text-center" style="padding-top: 25px;"><p class="title-projet-page">Nouvelle tâche</p></div>
-  <div class="row"><div class="col"><hr class="entreprise"></div></div><!--row-->
-  <div class="task-plan-marker-summary" *ngIf="planMarker">
-    <i class="fa-solid fa-location-dot"></i>
-    Tâche liée au plan - page {{ planMarker.page }}
-  </div>
-  <div>
-    <form [formGroup]="taskFormGroup">
-
-           <div style="margin-bottom: 8px;">
-           <mat-form-field class="example-full-width">
-            <mat-label class="tache_label">Titre de la tâche</mat-label>
-             <input matInput  formControlName="titre" required>
-            </mat-form-field>
-            <div *ngIf="taskFormGroup.get('titre').hasError(champ_validation.input[0].type) &&(taskFormGroup.get('titre').dirty || taskFormGroup.get('titre').touched)">
-              <p class="error_field">{{champ_validation.input[0].message}}</p>
+ <div class="container-fluid">
+    <div class="row justify-content-md-center">
+      <div class="col-lg-11 col-md-11 col-md-auto">
+          <div class="text-center" style="padding-top: 25px;"><p class="title-projet-page">Nouvelle tâche</p></div>
+          <div class="row">
+            <div class="col">
+              <hr class="entreprise">
             </div>
-
-            <div>
-              <mat-form-field class="example-full-width">
-                <mat-label class="tache_label">Date</mat-label>
-                <mat-date-range-input  [rangePicker]="picker">
-                <input matStartDate formControlName="date_debut" placeholder="Début">
-                <input matEndDate formControlName="date_fin" placeholder="Fin">
-                </mat-date-range-input>
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-date-range-picker #picker></mat-date-range-picker>
-              </mat-form-field>
+          </div><!--row-->
+          <div class="task-plan-marker-summary" *ngIf="planMarker">
+            <i class="fa-solid fa-location-dot"></i>
+            Tâche liée au plan - page {{ planMarker.page }}
+          </div>
+          <div class="task-plan-create-panel" *ngIf="plan?.chemin">
+            <div class="task-plan-create-header">
+              <div>
+                <span>Plan du projet</span>
+                <strong>{{ planMarker ? 'Point sélectionné' : 'Choisir un point sur le plan' }}</strong>
+              </div>
+              <div class="task-plan-create-actions">
+                <button type="button" mat-stroked-button color="primary" (click)="taskPlanCreator.startPlanTaskMarkerCreation()">
+                  <i class="fa-solid fa-location-dot"></i>
+                  {{ planMarker ? 'Modifier le point' : 'Placer un point' }}
+                </button>
+                <button *ngIf="planMarker" type="button" mat-button color="warn" (click)="clearPlanMarker()">
+                  Retirer
+                </button>
+              </div>
             </div>
-             <!-- <div>
-              <span class="error_field" *ngIf="taskFormGroup.get('date_debut').hasError(champ_validation.input[0].type) &&(taskFormGroup.get('date_debut').dirty || taskFormGroup.get('date_debut').touched)">{{champ_validation.input[0].message}}</span>
-              <span class="error_field" *ngIf="taskFormGroup.get('date_fin').hasError(champ_validation.input[0].type) &&(taskFormGroup.get('date_fin').dirty || taskFormGroup.get('date_fin').touched)">{{champ_validation.input[0].message}}</span>
-            </div> -->
-            <div>
-              <mat-form-field class="example-full-width">
-                <mat-label class="tache_label">Description</mat-label>
-                <textarea matInput  formControlName="description"></textarea>
-             </mat-form-field>
-            </div>
+            <app-task-plan
+              #taskPlanCreator
+              [plan]="plan"
+              [projectId]="idProjet"
+              [tasks]="[]"
+              [height]="380"
+              [showTaskMarkers]="false"
+              [allowTaskPopover]="false"
+              [allowExistingTaskMarkerEdit]="false"
+              [markerMode]="'select'"
+              [initialMarker]="planMarker"
+              [autoStartMarkerCreation]="autoStartPlanMarker"
+              (markerChange)="onPlanMarkerSelected($event)">
+            </app-task-plan>
+          </div>
+          <div>
+            <form [formGroup]="taskFormGroup">
 
-
-            <div class="row">
-               <div class="col-6">
-                <div *ngIf="!annotatedImagePreview">
-                  <p class="tache_label">Ajouter une image</p>
-                  <label class="icon-button" title="Ajouter une image">
-                    <input #fileInput type="file" accept="image/*" (change)="onImagesSelected($event)"  hidden />
-                    <i class="fa-solid fa-image" style="font-size: 40px;color: #090774;"></i>
-                  </label>
-                </div>
-
-                <div *ngIf="annotatedImagePreview" class="annotated-image-top-preview">
-                  <div class="image-preview-container" (mouseenter)="isHoveringImage = true" (mouseleave)="isHoveringImage = false">
-                    <img [src]="annotatedImagePreview" alt="Image annotée" class="preview-image">
-                    <button
-                      *ngIf="isHoveringImage"
-                      class="remove-image-btn"
-                      (click)="removeAnnotatedImage()"
-                      title="Supprimer l'image">
-                      <i class="fa-solid fa-trash"></i>
-                    </button>
-                    <div class="image-badge">
-                      <i class="fa-solid fa-check"></i>
-                      Image annotée
+                  <div style="margin-bottom: 8px;">
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field class="example-full-width">
+                        <mat-label class="tache_label">Titre de la tâche</mat-label>
+                          <input matInput  formControlName="titre" required>
+                        </mat-form-field>
+                        <div *ngIf="taskFormGroup.get('titre').hasError(champ_validation.input[0].type) &&(taskFormGroup.get('titre').dirty || taskFormGroup.get('titre').touched)">
+                          <p class="error_field">{{champ_validation.input[0].message}}</p>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <mat-form-field class="example-full-width">
+                          <mat-label class="tache_label">Date</mat-label>
+                          <mat-date-range-input  [rangePicker]="picker">
+                          <input matStartDate formControlName="date_debut" placeholder="Début">
+                          <input matEndDate formControlName="date_fin" placeholder="Fin">
+                          </mat-date-range-input>
+                          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-date-range-picker #picker></mat-date-range-picker>
+                        </mat-form-field>
+                      </div>
                     </div>
-                  </div>
-               </div>
-               </div>
-               <div class="col-6">
-                 <mat-form-field class="example-full-width">
-                  <mat-label class="tache_label">Assignés</mat-label>
-                  <mat-select matInput  formControlName="assignes" multiple>
-                    <mat-option *ngFor="let contact of contacts" [value]="contact?._id">{{contact?.nom}} {{contact?.prenom}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-               </div>
-            </div>
-      </div><!--div-->
-    </form>
-  </div>
-</mat-dialog-content>
-<mat-dialog-actions>
-   <button mat-button cdkFocusInitial style=" background: #29628b !important;color:#fff;margin-right: 5px" [disabled]="taskFormGroup.invalid" (click)="addTask()">Ajouter</button>
-   <button mat-button mat-dialog-close style=" background: #8a0423 !important;color:#fff">Fermer</button>
-</mat-dialog-actions>
+                      <!-- <div>
+                      <span class="error_field" *ngIf="taskFormGroup.get('date_debut').hasError(champ_validation.input[0].type) &&(taskFormGroup.get('date_debut').dirty || taskFormGroup.get('date_debut').touched)">{{champ_validation.input[0].message}}</span>
+                      <span class="error_field" *ngIf="taskFormGroup.get('date_fin').hasError(champ_validation.input[0].type) &&(taskFormGroup.get('date_fin').dirty || taskFormGroup.get('date_fin').touched)">{{champ_validation.input[0].message}}</span>
+                    </div> -->
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field class="example-full-width">
+                          <mat-label class="tache_label">Description</mat-label>
+                          <input matInput  formControlName="description"/>
+                          <!-- <textarea matInput  formControlName="description"></textarea> -->
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                         <mat-form-field class="example-full-width">
+                          <mat-label class="tache_label">Assignés</mat-label>
+                          <mat-select matInput  formControlName="assignes" multiple>
+                            <mat-option *ngFor="let contact of contacts" [value]="contact?._id">{{contact?.nom}} {{contact?.prenom}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-3">
+                        <div *ngIf="!annotatedImagePreview">
+                          <p class="tache_label">Ajouter une image</p>
+                          <label class="icon-button" title="Ajouter une image">
+                            <input #fileInput type="file" accept="image/*" (change)="onImagesSelected($event)"  hidden />
+                            <i class="fa-solid fa-image" style="font-size: 40px;color: #090774;"></i>
+                          </label>
+                        </div>
 
+                        <div *ngIf="annotatedImagePreview" class="annotated-image-top-preview">
+                          <div class="image-preview-container" (mouseenter)="isHoveringImage = true" (mouseleave)="isHoveringImage = false">
+                            <img [src]="annotatedImagePreview" alt="Image annotée" class="preview-image">
+                            <button
+                              *ngIf="isHoveringImage"
+                              class="remove-image-btn"
+                              (click)="removeAnnotatedImage()"
+                              title="Supprimer l'image">
+                              <i class="fa-solid fa-trash"></i>
+                            </button>
+                            <div class="image-badge">
+                              <i class="fa-solid fa-check"></i>
+                              Image annotée
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col">
+                           <button mat-button cdkFocusInitial style=" background: #29628b !important;color:#fff;margin-right: 5px" [disabled]="taskFormGroup.invalid" (click)="addTask()">Enregistrer</button>
+                           <button mat-button mat-dialog-close style=" background: #8a0423 !important;color:#fff">Fermer</button>
+                        </div>
+                    </div>
+              </div><!--div-->
+            </form>
+          </div>
+
+      </div>
+    </div>
+ </div>
 <app-image-annotation
   *ngIf="showImageAnnotation && imageToAnnotate"
   [imageSrc]="imageToAnnotate"

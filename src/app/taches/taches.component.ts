@@ -9,6 +9,8 @@ import { ProjetsService } from '../shared/services/projets.service';
 import { firstValueFrom } from 'rxjs';
 import { PDFDocument, PDFPage, PDFFont, rgb, StandardFonts } from 'pdf-lib';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TaskPlanComponent } from './task-plan/task-plan.component';
+import { VoiceTaskComponent } from './voice-task/voice-task.component';
 
 type PlanTool = 'select' | 'pin' | 'pen' | 'highlighter' | 'cloud' | 'rectangle' | 'circle' | 'polygon' | 'arrow' | 'line' | 'text' | 'measure';
 type PlanMenu = 'draw' | 'shape' | 'styleColor' | 'lineWidth' | 'textSize' | null;
@@ -95,6 +97,7 @@ interface PlanPdfProjection {
 export class TachesComponent implements OnInit, AfterViewInit {
 
   @ViewChild('taskBoardShell') taskBoardShell?: ElementRef<HTMLElement>;
+  @ViewChild('taskPlan') taskPlanComponent?: TaskPlanComponent;
   @ViewChild('planViewerShell') planViewerShell?: ElementRef<HTMLElement>;
   @ViewChild('planPdfLayer') planPdfLayer?: ElementRef<HTMLElement>;
   @ViewChild('planAnnotationLayer') planAnnotationLayer?: ElementRef<SVGSVGElement>;
@@ -271,8 +274,6 @@ export class TachesComponent implements OnInit, AfterViewInit {
           this.resetPlanLayerSize(true);
           this.planContentBoundsByPage.clear();
           this.resetPlanPan();
-          this.loadPlanAnnotations();
-          this.requestPlanContentFit();
           setTimeout(() => this.updatePlanViewerHeight());
       },(error) => {
         console.log("Erreur lors de la récupération des données", error);
@@ -748,14 +749,11 @@ export class TachesComponent implements OnInit, AfterViewInit {
     }
 
     handleTaskCardClick(tache: any) {
-      const marker = this.getTaskPlanMarker(tache);
-
-      if (!marker || !this.plan) {
-        this.openDialogUpdate(tache?._id);
+      if (this.taskPlanComponent?.focusTask(tache)) {
         return;
       }
 
-      this.focusTaskMarkerOnPlan(tache, marker);
+      this.openDialogUpdate(tache?._id);
     }
 
     startExistingTaskMarkerReposition(marker: PlanTaskMarkerView, event?: Event) {
@@ -2661,11 +2659,34 @@ export class TachesComponent implements OnInit, AfterViewInit {
         }
 
         const dialogRef = this.dialog.open(AddTachesComponent,{
-          width:'70%',
+          //width:'70%',
+          width: '100vw',
+          height: '100vh',
+          maxWidth: '100vw',
+          panelClass: 'full-screen-dialog',
           data:{
             id:this.idProjet,
-            plan: this.plan?._id || null,
+            plan: this.plan || null,
             marker: marker || null
+          }
+        });
+        dialogRef.afterClosed().subscribe((result:any)=>{
+           if(result){
+            this.getAllTaches();
+           }
+        })
+    }
+
+    openDialogVoice(){
+
+        const dialogRef = this.dialog.open(VoiceTaskComponent,{
+          width:'50%',
+          // width: '100vw',
+          // height: '100vh',
+          // maxWidth: '100vw',
+          // panelClass: 'full-screen-dialog',
+          data:{
+            id:this.idProjet,
           }
         });
         dialogRef.afterClosed().subscribe((result:any)=>{
@@ -2684,7 +2705,7 @@ export class TachesComponent implements OnInit, AfterViewInit {
           data:{
             id:idTache,
             plan: this.plan || null,
-            planViewportRatio: this.getPlanViewportRatio()
+            planViewportRatio: this.taskPlanComponent?.getPlanViewportRatio() || this.getPlanViewportRatio()
           }});
         dialogRef.afterClosed().subscribe((result:any)=>{
            if(result){

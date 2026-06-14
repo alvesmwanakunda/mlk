@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AddTachesComponent } from './add-taches.component';
 import { ImageAnnotationModule } from 'src/app/note-module/image-annotation/image-annotation.module';
+import { TaskPlanModule } from '../task-plan/task-plan.module';
+import { VoiceTaskModule } from '../voice-task/voice-task.module';
 
 
 
@@ -14,7 +16,8 @@ import { ImageAnnotationModule } from 'src/app/note-module/image-annotation/imag
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    ImageAnnotationModule
+    ImageAnnotationModule,
+    TaskPlanModule,
   ]
 })
 export class AddTachesModule { }
