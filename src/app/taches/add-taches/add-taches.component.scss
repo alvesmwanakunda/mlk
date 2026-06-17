@@ -28,11 +28,56 @@
 
 .task-plan-create-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 14px;
   padding: 12px 14px;
   border-bottom: 1px solid #e5edf6;
+}
+
+.task-plan-create-header-main {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+
+.task-plan-select-row {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 4px;
+}
+
+.task-plan-select-field {
+  width: 100%;
+  max-width: 450px;
+}
+
+.task-plan-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #64748b;
+  padding: 20px;
+  margin-bottom: 18px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.task-plan-empty i {
+  font-size: 1.75rem;
+  margin-bottom: 10px;
+  color: #94a3b8;
+}
+
+.task-plan-empty p {
+  margin: 0;
+  font-weight: 500;
+  color: #334155;
 }
 
 .task-plan-create-header span {

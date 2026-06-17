@@ -45,4 +45,33 @@ export class PlanProjetService {
       observe: 'events'
     });
   }
+
+  classifyFile(idFichier: string, isPlan: boolean) {
+    return this.httpClient.patch(
+      `${environment.BASE_API_URL}/plan/projet/fichier/${idFichier}/classification`,
+      { isPlan }
+    );
+  }
+
+  validateFile(idFichier: string, action: 'approve' | 'reject') {
+    return this.httpClient.patch(
+      `${environment.BASE_API_URL}/plan/projet/fichier/${idFichier}/validation`,
+      { action }
+    );
+  }
+
+  getActivePlansForTasks(idProjet: string) {
+    return this.httpClient.get(`${environment.BASE_API_URL}/plan/projet/${idProjet}/actifs`);
+  }
+
+  getPlanFileContent(idFichier: string) {
+    return this.httpClient.get(
+      `${environment.BASE_API_URL}/plan/projet/fichier/${idFichier}/content`,
+      { responseType: 'blob' }
+    );
+  }
+
+  isSharePointPlan(plan: any): boolean {
+    return plan?.planSource === 'sharepoint' || !!plan?.sharepointItemId;
+  }
 }

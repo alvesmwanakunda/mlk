@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
+import { PlanProjetService } from 'src/app/shared/services/plan-projet.service';
 
 interface TaskPlanMarkerPreview {
   page: number;
@@ -29,9 +30,18 @@ export class TaskPlanMarkerPreviewComponent implements AfterViewInit, OnChanges,
   zoomPanY = 0;
   coordinateLayerWidth = 0;
   coordinateLayerHeight = 0;
+  planPdfSrc: string | null = null;
+  planPdfLoading = false;
+  private planPdfObjectUrl: string | null = null;
   private resizeObserver?: ResizeObserver;
 
+  constructor(private readonly planProjetService: PlanProjetService) {}
+
   ngOnChanges(changes: SimpleChanges) {
+    if (changes.plan) {
+      this.loadPlanPdfSource();
+    }
+
     if (changes.marker) {
       this.normalizedMarker = this.normalizeMarker(this.marker);
       this.page = this.normalizedMarker?.page || 1;
@@ -51,10 +61,11 @@ export class TaskPlanMarkerPreviewComponent implements AfterViewInit, OnChanges,
 
   ngOnDestroy() {
     this.resizeObserver?.disconnect();
+    this.revokePlanPdfObjectUrl();
   }
 
   get planSource() {
-    return this.plan?.chemin || this.plan?.url || this.plan?.path || '';
+    return this.planPdfSrc || this.plan?.chemin || this.plan?.url || this.plan?.path || '';
   }
 
   get markerLabel() {
@@ -187,5 +198,39 @@ export class TaskPlanMarkerPreviewComponent implements AfterViewInit, OnChanges,
 
   private clamp(value: number, min: number, max: number) {
     return Math.max(min, Math.min(max, value));
+  }
+
+  private loadPlanPdfSource() {
+    this.revokePlanPdfObjectUrl();
+    this.planPdfSrc = null;
+
+    if (!this.plan) {
+      return;
+    }
+
+    if (this.planProjetService.isSharePointPlan(this.plan)) {
+      this.planPdfLoading = true;
+      this.planProjetService.getPlanFileContent(this.plan._id).subscribe({
+        next: (blob) => {
+          this.planPdfObjectUrl = URL.createObjectURL(blob);
+          this.planPdfSrc = this.planPdfObjectUrl;
+          this.planPdfLoading = false;
+          this.queuePreviewUpdate();
+        },
+        error: () => {
+          this.planPdfLoading = false;
+        }
+      });
+      return;
+    }
+
+    this.planPdfSrc = this.plan.chemin || this.plan.url || this.plan.path || null;
+  }
+
+  private revokePlanPdfObjectUrl() {
+    if (this.planPdfObjectUrl) {
+      URL.revokeObjectURL(this.planPdfObjectUrl);
+      this.planPdfObjectUrl = null;
+    }
   }
 }

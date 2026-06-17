@@ -1,0 +1,115 @@
+<div
+  class="validate-dialog"
+  [class.validate-dialog--approve]="isApprove"
+  [class.validate-dialog--reject]="!isApprove">
+
+  <div class="validate-dialog__accent"></div>
+
+  <div class="validate-dialog__header">
+    <div class="validate-dialog__header-main">
+      <div class="validate-dialog__icon-wrap">
+        <mat-icon>{{ isApprove ? 'verified' : 'block' }}</mat-icon>
+      </div>
+      <div>
+        <h2 class="validate-dialog__title">
+          {{ isApprove ? 'Valider le plan' : 'Rejeter le plan' }}
+        </h2>
+        <p class="validate-dialog__subtitle">
+          {{ isApprove ? 'Activation pour utilisation sur le projet' : 'Refus de la demande de plan' }}
+        </p>
+      </div>
+    </div>
+    <button
+      mat-icon-button
+      mat-dialog-close
+      class="validate-dialog__close"
+      [disabled]="isLoading"
+      aria-label="Fermer">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content class="validate-dialog__body">
+    <div class="validate-dialog__file-card">
+      <div class="validate-dialog__file-icon">
+        <img src="assets/images/pdf.png" alt="" *ngIf="fileIconType === 'pdf'">
+        <img src="assets/images/doc.png" alt="" *ngIf="fileIconType === 'doc'">
+        <img src="assets/images/xls.png" alt="" *ngIf="fileIconType === 'xls'">
+        <img src="assets/images/pptx.png" alt="" *ngIf="fileIconType === 'pptx'">
+        <mat-icon *ngIf="fileIconType === 'image'">image</mat-icon>
+        <mat-icon *ngIf="fileIconType === 'generic'">architecture</mat-icon>
+      </div>
+      <div class="validate-dialog__file-meta">
+        <span class="validate-dialog__file-label">Plan soumis</span>
+        <span class="validate-dialog__file-name" [matTooltip]="data.nom">{{ data.nom }}</span>
+      </div>
+      <span class="validate-dialog__badge" [class.validate-dialog__badge--pending]="true">
+        En attente
+      </span>
+    </div>
+
+    <div class="validate-dialog__impact">
+      <p class="validate-dialog__impact-title">
+        {{ isApprove ? 'Conséquences de la validation' : 'Conséquences du rejet' }}
+      </p>
+      <ul class="validate-dialog__impact-list">
+        <li *ngIf="isApprove">
+          <mat-icon>check_circle</mat-icon>
+          <span>Le plan sera marqué comme <strong>actif</strong></span>
+        </li>
+        <li *ngIf="isApprove">
+          <mat-icon>check_circle</mat-icon>
+          <span>Il pourra être utilisé sur le projet (tâches, marqueurs…)</span>
+        </li>
+        <li *ngIf="isApprove">
+          <mat-icon>check_circle</mat-icon>
+          <span>Votre nom sera enregistré comme validateur</span>
+        </li>
+        <li *ngIf="!isApprove">
+          <mat-icon>cancel</mat-icon>
+          <span>Le plan restera <strong>inactif</strong> et non utilisable</span>
+        </li>
+        <li *ngIf="!isApprove">
+          <mat-icon>cancel</mat-icon>
+          <span>L'uploader devra soumettre un nouveau fichier si nécessaire</span>
+        </li>
+        <li *ngIf="!isApprove">
+          <mat-icon>cancel</mat-icon>
+          <span>Cette action pourra être consultée dans l'historique du fichier</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="validate-dialog__notice" *ngIf="isApprove">
+      <mat-icon>info</mat-icon>
+      <p>Assurez-vous que le plan est à jour et correspond bien au projet avant validation.</p>
+    </div>
+
+    <div class="validate-dialog__notice validate-dialog__notice--warn" *ngIf="!isApprove">
+      <mat-icon>warning</mat-icon>
+      <p>Cette action est définitive. Le plan ne pourra pas être activé sans une nouvelle soumission.</p>
+    </div>
+  </mat-dialog-content>
+
+  <div class="validate-dialog__footer">
+    <button mat-button mat-dialog-close class="validate-dialog__cancel" [disabled]="isLoading">
+      Annuler
+    </button>
+    <button
+      mat-raised-button
+      type="button"
+      class="validate-dialog__confirm"
+      (click)="confirm()"
+      [disabled]="isLoading"
+      cdkFocusInitial>
+      <mat-icon>{{ isApprove ? 'check' : 'close' }}</mat-icon>
+      <span *ngIf="!isLoading">{{ isApprove ? 'Valider et activer' : 'Confirmer le rejet' }}</span>
+      <span *ngIf="isLoading">Traitement…</span>
+    </button>
+  </div>
+
+  <div class="validate-dialog__overlay" *ngIf="isLoading">
+    <mat-spinner diameter="44"></mat-spinner>
+    <p>{{ isApprove ? 'Activation du plan…' : 'Rejet en cours…' }}</p>
+  </div>
+</div>

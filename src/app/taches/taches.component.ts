@@ -11,6 +11,7 @@ import { PDFDocument, PDFPage, PDFFont, rgb, StandardFonts } from 'pdf-lib';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TaskPlanComponent } from './task-plan/task-plan.component';
 import { VoiceTaskComponent } from './voice-task/voice-task.component';
+import { PlanProjetService } from '../shared/services/plan-projet.service';
 
 type PlanTool = 'select' | 'pin' | 'pen' | 'highlighter' | 'cloud' | 'rectangle' | 'circle' | 'polygon' | 'arrow' | 'line' | 'text' | 'measure';
 type PlanMenu = 'draw' | 'shape' | 'styleColor' | 'lineWidth' | 'textSize' | null;
@@ -104,6 +105,9 @@ export class TachesComponent implements OnInit, AfterViewInit {
 
   task = [];
   plan:any;
+  activePlans: any[] = [];
+  plansLoading = false;
+  noActivePlans = false;
   idProjet:any;
   StatutTache: 'ALL' | 'A Faire' | 'En Cours' | 'Terminer' | 'Clôturer';
   selectedStatut = 'ALL';
@@ -179,6 +183,7 @@ export class TachesComponent implements OnInit, AfterViewInit {
       public dialog: MatDialog,
       public route:ActivatedRoute,
       private projetService: ProjetsService,
+      private planProjetService: PlanProjetService,
       private _snackBar: MatSnackBar
 
     ){
@@ -190,7 +195,7 @@ export class TachesComponent implements OnInit, AfterViewInit {
 	    ngOnInit(){
 
 	      this.getAllTaches();
-	      this.getPlan();
+	      this.loadActivePlans();
 	    }
 
     ngAfterViewInit() {
@@ -265,19 +270,66 @@ export class TachesComponent implements OnInit, AfterViewInit {
      );
     }
 
-    getPlan(){
-      this.projetService.getPlanProjet(this.idProjet).subscribe((res:any)=>{
-          console.log("Plan=================>", res);
-          this.plan=res?.message;
-          this.planPage = 1;
-          this.planLoaded = false;
-          this.resetPlanLayerSize(true);
-          this.planContentBoundsByPage.clear();
-          this.resetPlanPan();
-          setTimeout(() => this.updatePlanViewerHeight());
+    loadActivePlans(){
+      this.plansLoading = true;
+      this.noActivePlans = false;
+
+      this.planProjetService.getActivePlansForTasks(this.idProjet).subscribe((res:any)=>{
+          const plans = Array.isArray(res?.message) ? res.message : [];
+          this.activePlans = plans;
+          this.plansLoading = false;
+          this.noActivePlans = plans.length === 0;
+
+          if (plans.length === 0) {
+            this.plan = null;
+            return;
+          }
+
+          const currentPlanId = this.plan?._id?.toString();
+          const stillSelected = currentPlanId
+            ? plans.find((item: any) => item._id?.toString() === currentPlanId)
+            : null;
+
+          this.selectPlan(stillSelected || plans[0]);
       },(error) => {
-        console.log("Erreur lors de la récupération des données", error);
+        this.plansLoading = false;
+        this.noActivePlans = true;
+        this.plan = null;
+        console.log("Erreur lors de la récupération des plans actifs", error);
       })
+    }
+
+    selectPlan(selectedPlan: any) {
+      if (!selectedPlan) {
+        this.plan = null;
+        return;
+      }
+
+      this.plan = { ...selectedPlan };
+      this.planPage = 1;
+      this.planLoaded = false;
+      this.resetPlanLayerSize(true);
+      this.planContentBoundsByPage.clear();
+      this.resetPlanPan();
+      this.pendingMarker = null;
+      this.isCreatingPlanTaskMarker = false;
+      this.selectedPlanTaskMarker = null;
+      setTimeout(() => this.updatePlanViewerHeight());
+    }
+
+    onActivePlanChange(planId: string) {
+      const selectedPlan = this.activePlans.find(
+        (item) => item._id?.toString() === planId
+      );
+      this.selectPlan(selectedPlan || null);
+    }
+
+    get selectedPlanId(): string {
+      return this.plan?._id?.toString() || '';
+    }
+
+    showPlanSelector(): boolean {
+      return this.activePlans.length > 1;
     }
 
     loadPlanAnnotations() {
@@ -2667,6 +2719,7 @@ export class TachesComponent implements OnInit, AfterViewInit {
           data:{
             id:this.idProjet,
             plan: this.plan || null,
+            activePlans: this.activePlans || [],
             marker: marker || null
           }
         });

@@ -355,6 +355,49 @@ $shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.10), 0 4px 6px rgba(0, 0, 0, 0.06);
 
 .task-plan-panel {
   display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task-plan-selector {
+  flex: 0 0 auto;
+}
+
+.task-plan-select-field {
+  width: 100%;
+  max-width: 420px;
+}
+
+.task-plan-empty,
+.task-plan-loading {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #64748b;
+  padding: 24px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  min-height: 280px;
+}
+
+.task-plan-empty i {
+  font-size: 2rem;
+  margin-bottom: 12px;
+  color: #94a3b8;
+}
+
+.task-plan-empty p {
+  margin: 0 0 8px;
+  font-weight: 500;
+  color: #334155;
+}
+
+.task-plan-empty small {
+  max-width: 320px;
+  line-height: 1.4;
 }
 
 @media (max-width: 992px) {

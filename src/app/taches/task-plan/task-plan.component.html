@@ -48,8 +48,13 @@
         [style.--plan-marker-scale]="getPlanMarkerScale()">
 
         <div class="plan-pdf-render-shell" [style.transform]="getPlanPdfRenderTransform()">
+          <div class="plan-pdf-loading" *ngIf="planPdfLoading">Chargement du plan...</div>
+          <div class="plan-pdf-error" *ngIf="planPdfLoadError && !planPdfLoading">
+            Impossible d'afficher ce plan.
+          </div>
           <pdf-viewer
-            [src]="plan?.chemin"
+            *ngIf="planPdfSrc"
+            [src]="planPdfSrc"
             [original-size]="false"
             [fit-to-page]="false"
             [show-all]="false"

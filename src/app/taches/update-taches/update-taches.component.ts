@@ -10,6 +10,7 @@ import { environment} from 'src/environments/environment';
 import { DeleteTachesComponent } from '../delete-taches/delete-taches.component';
 import { ViewerStandarComponent } from '../../viewer-standar/viewer-standar.component';
 import { ProjetsService } from 'src/app/shared/services/projets.service';
+import { PlanProjetService } from 'src/app/shared/services/plan-projet.service';
 
 type ImageRow = {
   key: string;                // clé stable
@@ -59,6 +60,7 @@ export class UpdateTachesComponent implements OnInit {
        private authService:AuthService,
        private readonly http: HttpClient,
        private projetService: ProjetsService,
+       private planProjetService: PlanProjetService,
        public dialog: MatDialog,
       private cdRef: ChangeDetectorRef
 
@@ -204,13 +206,36 @@ export class UpdateTachesComponent implements OnInit {
       return;
     }
 
+    const taskPlanId = typeof tache?.plan === 'string'
+      ? tache.plan
+      : tache?.plan?._id;
+
     this.isLoadingTaskPlanPreview = true;
-    this.projetService.getPlanProjet(projectId).subscribe((res:any) => {
-      this.taskPlanPreviewPlan = res?.message || null;
-      this.isLoadingTaskPlanPreview = false;
-    }, (error) => {
-      this.isLoadingTaskPlanPreview = false;
-      console.log("Erreur lors de la récupération du plan", error);
+    this.planProjetService.getActivePlansForTasks(projectId).subscribe((res:any) => {
+      const plans = Array.isArray(res?.message) ? res.message : [];
+      const matchedPlan = taskPlanId
+        ? plans.find((item: any) => item._id?.toString() === taskPlanId?.toString())
+        : null;
+
+      if (matchedPlan) {
+        this.taskPlanPreviewPlan = matchedPlan;
+        this.isLoadingTaskPlanPreview = false;
+        return;
+      }
+
+      this.projetService.getPlanProjet(projectId).subscribe((legacyRes:any) => {
+        this.taskPlanPreviewPlan = legacyRes?.message || null;
+        this.isLoadingTaskPlanPreview = false;
+      }, () => {
+        this.isLoadingTaskPlanPreview = false;
+      });
+    }, () => {
+      this.projetService.getPlanProjet(projectId).subscribe((legacyRes:any) => {
+        this.taskPlanPreviewPlan = legacyRes?.message || null;
+        this.isLoadingTaskPlanPreview = false;
+      }, () => {
+        this.isLoadingTaskPlanPreview = false;
+      });
     });
   }
 

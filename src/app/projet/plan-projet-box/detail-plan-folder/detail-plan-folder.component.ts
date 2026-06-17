@@ -10,6 +10,8 @@ import { AddPlanFolderComponent } from '../add-plan-folder/add-plan-folder.compo
 import { UpdatePlanFolderComponent } from '../update-plan-folder/update-plan-folder.component';
 import { DeletePlanFolderComponent } from '../delete-plan-folder/delete-plan-folder.component';
 import { DeletePlanFileComponent } from '../delete-plan-file/delete-plan-file.component';
+import { ValidatePlanFileComponent } from '../validate-plan-file/validate-plan-file.component';
+import { ClassifyPlanFileComponent } from '../classify-plan-file/classify-plan-file.component';
 
 @Component({
   selector: 'app-detail-plan-folder',
@@ -17,7 +19,7 @@ import { DeletePlanFileComponent } from '../delete-plan-file/delete-plan-file.co
   styleUrls: ['./detail-plan-folder.component.scss']
 })
 export class DetailPlanFolderComponent implements OnInit, AfterViewInit, OnDestroy {
-  displayedColumns = ['name', 'size', 'modified', 'modifiedby', 'action'];
+  displayedColumns = ['name', 'status', 'size', 'modified', 'modifiedby', 'action'];
   dataSource = new MatTableDataSource<Fichiers>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -25,6 +27,22 @@ export class DetailPlanFolderComponent implements OnInit, AfterViewInit, OnDestr
   dossier: any;
   breadcrumbs: any[] = [];
   user: any;
+
+  get isAdmin(): boolean {
+    return this.user?.user?.role === 'admin';
+  }
+
+  get currentUserId(): string {
+    return this.user?.user?._id;
+  }
+
+  canClassifyFile(element: Fichiers): boolean {
+    if (!element.extension || !element.classificationPending) {
+      return false;
+    }
+    const creatorId = (element.creator as any)?._id || element.creator;
+    return String(creatorId) === String(this.currentUserId);
+  }
 
   @Input() idFolder: string;
   @Input() idProjet: string;
@@ -84,8 +102,88 @@ export class DetailPlanFolderComponent implements OnInit, AfterViewInit, OnDestr
       creator: data.creator,
       chemin: data.chemin,
       extension: data?.extension,
-      size: data?.size
+      size: data?.size,
+      isPlan: data?.isPlan,
+      isActif: data?.isActif,
+      classificationPending: data?.classificationPending,
+      validationStatus: data?.validationStatus,
+      validatedBy: data?.validatedBy,
+      validatedAt: data?.validatedAt
     })) as Fichiers[];
+  }
+
+  getFileStatusLabel(element: Fichiers): string {
+    if (!element.extension) {
+      return '';
+    }
+    if (element.classificationPending) {
+      return 'Classification en attente';
+    }
+    if (!element.isPlan) {
+      return 'Document';
+    }
+    if (element.validationStatus === 'pending') {
+      return 'Plan — en attente validation';
+    }
+    if (element.validationStatus === 'approved' && element.isActif) {
+      return 'Plan actif';
+    }
+    if (element.validationStatus === 'rejected') {
+      return 'Plan rejeté';
+    }
+    return 'Plan';
+  }
+
+  getFileStatusClass(element: Fichiers): string {
+    if (!element.extension) {
+      return '';
+    }
+    if (element.classificationPending) {
+      return 'plan-status-pending';
+    }
+    if (!element.isPlan) {
+      return 'plan-status-document';
+    }
+    if (element.validationStatus === 'pending') {
+      return 'plan-status-validation';
+    }
+    if (element.validationStatus === 'approved' && element.isActif) {
+      return 'plan-status-active';
+    }
+    if (element.validationStatus === 'rejected') {
+      return 'plan-status-rejected';
+    }
+    return '';
+  }
+
+  openDialogClassifyFile(idFichier: string, nom: string) {
+    const dialogRef = this.dialog.open(ClassifyPlanFileComponent, {
+      width: '520px',
+      maxWidth: '95vw',
+      panelClass: 'classify-plan-dialog-panel',
+      data: { id: idFichier, nom }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getAllFiles();
+      }
+    });
+  }
+
+  openDialogValidateFile(idFichier: string, nom: string, action: 'approve' | 'reject') {
+    const dialogRef = this.dialog.open(ValidatePlanFileComponent, {
+      width: '500px',
+      maxWidth: '95vw',
+      panelClass: 'validate-plan-dialog-panel',
+      data: { id: idFichier, nom, action }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getAllFiles();
+      }
+    });
   }
 
   applyFilter(event: Event) {

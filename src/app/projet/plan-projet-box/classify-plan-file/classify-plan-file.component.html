@@ -1,0 +1,94 @@
+<div class="classify-dialog">
+  <div class="classify-dialog__accent"></div>
+
+  <div class="classify-dialog__header">
+    <div class="classify-dialog__header-main">
+      <div class="classify-dialog__icon-wrap">
+        <mat-icon>category</mat-icon>
+      </div>
+      <div>
+        <h2 class="classify-dialog__title">Type de fichier</h2>
+        <p class="classify-dialog__subtitle">Classifiez le fichier que vous venez d'envoyer</p>
+      </div>
+    </div>
+    <button
+      mat-icon-button
+      mat-dialog-close
+      class="classify-dialog__close"
+      [disabled]="isLoading"
+      aria-label="Fermer">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content class="classify-dialog__body">
+    <div class="classify-dialog__file-card">
+      <div class="classify-dialog__file-icon">
+        <img src="assets/images/pdf.png" alt="" *ngIf="fileIconType === 'pdf'">
+        <img src="assets/images/doc.png" alt="" *ngIf="fileIconType === 'doc'">
+        <img src="assets/images/xls.png" alt="" *ngIf="fileIconType === 'xls'">
+        <img src="assets/images/pptx.png" alt="" *ngIf="fileIconType === 'pptx'">
+        <mat-icon *ngIf="fileIconType === 'image'">image</mat-icon>
+        <mat-icon *ngIf="fileIconType === 'generic'">insert_drive_file</mat-icon>
+      </div>
+      <div class="classify-dialog__file-meta">
+        <span class="classify-dialog__file-name" [matTooltip]="data.nom">{{ data.nom }}</span>
+        <span class="classify-dialog__file-ext" *ngIf="extension">.{{ extension }}</span>
+      </div>
+    </div>
+
+    <p class="classify-dialog__question">
+      Ce fichier est-il un <strong>plan</strong> à utiliser sur le projet&nbsp;?
+    </p>
+
+    <div class="classify-dialog__choices">
+      <button
+        type="button"
+        class="choice-card choice-card--document"
+        (click)="classify(false)"
+        [disabled]="isLoading">
+        <div class="choice-card__icon">
+          <mat-icon>description</mat-icon>
+        </div>
+        <div class="choice-card__content">
+          <span class="choice-card__title">Non, document</span>
+          <span class="choice-card__desc">Note, rapport, pièce jointe…</span>
+        </div>
+        <mat-icon class="choice-card__arrow">chevron_right</mat-icon>
+      </button>
+
+      <button
+        type="button"
+        class="choice-card choice-card--plan"
+        (click)="classify(true)"
+        [disabled]="isLoading">
+        <div class="choice-card__icon">
+          <mat-icon>architecture</mat-icon>
+        </div>
+        <div class="choice-card__content">
+          <span class="choice-card__title">Oui, c'est un plan</span>
+          <span class="choice-card__desc">Plan technique — validation admin requise</span>
+        </div>
+        <mat-icon class="choice-card__arrow">chevron_right</mat-icon>
+      </button>
+    </div>
+
+    <div class="classify-dialog__info">
+      <mat-icon>verified_user</mat-icon>
+      <p>
+        Les plans doivent être <strong>validés par un administrateur</strong> avant d'être activés pour utilisation sur le projet.
+      </p>
+    </div>
+  </mat-dialog-content>
+
+  <div class="classify-dialog__footer">
+    <button mat-button mat-dialog-close class="classify-dialog__later" [disabled]="isLoading">
+      Classer plus tard
+    </button>
+  </div>
+
+  <div class="classify-dialog__overlay" *ngIf="isLoading">
+    <mat-spinner diameter="44"></mat-spinner>
+    <p>Enregistrement en cours…</p>
+  </div>
+</div>

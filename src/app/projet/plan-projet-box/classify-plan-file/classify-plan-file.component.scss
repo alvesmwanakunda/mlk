@@ -1,0 +1,357 @@
+:host {
+  display: block;
+}
+
+::ng-deep .classify-plan-dialog-panel {
+  .mat-mdc-dialog-container,
+  .mat-dialog-container {
+    padding: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(8, 41, 207, 0.15), 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.classify-dialog {
+  position: relative;
+  background: #fff;
+  min-width: 300px;
+}
+
+.classify-dialog__accent {
+  height: 4px;
+  background: linear-gradient(90deg, #0829cf 0%, #3d5afe 50%, #0829cf 100%);
+}
+
+.classify-dialog__header {
+  align-items: flex-start;
+  border-bottom: 1px solid #eef1f6;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 20px 24px 18px;
+}
+
+.classify-dialog__header-main {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+}
+
+.classify-dialog__icon-wrap {
+  align-items: center;
+  background: linear-gradient(135deg, #eef2ff 0%, #e8edff 100%);
+  border-radius: 12px;
+  color: #0829cf;
+  display: flex;
+  height: 48px;
+  justify-content: center;
+  width: 48px;
+
+  mat-icon {
+    font-size: 26px;
+    height: 26px;
+    width: 26px;
+  }
+}
+
+.classify-dialog__title {
+  color: #1a1f36;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0 0 4px;
+}
+
+.classify-dialog__subtitle {
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.classify-dialog__close {
+  color: #9ca3af;
+  flex-shrink: 0;
+  margin: -4px -8px 0 0;
+
+  &:hover:not([disabled]) {
+    background: rgba(8, 41, 207, 0.06);
+    color: #0829cf;
+  }
+}
+
+.classify-dialog__body {
+  margin: 0;
+  max-height: none;
+  padding: 20px 24px 8px;
+}
+
+.classify-dialog__file-card {
+  align-items: center;
+  background: #f8faff;
+  border: 1px solid #e4e9f7;
+  border-radius: 12px;
+  display: flex;
+  gap: 14px;
+  margin-bottom: 20px;
+  padding: 14px 16px;
+}
+
+.classify-dialog__file-icon {
+  align-items: center;
+  background: #fff;
+  border: 1px solid #e8ecf4;
+  border-radius: 10px;
+  display: flex;
+  flex-shrink: 0;
+  height: 44px;
+  justify-content: center;
+  width: 44px;
+
+  img {
+    height: 28px;
+    object-fit: contain;
+    width: 28px;
+  }
+
+  mat-icon {
+    color: #64748b;
+    font-size: 26px;
+    height: 26px;
+    width: 26px;
+  }
+}
+
+.classify-dialog__file-meta {
+  min-width: 0;
+}
+
+.classify-dialog__file-name {
+  color: #1e293b;
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classify-dialog__file-ext {
+  color: #64748b;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.classify-dialog__question {
+  color: #374151;
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 0 0 16px;
+  text-align: center;
+
+  strong {
+    color: #0829cf;
+    font-weight: 600;
+  }
+}
+
+.classify-dialog__choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.choice-card {
+  align-items: center;
+  background: #fff;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  gap: 14px;
+  padding: 14px 16px;
+  text-align: left;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+  width: 100%;
+
+  &:hover:not([disabled]) {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    transform: translateY(-1px);
+  }
+
+  &:active:not([disabled]) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+  }
+}
+
+.choice-card--document {
+  &:hover:not([disabled]) {
+    border-color: #94a3b8;
+  }
+
+  .choice-card__icon {
+    background: #f1f5f9;
+    color: #475569;
+  }
+}
+
+.choice-card--plan {
+  &:hover:not([disabled]) {
+    border-color: #0829cf;
+    box-shadow: 0 6px 24px rgba(8, 41, 207, 0.12);
+  }
+
+  .choice-card__icon {
+    background: linear-gradient(135deg, #eef2ff 0%, #dce4ff 100%);
+    color: #0829cf;
+  }
+
+  .choice-card__title {
+    color: #0829cf;
+  }
+}
+
+.choice-card__icon {
+  align-items: center;
+  border-radius: 10px;
+  display: flex;
+  flex-shrink: 0;
+  height: 42px;
+  justify-content: center;
+  width: 42px;
+
+  mat-icon {
+    font-size: 22px;
+    height: 22px;
+    width: 22px;
+  }
+}
+
+.choice-card__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.choice-card__title {
+  color: #1e293b;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.choice-card__desc {
+  color: #6b7280;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.choice-card__arrow {
+  color: #cbd5e1;
+  flex-shrink: 0;
+  font-size: 20px;
+  height: 20px;
+  transition: color 0.2s ease, transform 0.2s ease;
+  width: 20px;
+}
+
+.choice-card:hover:not([disabled]) .choice-card__arrow {
+  color: #0829cf;
+  transform: translateX(2px);
+}
+
+.classify-dialog__info {
+  align-items: flex-start;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 10px;
+  display: flex;
+  gap: 10px;
+  padding: 12px 14px;
+
+  mat-icon {
+    color: #d97706;
+    flex-shrink: 0;
+    font-size: 20px;
+    height: 20px;
+    margin-top: 1px;
+    width: 20px;
+  }
+
+  p {
+    color: #92400e;
+    font-size: 12px;
+    line-height: 1.45;
+    margin: 0;
+
+    strong {
+      font-weight: 600;
+    }
+  }
+}
+
+.classify-dialog__footer {
+  background: #f9fafb;
+  border-top: 1px solid #eef1f6;
+  padding: 12px 24px 16px;
+  text-align: center;
+}
+
+.classify-dialog__later {
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 500;
+
+  &:hover:not([disabled]) {
+    background: rgba(107, 114, 128, 0.08);
+    color: #374151;
+  }
+}
+
+.classify-dialog__overlay {
+  align-items: center;
+  backdrop-filter: blur(2px);
+  background: rgba(255, 255, 255, 0.82);
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 10;
+
+  p {
+    color: #0829cf;
+    font-size: 13px;
+    font-weight: 500;
+    margin: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .classify-dialog__header,
+  .classify-dialog__body,
+  .classify-dialog__footer {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .classify-dialog__title {
+    font-size: 16px;
+  }
+
+  .choice-card {
+    padding: 12px 14px;
+  }
+}

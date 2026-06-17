@@ -9,16 +9,24 @@
           </div><!--row-->
           <div class="task-plan-marker-summary" *ngIf="planMarker">
             <i class="fa-solid fa-location-dot"></i>
-            Tâche liée au plan - page {{ planMarker.page }}
+            Tâche liée au plan{{ plan?.nom ? ' — ' + plan.nom : '' }} - page {{ planMarker.page }}
           </div>
-          <div class="task-plan-create-panel" *ngIf="plan?.chemin">
+
+          <div class="task-plan-empty" *ngIf="!plansLoading && noActivePlans">
+            <i class="fa-regular fa-file-pdf"></i>
+            <p>Aucun plan actif disponible pour placer une tâche sur plan.</p>
+          </div>
+
+          <div class="task-plan-create-panel" *ngIf="plan && !plansLoading">
             <div class="task-plan-create-header">
-              <div>
-                <span>Plan du projet</span>
-                <strong>{{ planMarker ? 'Point sélectionné' : 'Choisir un point sur le plan' }}</strong>
+              <div class="task-plan-create-header-main">
+                <div>
+                  <span>Plan du projet</span>
+                  <strong>{{ plan?.nom || (planMarker ? 'Point sélectionné' : 'Choisir un point sur le plan') }}</strong>
+                </div>
               </div>
               <div class="task-plan-create-actions">
-                <button type="button" mat-stroked-button color="primary" (click)="taskPlanCreator.startPlanTaskMarkerCreation()">
+                <button type="button" mat-stroked-button color="primary" (click)="taskPlanCreator?.startPlanTaskMarkerCreation()">
                   <i class="fa-solid fa-location-dot"></i>
                   {{ planMarker ? 'Modifier le point' : 'Placer un point' }}
                 </button>
@@ -29,10 +37,11 @@
             </div>
             <app-task-plan
               #taskPlanCreator
+              *ngIf="plan?._id"
               [plan]="plan"
               [projectId]="idProjet"
               [tasks]="[]"
-              [height]="380"
+              [height]="400"
               [showTaskMarkers]="false"
               [allowTaskPopover]="false"
               [allowExistingTaskMarkerEdit]="false"
@@ -44,6 +53,17 @@
           </div>
           <div>
             <form [formGroup]="taskFormGroup">
+
+                  <div class="task-plan-select-row" *ngIf="showPlanSelector() && !plansLoading">
+                    <mat-form-field appearance="outline" class="task-plan-select-field">
+                      <mat-label>Plan actif</mat-label>
+                      <mat-select [value]="planId" (selectionChange)="onActivePlanChange($event.value)">
+                        <mat-option *ngFor="let activePlan of activePlans" [value]="activePlan._id?.toString()">
+                          {{ activePlan.nom }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
 
                   <div style="margin-bottom: 8px;">
                     <div class="row">

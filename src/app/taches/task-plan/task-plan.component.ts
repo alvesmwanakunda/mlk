@@ -6,6 +6,7 @@ import {
   HostListener,
   Input,
   OnChanges,
+  OnDestroy,
   Output,
   SimpleChanges,
   ViewChild
@@ -13,6 +14,7 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { firstValueFrom } from 'rxjs';
 import { ProjetsService } from 'src/app/shared/services/projets.service';
+import { PlanProjetService } from 'src/app/shared/services/plan-projet.service';
 
 type PlanTool = 'select' | 'pin' | 'pen' | 'highlighter' | 'cloud' | 'rectangle' | 'circle' | 'polygon' | 'arrow' | 'line' | 'text' | 'measure';
 type PlanMenu = 'draw' | 'shape' | 'styleColor' | 'lineWidth' | 'textSize' | null;
@@ -82,7 +84,7 @@ interface PlanContentBounds {
   templateUrl: './task-plan.component.html',
   styleUrls: ['./task-plan.component.scss']
 })
-export class TaskPlanComponent implements AfterViewInit, OnChanges {
+export class TaskPlanComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() plan: any;
   @Input() projectId: any;
   @Input() tasks: any[] = [];
@@ -94,6 +96,8 @@ export class TaskPlanComponent implements AfterViewInit, OnChanges {
   @Input() markerMode: TaskPlanMarkerMode = 'task';
   @Input() initialMarker: TaskPlanMarker | null = null;
   @Input() autoStartMarkerCreation = false;
+
+  @Input() filterPlanId: string | null = null;
 
   @Output() createTaskMarker = new EventEmitter<TaskPlanMarker>();
   @Output() markerChange = new EventEmitter<TaskPlanMarker | null>();
@@ -108,6 +112,9 @@ export class TaskPlanComponent implements AfterViewInit, OnChanges {
   planTotalPages = 0;
   planZoom = 1;
   planLoaded = false;
+  planPdfSrc: string | Uint8Array | null = null;
+  planPdfLoading = false;
+  planPdfLoadError = false;
   planFitMode: PlanFitMode = 'content';
   planPanX = 0;
   planPanY = 0;
@@ -166,15 +173,18 @@ export class TaskPlanComponent implements AfterViewInit, OnChanges {
   private readonly planMinZoom = 0.4;
   private readonly planMaxZoom = 5;
   private readonly minAnnotationSize = 8;
+  private planPdfObjectUrl: string | null = null;
 
   constructor(
     private readonly projetService: ProjetsService,
+    private readonly planProjetService: PlanProjetService,
     private readonly snackBar: MatSnackBar
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.plan || changes.projectId) {
       this.resetPlanState();
+      this.loadPlanPdfSource();
     }
 
     if (changes.initialMarker && this.markerMode === 'select') {
@@ -202,6 +212,10 @@ export class TaskPlanComponent implements AfterViewInit, OnChanges {
         this.startPlanTaskMarkerCreation();
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.revokePlanPdfObjectUrl();
   }
 
   @HostListener('window:resize')
@@ -818,6 +832,11 @@ export class TaskPlanComponent implements AfterViewInit, OnChanges {
       return false;
     }
 
+    const planId = this.getFilterPlanId();
+    if (planId && this.getTaskPlanId(task) !== planId) {
+      return false;
+    }
+
     this.focusTaskMarkerOnPlan(task, marker);
     return true;
   }
@@ -831,12 +850,24 @@ export class TaskPlanComponent implements AfterViewInit, OnChanges {
       return [];
     }
 
+    const planId = this.getFilterPlanId();
+
     return (this.tasks || [])
       .map((task) => {
         const marker = this.getTaskPlanMarker(task);
         return marker ? { ...marker, task } : null;
       })
-      .filter((marker): marker is PlanTaskMarkerView => !!marker && marker.page === this.planPage);
+      .filter((marker): marker is PlanTaskMarkerView => {
+        if (!marker || marker.page !== this.planPage) {
+          return false;
+        }
+
+        if (!planId) {
+          return true;
+        }
+
+        return this.getTaskPlanId(marker.task) === planId;
+      });
   }
 
   trackPlanTaskMarker(index: number, marker: PlanTaskMarkerView) {
@@ -1029,10 +1060,72 @@ export class TaskPlanComponent implements AfterViewInit, OnChanges {
     return +(coordinateSize.width / coordinateSize.height).toFixed(4);
   }
 
+  private getFilterPlanId(): string | null {
+    if (this.filterPlanId) {
+      return this.filterPlanId.toString();
+    }
+
+    return this.plan?._id ? this.plan._id.toString() : null;
+  }
+
+  private getTaskPlanId(task: any): string | null {
+    const taskPlan = task?.plan;
+
+    if (!taskPlan) {
+      return null;
+    }
+
+    if (typeof taskPlan === 'string') {
+      return taskPlan;
+    }
+
+    return taskPlan?._id?.toString() || taskPlan?.id?.toString() || null;
+  }
+
+  private loadPlanPdfSource() {
+    this.revokePlanPdfObjectUrl();
+    this.planPdfSrc = null;
+    this.planPdfLoadError = false;
+
+    if (!this.plan) {
+      return;
+    }
+
+    if (this.planProjetService.isSharePointPlan(this.plan)) {
+      this.planPdfLoading = true;
+      this.planProjetService.getPlanFileContent(this.plan._id).subscribe({
+        next: (blob) => {
+          this.planPdfObjectUrl = URL.createObjectURL(blob);
+          this.planPdfSrc = this.planPdfObjectUrl;
+          this.planPdfLoading = false;
+        },
+        error: (error) => {
+          console.error('Erreur chargement PDF SharePoint', error);
+          this.planPdfLoading = false;
+          this.planPdfLoadError = true;
+        }
+      });
+      return;
+    }
+
+    this.planPdfSrc = this.plan.chemin || null;
+    if (!this.planPdfSrc) {
+      this.planPdfLoadError = true;
+    }
+  }
+
+  private revokePlanPdfObjectUrl() {
+    if (this.planPdfObjectUrl) {
+      URL.revokeObjectURL(this.planPdfObjectUrl);
+      this.planPdfObjectUrl = null;
+    }
+  }
+
   private resetPlanState() {
     this.planPage = 1;
     this.planTotalPages = 0;
     this.planLoaded = false;
+    this.planPdfLoadError = false;
     this.resetPlanLayerSize(true);
     this.planContentBoundsByPage.clear();
     this.resetPlanPan();

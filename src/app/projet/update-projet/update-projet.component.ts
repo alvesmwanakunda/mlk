@@ -30,8 +30,6 @@ export class UpdateProjetComponent implements OnInit {
   filteredOptions:string[]=[];
   fileName:any;
   file:File;
-  planFile:File;
-  planName:any;
   projetFormError:any;
   onLoadForm:boolean=false;
   projet:any;
@@ -49,7 +47,6 @@ export class UpdateProjetComponent implements OnInit {
   contacts:any;
   suggestions$!: Observable<Suggestion[]>;
   mapPosition: MapPosition | null = null;
-  plan:any;
 
 
   constructor(
@@ -81,7 +78,6 @@ export class UpdateProjetComponent implements OnInit {
       genre: [null],
       nom: [null],
       prenom: [null],
-      plan: [null],
       contact: [null],
     });
 
@@ -180,20 +176,7 @@ export class UpdateProjetComponent implements OnInit {
     this.getAllEntreprises();
     this.getContry();
     this.getDevis();
-    this.getPlan();
 
-  }
-
-  getPlan(){
-     this.projetService.getPlanProjet(this.idProjet).subscribe((res:any)=>{
-        console.log("Plan=================>", res);
-        this.plan=res?.message;
-        this.planName=this.plan?.nom;
-    },(error) => {
-      this.plan=null;
-      this.planName=null;
-      console.log("Erreur lors de la récupération des données", error);
-    })
   }
 
   getProjet() {
@@ -207,7 +190,6 @@ export class UpdateProjetComponent implements OnInit {
         genre: this.projet?.genre ?? null,
         nom: this.projet?.nom ?? null,
         prenom: this.projet?.prenom ?? null,
-        plan: this.projet?.plan ?? null,
         contact: this.projet?.contact ?? null,
       }, { emitEvent: false });
 
@@ -438,34 +420,6 @@ export class UpdateProjetComponent implements OnInit {
     }
   }
 
-  onPlanSelected(event){
-    this.planFile = event.target.files[0];
-    if(this.planFile){
-      const maxSizeInBytes = 25 * 1024 * 1024;
-      const isPdf = this.planFile.type === 'application/pdf' || this.planFile.name.toLowerCase().endsWith('.pdf');
-
-      if(!isPdf){
-        this.planName = null;
-        this.planFile = null;
-        event.target.value = '';
-        this.message='Le plan doit être un fichier PDF.';
-        this.openSnackBarError(this.message);
-        return;
-      }
-
-      const isValid = this.projetService.validateImageSize(this.planFile, maxSizeInBytes);
-      if(isValid){
-        this.planName = this.planFile.name;
-      }else{
-        this.planName = null;
-        this.planFile = null;
-        event.target.value = '';
-        this.message='La taille du plan PDF ne doit pas dépasser 25 Mo.';
-        this.openSnackBarError(this.message);
-      }
-    }
-  }
-
   openSnackBarError(message){
     this.snackbar.open(message, 'Fermer',{
       duration:6000,
@@ -565,104 +519,57 @@ export class UpdateProjetComponent implements OnInit {
 //      })
 //  }
 
-updatePlan(idProjetToNavigate = this.idProjet):void{
-  const formData: FormData = new FormData();
-
-  if(!this.planFile || !this.plan?._id){
-    this.onLoadForm = false;
-    return;
-  }
-
-  formData.append("uploadplan", this.planFile);
-
-  this.projetService.updatePlanProjet(this.plan._id, formData).subscribe({
-    next: () => {
-      this.onLoadForm = false;
-      this.message = 'Projet a été modifié avec succès';
-      this.openSnackBar(this.message);
-      this.router.navigate(["projet", idProjetToNavigate]);
-    },
-    error: (error) => {
-      this.onLoadForm = false;
-      this.message = "Erreur lors de la mise à jour du plan: " + (error.error?.message || error.message);
-      this.openSnackBarError(this.message);
-    }
-  });
-}
-
 updateProjet(): void {
   this.onLoadForm = true;
 
   const formData: FormData = new FormData();
-  const shouldUpdateExistingPlan = !!this.planFile && !!this.plan?._id;
 
-  // Ajouter le fichier s'il existe
   if (this.file) {
     formData.append("uploadfile", this.file);
   }
 
-  if(this.planFile && !this.plan?._id){
-      formData.append("uploadplan", this.planFile);
-  }
-
-  // Récupérer les valeurs des formulaires
   const firstFormValues = this.firstFormGroup.value;
   const secondFormValues = this.secondFormGroup.value;
   const threeFormValues = this.threeFormGroup.value;
 
-  // Fusionner toutes les valeurs
   const allValues = {
     ...firstFormValues,
     ...secondFormValues,
     ...threeFormValues
   };
 
-  // Ajouter chaque valeur individuellement dans FormData
   Object.keys(allValues).forEach(key => {
     if (allValues[key] !== null && allValues[key] !== undefined) {
-      // Convertir les dates en string ISO
       if (allValues[key] instanceof Date) {
         formData.append(key, allValues[key].toISOString());
       }
-      // Pour les objets (comme entreprise qui est un _id)
       else if (typeof allValues[key] === 'object' && allValues[key] !== null) {
-        // Si c'est un pays sélectionné depuis l'autocomplete
         if (key === 'pays' && allValues[key].name) {
           formData.append(key, allValues[key].name);
         }
-        // Si c'est une devise sélectionnée depuis l'autocomplete
         else if (key === 'devise' && allValues[key].nom) {
           formData.append(key, allValues[key].nom);
         }
-        // Sinon, essayer de prendre l'_id ou stringifier
         else if (allValues[key]._id) {
           formData.append(key, allValues[key]._id);
         } else {
           formData.append(key, JSON.stringify(allValues[key]));
         }
       }
-      // Pour les valeurs simples
       else {
         formData.append(key, allValues[key].toString());
       }
     }
   });
 
-  // Afficher le contenu de FormData pour débogage
   this.logFormData(formData);
 
   this.projetService.updateProjet(this.idProjet, formData).subscribe({
     next: (res: any) => {
-      const projetId = res?.message?._id || this.idProjet;
-      if(shouldUpdateExistingPlan){
-        this.updatePlan(projetId);
-        return;
-      }
-
       this.onLoadForm = false;
       this.message = 'Projet a été modifié avec succès';
       this.openSnackBar(this.message);
-      this.router.navigate(["projet", projetId]);
+      this.router.navigate(["projet", res?.message?._id || this.idProjet]);
     },
     error: (error) => {
       this.onLoadForm = false;

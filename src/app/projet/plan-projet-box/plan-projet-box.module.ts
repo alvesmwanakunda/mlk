@@ -11,6 +11,8 @@ import { DetailPlanFolderComponent } from './detail-plan-folder/detail-plan-fold
 import { UpdatePlanFolderComponent } from './update-plan-folder/update-plan-folder.component';
 import { DeletePlanFolderComponent } from './delete-plan-folder/delete-plan-folder.component';
 import { DeletePlanFileComponent } from './delete-plan-file/delete-plan-file.component';
+import { ClassifyPlanFileComponent } from './classify-plan-file/classify-plan-file.component';
+import { ValidatePlanFileComponent } from './validate-plan-file/validate-plan-file.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { DeletePlanFileComponent } from './delete-plan-file/delete-plan-file.com
     DetailPlanFolderComponent,
     UpdatePlanFolderComponent,
     DeletePlanFolderComponent,
-    DeletePlanFileComponent
+    DeletePlanFileComponent,
+    ClassifyPlanFileComponent,
+    ValidatePlanFileComponent
   ],
   imports: [
     CommonModule,

@@ -25,8 +25,6 @@ export class AddProjetComponent implements OnInit {
   filteredOptions:string[]=[];
   fileName:any;
   file:File;
-  plan:File;
-  planName:any;
   projetFormError:any;
   onLoadForm:boolean=false;
   form1:any;
@@ -101,7 +99,6 @@ export class AddProjetComponent implements OnInit {
       nom:[''],
       prenom:[''],
       genre:[''],
-      plan:[''],
       contact:['']
     });
     this.secondFormGroup=this._formBuilder.group({
@@ -207,34 +204,6 @@ export class AddProjetComponent implements OnInit {
       }else{
           this.message='La taille de l\'image ne doit pas dépasser 25 Mo.';
           this.openSnackBarError(this.message);
-      }
-    }
-  }
-
-  onPlanSelected(event){
-    this.plan = event.target.files[0];
-    if(this.plan){
-      const maxSizeInBytes = 25 * 1024 * 1024;
-      const isPdf = this.plan.type === 'application/pdf' || this.plan.name.toLowerCase().endsWith('.pdf');
-
-      if(!isPdf){
-        this.planName = null;
-        this.plan = null;
-        event.target.value = '';
-        this.message='Le plan doit être un fichier PDF.';
-        this.openSnackBarError(this.message);
-        return;
-      }
-
-      const isValid = this.projetService.validateImageSize(this.plan, maxSizeInBytes);
-      if(isValid){
-        this.planName = this.plan.name;
-      }else{
-        this.planName = null;
-        this.plan = null;
-        event.target.value = '';
-        this.message='La taille du plan PDF ne doit pas dépasser 25 Mo.';
-        this.openSnackBarError(this.message);
       }
     }
   }
@@ -403,9 +372,6 @@ export class AddProjetComponent implements OnInit {
      if(this.file){
       formData.append("uploadfile", this.file);
      }
-     if(this.plan){
-      formData.append("uploadplan", this.plan);
-     }
      formData.append("projet", this.form1.projet);
      formData.append("contact", this.form1.contact);
      formData.append("genre", this.form1.genre);
@@ -413,7 +379,6 @@ export class AddProjetComponent implements OnInit {
      formData.append("prenom", this.form1.prenom);
      formData.append("entreprise", this.entreprise?._id);
      formData.append("etat", this.form1.etat);
-     formData.append("plan", this.form1.plan);
      formData.append("responsable", this.form1.responsable);
      formData.append("pays", this.form2.pays);
      formData.append("adresse", this.form2.adresse);

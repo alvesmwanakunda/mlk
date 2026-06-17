@@ -6,7 +6,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TachesComponent } from '../taches.component';
 import { AuthService } from '../../shared/services/auth.service';
 import { ImageAnnotationComponent } from 'src/app/note-module/image-annotation/image-annotation.component';
-import { TaskPlanMarker } from '../task-plan/task-plan.component';
+import { TaskPlanMarker, TaskPlanComponent } from '../task-plan/task-plan.component';
+import { PlanProjetService } from 'src/app/shared/services/plan-projet.service';
 
 @Component({
   selector: 'app-add-taches',
@@ -21,6 +22,9 @@ export class AddTachesComponent implements OnInit {
   contacts:any
   plan:any;
   planId:any;
+  activePlans: any[] = [];
+  plansLoading = false;
+  noActivePlans = false;
   planMarker: TaskPlanMarker | null = null;
   autoStartPlanMarker = false;
 
@@ -51,6 +55,7 @@ export class AddTachesComponent implements OnInit {
 
   // Référence au composant d'annotation si nécessaire
   @ViewChild(ImageAnnotationComponent) annotationComponent: ImageAnnotationComponent;
+  @ViewChild('taskPlanCreator') taskPlanCreator?: TaskPlanComponent;
 
 
 
@@ -65,15 +70,13 @@ export class AddTachesComponent implements OnInit {
      private tachesService: TachesService,
      @Inject(MAT_DIALOG_DATA) public data:any,
      private authService:AuthService,
+     private planProjetService: PlanProjetService,
      private cdRef: ChangeDetectorRef
   ){
     this.idProjet = this.data.id;
-    this.plan = this.data?.plan;
-    this.planId = this.getPlanId(this.plan);
     this.planMarker = this.normalizePlanMarker(this.data?.marker);
     this.autoStartPlanMarker = !!this.data?.autoStartPlanMarker && !this.planMarker;
-    console.log("projet", this.idProjet);
-    console.log("projet", this.data.id);
+    this.activePlans = Array.isArray(this.data?.activePlans) ? this.data.activePlans : [];
   }
 
   champ_validation={
@@ -95,6 +98,12 @@ export class AddTachesComponent implements OnInit {
       description:['',null],
       assignes:[[],null]
     });
+
+    if (this.activePlans.length > 0) {
+      this.initSelectedPlan(this.data?.plan || null);
+    } else {
+      this.loadActivePlans();
+    }
   }
 
   // Annotation Image
@@ -440,6 +449,60 @@ export class AddTachesComponent implements OnInit {
     this.planMarker = null;
   }
 
+  showPlanSelector(): boolean {
+    return this.activePlans.length > 1;
+  }
+
+  onActivePlanChange(planId: string) {
+    const selectedPlan = this.activePlans.find(
+      (item) => item._id?.toString() === planId
+    );
+    this.selectPlan(selectedPlan || null, true);
+  }
+
+  private loadActivePlans() {
+    this.plansLoading = true;
+    this.noActivePlans = false;
+
+    this.planProjetService.getActivePlansForTasks(this.idProjet).subscribe((res: any) => {
+      this.activePlans = Array.isArray(res?.message) ? res.message : [];
+      this.plansLoading = false;
+      this.noActivePlans = this.activePlans.length === 0;
+      this.initSelectedPlan(this.data?.plan || null);
+    }, () => {
+      this.plansLoading = false;
+      this.noActivePlans = true;
+      this.plan = null;
+      this.planId = null;
+    });
+  }
+
+  private initSelectedPlan(preferredPlan: any) {
+    if (!this.activePlans.length) {
+      this.plan = null;
+      this.planId = null;
+      return;
+    }
+
+    const preferredId = this.getPlanId(preferredPlan);
+    const matchedPlan = preferredId
+      ? this.activePlans.find((item) => item._id?.toString() === preferredId.toString())
+      : null;
+
+    this.selectPlan(matchedPlan || this.activePlans[0], false);
+  }
+
+  private selectPlan(selectedPlan: any, resetMarker: boolean) {
+    const previousPlanId = this.planId?.toString() || null;
+    this.plan = selectedPlan ? { ...selectedPlan } : null;
+    this.planId = this.getPlanId(this.plan);
+
+    if (resetMarker || (previousPlanId && previousPlanId !== this.planId?.toString())) {
+      this.planMarker = null;
+      this.autoStartPlanMarker = false;
+    }
+  }
+
   private normalizePlanMarker(marker: any): TaskPlanMarker | null {
     if (!marker || typeof marker !== 'object') {
       return null;
@@ -473,7 +536,7 @@ export class AddTachesComponent implements OnInit {
       return plan;
     }
 
-    return plan?._id || plan?.id || null;
+    return plan?._id?.toString() || plan?.id?.toString() || null;
   }
 
 

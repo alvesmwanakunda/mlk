@@ -88,6 +88,27 @@
             </div>
           </div><!--col-->
           <div class="col-9 task-plan-panel">
+              <div class="task-plan-selector" *ngIf="showPlanSelector()">
+                <mat-form-field appearance="outline" class="task-plan-select-field" style="padding-top: 10px;">
+                  <mat-label>Plan actif</mat-label>
+                  <mat-select [value]="selectedPlanId" (selectionChange)="onActivePlanChange($event.value)">
+                    <mat-option *ngFor="let activePlan of activePlans" [value]="activePlan._id">
+                      {{ activePlan.nom }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="task-plan-empty" *ngIf="!plansLoading && noActivePlans">
+                <i class="fa-regular fa-file-pdf"></i>
+                <p>Aucun plan actif disponible pour ce projet.</p>
+                <small>Validez un plan PDF dans l'onglet Plan pour pouvoir y placer des tâches.</small>
+              </div>
+
+              <div class="task-plan-loading" *ngIf="plansLoading">
+                Chargement des plans...
+              </div>
+
               <app-task-plan
                 #taskPlan
                 *ngIf="plan"
@@ -95,6 +116,7 @@
                 [projectId]="idProjet"
                 [tasks]="task"
                 [height]="planViewerHeight"
+                [filterPlanId]="selectedPlanId"
                 (createTaskMarker)="openDialog($event)"
                 (openTask)="openDialogUpdate($event?._id)"
                 (taskMarkersChanged)="getAllTaches()">

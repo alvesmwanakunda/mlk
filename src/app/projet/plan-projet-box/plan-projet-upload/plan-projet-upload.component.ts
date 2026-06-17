@@ -1,8 +1,10 @@
 import { Component, Input, OnDestroy } from '@angular/core';
 import { HttpEventType } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
 import { PlanProjetService } from 'src/app/shared/services/plan-projet.service';
+import { ClassifyPlanFileComponent } from '../classify-plan-file/classify-plan-file.component';
 
 type UploadPhase = 'browser' | 'sharepoint' | null;
 
@@ -25,7 +27,8 @@ export class PlanProjetUploadComponent implements OnDestroy {
 
   constructor(
     private planProjetService: PlanProjetService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
   ) {}
 
   ngOnDestroy() {
@@ -115,8 +118,10 @@ export class PlanProjetUploadComponent implements OnDestroy {
           if (allDone) {
             this.clearPollTimer();
             this.sharepointProgress = 100;
-            this.planProjetService.listPlans.next({ nom: 'upload' });
-            setTimeout(() => this.resetUploadState(), 1200);
+            const uploadedFiles = jobs
+              .map((job) => job?.result)
+              .filter(Boolean);
+            this.openClassificationDialogs(uploadedFiles);
           }
         },
         error: () => {
@@ -129,6 +134,41 @@ export class PlanProjetUploadComponent implements OnDestroy {
 
     poll();
     this.pollTimer = setInterval(poll, 1000);
+  }
+
+  private openClassificationDialogs(files: any[]) {
+    if (!files.length) {
+      this.planProjetService.listPlans.next({ nom: 'upload' });
+      this.resetUploadState();
+      return;
+    }
+
+    let index = 0;
+
+    const openNext = () => {
+      if (index >= files.length) {
+        this.planProjetService.listPlans.next({ nom: 'upload' });
+        this.resetUploadState();
+        return;
+      }
+
+      const file = files[index];
+      index += 1;
+
+      const dialogRef = this.dialog.open(ClassifyPlanFileComponent, {
+        width: '520px',
+        maxWidth: '95vw',
+        panelClass: 'classify-plan-dialog-panel',
+        disableClose: false,
+        data: { id: file._id, nom: file.nom }
+      });
+
+      dialogRef.afterClosed().subscribe(() => {
+        openNext();
+      });
+    };
+
+    openNext();
   }
 
   private showError(message: string) {

@@ -66,18 +66,6 @@
                         </mat-select>
                       </mat-form-field>
                     </div>
-                    <div class="col">
-                      <!-- <mat-form-field class="example-full-width">
-                        <mat-label>Url du plan</mat-label>
-                        <input  matInput  formControlName="plan">
-                      </mat-form-field> -->
-                      <div style="margin-bottom: 15px;">
-                        <label class="label-entreprise">Plan PDF <span *ngIf="planName">({{planName}})</span></label>
-                        <br/>
-                        <input type="file" class="file-input" accept=".pdf,application/pdf" (change)="onPlanSelected($event)" #planUpload>
-                        <button type="button" (click)="planUpload.click()" class="btn btn-projet"><i class="fa-solid fa-cloud-arrow-down"></i> charger le plan</button>
-                      </div>
-                    </div>
                   </div>
                   <div align="right">
                     <button mat-button matStepperNext class="btn-entreprise">Suivant <i class="fa-solid fa-chevron-right"></i></button>
