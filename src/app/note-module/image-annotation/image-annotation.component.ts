@@ -23,6 +23,7 @@ export class ImageAnnotationComponent implements AfterViewInit {
   @Output() annotationCanceled = new EventEmitter<void>();
 
   @ViewChild('canvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('textInputField', { static: false }) textInputRef?: ElementRef<HTMLInputElement>;
 
   private ctx!: CanvasRenderingContext2D;
   private isDrawing = false;
@@ -36,6 +37,7 @@ export class ImageAnnotationComponent implements AfterViewInit {
   private lastX = 0;
   private lastY = 0;
   private isPenDrawing = false;
+  private currentPenPoints: { x: number; y: number }[] = [];
 
   // Outils d'annotation
   selectedTool: 'pen' | 'text' | 'arrow' | 'rectangle' | 'circle' | 'select' | 'erase' = 'pen';
@@ -45,6 +47,7 @@ export class ImageAnnotationComponent implements AfterViewInit {
   textInput: string = '';
   isTextMode = false;
   textPosition = { x: 0, y: 0 };
+  private editingTextAnnotation: Annotation | null = null;
 
   // Gestion des annotations
   annotations: Annotation[] = [];
@@ -101,6 +104,7 @@ constructor(private cdRef: ChangeDetectorRef) {}
     this.ctx.strokeStyle = this.strokeColor;
     this.ctx.fillStyle = this.strokeColor;
     this.ctx.font = `${this.fontSize}px Arial`;
+    this.ctx.textBaseline = 'top';
   }
 
   private drawImageOnCanvas() {
@@ -167,8 +171,21 @@ constructor(private cdRef: ChangeDetectorRef) {}
   private drawTextAnnotation(annotation: Annotation) {
     if (!annotation.text) return;
 
-    this.ctx.font = `${annotation.fontSize}px Arial`;
+    const fontSize = Number(annotation.fontSize || this.fontSize);
+    this.ctx.font = `${fontSize}px Arial`;
+    this.ctx.textBaseline = 'top';
+    this.ctx.fillStyle = annotation.color;
     this.ctx.fillText(annotation.text, annotation.points[0].x, annotation.points[0].y);
+
+    if (annotation.isSelected) {
+      const bounds = this.getTextBounds(annotation);
+      this.ctx.save();
+      this.ctx.strokeStyle = '#00ff00';
+      this.ctx.lineWidth = 1;
+      this.ctx.setLineDash([4, 3]);
+      this.ctx.strokeRect(bounds.x - 4, bounds.y - 4, bounds.width + 8, bounds.height + 8);
+      this.ctx.restore();
+    }
   }
 
   private drawArrowAnnotation(annotation: Annotation) {
@@ -222,8 +239,12 @@ constructor(private cdRef: ChangeDetectorRef) {}
     const { x, y } = this.getMousePos(event);
 
     if (this.selectedTool === 'text') {
-      this.textPosition = { x, y };
-      this.isTextMode = true;
+      const textAnnotation = this.findAnnotationAt(x, y, annotation => annotation.type === 'text');
+      if (textAnnotation) {
+        this.openTextEditor(textAnnotation);
+      } else {
+        this.openTextEditorAt(x, y);
+      }
       return;
     }
 
@@ -253,6 +274,9 @@ constructor(private cdRef: ChangeDetectorRef) {}
       this.isPenDrawing = true;
       this.lastX = x;
       this.lastY = y;
+      this.currentPenPoints = [{ x, y }];
+      this.ctx.beginPath();
+      this.ctx.moveTo(x, y);
     }
 
     this.saveState();
@@ -304,12 +328,18 @@ constructor(private cdRef: ChangeDetectorRef) {}
   }
 
   private finalizeAnnotation() {
+    const points = this.selectedTool === 'pen'
+      ? this.currentPenPoints
+      : [{ x: this.startX, y: this.startY }, { x: this.currentX, y: this.currentY }];
+
+    if (this.selectedTool === 'pen' && points.length < 2) {
+      points.push({ x: this.currentX, y: this.currentY });
+    }
+
     const annotation: Annotation = {
       id: this.generateId(),
       type: this.selectedTool as 'pen' | 'arrow' | 'rectangle' | 'circle',
-      points: this.selectedTool === 'pen'
-        ? [{ x: this.startX, y: this.startY }, { x: this.currentX, y: this.currentY }]
-        : [{ x: this.startX, y: this.startY }, { x: this.currentX, y: this.currentY }],
+      points,
       color: this.strokeColor,
       width: this.strokeWidth
     };
@@ -317,6 +347,7 @@ constructor(private cdRef: ChangeDetectorRef) {}
     this.annotations.push(annotation);
     this.saveState();
     this.drawImageOnCanvas();
+    this.currentPenPoints = [];
   }
 
   private generateId(): string {
@@ -325,17 +356,11 @@ constructor(private cdRef: ChangeDetectorRef) {}
 
   // Méthodes de dessin
   private drawPen(x: number, y: number) {
-    // Ajouter le point à l'annotation en cours
-    const currentAnnotation = this.annotations[this.annotations.length - 1];
-    if (currentAnnotation && currentAnnotation.type === 'pen') {
-      currentAnnotation.points.push({ x, y });
-    }
-
+    this.currentPenPoints.push({ x, y });
+    this.ctx.beginPath();
+    this.ctx.moveTo(this.lastX, this.lastY);
     this.ctx.lineTo(x, y);
     this.ctx.stroke();
-
-    this.ctx.beginPath();
-    this.ctx.moveTo(x, y);
 
     this.lastX = x;
     this.lastY = y;
@@ -373,18 +398,33 @@ constructor(private cdRef: ChangeDetectorRef) {}
     // Désélectionner tout
     this.annotations.forEach(ann => ann.isSelected = false);
     this.selectedAnnotation = null;
+    this.isDrawing = false;
 
     // Chercher l'annotation la plus proche
+    const annotation = this.findAnnotationAt(x, y);
+    if (annotation) {
+      annotation.isSelected = true;
+      this.selectedAnnotation = annotation;
+      this.isDrawing = true;
+      this.syncToolOptions(annotation);
+    }
+
+    this.drawImageOnCanvas();
+  }
+
+  private findAnnotationAt(
+    x: number,
+    y: number,
+    predicate: (annotation: Annotation) => boolean = () => true
+  ): Annotation | null {
     for (let i = this.annotations.length - 1; i >= 0; i--) {
       const annotation = this.annotations[i];
-      if (this.isPointInAnnotation(x, y, annotation)) {
-        annotation.isSelected = true;
-        this.selectedAnnotation = annotation;
-        this.isDrawing = true;
-        this.drawImageOnCanvas();
-        break;
+      if (predicate(annotation) && this.isPointInAnnotation(x, y, annotation)) {
+        return annotation;
       }
     }
+
+    return null;
   }
 
   private isPointInAnnotation(x: number, y: number, annotation: Annotation): boolean {
@@ -416,13 +456,26 @@ constructor(private cdRef: ChangeDetectorRef) {}
   private isPointNearText(x: number, y: number, annotation: Annotation): boolean {
     if (!annotation.text) return false;
 
-    this.ctx.font = `${annotation.fontSize}px Arial`;
-    const metrics = this.ctx.measureText(annotation.text);
-    const textX = annotation.points[0].x;
-    const textY = annotation.points[0].y;
+    const bounds = this.getTextBounds(annotation);
+    const tolerance = 6;
 
-    return x >= textX && x <= textX + metrics.width &&
-           y >= textY && y <= textY + (annotation.fontSize || 16);
+    return x >= bounds.x - tolerance &&
+           x <= bounds.x + bounds.width + tolerance &&
+           y >= bounds.y - tolerance &&
+           y <= bounds.y + bounds.height + tolerance;
+  }
+
+  private getTextBounds(annotation: Annotation) {
+    const fontSize = Number(annotation.fontSize || this.fontSize);
+    this.ctx.font = `${fontSize}px Arial`;
+    const metrics = this.ctx.measureText(annotation.text || '');
+
+    return {
+      x: annotation.points[0].x,
+      y: annotation.points[0].y,
+      width: Math.max(metrics.width, 8),
+      height: fontSize
+    };
   }
 
   private isPointInBoundingBox(x: number, y: number, annotation: Annotation): boolean {
@@ -497,20 +550,33 @@ constructor(private cdRef: ChangeDetectorRef) {}
 
   // Gestion du texte
   addText() {
-    if (this.textInput.trim()) {
-      const annotation: Annotation = {
-        id: this.generateId(),
-        type: 'text',
-        points: [this.textPosition],
-        color: this.strokeColor,
-        width: this.strokeWidth,
-        text: this.textInput,
-        fontSize: this.fontSize
-      };
+    const text = this.textInput.trim();
 
-      this.annotations.push(annotation);
+    if (text) {
+      if (this.editingTextAnnotation) {
+        this.editingTextAnnotation.text = text;
+        this.editingTextAnnotation.points = [{ ...this.textPosition }];
+        this.editingTextAnnotation.color = this.strokeColor;
+        this.editingTextAnnotation.fontSize = this.fontSize;
+        this.editingTextAnnotation.isSelected = true;
+        this.selectedAnnotation = this.editingTextAnnotation;
+      } else {
+        const annotation: Annotation = {
+          id: this.generateId(),
+          type: 'text',
+          points: [{ ...this.textPosition }],
+          color: this.strokeColor,
+          width: this.strokeWidth,
+          text,
+          fontSize: this.fontSize
+        };
+
+        this.annotations.push(annotation);
+      }
+
       this.textInput = '';
       this.isTextMode = false;
+      this.editingTextAnnotation = null;
       this.saveState();
       this.drawImageOnCanvas();
     }
@@ -519,12 +585,47 @@ constructor(private cdRef: ChangeDetectorRef) {}
   cancelText() {
     this.isTextMode = false;
     this.textInput = '';
+    this.editingTextAnnotation = null;
+  }
+
+  private openTextEditorAt(x: number, y: number) {
+    this.annotations.forEach(ann => ann.isSelected = false);
+    this.selectedAnnotation = null;
+    this.editingTextAnnotation = null;
+    this.textPosition = { x, y };
+    this.textInput = '';
+    this.isTextMode = true;
+    this.drawImageOnCanvas();
+    this.focusTextInput();
+  }
+
+  private openTextEditor(annotation: Annotation) {
+    this.annotations.forEach(ann => ann.isSelected = false);
+    annotation.isSelected = true;
+    this.selectedAnnotation = annotation;
+    this.editingTextAnnotation = annotation;
+    this.textPosition = { ...annotation.points[0] };
+    this.textInput = annotation.text || '';
+    this.strokeColor = annotation.color;
+    this.fontSize = annotation.fontSize || this.fontSize;
+    this.isTextMode = true;
+    this.updateCanvasStyle();
+    this.drawImageOnCanvas();
+    this.focusTextInput();
+  }
+
+  private focusTextInput() {
+    setTimeout(() => {
+      this.textInputRef?.nativeElement.focus();
+      this.textInputRef?.nativeElement.select();
+    });
   }
 
   // Outils
   selectTool(tool: 'pen' | 'text' | 'arrow' | 'rectangle' | 'circle' | 'select' | 'erase') {
     this.selectedTool = tool;
     this.isTextMode = false;
+    this.editingTextAnnotation = null;
 
     // Désélectionner les annotations quand on change d'outil
     if (tool !== 'select') {
@@ -543,6 +644,17 @@ constructor(private cdRef: ChangeDetectorRef) {}
 
   changeStrokeWidth() {
     this.ctx.lineWidth = this.strokeWidth;
+  }
+
+  private syncToolOptions(annotation: Annotation) {
+    this.strokeColor = annotation.color;
+    this.strokeWidth = annotation.width;
+
+    if (annotation.type === 'text' && annotation.fontSize) {
+      this.fontSize = annotation.fontSize;
+    }
+
+    this.updateCanvasStyle();
   }
 
   // Effacer l'annotation sélectionnée
@@ -616,6 +728,29 @@ constructor(private cdRef: ChangeDetectorRef) {}
     };
   }
 
+  get textOverlayPosition(): { x: number; y: number } {
+    const canvas = this.canvasRef?.nativeElement;
+    if (!canvas) return this.textPosition;
+
+    const rect = canvas.getBoundingClientRect();
+
+    return {
+      x: this.textPosition.x * rect.width / canvas.width,
+      y: this.textPosition.y * rect.height / canvas.height
+    };
+  }
+
+  onCanvasDoubleClick(event: MouseEvent) {
+    const { x, y } = this.getMousePos(event);
+    const annotation = this.findAnnotationAt(x, y, item => item.type === 'text');
+
+    if (!annotation) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    this.openTextEditor(annotation);
+  }
+
   // Actions finales
   saveAnnotation() {
     /*const canvas = this.canvasRef.nativeElement;
@@ -653,6 +788,7 @@ constructor(private cdRef: ChangeDetectorRef) {}
 onFontSizeChange(event: Event) {
   const target = event.target as HTMLInputElement;
   this.fontSize = parseInt(target.value, 10);
+  this.updateCanvasStyle();
 }
 
   // Empêcher le comportement par défaut

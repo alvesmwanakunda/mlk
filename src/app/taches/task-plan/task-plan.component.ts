@@ -79,6 +79,15 @@ interface PlanContentBounds {
   height: number;
 }
 
+interface PlanMarkerPlacementInteraction {
+  clientX: number;
+  clientY: number;
+  page: number;
+  panX: number;
+  panY: number;
+  isPanning: boolean;
+}
+
 @Component({
   selector: 'app-task-plan',
   templateUrl: './task-plan.component.html',
@@ -166,12 +175,15 @@ export class TaskPlanComponent implements AfterViewInit, OnChanges, OnDestroy {
   private annotationInteractionStartPoint: PlanPoint | null = null;
   private annotationInteractionStartSnapshot: PlanAnnotation | null = null;
   private activeResizeHandle: PlanResizeHandle | null = null;
+  private markerPlacementInteraction: PlanMarkerPlacementInteraction | null = null;
   private planContentBoundsByPage = new Map<number, PlanContentBounds>();
   private pendingPlanContentFit = false;
   private centerPlanContentAfterRender = false;
   private pendingTaskMarkerFocus: TaskPlanMarker | null = null;
   private readonly planMinZoom = 0.4;
   private readonly planMaxZoom = 5;
+  private readonly planAutoContentMaxZoom = 2.5;
+  private readonly markerPlacementPanThreshold = 6;
   private readonly minAnnotationSize = 8;
   private planPdfObjectUrl: string | null = null;
 
@@ -235,6 +247,11 @@ export class TaskPlanComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   @HostListener('document:mousemove', ['$event'])
   onDocumentMouseMove(event: MouseEvent) {
+    if (this.markerPlacementInteraction) {
+      this.updateMarkerPlacementInteraction(event);
+      return;
+    }
+
     if (this.isDraggingPendingMarker) {
       this.updatePendingTaskMarker(event);
       return;
@@ -253,8 +270,13 @@ export class TaskPlanComponent implements AfterViewInit, OnChanges, OnDestroy {
     this.planPanY = this.planPanOriginY + event.clientY - this.planPanStartY;
   }
 
-  @HostListener('document:mouseup')
-  onDocumentMouseUp() {
+  @HostListener('document:mouseup', ['$event'])
+  onDocumentMouseUp(event: MouseEvent) {
+    if (this.markerPlacementInteraction) {
+      this.finishMarkerPlacementInteraction(event);
+      return;
+    }
+
     if (this.isDraggingPendingMarker) {
       this.isDraggingPendingMarker = false;
       return;
@@ -413,8 +435,7 @@ export class TaskPlanComponent implements AfterViewInit, OnChanges, OnDestroy {
     this.activePlanMenu = null;
 
     if (this.isCreatingPlanTaskMarker) {
-      this.onPdfClick(event, this.planPage);
-      this.isDraggingPendingMarker = true;
+      this.startMarkerPlacementInteraction(event);
       return;
     }
 
@@ -472,6 +493,11 @@ export class TaskPlanComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   updatePlanAnnotation(event: MouseEvent) {
+    if (this.markerPlacementInteraction) {
+      this.updateMarkerPlacementInteraction(event);
+      return;
+    }
+
     if (this.isDraggingPendingMarker) {
       this.updatePendingTaskMarker(event);
       return;
@@ -601,10 +627,8 @@ export class TaskPlanComponent implements AfterViewInit, OnChanges, OnDestroy {
     }
 
     if (this.isCreatingPlanTaskMarker) {
-      event.preventDefault();
       event.stopPropagation();
-      this.onPdfClick(event, this.planPage);
-      this.isDraggingPendingMarker = true;
+      this.startMarkerPlacementInteraction(event);
       return;
     }
 
@@ -896,7 +920,7 @@ export class TaskPlanComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   getPlanPdfRenderScale() {
     const pixelRatio = window.devicePixelRatio || 1;
-    return this.clamp(Math.ceil(this.planZoom * pixelRatio), 2, 4);
+    return this.clamp(Math.ceil(this.planZoom * pixelRatio), 2, 6);
   }
 
   getPlanPdfRenderTransform() {
@@ -1229,6 +1253,56 @@ export class TaskPlanComponent implements AfterViewInit, OnChanges, OnDestroy {
 
     event.preventDefault();
     this.pendingMarker = this.getTaskMarkerFromEvent(event, this.pendingMarker.page);
+  }
+
+  private startMarkerPlacementInteraction(event: MouseEvent) {
+    event.preventDefault();
+    this.markerPlacementInteraction = {
+      clientX: event.clientX,
+      clientY: event.clientY,
+      page: this.planPage,
+      panX: this.planPanX,
+      panY: this.planPanY,
+      isPanning: false
+    };
+  }
+
+  private updateMarkerPlacementInteraction(event: MouseEvent) {
+    const interaction = this.markerPlacementInteraction;
+
+    if (!interaction) {
+      return;
+    }
+
+    event.preventDefault();
+    const deltaX = event.clientX - interaction.clientX;
+    const deltaY = event.clientY - interaction.clientY;
+
+    if (!interaction.isPanning) {
+      const distance = Math.hypot(deltaX, deltaY);
+
+      if (distance < this.markerPlacementPanThreshold) {
+        return;
+      }
+
+      interaction.isPanning = true;
+      this.isPanningPlan = true;
+    }
+
+    this.planPanX = interaction.panX + deltaX;
+    this.planPanY = interaction.panY + deltaY;
+  }
+
+  private finishMarkerPlacementInteraction(event: MouseEvent) {
+    const interaction = this.markerPlacementInteraction;
+    this.markerPlacementInteraction = null;
+    this.isPanningPlan = false;
+
+    if (!interaction || interaction.isPanning) {
+      return;
+    }
+
+    this.onPdfClick(event, interaction.page);
   }
 
   private getPlanTaskMarkerScreenPoint(marker: TaskPlanMarker) {
@@ -2004,7 +2078,8 @@ export class TaskPlanComponent implements AfterViewInit, OnChanges, OnDestroy {
     const availableHeight = Math.max(1, layerRect.height - 48);
     const contentWidth = Math.max(1, basePageWidth * bounds.width);
     const contentHeight = Math.max(1, basePageHeight * bounds.height);
-    const targetZoom = this.clampPlanZoom(Math.min(availableWidth / contentWidth, availableHeight / contentHeight) * 1.2);
+    const rawTargetZoom = Math.min(availableWidth / contentWidth, availableHeight / contentHeight) * 1.2;
+    const targetZoom = this.clampPlanZoom(Math.min(rawTargetZoom, this.planAutoContentMaxZoom));
 
     this.pendingPlanContentFit = false;
     this.resetPlanPan();

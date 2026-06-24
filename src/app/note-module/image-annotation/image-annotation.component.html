@@ -106,7 +106,7 @@
           min="1"
           max="20"
           [value]="strokeWidth"
-          (input)="strokeWidth = $any($event.target).value; changeStrokeWidth()">
+          (input)="onStrokeWidthChange($event)">
         <span class="slider-value">{{ strokeWidth }}px</span>
       </div>
 
@@ -117,7 +117,7 @@
           min="12"
           max="72"
           [value]="fontSize"
-          (input)="fontSize = $any($event.target).value; updateCanvasStyle()">
+          (input)="onFontSizeChange($event)">
         <span class="slider-value">{{ fontSize }}px</span>
       </div>
     </div>
@@ -131,7 +131,8 @@
           (mousedown)="onMouseDown($event)"
           (mousemove)="onMouseMove($event)"
           (mouseup)="onMouseUp()"
-          (mouseleave)="onMouseUp()">
+          (mouseleave)="onMouseUp()"
+          (dblclick)="onCanvasDoubleClick($event)">
           Votre navigateur ne supporte pas Canvas.
         </canvas>
 
@@ -139,25 +140,30 @@
         <div class="canvas-hint" *ngIf="!isTextMode">
           <p>Utilisez les outils pour annoter l'image</p>
         </div>
-      </div>
 
-      <!-- Saisie de texte -->
-      <div *ngIf="isTextMode" class="text-input-overlay" [style.left.px]="textPosition.x" [style.top.px]="textPosition.y">
-        <input
-          type="text"
-          [(ngModel)]="textInput"
-          placeholder="Saisir du texte..."
-          (keyup.enter)="addText()"
-          (keyup.escape)="cancelText()"
-          autofocus
-          class="text-input">
-        <div class="text-actions">
-          <button class="text-btn confirm" (click)="addText()" title="Valider">
-            <i class="fa-solid fa-check"></i>
-          </button>
-          <button class="text-btn cancel" (click)="cancelText()" title="Annuler">
-            <i class="fa-solid fa-times"></i>
-          </button>
+        <!-- Saisie de texte -->
+        <div
+          *ngIf="isTextMode"
+          class="text-input-overlay"
+          [style.left.px]="textOverlayPosition.x"
+          [style.top.px]="textOverlayPosition.y">
+          <input
+            #textInputField
+            type="text"
+            [(ngModel)]="textInput"
+            placeholder="Saisir du texte..."
+            (keyup.enter)="addText()"
+            (keyup.escape)="cancelText()"
+            [style.font-size.px]="fontSize"
+            class="text-input">
+          <div class="text-actions">
+            <button class="text-btn confirm" (click)="addText()" title="Valider">
+              <i class="fa-solid fa-check"></i>
+            </button>
+            <button class="text-btn cancel" (click)="cancelText()" title="Annuler">
+              <i class="fa-solid fa-times"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>

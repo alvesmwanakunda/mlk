@@ -2733,11 +2733,10 @@ export class TachesComponent implements OnInit, AfterViewInit {
     openDialogVoice(){
 
         const dialogRef = this.dialog.open(VoiceTaskComponent,{
-          width:'50%',
-          // width: '100vw',
-          // height: '100vh',
-          // maxWidth: '100vw',
-          // panelClass: 'full-screen-dialog',
+          width: '100vw',
+          height: '100vh',
+          maxWidth: '100vw',
+          panelClass: 'full-screen-dialog',
           data:{
             id:this.idProjet,
           }

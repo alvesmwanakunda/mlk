@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { TachesService } from 'src/app/shared/services/taches.service';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { MatDialogRef,MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
@@ -11,6 +11,7 @@ import { DeleteTachesComponent } from '../delete-taches/delete-taches.component'
 import { ViewerStandarComponent } from '../../viewer-standar/viewer-standar.component';
 import { ProjetsService } from 'src/app/shared/services/projets.service';
 import { PlanProjetService } from 'src/app/shared/services/plan-projet.service';
+import { TaskPlanComponent, TaskPlanMarker } from '../task-plan/task-plan.component';
 
 type ImageRow = {
   key: string;                // clé stable
@@ -47,7 +48,15 @@ export class UpdateTachesComponent implements OnInit {
     taskPlanPreviewPlan:any = null;
     taskPlanPreviewAspectRatio: number | null = null;
     isLoadingTaskPlanPreview = false;
+    activePlans: any[] = [];
+    plansLoading = false;
+    noActivePlans = false;
+    markerPlan: any = null;
+    markerPlanId: string | null = null;
+    planMarker: TaskPlanMarker | null = null;
+    autoStartPlanMarker = false;
     user:any;
+    @ViewChild('taskPlanCreator') taskPlanCreator?: TaskPlanComponent;
 
 
     constructor(
@@ -167,6 +176,7 @@ export class UpdateTachesComponent implements OnInit {
         });
         this.initImageRowsFromTache(this.tache);
         this.loadTaskPlanPreview(this.tache);
+        this.initTaskPlanMarkerCreation(this.tache);
     },(error)=>{
         this.message="Une erreur s'est produite veuillez réessayer.";
         this.openSnackBar(this.message);
@@ -176,6 +186,96 @@ export class UpdateTachesComponent implements OnInit {
 
   hasTaskPlanMarker(tache: any) {
     return !!this.normalizeTaskPlanMarker(tache?.marker);
+  }
+
+  onPlanMarkerSelected(marker: TaskPlanMarker | null) {
+    this.planMarker = this.normalizePlanMarker(marker);
+  }
+
+  clearPlanMarker() {
+    this.planMarker = null;
+  }
+
+  showPlanSelector(): boolean {
+    return this.activePlans.length > 1;
+  }
+
+  onActivePlanChange(planId: string) {
+    const selectedPlan = this.activePlans.find(
+      (item) => item._id?.toString() === planId
+    );
+    this.selectMarkerPlan(selectedPlan || null, true);
+  }
+
+  private initTaskPlanMarkerCreation(tache: any) {
+    this.planMarker = null;
+    this.markerPlan = null;
+    this.markerPlanId = null;
+    this.noActivePlans = false;
+    this.plansLoading = false;
+
+    if (this.hasTaskPlanMarker(tache)) {
+      return;
+    }
+
+    const injectedPlans = Array.isArray(this.data?.activePlans) ? this.data.activePlans : [];
+    if (injectedPlans.length > 0) {
+      this.activePlans = injectedPlans;
+      this.initSelectedMarkerPlan(tache?.plan || this.data?.plan || null);
+      return;
+    }
+
+    this.loadActivePlansForMarker(tache);
+  }
+
+  private loadActivePlansForMarker(tache: any) {
+    const projectId = this.getTaskProjectId(tache);
+
+    if (!projectId) {
+      this.noActivePlans = true;
+      return;
+    }
+
+    this.plansLoading = true;
+    this.noActivePlans = false;
+
+    this.planProjetService.getActivePlansForTasks(projectId).subscribe((res: any) => {
+      this.activePlans = Array.isArray(res?.message) ? res.message : [];
+      this.plansLoading = false;
+      this.noActivePlans = this.activePlans.length === 0;
+      this.initSelectedMarkerPlan(tache?.plan || this.data?.plan || null);
+    }, () => {
+      this.plansLoading = false;
+      this.noActivePlans = true;
+      this.markerPlan = null;
+      this.markerPlanId = null;
+    });
+  }
+
+  private initSelectedMarkerPlan(preferredPlan: any) {
+    if (!this.activePlans.length) {
+      this.markerPlan = null;
+      this.markerPlanId = null;
+      return;
+    }
+
+    const preferredId = this.getPlanId(preferredPlan);
+    const matchedPlan = preferredId
+      ? this.activePlans.find((item) => item._id?.toString() === preferredId.toString())
+      : null;
+
+    this.selectMarkerPlan(matchedPlan || this.activePlans[0], false);
+  }
+
+  private selectMarkerPlan(selectedPlan: any, resetMarker: boolean) {
+    const previousPlanId = this.markerPlanId;
+    this.markerPlan = selectedPlan ? { ...selectedPlan } : null;
+    this.markerPlanId = this.getPlanId(this.markerPlan);
+
+    if (resetMarker || (previousPlanId && previousPlanId !== this.markerPlanId)) {
+      this.planMarker = null;
+      this.autoStartPlanMarker = false;
+    }
   }
 
   private loadTaskPlanPreview(tache: any) {
@@ -239,7 +339,7 @@ export class UpdateTachesComponent implements OnInit {
     });
   }
 
-  private normalizeTaskPlanMarker(marker: any) {
+  private normalizeTaskPlanMarker(marker: any): TaskPlanMarker | null {
     let source = marker;
 
     if (typeof source === 'string') {
@@ -267,6 +367,42 @@ export class UpdateTachesComponent implements OnInit {
       xPercent,
       yPercent
     };
+  }
+
+  private normalizePlanMarker(marker: any): TaskPlanMarker | null {
+    const normalized = this.normalizeTaskPlanMarker(marker);
+
+    if (!normalized) {
+      return null;
+    }
+
+    return {
+      page: Math.max(1, Math.round(normalized.page)),
+      xPercent: this.clamp(Number(normalized.xPercent), 0, 100),
+      yPercent: this.clamp(Number(normalized.yPercent), 0, 100)
+    };
+  }
+
+  getTaskProjectId(tache: any) {
+    return typeof tache?.projet === 'object'
+      ? tache.projet?._id
+      : tache?.projet;
+  }
+
+  private getPlanId(plan: any): string | null {
+    if (!plan) {
+      return null;
+    }
+
+    if (typeof plan === 'string') {
+      return plan;
+    }
+
+    return plan?._id?.toString() || plan?.id?.toString() || null;
+  }
+
+  private clamp(value: number, min: number, max: number) {
+    return Math.max(min, Math.min(max, value));
   }
 
   private initImageRowsFromTache(tache: any) {
@@ -433,6 +569,15 @@ updateTask(){
         const f = this.imageFiles[r.key];
         if (f) fd.append('image', f, f.name);
       });
+
+      if (!this.hasTaskPlanMarker(this.tache) && this.planMarker && this.markerPlanId) {
+        fd.append('plan', this.markerPlanId);
+        fd.append('marker', JSON.stringify({
+          page: this.planMarker.page,
+          xPercent: this.planMarker.xPercent,
+          yPercent: this.planMarker.yPercent
+        }));
+      }
 
 
       this.tachesService.updateTache(fd, this.idtache).subscribe((res:any)=>{

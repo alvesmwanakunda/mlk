@@ -16,7 +16,7 @@
               <button  mat-raised-button color="primary" class="me-2" (click)="updateTask()"><mat-icon>edit</mat-icon> Enregistre</button>
               <button *ngIf="user?.user?._id==tache?.user?._id" class="me-2" mat-raised-button color="warn" (click)="openDialog()"><mat-icon>delete</mat-icon> Supprimer</button>
                <button mat-raised-button (click)="close()">
-                <mat-icon>close</mat-icon> Fermer
+                <mat-icon>close</mat-icon> Retour
                </button>
             </div>
           </div>
@@ -114,7 +114,7 @@
                       </div>
                     </div>
                     <div class="col">
-                       <div *ngIf="hasTaskPlanMarker(tache)" class="task-plan-preview-slot">
+                      <div *ngIf="hasTaskPlanMarker(tache)" class="task-plan-preview-slot">
                         <app-task-plan-marker-preview
                           *ngIf="taskPlanPreviewPlan"
                           [plan]="taskPlanPreviewPlan"
@@ -128,6 +128,61 @@
                         </div>
                         <div *ngIf="!isLoadingTaskPlanPreview && !taskPlanPreviewPlan" class="task-plan-preview-state">
                           <span>Plan indisponible</span>
+                        </div>
+                      </div>
+                      <div *ngIf="!hasTaskPlanMarker(tache)" class="task-plan-create-slot">
+                        <div class="task-plan-empty" *ngIf="!plansLoading && noActivePlans">
+                          <i class="fa-regular fa-file-pdf"></i>
+                          <p>Aucun plan actif disponible pour placer cette tâche sur plan.</p>
+                        </div>
+
+                        <div class="task-plan-select-row" *ngIf="showPlanSelector() && !plansLoading">
+                          <mat-form-field appearance="outline" class="task-plan-select-field">
+                            <mat-label>Plan actif</mat-label>
+                            <mat-select [value]="markerPlanId" (selectionChange)="onActivePlanChange($event.value)">
+                              <mat-option *ngFor="let activePlan of activePlans" [value]="activePlan._id?.toString()">
+                                {{ activePlan.nom }}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+
+                        <div class="task-plan-marker-summary" *ngIf="planMarker">
+                          <i class="fa-solid fa-location-dot"></i>
+                          Point sélectionné sur le plan{{ markerPlan?.nom ? ' — ' + markerPlan.nom : '' }} - page {{ planMarker.page }}
+                        </div>
+
+                        <div class="task-plan-create-panel" *ngIf="markerPlan && !plansLoading">
+                          <div class="task-plan-create-header">
+                            <div class="task-plan-create-header-main">
+                              <span>Plan du projet</span>
+                              <strong>{{ markerPlan?.nom || (planMarker ? 'Point sélectionné' : 'Choisir un point sur le plan') }}</strong>
+                            </div>
+                            <div class="task-plan-create-actions">
+                              <button type="button" mat-stroked-button color="primary" (click)="taskPlanCreator?.startPlanTaskMarkerCreation()">
+                                <i class="fa-solid fa-location-dot"></i>
+                                {{ planMarker ? 'Modifier le point' : 'Placer un point' }}
+                              </button>
+                              <button *ngIf="planMarker" type="button" mat-button color="warn" (click)="clearPlanMarker()">
+                                Retirer
+                              </button>
+                            </div>
+                          </div>
+                          <app-task-plan
+                            #taskPlanCreator
+                            *ngIf="markerPlan?._id"
+                            [plan]="markerPlan"
+                            [projectId]="getTaskProjectId(tache)"
+                            [tasks]="[]"
+                            [height]="320"
+                            [showTaskMarkers]="false"
+                            [allowTaskPopover]="false"
+                            [allowExistingTaskMarkerEdit]="false"
+                            [markerMode]="'select'"
+                            [initialMarker]="planMarker"
+                            [autoStartMarkerCreation]="autoStartPlanMarker"
+                            (markerChange)="onPlanMarkerSelected($event)">
+                          </app-task-plan>
                         </div>
                       </div>
                       <div>

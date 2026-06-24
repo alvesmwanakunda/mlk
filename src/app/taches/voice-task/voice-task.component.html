@@ -2,59 +2,148 @@
     <div class="row justify-content-md-center">
       <div class="col-lg-11 col-md-11 col-md-auto">
 
-        <div class="voice-task-toolbar" [class.recording]="isRecording" [class.loading]="isLoading">
-          <div class="voice-status" *ngIf="isRecording || isLoading">
-            <div class="voice-recording-indicator" *ngIf="isRecording">
-              <span class="voice-wave"></span>
-              <span class="voice-wave"></span>
-              <span class="voice-wave"></span>
-              <i class="fa-solid fa-microphone"></i>
+        <div class="voice-task-top-grid">
+          <div class="voice-task-toolbar" [class.recording]="isRecording" [class.loading]="isLoading">
+            <div class="voice-status" *ngIf="isRecording || isLoading">
+              <div class="voice-recording-indicator" *ngIf="isRecording">
+                <span class="voice-wave"></span>
+                <span class="voice-wave"></span>
+                <span class="voice-wave"></span>
+                <i class="fa-solid fa-microphone"></i>
+              </div>
+
+              <div class="voice-loading-indicator" *ngIf="isLoading">
+                <i class="fa-solid fa-spinner"></i>
+              </div>
+
+              <div class="voice-status-text">
+                <strong>{{ isRecording ? 'Enregistrement en cours' : 'Analyse de l’audio' }}</strong>
+                <span>{{ isRecording ? recordingDuration : 'Extraction des informations...' }}</span>
+              </div>
             </div>
 
-            <div class="voice-loading-indicator" *ngIf="isLoading">
-              <i class="fa-solid fa-spinner"></i>
+            <div class="voice-status idle" *ngIf="!isRecording && !isLoading">
+              <div class="voice-idle-icon">
+                <i class="fa-solid fa-microphone-lines"></i>
+              </div>
+              <div class="voice-status-text">
+                <strong>Création vocale</strong>
+                <span>Dictez la tâche à créer</span>
+              </div>
             </div>
 
-            <div class="voice-status-text">
-              <strong>{{ isRecording ? 'Enregistrement en cours' : 'Analyse de l’audio' }}</strong>
-              <span>{{ isRecording ? recordingDuration : 'Extraction des informations...' }}</span>
+            <div class="voice-actions">
+              <button
+                type="button"
+                class="voice-action-btn voice-start-btn"
+                (click)="startRecording()"
+                [disabled]="isRecording || isLoading"
+                matTooltip="Démarrer l’enregistrement">
+                <i class="fa-solid fa-microphone"></i>
+                <span>Démarrer</span>
+              </button>
+
+              <button
+                type="button"
+                class="voice-action-btn voice-stop-btn"
+                (click)="stopRecording()"
+                [disabled]="!isRecording || isLoading"
+                matTooltip="Arrêter l’enregistrement">
+                <i class="fa-solid fa-stop"></i>
+                <span>Arrêter</span>
+              </button>
             </div>
           </div>
 
-          <div class="voice-status idle" *ngIf="!isRecording && !isLoading">
-            <div class="voice-idle-icon">
-              <i class="fa-solid fa-microphone-lines"></i>
+          <div class="voice-image-panel">
+            <div class="voice-image-empty" *ngIf="!annotatedImagePreview">
+              <div class="voice-image-text">
+                <strong>Image de la tâche</strong>
+                <span>Aucune image</span>
+              </div>
+              <label class="voice-image-button" title="Ajouter une image">
+                <input #fileInput type="file" accept="image/*" (change)="onImagesSelected($event)" hidden />
+                <i class="fa-solid fa-image"></i>
+                <span>Ajouter</span>
+              </label>
             </div>
-            <div class="voice-status-text">
-              <strong>Création vocale</strong>
-              <span>Dictez la tâche à créer</span>
+
+            <div *ngIf="annotatedImagePreview" class="annotated-image-top-preview">
+              <div class="image-preview-container" (mouseenter)="isHoveringImage = true" (mouseleave)="isHoveringImage = false">
+                <img [src]="annotatedImagePreview" alt="Image annotée" class="preview-image">
+                <button
+                  *ngIf="isHoveringImage"
+                  class="remove-image-btn"
+                  (click)="removeAnnotatedImage()"
+                  title="Supprimer l'image">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+                <div class="image-badge">
+                  <i class="fa-solid fa-check"></i>
+                  Ajouter l'image
+                </div>
+              </div>
             </div>
-          </div>
-
-          <div class="voice-actions">
-            <button
-              type="button"
-              class="voice-action-btn voice-start-btn"
-              (click)="startRecording()"
-              [disabled]="isRecording || isLoading"
-              matTooltip="Démarrer l’enregistrement">
-              <i class="fa-solid fa-microphone"></i>
-              <span>Démarrer</span>
-            </button>
-
-            <button
-              type="button"
-              class="voice-action-btn voice-stop-btn"
-              (click)="stopRecording()"
-              [disabled]="!isRecording || isLoading"
-              matTooltip="Arrêter l’enregistrement">
-              <i class="fa-solid fa-stop"></i>
-              <span>Arrêter</span>
-            </button>
           </div>
         </div>
 
+        <div class="task-plan-marker-summary" *ngIf="planMarker">
+          <i class="fa-solid fa-location-dot"></i>
+          Tâche liée au plan{{ plan?.nom ? ' — ' + plan.nom : '' }} - page {{ planMarker.page }}
+        </div>
 
+        <div class="task-plan-empty" *ngIf="!plansLoading && noActivePlans">
+          <i class="fa-regular fa-file-pdf"></i>
+          <p>Aucun plan actif disponible pour placer une tâche sur plan.</p>
+        </div>
+
+        <div class="task-plan-select-row" *ngIf="showPlanSelector() && !plansLoading">
+          <mat-form-field appearance="outline" class="task-plan-select-field">
+            <mat-label>Plan actif</mat-label>
+            <mat-select [value]="planId" (selectionChange)="onActivePlanChange($event.value)">
+              <mat-option *ngFor="let activePlan of activePlans" [value]="activePlan._id?.toString()">
+                {{ activePlan.nom }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="task-plan-create-panel" *ngIf="plan && !plansLoading">
+          <div class="task-plan-create-header">
+            <div class="task-plan-create-header-main">
+              <div>
+                <span>Plan du projet</span>
+                <strong>{{ plan?.nom || (planMarker ? 'Point sélectionné' : 'Choisir un point sur le plan') }}</strong>
+              </div>
+            </div>
+            <div class="task-plan-create-actions">
+              <button type="button" mat-stroked-button color="primary" (click)="taskPlanCreator?.startPlanTaskMarkerCreation()">
+                <i class="fa-solid fa-location-dot"></i>
+                {{ planMarker ? 'Modifier le point' : 'Placer un point' }}
+              </button>
+              <button *ngIf="planMarker" type="button" mat-button color="warn" (click)="clearPlanMarker()">
+                Retirer
+              </button>
+            </div>
+          </div>
+          <app-task-plan
+            #taskPlanCreator
+            *ngIf="plan?._id"
+            [plan]="plan"
+            [projectId]="idProjet"
+            [tasks]="[]"
+            [height]="400"
+            [showTaskMarkers]="false"
+            [allowTaskPopover]="false"
+            [allowExistingTaskMarkerEdit]="false"
+            [markerMode]="'select'"
+            [initialMarker]="planMarker"
+            [autoStartMarkerCreation]="autoStartPlanMarker"
+            (markerChange)="onPlanMarkerSelected($event)">
+          </app-task-plan>
+        </div>
+
+        <!-- *ngIf="draft" -->
         <div *ngIf="draft">
 
           <div class="row">
@@ -117,3 +206,9 @@
     </div>
 </div>
 
+<app-image-annotation
+  *ngIf="showImageAnnotation && imageToAnnotate"
+  [imageSrc]="imageToAnnotate"
+  (annotationComplete)="onAnnotationComplete($event)"
+  (annotationCanceled)="onAnnotationCanceled()">
+</app-image-annotation>
