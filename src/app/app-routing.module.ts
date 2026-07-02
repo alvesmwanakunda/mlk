@@ -288,6 +288,10 @@ const routes: Routes = [
   {
     path:'parametres',
     loadChildren:()=>import('./parametres/parametres.module').then(m=>m.ParametresModule)
+  },
+  {
+    path:'statistique/tache',
+    loadChildren:()=>import('./stati-taches/stati-taches.module').then(m=>m.StatiTachesModule)
   }
 
 ];

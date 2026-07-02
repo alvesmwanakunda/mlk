@@ -116,6 +116,10 @@ export class TachesService {
     });
   }
 
+  getStatistique(){
+    return this.httpClient.get(`${environment.BASE_API_URL}/taches/statistiques`)
+  }
+
 
 
 

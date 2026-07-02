@@ -1,0 +1,196 @@
+<app-navbar>
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1>Tâches</h1>
+      <!-- <p>Vue globale des tâches, statuts et échéances</p> -->
+    </div>
+    <div class="topbar-right">
+      <button class="topbar-btn btn-primary" [routerLink]="['/dashboard']">Les projets</button>
+    </div>
+  </div>
+
+  <div class="content task-stats-page">
+    <div class="page-state page-state--loading" *ngIf="isLoading">
+      <mat-spinner diameter="42"></mat-spinner>
+      <span>Chargement des statistiques...</span>
+    </div>
+
+    <div class="page-state page-state--error" *ngIf="!isLoading && errorMessage">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ errorMessage }}</span>
+      <button type="button" class="topbar-btn btn-primary" (click)="getAllStatistique()">Réessayer</button>
+    </div>
+
+    <ng-container *ngIf="!isLoading && !errorMessage">
+      <section class="summary-grid">
+        <article
+          class="summary-card"
+          *ngFor="let card of summaryCards; trackBy: trackByCard"
+          [style.--card-color]="card.color">
+          <div class="summary-card__icon">
+            <mat-icon>{{ card.icon }}</mat-icon>
+          </div>
+          <div class="summary-card__content">
+            <span>{{ card.label }}</span>
+            <strong>{{ card.value }}</strong>
+            <small>{{ card.percent }}%</small>
+          </div>
+        </article>
+      </section>
+
+      <section class="charts-grid">
+        <article class="chart-panel">
+          <div class="panel-header">
+            <div>
+              <h2>Répartition par statut</h2>
+              <span>{{ statistiques?.totalTaches || 0 }} tâche(s)</span>
+            </div>
+          </div>
+
+          <div class="chart-box" *ngIf="hasStatusChart">
+            <canvasjs-chart [options]="statusChartOptions" [styles]="{ width: '100%', height: '320px' }"></canvasjs-chart>
+          </div>
+
+          <div class="empty-chart" *ngIf="!hasStatusChart">
+            <mat-icon>donut_large</mat-icon>
+            <span>Aucune donnée de statut</span>
+          </div>
+        </article>
+
+        <article class="chart-panel">
+          <div class="panel-header">
+            <div>
+              <h2>Activité du mois</h2>
+              <span>{{ monthLabel }}</span>
+            </div>
+          </div>
+
+          <div class="chart-box" *ngIf="hasMonthlyChart">
+            <canvasjs-chart [options]="monthlyChartOptions" [styles]="{ width: '100%', height: '320px' }"></canvasjs-chart>
+          </div>
+
+          <div class="empty-chart" *ngIf="!hasMonthlyChart">
+            <mat-icon>bar_chart</mat-icon>
+            <span>Aucune activité sur la période</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="tasks-panel">
+        <div class="panel-header panel-header--table">
+          <div>
+            <h2>Liste des tâches</h2>
+            <span>{{ visibleTaskCount }} sur {{ totalTaskCount }} tâche(s)</span>
+          </div>
+
+          <div class="table-actions">
+            <input
+              type="text"
+              class="form-control input-search task-search"
+              placeholder="Rechercher une tâche, un projet, un assigné..."
+              (keyup)="applyFilter($event)">
+
+            <mat-button-toggle-group
+              class="status-filter"
+              [value]="selectedStatut"
+              (change)="filterByStatus($event.value)"
+              aria-label="Filtre statut des tâches">
+              <mat-button-toggle *ngFor="let option of filterStatutOptions" [value]="option.value">
+                {{ option.label }}
+              </mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+        </div>
+
+        <div class="tasks-table-wrap">
+          <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="titre">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="tableau-title">Tâche</th>
+              <td mat-cell *matCellDef="let element">
+                <div class="task-title-cell">
+                  <strong [matTooltip]="element.titre">{{ element.titre }}</strong>
+                  <small *ngIf="element.description" [matTooltip]="element.description">{{ element.description }}</small>
+                  <span class="image-count" *ngIf="element.images > 0">
+                    <mat-icon>image</mat-icon>
+                    {{ element.images }}
+                  </span>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="projet">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="tableau-title">Projet</th>
+              <td mat-cell *matCellDef="let element">
+                <span class="project-name" [matTooltip]="element.projet">{{ element.projet }}</span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="assignes">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="tableau-title">Assigné(s)</th>
+              <td mat-cell *matCellDef="let element">
+                <span class="assignee-cell" [class.assignee-cell--empty]="element.assignes === 'Non assignée'">
+                  {{ element.assignes }}
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="statut">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="tableau-title">Statut</th>
+              <td mat-cell *matCellDef="let element">
+                <span [ngClass]="getStatusBadgeClass(element.statut)">
+                  {{ element.statut }}
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="date_debut">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="tableau-title">Début</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.dateDebut ? (element.dateDebut | date:'dd/MM/yyyy') : '-' }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="date_fin">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="tableau-title">Échéance</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.dateFin ? (element.dateFin | date:'dd/MM/yyyy') : '-' }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="marker">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="tableau-title">Repère</th>
+              <td mat-cell *matCellDef="let element">
+                <span class="marker-chip" *ngIf="element.marker; else noMarker">
+                  <mat-icon>location_on</mat-icon>
+                  {{ element.marker }}
+                </span>
+                <ng-template #noMarker>
+                  <span class="muted">-</span>
+                </ng-template>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr
+              mat-row
+              class="task-row"
+              *matRowDef="let row; columns: displayedColumns;"
+              (click)="openDialog(row.id)">
+            </tr>
+            <tr class="mat-row empty-row" *matNoDataRow>
+              <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                Aucune tâche trouvée.
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <mat-paginator
+          [pageSizeOptions]="[10, 20, 50]"
+          showFirstLastButtons
+          aria-label="Pagination des tâches">
+        </mat-paginator>
+      </section>
+    </ng-container>
+  </div>
+</app-navbar>
