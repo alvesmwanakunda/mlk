@@ -3,6 +3,9 @@ import { AuthService } from '../shared/services/auth.service';
 import { EntreprisesService } from '../shared/services/entreprises.service';
 import { ChatService } from '../shared/services/chat.service';
 import { Router } from '@angular/router';
+import { NotificationTask, NotificationTaskService } from '../shared/services/notification-task.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UpdateTachesComponent } from '../taches/update-taches/update-taches.component';
 
 
 @Component({
@@ -20,13 +23,15 @@ export class NavbarComponent implements OnInit {
   company:any;
   number=0;
   isMobileMenuOpen = false;
-
+  notifications$ = this.notificationService.notifications$;
 
   constructor(
     private authService:AuthService,
     private entrepriseService:EntreprisesService,
     private chatService: ChatService,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationTaskService,
+    private dialog: MatDialog
     ){
     this.user = JSON.parse(localStorage.getItem('user'));
     /*this.chatService.countMClient.subscribe((res:any)=>{
@@ -46,6 +51,72 @@ export class NavbarComponent implements OnInit {
         this.getNumberClient();
     }
     this.getEntrepriseId();
+    this.notificationService.loadNotifications();
+    const currentUserId = this.user?.user?._id;
+    if (currentUserId) {
+      this.notificationService.connectSocket(currentUserId);
+    }
+
+  }
+
+  markAsRead(notification: NotificationTask): void {
+    this.notificationService.read(notification);
+    this.openTaskDialog(notification);
+  }
+
+  openTaskDialog(notification: NotificationTask): void {
+    const taskId = this.getNotificationTaskId(notification);
+
+    if (!taskId) {
+      return;
+    }
+
+    const dialogRef = this.dialog.open(UpdateTachesComponent, {
+      width: '100vw',
+      height: '100vh',
+      maxWidth: '100vw',
+      panelClass: 'full-screen-dialog',
+      data: {
+        id: taskId,
+        plan: notification?.tache?.plan || null
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.notificationService.loadNotifications();
+      }
+    });
+  }
+
+  trackByNotification(index: number, notification: NotificationTask): string {
+    return notification?._id || String(index);
+  }
+
+  getTaskTitle(notification: NotificationTask): string {
+    return notification?.tache?.titre || 'Nouvelle tâche';
+  }
+
+  private getNotificationTaskId(notification: NotificationTask): string | null {
+    const task = notification?.tache;
+
+    if (!task) {
+      return null;
+    }
+
+    return typeof task === 'string' ? task : task?._id || null;
+  }
+
+  getOwnerInitials(notification: NotificationTask): string {
+    const owner = notification?.proprieteTache;
+    if (!owner || typeof owner === 'string') {
+      return 'NT';
+    }
+
+    const prenom = owner.prenom ? owner.prenom.substring(0, 1) : '';
+    const nom = owner.nom ? owner.nom.substring(0, 1) : '';
+
+    return `${prenom}${nom}`.toUpperCase() || 'NT';
   }
 
   updateCountMessage(){
@@ -100,7 +171,7 @@ export class NavbarComponent implements OnInit {
   }
 
   goToSettings(){
-    
+
   }
 
   toggleMobileMenu(): void {

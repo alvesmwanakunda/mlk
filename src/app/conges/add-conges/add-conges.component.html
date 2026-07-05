@@ -5,7 +5,6 @@
         </div>
         <div class="topbar-right">
           <button class="topbar-btn btn-primary" [routerLink]="['/conges']"> Retour</button>
-          <!-- <button type="button" class="btn btn-projet" (click)="saveConge()" [disabled]="congeForm.invalid || !isSigne"><i class="fa-solid fa-plus"></i> Enregistrer</button> -->
         </div>
   </div>
   <div class="content">
@@ -107,16 +106,28 @@
                 </div>
 
                 <div class="col-md-6">
-                  <p class="section-title">Signature <small class="required-label">* (Obligatoire)</small></p>
+                  <div class="row" style="margin-bottom: 10px;">
+                    <div class="col">
+                       <p class="section-title">Signature <small class="required-label">* (Obligatoire)</small></p>
+                    </div>
+                    <div class="col">
+                      <div *ngIf="!isSave" class="signature-actions">
+                        <button mat-raised-button (click)="clear()">Effacer</button>
+                        <button *ngIf="!isSigne" mat-raised-button color="primary" (click)="saveSignature()" cdkFocusInitial>Valider</button>
+                      </div>
+                    </div>
+                  </div>
                   <div class="canvas-wrapper">
                     <canvas #canvas></canvas>
                   </div>
-                  <div *ngIf="!isSave" class="signature-actions">
-                    <button mat-raised-button (click)="clear()">Effacer</button>
-                    <button mat-raised-button color="primary" (click)="saveSignature()" [disabled]="congeForm.invalid || !isSigne" cdkFocusInitial>Valider la signature</button>
-                  </div>
+
                 </div>
               </div>
+            </div>
+            <div>
+              <button  mat-raised-button color="primary" (click)="saveConge()" [disabled]="congeForm.invalid">Enregistrer le conge</button>
+              <!-- <button type="button" class="btn btn-projet" (click)="saveConge()" [disabled]="congeForm.invalid"><i class="fa-solid fa-plus"></i> Enregistrer</button> -->
+
             </div>
           </form>
         </div>

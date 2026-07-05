@@ -47,7 +47,7 @@ export class AddCongesComponent implements OnInit {
       status: new FormControl("En attente de validation",null),
       heure_debut:new FormControl("",null),
       heure_fin:new FormControl("",null),
-      signature_user:new FormControl("",null),
+      signature_user:new FormControl(null,[Validators.required]),
       raison:new FormControl("",null)
     })
     this.signaturePad = new SignaturePad(this.canvas.nativeElement);
@@ -56,15 +56,23 @@ export class AddCongesComponent implements OnInit {
   clear(){
     this.isSigne=false;
     this.signaturePad.clear();
+    this.congeForm.controls['signature_user'].setValue(null);
+    this.congeForm.controls['signature_user'].markAsTouched();
+    this.congeForm.controls['signature_user'].updateValueAndValidity();
   }
 
   saveSignature(){
       if(!this.signaturePad.isEmpty()){
-        console.log("image", this.signaturePad.toDataURL());
         this.congeForm.controls['signature_user'].setValue(this.signaturePad.toDataURL());
-        this.saveConge();
         this.isSigne=true;
+        this.congeForm.controls['signature_user'].updateValueAndValidity();
+        return;
       }
+
+      this.isSigne=false;
+      this.congeForm.controls['signature_user'].setValue(null);
+      this.congeForm.controls['signature_user'].markAsTouched();
+      this.congeForm.controls['signature_user'].updateValueAndValidity();
   }
 
   onFileSelected(event){
@@ -73,6 +81,11 @@ export class AddCongesComponent implements OnInit {
   }
 
   saveConge(){
+    this.congeForm.markAllAsTouched();
+
+    if (this.congeForm.invalid){
+      return;
+    }
 
     this.form ={};
     const formData:FormData=new FormData();
@@ -89,17 +102,15 @@ export class AddCongesComponent implements OnInit {
     formData.append("signature_user", this.form.signature_user);
     formData.append("raison", this.form.raison);
 
-    if (this.congeForm.valid){
-      this.entrepriseService.addConge(formData).subscribe((res:any)=>{
-        this.message='Demande de congé envoyée avec succès.';
-         this.openSnackBar(this.message);
-         this.isSave=true;
-      },(error)=>{
-        this.message="Une erreur s'est produite veuillez réessayer.";
-         this.openSnackBar(this.message);
-         console.log(error);
-      })
-    }
+    this.entrepriseService.addConge(formData).subscribe((res:any)=>{
+      this.message='Demande de congé envoyée avec succès.';
+       this.openSnackBar(this.message);
+       this.isSave=true;
+    },(error)=>{
+      this.message="Une erreur s'est produite veuillez réessayer.";
+       this.openSnackBar(this.message);
+       console.log(error);
+    })
   }
 
   openSnackBar(message){

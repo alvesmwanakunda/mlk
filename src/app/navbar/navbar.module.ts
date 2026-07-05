@@ -4,6 +4,7 @@ import { NavbarComponent } from './navbar.component';
 import { RouterModule } from '@angular/router';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
+import { UpdateTachesModule } from '../taches/update-taches/update-taches.module';
 
 
 
@@ -15,6 +16,7 @@ import { SharedModule } from '../shared/shared.module';
     RouterModule,
     NgbCollapse,
     SharedModule,
+    UpdateTachesModule,
   ],
   exports:[NavbarComponent]
 })

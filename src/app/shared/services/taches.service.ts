@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment} from 'src/environments/environment';
-import { Observable } from 'rxjs';
 import { VoiceTaskDraft, VoiceTaskResponse } from '../interfaces/voiceTask.model';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { io, Socket } from 'socket.io-client';
 
 @Injectable({
   providedIn: 'root'
@@ -118,6 +119,15 @@ export class TachesService {
 
   getStatistique(){
     return this.httpClient.get(`${environment.BASE_API_URL}/taches/statistiques`)
+  }
+
+  getNotificationsTask(){
+    return this.httpClient.get(`${environment.BASE_API_URL}/notificationstask`)
+  }
+
+  updateNotificationsTask(idTask){
+    const body = {"isLire": true}
+    return this.httpClient.put(`${environment.BASE_API_URL}/notificationstask/${idTask}`,body)
   }
 
 

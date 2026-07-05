@@ -298,6 +298,51 @@
     <div class="sidebar-logo">
       <div class="logo-icon"><img src="assets/images/mlka_logo.png" style="width: 109%;"></div>
       <span>MLKA GROUPE</span>
+      <ng-container *ngIf="notifications$ | async as notifications">
+        <button
+          type="button"
+          mat-icon-button
+          class="notification-trigger"
+          [matMenuTriggerFor]="notificationMenu"
+          [matBadge]="notifications.length"
+          [matBadgeHidden]="notifications.length === 0"
+          matBadgeColor="warn"
+          matBadgeSize="small"
+          aria-label="Notifications"
+        >
+          <mat-icon>notifications</mat-icon>
+        </button>
+
+        <mat-menu #notificationMenu="matMenu" class="notification-menu-panel" xPosition="after">
+          <div class="notification-menu-header" (click)="$event.stopPropagation()">
+            <span>Notifications</span>
+            <small>{{ notifications.length }}</small>
+          </div>
+
+          <ng-container *ngIf="notifications.length; else emptyNotifications">
+            <button
+              mat-menu-item
+              class="notification-menu-item"
+              *ngFor="let notification of notifications; trackBy: trackByNotification"
+              (click)="markAsRead(notification)"
+            >
+              <div class="notification-row">
+                <div class="notification-avatar">{{ getOwnerInitials(notification) }}</div>
+                <div class="notification-content">
+                  <div class="notification-title">{{ getTaskTitle(notification) }}</div>
+                  <div class="notification-date">{{ notification.date | dataAsAgo }}</div>
+                </div>
+              </div>
+            </button>
+          </ng-container>
+
+          <ng-template #emptyNotifications>
+            <div class="notification-empty" (click)="$event.stopPropagation()">
+              Aucune nouvelle notification
+            </div>
+          </ng-template>
+        </mat-menu>
+      </ng-container>
     </div>
 
     <div class="sidebar-section">

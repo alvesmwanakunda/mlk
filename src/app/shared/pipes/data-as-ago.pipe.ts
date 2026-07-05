@@ -5,8 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class DataAsAgoPipe implements PipeTransform {
 
-  transform(value: any, ...args: unknown[]): unknown {
-    console.log('Argu', args);
+  transform(value: any): unknown {
     if (!value) {
       return 'Il y a longtemps';
     }
@@ -17,7 +16,7 @@ export class DataAsAgoPipe implements PipeTransform {
       return 'Il y a un moment';
     }
     const divider = [60, 60, 24, 30, 12];
-    const string = [' second', ' minute', ' heure', ' jour', ' moi', ' an'];
+    const string = [' second', ' minute', ' heure', ' jour', ' mois', ' an'];
     let i;
     for (i = 0; Math.floor(time / divider[i]) > 0; i++) {
       time /= divider[i];
