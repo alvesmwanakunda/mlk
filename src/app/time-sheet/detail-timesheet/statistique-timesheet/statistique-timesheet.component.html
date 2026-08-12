@@ -1,0 +1,175 @@
+<section class="statistics-tab">
+  <header class="statistics-toolbar">
+    <div>
+      <h2>Statistiques de présence</h2>
+      <p>Consultez le temps renseigné, les présences et les absences par mois.</p>
+    </div>
+
+    <div class="statistics-filters">
+      <mat-form-field appearance="outline">
+        <mat-label>Mois</mat-label>
+        <mat-select [(value)]="selectedMonth" aria-label="Mois des statistiques">
+          <mat-option *ngFor="let month of months" [value]="month.value">
+            {{ month.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Année</mat-label>
+        <mat-select [(value)]="selectedYear" aria-label="Année des statistiques">
+          <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button
+        type="button"
+        mat-raised-button
+        color="primary"
+        [disabled]="isLoading"
+        (click)="applyFilter()">
+        <mat-icon>filter_list</mat-icon>
+        Appliquer
+      </button>
+
+      <button
+        type="button"
+        mat-stroked-button
+        [disabled]="isLoading"
+        (click)="showCurrentMonth()">
+        Mois actuel
+      </button>
+    </div>
+  </header>
+
+  <div class="statistics-state" *ngIf="isLoading">
+    <mat-spinner diameter="42"></mat-spinner>
+    <span>Chargement des statistiques...</span>
+  </div>
+
+  <div class="statistics-state statistics-state--error" *ngIf="!isLoading && errorMessage">
+    <mat-icon>error_outline</mat-icon>
+    <span>{{ errorMessage }}</span>
+    <button type="button" mat-raised-button color="primary" (click)="retry()">
+      Réessayer
+    </button>
+  </div>
+
+  <ng-container *ngIf="!isLoading && !errorMessage && statistics as stats">
+    <div class="period-label">
+      <mat-icon>date_range</mat-icon>
+      <span>Période du {{ stats.filtre.debut | date:'dd/MM/yyyy' }} au {{ stats.filtre.fin | date:'dd/MM/yyyy' }}</span>
+    </div>
+
+    <section class="summary-grid" aria-label="Résumé du mois">
+      <article
+        class="summary-card"
+        *ngFor="let card of summaryCards; trackBy: trackByCard"
+        [style.--summary-color]="card.color">
+        <div class="summary-card__icon">
+          <mat-icon>{{ card.icon }}</mat-icon>
+        </div>
+        <div class="summary-card__content">
+          <span>{{ card.label }}</span>
+          <strong>{{ card.value }}</strong>
+          <small>{{ card.detail }}</small>
+        </div>
+      </article>
+    </section>
+
+    <section class="activity-grid">
+      <article class="panel current-week-panel">
+        <div class="panel-heading">
+          <div>
+            <h3>Semaine en cours</h3>
+            <span>
+              Du {{ formatShortDate(stats.semaineCourante.debut) }}
+              au {{ formatShortDate(stats.semaineCourante.fin) }}
+            </span>
+          </div>
+          <mat-icon>today</mat-icon>
+        </div>
+
+        <div class="current-week-duration">{{ stats.semaineCourante.duree }}</div>
+        <span class="current-week-caption">Temps total renseigné cette semaine</span>
+      </article>
+
+      <article class="panel weekly-panel">
+        <div class="panel-heading">
+          <div>
+            <h3>Activité hebdomadaire</h3>
+            <span>{{ stats.semainesDuMois.length }} semaine(s) sur la période</span>
+          </div>
+          <mat-icon>bar_chart</mat-icon>
+        </div>
+
+        <div class="weekly-list" *ngIf="stats.semainesDuMois.length; else noWeeklyData">
+          <div class="weekly-row" *ngFor="let week of stats.semainesDuMois; trackBy: trackByWeek">
+            <div class="weekly-label">
+              <strong>S{{ week.semaine }}</strong>
+              <span>{{ formatShortDate(week.debut) }} – {{ formatShortDate(week.fin) }}</span>
+            </div>
+            <div class="weekly-track" aria-hidden="true">
+              <span [style.width.%]="getWeekPercentage(week)"></span>
+            </div>
+            <strong class="weekly-duration">{{ week.duree }}</strong>
+          </div>
+        </div>
+
+        <ng-template #noWeeklyData>
+          <div class="empty-panel">Aucune donnée hebdomadaire disponible.</div>
+        </ng-template>
+      </article>
+    </section>
+
+    <section class="panel calendar-panel">
+      <div class="panel-heading">
+        <div>
+          <h3>Calendrier du mois</h3>
+          <span>Le détail quotidien des présences et du temps saisi</span>
+        </div>
+        <div class="calendar-legend" aria-label="Légende des statuts">
+          <span class="legend-item legend-item--present">Présent</span>
+          <span class="legend-item legend-item--absent">Absent</span>
+          <span class="legend-item legend-item--mixed">Mixte</span>
+          <span class="legend-item legend-item--empty">Non renseigné</span>
+        </div>
+      </div>
+
+      <div class="calendar-wrap" *ngIf="calendarCells.length; else noCalendarData">
+        <div class="calendar-grid calendar-grid--header">
+          <span *ngFor="let weekDay of weekDays">{{ weekDay }}</span>
+        </div>
+
+        <div class="calendar-grid calendar-grid--days">
+          <ng-container *ngFor="let day of calendarCells; trackBy: trackByCalendarCell">
+            <article
+              *ngIf="day; else emptyCalendarCell"
+              class="calendar-day"
+              [class.calendar-day--weekend]="day.estWeekend"
+              [ngClass]="getStatusClass(day.statut)"
+              [matTooltip]="day.jour + ' ' + (day.date | date:'dd/MM/yyyy') + ' — ' + day.statut">
+              <div class="calendar-day__top">
+                <strong>{{ getDayNumber(day.date) }}</strong>
+                <mat-icon>{{ getStatusIcon(day.statut) }}</mat-icon>
+              </div>
+              <span class="calendar-day__status">{{ day.statut }}</span>
+              <span class="calendar-day__duration" *ngIf="day.totalMinutes > 0">{{ day.duree }}</span>
+              <div class="calendar-day__motifs" *ngIf="day.motifs.length">
+                <span *ngFor="let motif of day.motifs">{{ motif }}</span>
+              </div>
+            </article>
+
+            <ng-template #emptyCalendarCell>
+              <div class="calendar-day calendar-day--placeholder" aria-hidden="true"></div>
+            </ng-template>
+          </ng-container>
+        </div>
+      </div>
+
+      <ng-template #noCalendarData>
+        <div class="empty-panel">Aucune donnée de calendrier disponible.</div>
+      </ng-template>
+    </section>
+  </ng-container>
+</section>

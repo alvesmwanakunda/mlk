@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment} from 'src/environments/environment';
+import { Observable } from 'rxjs';
+import { TimesheetStatisticsResponse } from '../interfaces/timeSheet.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +21,27 @@ export class TimesheetService {
 
   public getTimeSheetUserByPeriod(idUser,startDate,endDate){
     return this.httpClient.get(`${environment.BASE_API_URL}/timesheet/user/period/${idUser}/${startDate}/${endDate}`)
+  }
+
+  public getTimeSheetUserStatistics(
+    idUser: string,
+    month?: number,
+    year?: number
+  ): Observable<TimesheetStatisticsResponse> {
+    let params = new HttpParams();
+
+    if (month !== undefined) {
+      params = params.set('month', month.toString());
+    }
+
+    if (year !== undefined) {
+      params = params.set('year', year.toString());
+    }
+
+    return this.httpClient.get<TimesheetStatisticsResponse>(
+      `${environment.BASE_API_URL}/timesheet/user/${idUser}/statistics`,
+      { params }
+    );
   }
 
   public getTimeSheetByAgent(){

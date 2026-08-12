@@ -9,6 +9,7 @@ import { NavbarModule } from '../../navbar/navbar.module';
 import { SharedModule } from '../../shared/shared.module';
 import { TimesheetService } from 'src/app/shared/services/timesheet.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { StatistiqueTimesheetComponent } from './statistique-timesheet/statistique-timesheet.component';
 
 export function jwtOptionsFactory() {
   return {
@@ -23,7 +24,7 @@ export function jwtOptionsFactory() {
 }
 
 @NgModule({
-  declarations: [DetailTimesheetComponent],
+  declarations: [DetailTimesheetComponent, StatistiqueTimesheetComponent],
   imports: [
     CommonModule,
     DetailTimesheetRoutingModule,
