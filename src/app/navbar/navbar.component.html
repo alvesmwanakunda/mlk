@@ -347,13 +347,14 @@
 
     <div class="sidebar-section">
       <div class="sidebar-section-label">Principal</div>
-      <div class="nav-item" [routerLink]="['/dashboard']" [routerLinkActive]="['active']" (click)="closeMobileMenu()"><span class="nav-icon"><i class="fa-solid fa-house"></i></span> Projets</div>
+      <div class="nav-item" *ngIf="user?.user?.role!='user'" [routerLink]="['/dashboard']" [routerLinkActive]="['active']" (click)="closeMobileMenu()"><span class="nav-icon"><i class="fa-solid fa-house"></i></span> Projets</div>
+      <div class="nav-item" *ngIf="user?.user?.role=='user'" [routerLink]="['/entreprise/dashboard']" [routerLinkActive]="['active']" (click)="closeMobileMenu()"><span class="nav-icon"><i class="fa-solid fa-house"></i></span> Projets</div>
       <div class="nav-item" [routerLink]="['/statistique/tache']" [routerLinkActive]="['active']" (click)="closeMobileMenu()"><span class="nav-icon"><i class="fa-solid fa-clipboard-list"></i></span> Tâches</div>
-      <div class="nav-item" [routerLink]="['/produits']" [routerLinkActive]="['active']" (click)="closeMobileMenu()"><span class="nav-icon"><i class="fa-solid fa-box-open"></i></span> Produits</div>
+      <div class="nav-item" *ngIf="user?.user?.role!='user'" [routerLink]="['/produits']" [routerLinkActive]="['active']" (click)="closeMobileMenu()"><span class="nav-icon"><i class="fa-solid fa-box-open"></i></span> Produits</div>
       <!-- <div class="nav-item"  [routerLink]="['/devis']" [routerLinkActive]="['active']"><span class="nav-icon"><i class="fa-regular fa-file-lines"></i></span> Devis</div> -->
     </div>
 
-    <div class="sidebar-section">
+    <div class="sidebar-section" *ngIf="user?.user?.role!='user'">
       <div class="sidebar-section-label">Gestion</div>
       <div class="nav-item" [routerLink]="['/entreprises']" [routerLinkActive]="['active']" *ngIf="user?.user?.role=='admin'" (click)="closeMobileMenu()"><span class="nav-icon"><i class="fa-regular fa-building"></i></span> Entreprises</div>
       <div class="nav-item" [routerLink]="['/contact']" [routerLinkActive]="['active']" *ngIf="user?.user?.role=='admin'" (click)="closeMobileMenu()"><span class="nav-icon"><i class="fa-regular fa-address-book"></i></span> Contacts</div>

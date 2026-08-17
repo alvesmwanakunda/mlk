@@ -117,6 +117,7 @@ export class StatiTachesComponent implements OnInit, AfterViewInit {
     public dialog: MatDialog
   ){
     this.user = JSON.parse(localStorage.getItem('user'));
+    console.log("user", this.user);
     this.configureTableSearch();
   }
 
@@ -137,7 +138,9 @@ export class StatiTachesComponent implements OnInit, AfterViewInit {
   getAllStatistique(){
     this.isLoading = true;
     this.errorMessage = '';
-    this.tacheService.getStatistique().subscribe(
+
+    if(this.user?.user?.role!="user"){
+      this.tacheService.getStatistique().subscribe(
       (res: any) => {
         const payload = this.normalizePayload(res);
         this.task = payload;
@@ -155,7 +158,33 @@ export class StatiTachesComponent implements OnInit, AfterViewInit {
         this.errorMessage = 'Impossible de charger les statistiques des tâches.';
         this.isLoading = false;
       }
-    );
+      );
+    }
+
+    else{
+      this.tacheService.getStatistiqueEntreprise(this.user?.user?.entreprise).subscribe(
+      (res: any) => {
+        const payload = this.normalizePayload(res);
+        this.task = payload;
+        this.statistiques = payload?.statistiques || {};
+        this.taches = Array.isArray(payload?.taches) ? payload.taches : [];
+        this.monthLabel = this.formatMonthLabel(this.statistiques?.moisCourant?.periode?.mois);
+
+        this.refreshSummary();
+        this.refreshCharts();
+        this.refreshTable();
+        this.isLoading = false;
+      },
+      (error) => {
+        console.log("Une erreur", error);
+        this.errorMessage = 'Impossible de charger les statistiques des tâches.';
+        this.isLoading = false;
+      }
+      );
+    }
+
+
+
   }
 
   applyFilter(event: Event): void {

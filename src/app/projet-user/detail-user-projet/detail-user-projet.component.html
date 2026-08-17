@@ -1,103 +1,48 @@
 <app-navbar>
-  <div class="container">
-    <div class="content-top">
-      <h2 class="content-title">Projet : {{projet?.projet}}</h2>
-      <mat-divider></mat-divider>
-    </div><!--content-->
-    <div>
-      <div class="row">
-         <div class="col" align="right">
-          <!--<button type="button" class="btn btn-projet-action" style="margin-right: 5px;" matTooltip="Modifier" (click)="updateProjet(projet._id)"><i class="fa-regular fa-pen-to-square btn-icon-projet-update"></i></button>
-          <button type="button" class="btn btn-projet-action" style="margin-right: 5px;" matTooltip="Supprimer" (click)="openDialogDelete(projet._id)"><i class="fa-solid fa-trash btn-icon-projet-delete"></i></button>-->
-         </div><!--col-->
-      </div><!--row-->
-    </div><!--content-->
+  <div class="topbar">
+        <div class="topbar-left">
+          <h1>Projet : {{projet?.projet}}</h1>
+        </div>
+        <div class="topbar-right">
+          <button mat-raised-button type="button" color="primary" style="margin-right: 5px;" matTooltip="Modifier" (click)="updateProjet(projet._id)"><i class="fa-regular fa-pen-to-square"></i> Modifier</button>
+        </div>
+  </div>
+  <div class="content">
 
     <div class="list-projet">
-      <div class="row">
 
-        <div class="col-3">
+      <div class="row projet-layout-row">
 
-          <div class="card card-projet">
-            <img src="{{projet.photo}}" *ngIf="projet?.photo" class="card-img-top card-img-projet" alt="...">
-            <img src="assets/images/ppr.png" *ngIf="!projet?.photo" class="card-img-projet" alt="...">
-
-            <div class="card-body" style="padding-top: 40px;">
-              <p class="user-title">Nom du responsable projet</p>
-              <p class="user-title">{{contact?.genre}} {{contact?.nom}} {{contact?.prenom}}</p>
-              <div align="center" style="margin-bottom:40px;"><hr class="projet"></div>
-
-              <p class="title-projet" style="margin-bottom:20px;">{{projet?.projet}}</p>
-
-              <div class="progress progress-projet" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="margin-bottom:10px;">
-                <div class="progress-bar" [ngStyle]="{'width': (projet?.etat=='En attente') ? '0%' : (projet?.etat=='En cours') ? '50%' : (projet?.etat=='Clôturé') ? '100%' : '0%'}"></div>
-              </div>
-              <p class="pr-projet" *ngIf="projet?.etat=='En attente'">0%</p>
-              <p class="pr-projet" *ngIf="projet?.etat=='En cours'">50%</p>
-              <p class="pr-projet" *ngIf="projet?.etat=='Clôturé'">100%</p>
-              <div class="row">
-                <div class="col">
-                  <div class="card" style="margin-bottom:10px">
-                    <div class="card-body">
-                      <p align="center"><i class="fa-solid fa-location-dot"  style="font-size: 25px;color:#28628B"></i></p>
-                      <p class="pr-title-projet">{{projet?.rue}},{{projet?.postal}} {{projet?.ville}}</p>
-                    </div>
-                  </div>
-                  <p class="pr-title-etat">Lieu</p>
-                </div><!--col-->
-            </div><!--row-->
-            </div><!--card-body-->
-          </div>
-
-        </div><!--col-->
-
-        <div class="col">
-
-          <nav>
+         <nav class="project-tabs-wrap">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-              <button class="nav-link tabprojet active" id="nav-file-tab" data-bs-toggle="tab" data-bs-target="#nav-file" type="button" role="tab" aria-controls="nav-file" aria-selected="true">Fiche</button>
+
+              <button class="nav-link tabprojet  active" id="nav-task-tab" data-bs-toggle="tab" data-bs-target="#nav-task" type="button" role="tab" aria-controls="nav-task" aria-selected="false">Tâches</button>
+              <button class="nav-link tabprojet" id="nav-pv-tab" data-bs-toggle="tab" data-bs-target="#nav-pv" type="button" role="tab" aria-controls="nav-pv" aria-selected="false">PV Réception</button>
+              <button class="nav-link tabprojet" id="nav-plan-tab" data-bs-toggle="tab" data-bs-target="#nav-plan" type="button" role="tab" aria-controls="nav-plan" aria-selected="false">Plan</button>
               <button class="nav-link tabprojet" id="nav-piece-tab" data-bs-toggle="tab" data-bs-target="#nav-piece" type="button" role="tab" aria-controls="nav-piece" aria-selected="false">Documents</button>
-              <button class="nav-link tabprojet" id="nav-stock-tab" data-bs-toggle="tab" data-bs-target="#nav-stock" type="button" role="tab" aria-controls="nav-stock" aria-selected="false">Stocks</button>
-              <!--<button class="nav-link tabprojet" id="nav-planning-tab" data-bs-toggle="tab" data-bs-target="#nav-planning" type="button" role="tab" aria-controls="nav-planning" aria-selected="false">Planning</button>-->
-              <!--<button class="nav-link tabprojet" id="nav-plan-tab" data-bs-toggle="tab" data-bs-target="#nav-pre" type="button" role="tab" aria-controls="nav-plan" aria-selected="false">
-                <a *ngIf="projet?.plan" href="{{projet?.plan}}" target="_blank" style="color: #737477">Plan 3D</a>
-                <a  *ngIf="!projet?.plan" routerLink="/plan3d" target="_blank" style="color: #737477">Plan 3D</a>
-              </button>
-              <button class="nav-link tabprojet" id="nav-pre-tab" data-bs-toggle="tab" data-bs-target="#nav-pre" type="button" role="tab" aria-controls="nav-pre" aria-selected="false">Devis</button>-->
+              <button class="nav-link tabprojet" id="nav-file-tab" data-bs-toggle="tab" data-bs-target="#nav-file" type="button" role="tab" aria-controls="nav-file" aria-selected="true">Fiche projet</button>
             </div>
           </nav>
           <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-file" role="tabpanel" aria-labelledby="nav-file-tab" tabindex="0">
+            <div class="tab-pane fade" id="nav-file" role="tabpanel" aria-labelledby="nav-file-tab" tabindex="0">
               <app-fiche></app-fiche>
             </div>
             <div class="tab-pane fade" id="nav-piece" role="tabpanel" aria-labelledby="nav-piece-tab" tabindex="0">
               <app-box-projet></app-box-projet>
             </div>
-            <div class="tab-pane fade" id="nav-stock" role="tabpanel" aria-labelledby="nav-stock-tab" tabindex="0">
-              <app-module-projet></app-module-projet>
+            <div class="tab-pane fade show active" id="nav-task" role="tabpanel" aria-labelledby="nav-task-tab" tabindex="0">
+              <app-taches></app-taches>
             </div>
-            <div class="tab-pane fade" id="nav-planning" role="tabpanel" aria-labelledby="nav-stock-tab" tabindex="0">
-              <app-planning-projet></app-planning-projet>
+            <div class="tab-pane fade" id="nav-pv" role="tabpanel" aria-labelledby="nav-pv-tb" tabindex="0">
+              <app-pv-reception></app-pv-reception>
             </div>
-            <!--<div class="tab-pane fade" id="nav-pre" role="tabpanel" aria-labelledby="nav-pre-tab" tabindex="0">
-              <app-devis-projet></app-devis-projet>
-            </div>-->
+            <div class="tab-pane fade" id="nav-plan" role="tabpanel" aria-labelledby="nav-plan-tb" tabindex="0">
+              <app-plan-projet-box></app-plan-projet-box>
+            </div>
           </div>
-
-        </div><!--col-->
-
       </div><!--row-->
     </div>
-    <!--<div align="right">
-      <p class="channel-projet-btn">
-        <button mat-icon-button color="primary" style="width: 75px !important;height: 75px !important;" (click)="openDialogChat()" *ngIf="numberMessage<=0"><i class="fa-solid fa-comments" style="font-size:45px;"></i></button>
-        <button mat-icon-button color="primary" style="width: 75px !important;height: 75px !important;" (click)="openDialogChat()"  *ngIf="numberMessage>0">
-          <mat-icon class="material-symbols-outlined projet-badge" style="font-size:45px;" matBadge="{{numberMessage}}" matBadgeColor="warn">notifications</mat-icon>
-        </button>
-      </p>
-    </div>-->
+  </div>
 
-
-  </div><!--container-->
 </app-navbar>
 

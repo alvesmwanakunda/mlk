@@ -8,6 +8,7 @@ import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import { CountriesService } from 'src/app/shared/services/countries.service';
 import { ProjetsService } from 'src/app/shared/services/projets.service';
 import { SharedModule } from '../../shared/shared.module';
+import { PositionMapModule } from 'src/app/projet/position-map/position-map.module';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { SharedModule } from '../../shared/shared.module';
     NavbarModule,
     FormsModule,
     ReactiveFormsModule,
+    PositionMapModule
   ],
   providers:[
     ProjetsService,

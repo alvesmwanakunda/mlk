@@ -15,6 +15,10 @@ import { ChatProjetModule } from '../../chat-projet/chat-projet.module';
 import { PreparationModule } from 'src/app/projet/preparation/preparation.module';
 import { ModuleProjetModule } from 'src/app/projet/module-projet/module-projet.module';
 import { PlanningProjetModule } from 'src/app/projet/planning-projet/planning-projet.module';
+import { TachesModule } from 'src/app/taches/taches.module';
+import { PvReceptionModule } from 'src/app/pv-reception/pv-reception.module';
+import { PlanProjetBoxModule } from 'src/app/projet/plan-projet-box/plan-projet-box.module';
+
 
 
 
@@ -34,7 +38,10 @@ import { PlanningProjetModule } from 'src/app/projet/planning-projet/planning-pr
     ChatProjetModule,
     PreparationModule,
     ModuleProjetModule,
-    PlanningProjetModule
+    PlanningProjetModule,
+    TachesModule,
+    PvReceptionModule,
+    PlanProjetBoxModule
   ],
   providers:[ProjetsService]
 })
