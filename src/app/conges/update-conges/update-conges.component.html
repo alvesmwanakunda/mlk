@@ -110,11 +110,11 @@
                     <mat-form-field class="example-full-width">
                       <mat-label>Type de congés</mat-label>
                       <mat-select formControlName="types" [(ngModel)]="conge.types" required>
-                        <mat-option value="Congés payés">Congés payés</mat-option>
+                        <mat-option value="Congé payé">Congé payé</mat-option>
                         <mat-option value="Congé de naissance">Congé de naissance</mat-option>
                         <mat-option value="Congé d'accueil">Congé d'accueil</mat-option>
                         <mat-option value="Congé paternité">Congé paternité</mat-option>
-                        <mat-option value="Congés sans solde">Congés sans solde</mat-option>
+                        <mat-option value="Congé sans solde">Congé sans solde</mat-option>
                         <mat-option value="Récupération">Récupération</mat-option>
                         <mat-option value="Absence justifiée">Absence justifiée</mat-option>
                         <mat-option value="Absence non justifiée">Absence non justifiée</mat-option>
@@ -186,7 +186,7 @@
                     </div>
                   </div>
                   <div class="col-md-6">
-                    <p class="section-title">Charger le document justificatif <small class="optional-label">(Optionnel)</small></p>
+                    <p class="section-title">Charger le document justificatif <small class="optional-label" *ngIf="conge?.types !== 'Absence justifiée'">(Optionnel)</small><small class="required-label" *ngIf="conge?.types === 'Absence justifiée'">* (Obligatoire)</small></p>
                     <div class="file-preview" *ngIf="file">
                       <img src="assets/images/pdf1.png" alt="PDF">
                       <p>{{this.fileName}}</p>

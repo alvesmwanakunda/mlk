@@ -80,10 +80,19 @@ export class AddCongesComponent implements OnInit {
     this.fileName = this.file.name;
   }
 
+  formRequiresJustificatif(){
+    return this.congeForm.get('types')?.value === 'Absence justifiée';
+  }
+
   saveConge(){
     this.congeForm.markAllAsTouched();
 
     if (this.congeForm.invalid){
+      return;
+    }
+
+    if (this.formRequiresJustificatif() && !this.file) {
+      this.openSnackBar("Un document justificatif est obligatoire pour une absence justifiée.");
       return;
     }
 

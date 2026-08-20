@@ -153,6 +153,12 @@ export class UpdateCongesComponent implements OnInit {
     const formData:FormData=new FormData();
     Object.assign(this.form, this.congeForm.value);
 
+    const types = this.form.types || this.conge?.types;
+    if (types === 'Absence justifiée' && !this.file && !this.conge?.fichier) {
+      this.openSnackBar("Un document justificatif est obligatoire pour une absence justifiée.");
+      return;
+    }
+
     formData.append("uploadfile", this.file);
     formData.append("debut", this.form.debut);
     formData.append("fin", this.form.fin);
